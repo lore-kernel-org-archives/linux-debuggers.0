@@ -2,52 +2,56 @@ Return-Path: <linux-debuggers-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E0227C3DA78
-	for <linux-debuggers@archiver.kernel.org>; Sat, 14 Jan 2023 21:29:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 606C8C46467
+	for <linux-debuggers@archiver.kernel.org>; Sat, 14 Jan 2023 21:30:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230459AbjANV3m (ORCPT
+        id S230478AbjANVam (ORCPT
         <rfc822;linux-debuggers@archiver.kernel.org>);
-        Sat, 14 Jan 2023 16:29:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53448 "EHLO
+        Sat, 14 Jan 2023 16:30:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230389AbjANV3l (ORCPT
+        with ESMTP id S230366AbjANVal (ORCPT
         <rfc822;linux-debuggers@vger.kernel.org>);
-        Sat, 14 Jan 2023 16:29:41 -0500
-X-Greylist: delayed 279 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 14 Jan 2023 13:29:39 PST
-Received: from bee.tesarici.cz (bee.tesarici.cz [77.93.223.253])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CE6F7ABE
-        for <linux-debuggers@vger.kernel.org>; Sat, 14 Jan 2023 13:29:38 -0800 (PST)
+        Sat, 14 Jan 2023 16:30:41 -0500
+X-Greylist: delayed 343 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 14 Jan 2023 13:30:40 PST
+Received: from bee.tesarici.cz (bee.tesarici.cz [IPv6:2a03:3b40:fe:2d4::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD82D7ABE
+        for <linux-debuggers@vger.kernel.org>; Sat, 14 Jan 2023 13:30:40 -0800 (PST)
 Received: from meshulam.tesarici.cz (dynamic-2a00-1028-83b8-1e7a-4427-cc85-6706-c595.ipv6.o2.cz [IPv6:2a00:1028:83b8:1e7a:4427:cc85:6706:c595])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by bee.tesarici.cz (Postfix) with ESMTPSA id 97B6713B873;
-        Sat, 14 Jan 2023 22:29:37 +0100 (CET)
+        by bee.tesarici.cz (Postfix) with ESMTPSA id D317813D181;
+        Sat, 14 Jan 2023 22:24:54 +0100 (CET)
 Authentication-Results: mail.tesarici.cz; dmarc=fail (p=none dis=none) header.from=tesarici.cz
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tesarici.cz; s=mail;
-        t=1673731777; bh=daTL64e+BFUOAoOuwRwZUc+2T0lF+VSMHmAyCBzWCa8=;
+        t=1673731494; bh=hMk1QmgVUtk2M7rRuRt01fcGEN4VyXCBy1u67Z62GVE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=HkCLTGUl8v9KcC3BAOKSmojhOIhLc/pIeZRwS9+nXQi1wP6PC2xMmuxPGP74I+9rl
-         627XzwMRPxZsimn/iolYagC1+r4hWuyU4C7d84unuLj6YT0jMKaykVos5MGeKNIxOs
-         XS/Kwa04bz6334viAdSydfEZGd08RRG1VfzeD3rU/Kwz++CCyDofGFAlpxKyRAbfUN
-         3zyL+dKjhbf6PnME+gPOK4K75Sbyo4KL5aFGfYKFqui6AitDs/ylkw5ywN8xELqrGI
-         yDCQ83LyQdjm7qH9DxwFTOiHX1Z2vSQB293DORx0kzCGXE0xRm5WbqXj5EWBFztSym
-         h6T/owqBi/4pA==
-Date:   Sat, 14 Jan 2023 22:29:36 +0100
+        b=5CEbEJw9gAtKi6K2aTktPeKOkyMrwMwUya3xYsclsZwUoXR1ccjKdZZ5QBtuh4Yon
+         4Kax8usloLz+U/exCU8XPnhbv8e45Xnl9KAZ0F357L78nPkX986pzU3v1K1KhkkBiK
+         JJd+hrHIGdfsgf1OOcvv+3amJQu2gqEvxowBZO7XkcHcpDrVlDkI6SkyiI3B4OBKBI
+         qgtIbL43uUMEB2eLBPdF0YcsPeFwxObxukIyzKJxLM9H55DwVXyhiZZ9b7auB4st+8
+         lXdsmu81ivvEMp8aVg3BLE8VQqWSZ6+GuRSmbY3rQF1ndU3l8lXxhl2YK3BpKMTNcN
+         13c8jO7CSwzrw==
+Date:   Sat, 14 Jan 2023 22:24:42 +0100
 From:   Petr =?UTF-8?B?VGVzYcWZw61r?= <petr@tesarici.cz>
 To:     Stephen Brennan <stephen.s.brennan@oracle.com>
 Cc:     linux-debuggers@vger.kernel.org
 Subject: Re: Diskdump / kdump format history
-Message-ID: <20230114222936.73730968@meshulam.tesarici.cz>
+Message-ID: <20230114222442.1a2ea5d2@meshulam.tesarici.cz>
 In-Reply-To: <87v8lbcmc9.fsf@oracle.com>
 References: <87v8lbcmc9.fsf@oracle.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.35; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; boundary="Sig_/shxyA99y=Jf67tX55OV059.";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
 Precedence: bulk
 List-ID: <linux-debuggers.vger.kernel.org>
 X-Mailing-List: linux-debuggers@vger.kernel.org
+
+--Sig_/shxyA99y=Jf67tX55OV059.
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
 Hi Stephen,
 
@@ -140,6 +144,20 @@ Petr T
 > But I would be glad to be wrong here, if
 > there's a document which describes the format then I'd love to read it,
 > and if not, maybe I could be part of creating it to help everyone out.
-> 
+>=20
 > Thanks,
 > Stephen
+
+--Sig_/shxyA99y=Jf67tX55OV059.
+Content-Type: application/pgp-signature
+Content-Description: Digitální podpis OpenPGP
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQR36mnYrQDNXFnn8/Pem5ZkryZSgUCY8MdmgAKCRDPem5ZkryZ
+SvV/AP9+zpl+RMb5vwOrARokzfzDzz1RPG6wY4pDJaxuhQJ17AEA6n5LxXNJKKSF
+lGlQHrOaRXSndzHSzynSYi7XDfC5MAM=
+=x5tE
+-----END PGP SIGNATURE-----
+
+--Sig_/shxyA99y=Jf67tX55OV059.--

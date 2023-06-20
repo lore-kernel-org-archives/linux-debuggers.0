@@ -2,166 +2,83 @@ Return-Path: <linux-debuggers-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 72532EB64D7
-	for <linux-debuggers@archiver.kernel.org>; Tue, 20 Jun 2023 18:12:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 54B57EB64D7
+	for <linux-debuggers@archiver.kernel.org>; Tue, 20 Jun 2023 19:11:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229657AbjFTSMt (ORCPT
+        id S230355AbjFTTLW (ORCPT
         <rfc822;linux-debuggers@archiver.kernel.org>);
-        Tue, 20 Jun 2023 14:12:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51588 "EHLO
+        Tue, 20 Jun 2023 15:11:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229632AbjFTSMs (ORCPT
+        with ESMTP id S230235AbjFTTLV (ORCPT
         <rfc822;linux-debuggers@vger.kernel.org>);
-        Tue, 20 Jun 2023 14:12:48 -0400
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A1DD1A8
-        for <linux-debuggers@vger.kernel.org>; Tue, 20 Jun 2023 11:12:47 -0700 (PDT)
-Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-666e6541c98so4139689b3a.2
-        for <linux-debuggers@vger.kernel.org>; Tue, 20 Jun 2023 11:12:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=osandov-com.20221208.gappssmtp.com; s=20221208; t=1687284767; x=1689876767;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=M7mp7Hge7BhFhWbl2wLz2TaTpzbhGO9QtHjC8KJQMyg=;
-        b=JE2LeOwTUmNq80eog+sdQEzgtuu36cY12N5HjxpjmD6ZcygMyYDX6aPaAsdwqxSlfA
-         LayA8Vhi/2Ohbywu2kbHHSqoC+4X3esKWxQOEQ48H0kpNxizjVYajmVEtKqe9oUm5guc
-         ALNDfNCeN1qitkQWycFlVSKjcJfIcVPSnAzePYXae3kgFIw7+yTLrtZoXKdUXCUBA1Jd
-         OTa99XAGGkoZy1Wn8pFK+uJ/SUqrDKzRh4O60fcKMgevC5YzUEwqJwlSnE0DZNAaCBrQ
-         X+8DM+CLZAhAMzDU3oC/n6RRCE/V4kXTZkt3mcBpPsDuS1Qk+ZhACd4sf2NtWvBwCDCV
-         4zVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687284767; x=1689876767;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=M7mp7Hge7BhFhWbl2wLz2TaTpzbhGO9QtHjC8KJQMyg=;
-        b=X46SaXRo4JQbdBlWuMQvuMDdyvG+gdm7BoFOprCGtifU/7Ov0Oal9mdPZ5cy3FTwdI
-         ugHJRPmnbfM3cfgorzNZSHwnhmdiKu0gq21IvVYZ1H38BhsMM6beMyQ+TzOMH+rDznf7
-         PRgp4vxziH5jYquvOh2VZ2aaAicbwsjM/oxGpxNI34+plXy9+KYKhiH6M+pkWfn4S2vH
-         e9LNrDiMby5/f8UuxkDO+WtD+0vuFCR/tT9ycA/Hm9881v0q6IN2AzlPt0VqeTL3tV5N
-         c9xZWA+2AhaWjJQIqZVC9nl5dYbToYdFn5jzuOoQ0SjP4kBQcWprdwe0lLqRqoJx4IyD
-         DZLA==
-X-Gm-Message-State: AC+VfDz8QBD8wwpUuovSI1kakow1X9EcINCtE/uwtovKNFigVwGCo6/1
-        m8aLgbpUslXhaqh86NuNSTOG6Q==
-X-Google-Smtp-Source: ACHHUZ45DmcrzOxwl7EBr8vFeje5ooUFH86vKLP5QIxK7qIpcWCKuUQbD+Hoo8lGa8XjSb3ymP1yNQ==
-X-Received: by 2002:a05:6a00:3983:b0:66a:2ff1:deec with SMTP id fi3-20020a056a00398300b0066a2ff1deecmr1117305pfb.10.1687284766546;
-        Tue, 20 Jun 2023 11:12:46 -0700 (PDT)
-Received: from telecaster ([2620:10d:c090:400::5:ea8e])
-        by smtp.gmail.com with ESMTPSA id x10-20020aa793aa000000b0065c8c5b3a7dsm1664910pff.13.2023.06.20.11.12.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jun 2023 11:12:45 -0700 (PDT)
-Date:   Tue, 20 Jun 2023 11:12:44 -0700
-From:   Omar Sandoval <osandov@osandov.com>
-To:     "Shenhar, Talel" <talel@amazon.com>
-Cc:     linux-debuggers@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: Inquiring about Debugging Platform Drivers using Crash Utility
- for Kernel Coredump
-Message-ID: <ZJHsHBQOWtvwZXlz@telecaster>
-References: <f8f62216-ffaa-2f4e-ac5f-7dcd86e80a84@amazon.com>
+        Tue, 20 Jun 2023 15:11:21 -0400
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78D909B
+        for <linux-debuggers@vger.kernel.org>; Tue, 20 Jun 2023 12:11:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+        s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        References:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Cc:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=cDhMrPrH6JxlwzVqH1oOjSDI3CDND5gS81ei+36Gfi8=; b=g9kqgEOqXUk3mopZFV6woypDOj
+        0AX3WEfzwCDzxF2NyWc0RUF+uFLp0v37ZUHSoi9yJoca00mj9/u8tGZxGsTeLqQADRZGupTy1wm4G
+        13bf0vmVb7rgKPcWHbqyu+2Sk/Wy4Yzcf2+AnHkL/xZ/8dfsf7ART8Xpx952wRKSP4hgiBgyl6LXt
+        LRQ4bnt7Ff0gTR3N6zq8L9qttJmEMo0V3DENY64l/z0ydIz+zLaVNsIWvJUfO4/JD/afz+/ZTVEuS
+        ZAkBLEwUqSaDg25XDo3F4SC+HbB8kFbyqOHIvQ8w6PN+u92vq2Fr//UtQvuO9lHgYrdDYDC1uGGPR
+        1Gfst+Vg==;
+Received: from [177.94.78.149] (helo=[192.168.1.60])
+        by fanzine2.igalia.com with esmtpsa 
+        (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+        id 1qBgl1-000t3p-57; Tue, 20 Jun 2023 21:11:15 +0200
+Message-ID: <44179b06-6d15-eb41-fb0e-81ebb963d972@igalia.com>
+Date:   Tue, 20 Jun 2023 16:10:05 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f8f62216-ffaa-2f4e-ac5f-7dcd86e80a84@amazon.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: LPC: Linux Debuggers MC - Submissions Open
+Content-Language: en-US
+To:     Stephen Brennan <stephen.s.brennan@oracle.com>,
+        linux-debuggers@vger.kernel.org
+References: <87sfamvwnt.fsf@oracle.com>
+From:   "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+In-Reply-To: <87sfamvwnt.fsf@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-debuggers.vger.kernel.org>
 X-Mailing-List: linux-debuggers@vger.kernel.org
 
-On Tue, Jun 20, 2023 at 01:47:10PM +0300, Shenhar, Talel wrote:
-> Dear Linux Kernel Community,
+On 20/06/2023 20:03, Stephen Brennan wrote:
+> Hello everyone!
 > 
-> I hope this message finds you well.
+> I'm pleased to share that there will be a "Linux Debugging"
+> microconference at Linux Plumbers (LPC), November 13-15 in Richmond,
+> Virginia.
 > 
-> I'd like to use crash utility for postmortem of my kernel coredump analysis.
+> The microconference format is a great way for us to get together and
+> share the ongoing work that could use some discussion and development as
+> a group. If you've been joining our meetings or following along, or
+> doing some cool hacking on any of the Linux debugging tools out there,
+> I'd encourage you to write out your problem statement and submit it to
+> the Call for Proposals here[1]. Use the "Submit Abstract" button and be
+> sure to select "Linux Kernel Debugging MC" for your track.
 > 
-> I was able to collect coredump and able to use various operation from within
-> the crash utility such as irq -s,  log, files and others.
+> Please do reach out with any questions!
+> Thanks,
+> Stephen
 > 
-> I am using: crash-arm64 version: 7.3.0, gdb version: 7.6, kernel version
-> 4.19.
-> 
-> My specific interest lies in debugging drivers internal state, e.g. platform
-> drivers.
-> 
-> For some hands-on experience with crash utility I'd like to start by
-> iterating over all the platform drivers and print their names,
-> 
-> However, I am finding it challenging to get started with this process and I
-> am uncertain of the best approach to achieve this. I have scoured various
-> resources for insights, but the information related to this specific usage
-> seems to be scattered and not exhaustive.
-> 
-> Given the collective expertise on this mailing list, I thought it would be
-> the best place to seek guidance. Specifically, I would appreciate it if you
-> could provide:
-> 
-> Any relevant documentation, guides, or tutorials to debug platform drivers
-> using the crash utility for kernel coredump analysis.
-> Some simple examples of using the crash utility to debug platform drivers,
-> if possible.
-> Any important points or common pitfalls to keep in mind while performing
-> this kind of analysis.
-> Any other tips, best practices, or recommendations to effectively debug
-> platform drivers using the crash utility would also be greatly appreciated.
-> 
-> Thank you for your time and assistance. I look forward to hearing from you.
+> [1]: https://lpc.events/event/17/abstracts/
 
-Hi, Talel,
+Hi Stephen, thanks for the announcement!
 
-The only thing I have to add to Stephen's excellent answer is my attempt
-at getting the information you requested with drgn. I'm not very
-familiar with platform drivers, so I basically read the code for
-platform_driver_register() and translated the relevant parts to drgn.
-Something like this should get you started:
+Let me ask: in order to present, is it necessary to attend in-person?
 
-------------------------------------------------------------------------
-from drgn import NULL, container_of
-from drgn.helpers.linux.list import list_for_each_entry
+I'm planning to attend virtually only this year, but I'm working in
+correlated areas, so I'd propose something if possible to present virtually.
+
+Thanks,
 
 
-# This was directly translated from the bus_to_subsys() function in
-# drivers/base/bus.c of the Linux kernel. We should probably add it as a
-# drgn helper.
-def bus_to_subsys(bus):
-    for sp in list_for_each_entry(
-        "struct subsys_private",
-        prog["bus_kset"].list.address_of_(),
-        "subsys.kobj.entry",
-    ):
-        if sp.bus == bus:
-            return sp
-    return NULL(bus.prog_, "struct subsys_private *")
-
-
-# Platform drivers are registered to the struct bus_type
-# platform_bus_type in drivers/base/platform.c. The struct
-# subsys_private has a kset containing a list of drivers.
-sp = bus_to_subsys(prog["platform_bus_type"].address_of_())
-for priv in list_for_each_entry(
-    "struct driver_private", sp.drivers_kset.list.address_of_(), "kobj.entry"
-):
-    # This is a struct device_driver *.
-    driver = priv.driver
-    # To get the struct platform_driver *, do:
-    # platform_driver = container_of(driver, "struct platform_driver", "driver")
-    print(driver.name.string_().decode())
-------------------------------------------------------------------------
-
-(I also pushed this script to the contrib directory of the drgn
-repository:
-https://github.com/osandov/drgn/blob/main/contrib/platform_drivers.py)
-
-On my ARM64 QEMU VM, this prints:
-
-------------------------------------------------------------------------
-sbsa-uart
-alarmtimer
-simple-pm-bus
-pci-host-generic
-of_fixed_factor_clk
-of_fixed_clk
-gpio-clk
-------------------------------------------------------------------------
-
-Hopefully this helps!
+Guilherme

@@ -2,110 +2,99 @@ Return-Path: <linux-debuggers-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 888B4EB64D9
-	for <linux-debuggers@archiver.kernel.org>; Wed, 14 Jun 2023 09:18:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 78F62EB64D7
+	for <linux-debuggers@archiver.kernel.org>; Tue, 20 Jun 2023 10:47:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238561AbjFNJSQ (ORCPT
+        id S231560AbjFTKrV (ORCPT
         <rfc822;linux-debuggers@archiver.kernel.org>);
-        Wed, 14 Jun 2023 05:18:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57420 "EHLO
+        Tue, 20 Jun 2023 06:47:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243925AbjFNJSA (ORCPT
+        with ESMTP id S231501AbjFTKrV (ORCPT
         <rfc822;linux-debuggers@vger.kernel.org>);
-        Wed, 14 Jun 2023 05:18:00 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB7211FD2;
-        Wed, 14 Jun 2023 02:17:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=6/QGPhD9pS4hznW7Cj0df209+j0Esgdq+5bHbabIU64=; b=DC4rzTkM2ERgFddKMIkzrpqyiJ
-        QgKZJkUDLcUTWeFAghzUOHwJylznH5a2xO8XAOrPIXfBoaTsK3Yb7RnJpUeg+1+0DzApxCnOdtLGi
-        IShe5ELZqPTX6tDJMP7zdFmkHNO3kjCgGmrETDuF/Ih1y4fPXEAtUxgHEpGz4R9/FMwH3ETs4UCUl
-        ydAWLy2rjiKBUDURaZRb+dOlVXZdrlvygoHYPaH/IzjQ8MG0TVdHKpYxn2NHcs+EZv78gRqtgjsNh
-        26EanVjhHwBQqbHxguApHXpTO09zYNeQJ+72dHBwVigDgMbNFxCO3Kpq7/2Hkl3uxnu37CXi26qqd
-        nZyUi0vw==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1q9MdU-0062Nx-3m; Wed, 14 Jun 2023 09:17:52 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 961F63002A9;
-        Wed, 14 Jun 2023 11:17:51 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 777222C676971; Wed, 14 Jun 2023 11:17:51 +0200 (CEST)
-Date:   Wed, 14 Jun 2023 11:17:51 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Omar Sandoval <osandov@osandov.com>
-Cc:     Josh Poimboeuf <jpoimboe@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-debuggers@vger.kernel.org, kernel-team@fb.com
-Subject: Re: [PATCH v2] x86/unwind/orc: add ELF section with ORC version
- identifier
-Message-ID: <20230614091751.GE1639749@hirez.programming.kicks-ass.net>
-References: <aef9c8dc43915b886a8c48509a12ec1b006ca1ca.1686690801.git.osandov@osandov.com>
+        Tue, 20 Jun 2023 06:47:21 -0400
+Received: from smtp-fw-52004.amazon.com (smtp-fw-52004.amazon.com [52.119.213.154])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 267F7109;
+        Tue, 20 Jun 2023 03:47:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1687258041; x=1718794041;
+  h=message-id:date:mime-version:from:subject:to:
+   content-transfer-encoding;
+  bh=LiGyIi5cy9gnVhBQtlAYxlUvt+Ow2pTos1J0+GkAM+0=;
+  b=dOn+UaXg7j75cDKnDSIk98Om8H6aF1m6WxlGd85hzTcTNa3FYAW12v9+
+   yxgkkNkvuhShM2udcGfEMQ3J+imzppgajjeaU5rcgIy2EM2y9xmEqdjAF
+   ykY4S4I+SJZNnqHPUv3qmaIoXC99ukHf1YrJvA8d+sTg2GBeVKW7d4HC7
+   A=;
+X-IronPort-AV: E=Sophos;i="6.00,256,1681171200"; 
+   d="scan'208";a="137975961"
+Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO email-inbound-relay-pdx-2a-m6i4x-1cca8d67.us-west-2.amazon.com) ([10.43.8.2])
+  by smtp-border-fw-52004.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2023 10:47:19 +0000
+Received: from EX19D001EUA003.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan2.pdx.amazon.com [10.236.137.194])
+        by email-inbound-relay-pdx-2a-m6i4x-1cca8d67.us-west-2.amazon.com (Postfix) with ESMTPS id 36C5C8076B;
+        Tue, 20 Jun 2023 10:47:18 +0000 (UTC)
+Received: from [192.168.6.72] (10.1.212.33) by EX19D001EUA003.ant.amazon.com
+ (10.252.50.232) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.26; Tue, 20 Jun
+ 2023 10:47:15 +0000
+Message-ID: <f8f62216-ffaa-2f4e-ac5f-7dcd86e80a84@amazon.com>
+Date:   Tue, 20 Jun 2023 13:47:10 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aef9c8dc43915b886a8c48509a12ec1b006ca1ca.1686690801.git.osandov@osandov.com>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Content-Language: en-US
+From:   "Shenhar, Talel" <talel@amazon.com>
+Subject: Inquiring about Debugging Platform Drivers using Crash Utility for
+ Kernel Coredump
+To:     <linux-debuggers@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.1.212.33]
+X-ClientProxiedBy: EX19D043UWA004.ant.amazon.com (10.13.139.41) To
+ EX19D001EUA003.ant.amazon.com (10.252.50.232)
 Precedence: bulk
 List-ID: <linux-debuggers.vger.kernel.org>
 X-Mailing-List: linux-debuggers@vger.kernel.org
 
-On Tue, Jun 13, 2023 at 02:14:56PM -0700, Omar Sandoval wrote:
-> From: Omar Sandoval <osandov@fb.com>
-> 
-> Commits ffb1b4a41016 ("x86/unwind/orc: Add 'signal' field to ORC
-> metadata") and fb799447ae29 ("x86,objtool: Split UNWIND_HINT_EMPTY in
-> two") changed the ORC format. Although ORC is internal to the kernel,
-> it's the only way for external tools to get reliable kernel stack traces
-> on x86-64. In particular, the drgn debugger [1] uses ORC for stack
-> unwinding, and these format changes broke it [2]. As the drgn
-> maintainer, I don't care how often or how much the kernel changes the
-> ORC format as long as I have a way to detect the change.
-> 
-> It suffices to store a version identifier in the vmlinux and kernel
-> module ELF files (to use when parsing ORC sections from ELF), and in
-> kernel memory (to use when parsing ORC from a core dump+symbol table).
-> Rather than hard-coding a version number that needs to be manually
-> bumped, Peterz suggested hashing the definitions from orc_types.h. If
-> there is a format change that isn't caught by this, the hashing script
-> can be updated.
-> 
-> This patch adds an .orc_header allocated ELF section containing the
-> 20-byte hash to vmlinux and kernel modules, along with the corresponding
-> __start_orc_header and __stop_orc_header symbols in vmlinux.
-> 
-> 1: https://github.com/osandov/drgn
-> 2: https://github.com/osandov/drgn/issues/303
-> 
-> Signed-off-by: Omar Sandoval <osandov@fb.com>
+Dear Linux Kernel Community,
 
-Patch looks good to me; as a follow up I suppose we could verify the orc
-hash on module load, to ensure the module and main kernel agree on the
-ORC version used -- but we can do that later.
+I hope this message finds you well.
 
-> ---
-> Hi,
-> 
-> This is v2 of my patch to make it possible for external tools like drgn
-> to identify versions of the ORC format. As stated in v1 [1], I don't
-> want ORC to be stable ABI; I just need a way to identify the format
-> being used.
-> 
-> This version incorporates Peter's suggestion to hash the ORC definitions
-> instead of requiring a manual version number; this is easier to maintain
-> and more resilient to backports.
-> 
-> I would love to get this in before 6.4 is released, and then hopefully
-> backport it to 6.3-stable.
+I'd like to use crash utility for postmortem of my kernel coredump 
+analysis.
 
-So we're fairly late in the cycle and it would need justification to go
-into objtool/urgent -- preferably only fixes at this point.
+I was able to collect coredump and able to use various operation from 
+within the crash utility such as irq -s,  log, files and others.
 
-But given we 'broke' the ORC layout this cycle, we can mark this with
-Fixes: for the two mentioned commits.
+I am using: crash-arm64 version: 7.3.0, gdb version: 7.6, kernel version 
+4.19.
 
-Josh?
+My specific interest lies in debugging drivers internal state, e.g. 
+platform drivers.
+
+For some hands-on experience with crash utility I'd like to start by 
+iterating over all the platform drivers and print their names,
+
+However, I am finding it challenging to get started with this process 
+and I am uncertain of the best approach to achieve this. I have scoured 
+various resources for insights, but the information related to this 
+specific usage seems to be scattered and not exhaustive.
+
+Given the collective expertise on this mailing list, I thought it would 
+be the best place to seek guidance. Specifically, I would appreciate it 
+if you could provide:
+
+Any relevant documentation, guides, or tutorials to debug platform 
+drivers using the crash utility for kernel coredump analysis.
+Some simple examples of using the crash utility to debug platform 
+drivers, if possible.
+Any important points or common pitfalls to keep in mind while performing 
+this kind of analysis.
+Any other tips, best practices, or recommendations to effectively debug 
+platform drivers using the crash utility would also be greatly appreciated.
+
+Thank you for your time and assistance. I look forward to hearing from you.
+
+Best regards,
+Talel, Shenhar.
+

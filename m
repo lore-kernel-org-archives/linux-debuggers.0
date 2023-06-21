@@ -2,77 +2,72 @@ Return-Path: <linux-debuggers-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6C884EB64D7
-	for <linux-debuggers@archiver.kernel.org>; Tue, 20 Jun 2023 20:46:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D81F2EB64D7
+	for <linux-debuggers@archiver.kernel.org>; Wed, 21 Jun 2023 17:43:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229881AbjFTUqu (ORCPT
+        id S231209AbjFURnD (ORCPT
         <rfc822;linux-debuggers@archiver.kernel.org>);
-        Tue, 20 Jun 2023 16:46:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41210 "EHLO
+        Wed, 21 Jun 2023 13:43:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229522AbjFTUqu (ORCPT
+        with ESMTP id S231634AbjFURmq (ORCPT
         <rfc822;linux-debuggers@vger.kernel.org>);
-        Tue, 20 Jun 2023 16:46:50 -0400
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E78FBE42
-        for <linux-debuggers@vger.kernel.org>; Tue, 20 Jun 2023 13:46:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-        s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-        References:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Cc:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=bAmHHPnmc2yUJMSbP5QISLTTwtJCByDCqlqpF1hh09Y=; b=C0PrxfMTAEjRka0jLEyP/3XyEW
-        x6AI/MNJtJcCH9/DlZ2pBdPbMYE3gohEYaLpspRy1JKBTDJRqmpHhzVAqdxaroCouQhvpuOQVZaau
-        ag+Ku/JUZ2pcxaXijdOQQPWBncrs0ww3xp1q/JJPHMKII1FFLGaKRVbiy2gWV2/CXMh0BpVKQFkVq
-        ThaOKbSAFPPcyI0+zVace2zUcIE1kM9Ey8b/EgAx5htY67KyumXkdpKD65nA4+VnkJvpgbPRMQP5X
-        S7Cd1EKkb54FxCniSoJT+B1Ca+gtT7J8s7nVriy+3hBfN5pSUZCyLg5u9O0Y0yfzXLWz5L1ZxLp59
-        I1ugxFMg==;
-Received: from [177.94.78.149] (helo=[192.168.1.60])
-        by fanzine2.igalia.com with esmtpsa 
-        (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-        id 1qBiFR-000vcc-4R; Tue, 20 Jun 2023 22:46:45 +0200
-Message-ID: <258a4944-7168-54c2-7a68-468713feda65@igalia.com>
-Date:   Tue, 20 Jun 2023 17:45:36 -0300
+        Wed, 21 Jun 2023 13:42:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A576E1726;
+        Wed, 21 Jun 2023 10:42:15 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AF13A61642;
+        Wed, 21 Jun 2023 17:41:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE7D4C433C8;
+        Wed, 21 Jun 2023 17:41:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1687369313;
+        bh=pod9vxsJ9/lJVWWTJCewna80E9noVqemDffNCQX/HMU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Vf9aRTT9xfDyEXdW3zs9vwc0uhfEnZRLveJuFaGow22Ny7mAWZcgcjbuNyBE/tKk0
+         qEmhd2+XoS0RBhZio26hqeK5AyR9f+7MMYkyAVv2/eN/UX3FmbPntgxq8LOqNvMBwY
+         4TZXrp3ApHX6imRSn9O6+PIEWY4OuQKdHqcCGIAnegzztIS12j+dvdxMlC9UNvNwox
+         hNySBbaY50Q6lQRSSUH5FC8JknwxZN8Crjh4ZCoCrl84nP3FqbkDM+rjdmzRf3C3oq
+         uZk5rdbEtD2Y5HSWArWqdCHvGUGJcRH+wIoZ88spD328gvwldikEVL7JprO7drVqRK
+         0VpXVJ8TRbTcA==
+Date:   Wed, 21 Jun 2023 10:41:51 -0700
+From:   Josh Poimboeuf <jpoimboe@kernel.org>
+To:     Omar Sandoval <osandov@osandov.com>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        linux-kernel@vger.kernel.org, linux-debuggers@vger.kernel.org,
+        kernel-team@fb.com
+Subject: Re: [PATCH v2] x86/unwind/orc: add ELF section with ORC version
+ identifier
+Message-ID: <20230621174151.e5vucxl2hlsp3o3b@treble>
+References: <aef9c8dc43915b886a8c48509a12ec1b006ca1ca.1686690801.git.osandov@osandov.com>
+ <20230614091751.GE1639749@hirez.programming.kicks-ass.net>
+ <ZJHYuH/DD6tqJ+bu@telecaster>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: LPC: Linux Debuggers MC - Submissions Open
-Content-Language: en-US
-To:     Stephen Brennan <stephen.s.brennan@oracle.com>,
-        linux-debuggers@vger.kernel.org
-References: <87sfamvwnt.fsf@oracle.com>
- <44179b06-6d15-eb41-fb0e-81ebb963d972@igalia.com> <87pm5px4dp.fsf@oracle.com>
-From:   "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-In-Reply-To: <87pm5px4dp.fsf@oracle.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ZJHYuH/DD6tqJ+bu@telecaster>
 Precedence: bulk
 List-ID: <linux-debuggers.vger.kernel.org>
 X-Mailing-List: linux-debuggers@vger.kernel.org
 
-On 20/06/2023 22:31, Stephen Brennan wrote:
-> [...]
+On Tue, Jun 20, 2023 at 09:50:00AM -0700, Omar Sandoval wrote:
+> > So we're fairly late in the cycle and it would need justification to go
+> > into objtool/urgent -- preferably only fixes at this point.
+> > 
+> > But given we 'broke' the ORC layout this cycle, we can mark this with
+> > Fixes: for the two mentioned commits.
+> > 
+> > Josh?
 > 
-> It's preferred to be there in-person, but not required. If you're
-> familiar with the "Big Blue Button" system that has been used for LPC
-> for the last couple years, it will allow you to present remotely!
+> Ping, Josh, any chance of getting this in to 6.4? Sorry to be cutting it
+> so close.
 
-That's great to hear =)
+Sorry, I had acked this privately and Peter queued it last week but it
+may have slipped through the cracks.  He may still try to get into 6.4.
 
-> [...]
->> I'm planning to attend virtually only this year, but I'm working in
->> correlated areas, so I'd propose something if possible to present virtually.
-> 
-> Please do submit it! I'm happy to help test your presentation setup at
-> the venue, maybe during a break before or during the MC. That way we can
-> avoid any technical hiccups.
-> 
-> Thanks!
-> Stephen
-
-Many thanks for that! Much appreciated - I'll submit it then!
-cheers,
-
-
-Guilherme
+-- 
+Josh

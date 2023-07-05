@@ -2,65 +2,76 @@ Return-Path: <linux-debuggers-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 77B64EB64DC
-	for <linux-debuggers@archiver.kernel.org>; Sat,  1 Jul 2023 17:04:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C824EB64DD
+	for <linux-debuggers@archiver.kernel.org>; Wed,  5 Jul 2023 22:10:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229492AbjGAREM (ORCPT
+        id S230327AbjGEWKB (ORCPT
         <rfc822;linux-debuggers@archiver.kernel.org>);
-        Sat, 1 Jul 2023 13:04:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59704 "EHLO
+        Wed, 5 Jul 2023 18:10:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229477AbjGAREL (ORCPT
+        with ESMTP id S230015AbjGEWKA (ORCPT
         <rfc822;linux-debuggers@vger.kernel.org>);
-        Sat, 1 Jul 2023 13:04:11 -0400
-X-Greylist: delayed 902 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 01 Jul 2023 10:04:08 PDT
-Received: from sender4-of-o50.zoho.com (sender4-of-o50.zoho.com [136.143.188.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6C191FE8
-        for <linux-debuggers@vger.kernel.org>; Sat,  1 Jul 2023 10:04:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1688230145; cv=none; 
-        d=zohomail.com; s=zohoarc; 
-        b=bdJdWQa/pg6MWtUKWjOOxbv3izpwmWDWyYq6y5xf8xff+wKO1fdOOcQCNthDu+xLsXQ3YEJ7qkxy3jcifEYqHvfgMn901B0kqRXQLxgKV6nR2xL65o2nlQutO1WWWWARS4Oda9/STGKljxbnUa3zIM0bRhUBNFpZ32n5octppW4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-        t=1688230145; h=Content-Type:Date:From:MIME-Version:Message-ID:Subject:To; 
-        bh=YoWm7MAt+Abtw/Q0Il4xj1MyfMAplYVbYjWLt9ES5iE=; 
-        b=Xgf+KY2jKi06sHKQwJ5Q4aPFTYjKwwbQkovFtWiZ3RUL4GtXAxzSXsgt/rKpqTiL101AZk6ucJtV7uxQ9rWl8gcNxwa8KW31GMFps8UIZ7t/9QTrWWRrkc+IZFLWszhOb3ghhNfG8SAxQkDbLVw1CJE3IpCweK3ZUeWA/WeMbII=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-        dkim=pass  header.i=brennan.io;
-        spf=pass  smtp.mailfrom=stephen@brennan.io;
-        dmarc=pass header.from=<stephen@brennan.io>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1688230145;
-        s=selector01; d=brennan.io; i=stephen@brennan.io;
-        h=From:From:To:To:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Type:Message-Id:Reply-To:Cc;
-        bh=YoWm7MAt+Abtw/Q0Il4xj1MyfMAplYVbYjWLt9ES5iE=;
-        b=TRFGCOmY5PCKlJmIFizlOgQa1es95zcLn58r5ET77LhLKC3w7meglWSpPjSrA0EK
-        y9Ova+x1ILxE139KjyagfLFY82pj+C47WIP7lV/6BGngX6uwr2HPi5pBeQyqBFfBSNT
-        FnGd2XqLhDVSYy+zyKx++jMtgRDSw5XG5RREMWio=
-Received: from localhost (136.24.52.195 [136.24.52.195]) by mx.zohomail.com
-        with SMTPS id 1688230143047962.60007885865; Sat, 1 Jul 2023 09:49:03 -0700 (PDT)
-From:   Stephen Brennan <stephen@brennan.io>
+        Wed, 5 Jul 2023 18:10:00 -0400
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E658D171E
+        for <linux-debuggers@vger.kernel.org>; Wed,  5 Jul 2023 15:09:59 -0700 (PDT)
+Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1b89d47ffb6so16963515ad.2
+        for <linux-debuggers@vger.kernel.org>; Wed, 05 Jul 2023 15:09:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=osandov-com.20221208.gappssmtp.com; s=20221208; t=1688594999; x=1691186999;
+        h=content-disposition:mime-version:message-id:subject:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4p9EqQYUtWjrwVCXKqXzhQq9ZZH4GUdAmxlS1TdtGBg=;
+        b=RdUcGzKQnEBPVrSQkUKKGkbHTY+qLfnEFm5aKGc+eDlFcSxc4N6moq4AWMansk42jB
+         nrujM+uFI/FoXxbrtJJbU/LTW8OG1M1wXkAmTY/fkDAdMrf3TQbF/4e93Z5NK/hPmbJA
+         HeRlthxk/ZMI/wgVGkjpELtzGcTBJaoz2J3bl8RThgTSvGiDRqZv+zOp33+h9nZHfyHY
+         DuYiDvlI9lm94mpmT4aDRXgPE/dmGlGRzvYKxhltJjPda9O2wht6Lhz98124h6H9KDnm
+         hoYueIaAdJU2bJeclLSudWbkkqLsovJ4sxjAAeNQST2ZSbHZ/b7a/pR9cuBaNlimyLOR
+         7Dsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688594999; x=1691186999;
+        h=content-disposition:mime-version:message-id:subject:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4p9EqQYUtWjrwVCXKqXzhQq9ZZH4GUdAmxlS1TdtGBg=;
+        b=dXQXDy0Ra0z/M4GDN6IhMG+wZktS/N2Wgzz/A+Ly8/7wYLCKdrgSqm5ED3GsFqzwr4
+         ZsNUsGL+7WzLFBxPDqvGaFwInlwEtqkavYj+kOZ7W18YoByKh0yLZWV+P69y7vpvW1tj
+         jvWRJhB/CBYstof5VkXI8GRHde7Dyr+H1TsnLsIJ7ljqFa8Dxo+/BOptH/iMQOetVdYu
+         eMwORg7vJBrNhZzhkrID4ZU1QQWl+z6QX+c4G/LXa1sdXrcByuIBPxKTEv2Kx2gKWQvW
+         LFxJ8p2yF4CGThYnrGog9F/dqiVNPv8a/eZEAsB21z8tKd5SnQm7PczHYz2yCHFuSE+Z
+         BM6Q==
+X-Gm-Message-State: ABy/qLYH6a5eahReyn5OTxrgexp5OyM1CiffKG3czZW0yThMWtD8R73/
+        zfrvnTm5/KrwDZajXKMz30xutsa065goUB3PZHc=
+X-Google-Smtp-Source: APBJJlHKnD8ihHSIlAi+RHtkF56Y2JxT3IZ/v9oHcBcQcEV5B+UpBrJ8jLzIl/CEWZSe+XXewLtlVQ==
+X-Received: by 2002:a17:902:7893:b0:1ac:859a:5b5a with SMTP id q19-20020a170902789300b001ac859a5b5amr263272pll.0.1688594999074;
+        Wed, 05 Jul 2023 15:09:59 -0700 (PDT)
+Received: from telecaster ([2620:10d:c090:400::5:b1c7])
+        by smtp.gmail.com with ESMTPSA id f1-20020a170902ab8100b001b80b428d4bsm16684352plr.67.2023.07.05.15.09.58
+        for <linux-debuggers@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Jul 2023 15:09:58 -0700 (PDT)
+Date:   Wed, 5 Jul 2023 15:09:57 -0700
+From:   Omar Sandoval <osandov@osandov.com>
 To:     linux-debuggers@vger.kernel.org
-Subject: Linux Kernel Debugging MC is (still) open: now with a blog post
-Date:   Sat, 01 Jul 2023 09:49:01 -0700
-Message-ID: <87pm5bvapu.fsf@brennan.io>
+Subject: drgn Roadmap
+Message-ID: <ZKXqNQY/KRFFciZW@telecaster>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <linux-debuggers.vger.kernel.org>
 X-Mailing-List: linux-debuggers@vger.kernel.org
 
-Hi everyone,
+Hi, everyone,
 
-Today our post on the LPC blog went live:
+I published a roadmap of the current and upcoming work in drgn, along
+with some thoughts about drgn's short-, medium-, and long-term goals:
+https://github.com/users/osandov/projects/1/views/1?pane=info.
 
-https://lpc.events/blog/current/index.php/2023/07/01/linux-kernel-debugging-mc-cfp/
+I'll update it as we make progress and come up with new ideas.
+Prioritization is based on user feedback and developer time, so please
+reach out or comment on the relevant issues if something is important to
+you.
 
-I think it does a good job describing what we're looking for, and it has
-instructions for submitting topics. Please consider the problems you
-face in your debugging: there's probably a topic for you to submit.
-
-Please also spread the word to other folks and groups who may face the
-same debugging problems that we do.
-
-Thanks,
-Stephen
+Thanks!
+Omar

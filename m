@@ -2,161 +2,144 @@ Return-Path: <linux-debuggers-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 591CDCA0EC3
-	for <linux-debuggers@archiver.kernel.org>; Tue, 12 Sep 2023 07:22:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B9A5CA0ECA
+	for <linux-debuggers@archiver.kernel.org>; Tue, 12 Sep 2023 08:27:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231468AbjILHWj (ORCPT
+        id S232443AbjILI10 (ORCPT
         <rfc822;linux-debuggers@archiver.kernel.org>);
-        Tue, 12 Sep 2023 03:22:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44512 "EHLO
+        Tue, 12 Sep 2023 04:27:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231316AbjILHWj (ORCPT
+        with ESMTP id S232520AbjILI1X (ORCPT
         <rfc822;linux-debuggers@vger.kernel.org>);
-        Tue, 12 Sep 2023 03:22:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 41B0710C3
-        for <linux-debuggers@vger.kernel.org>; Tue, 12 Sep 2023 00:21:54 -0700 (PDT)
+        Tue, 12 Sep 2023 04:27:23 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 88834B9
+        for <linux-debuggers@vger.kernel.org>; Tue, 12 Sep 2023 01:26:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1694503313;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+        s=mimecast20190719; t=1694507194;
+        h=from:from:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=7BvHu4veckrfz6KuzpbP7HjPDSNgySXMvrxCBE5h/HI=;
-        b=HlDrt/2Iw5aqZy6KqnNMv12KgbEpip2n/D9nm8kiRRfODt7kTxR9avrVfnCyMTgNURSFs1
-        RqXRwfdljbVcaX0I0E8xRk7pC3F9BSkc51KKJaHhZySL6XzNwfO50+GqS+Otl/xGb1yap5
-        qW4tzRurdtu7EGFW6SxGRUKgwoLmQ9M=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-182-jRArr5RTPQOins9x3k35wQ-1; Tue, 12 Sep 2023 03:21:52 -0400
-X-MC-Unique: jRArr5RTPQOins9x3k35wQ-1
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-31c470305cfso3519301f8f.3
-        for <linux-debuggers@vger.kernel.org>; Tue, 12 Sep 2023 00:21:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694503311; x=1695108111;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7BvHu4veckrfz6KuzpbP7HjPDSNgySXMvrxCBE5h/HI=;
-        b=iVRjVs6zfywVXd1QrYggF//kva7yF/L66PjGqFg33OJ9SjQ72rS0uaMGPjafsS3b2R
-         xgcN2yhgspnBxeG7rCbEUP+0kybTdw/Bt0nB5H2asrmjiQkW+67s5DR5Vyp/s3hJH/Xy
-         6Z6UhLDYOGuR8aA6rMimPOlVJ1KuOPJPch21D+WXazHb+TxPXDYs/Dvk8om78h2V9ir7
-         ar0teCHfnmuQZqq5Xh17LfxLQsIGC7asBV3DYXmDAWgaUhlXKgsnHXpDB06acAu7diF+
-         j/IJR9WFZqWcl+v1maa+clKNi18USpNb7+hdihTHiICLsTUl/o0qFiBwDc9y1sJ9OBzR
-         uAbA==
-X-Gm-Message-State: AOJu0YzZl6x57p7Qf1umCu1GYcW8trR/RZRqqrURYB2QHGlFJuca3Kb0
-        gVbfVHLdWRAsoqofySrrcy2wXpyRQJGaRW1yKOIoVFKSx5nrKb+7zRjxH650wOeoYHprczyBCQc
-        kp19YfHasBWzV/CHaM28n5c+77XRG
-X-Received: by 2002:a5d:560d:0:b0:313:f1c8:a968 with SMTP id l13-20020a5d560d000000b00313f1c8a968mr9698788wrv.2.1694503310926;
-        Tue, 12 Sep 2023 00:21:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IExPMGW5JeNv0plxANul4UmSCGkcVkAYBI6a0kzV65U4Gnwp0uyItKr5o8r5UsXS9UU/zZwIA==
-X-Received: by 2002:a5d:560d:0:b0:313:f1c8:a968 with SMTP id l13-20020a5d560d000000b00313f1c8a968mr9698773wrv.2.1694503310569;
-        Tue, 12 Sep 2023 00:21:50 -0700 (PDT)
-Received: from [192.168.0.2] (ip-109-43-179-28.web.vodafone.de. [109.43.179.28])
-        by smtp.gmail.com with ESMTPSA id x5-20020a5d54c5000000b0031773a8e5c4sm11985034wrv.37.2023.09.12.00.21.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Sep 2023 00:21:50 -0700 (PDT)
-Message-ID: <b614f33c9fcc461f8099a11b97af4340ceb4cf1a.camel@redhat.com>
-Subject: Re: [PATCH qemu 2/2] dump: Only use the makedumpfile flattened
- format when necessary
-From:   Thomas Huth <thuth@redhat.com>
-To:     =?ISO-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@gmail.com>,
-        Stephen Brennan <stephen.s.brennan@oracle.com>,
-        Alex =?ISO-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
-        "Daniel P. Berrange" <berrange@redhat.com>
-Cc:     qemu-devel@nongnu.org, linux-debuggers@vger.kernel.org,
+        bh=Jhmke+dGn8Kyd2GVWFpaViofWfgkfL6LGx7bEbBVGW4=;
+        b=FLsvBRfn/oKDM5wl60An3nwJAH2i6+Ej/ZjDtovnq32ZvAgDrP9z1+pE/Uhylt8PZJ6bIb
+        DbalN0Lteo7H3GgsRa/2iF2vZYBLGsHRAlLNCO8P/uT9a5BkqiEKv3kTOVh07TMho3v8Fx
+        g0S9TxR18LLFKLgFcOxkAE4iaF9NiFY=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-49-x81DcOawMm-pFJ7Hcrt9fA-1; Tue, 12 Sep 2023 04:26:31 -0400
+X-MC-Unique: x81DcOawMm-pFJ7Hcrt9fA-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A65F6101FAA0;
+        Tue, 12 Sep 2023 08:26:30 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.38])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id BBCF87B62;
+        Tue, 12 Sep 2023 08:26:28 +0000 (UTC)
+Date:   Tue, 12 Sep 2023 09:26:26 +0100
+From:   Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To:     =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@gmail.com>
+Cc:     Stephen Brennan <stephen.s.brennan@oracle.com>,
+        Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+        qemu-devel@nongnu.org, linux-debuggers@vger.kernel.org,
         joao.m.martins@oracle.com,
         Richard Henderson <richard.henderson@linaro.org>,
-        Janosch Frank <frankja@linux.ibm.com>
-Date:   Tue, 12 Sep 2023 09:21:49 +0200
-In-Reply-To: <CAJ+F1CK0PTM-wHaK90EiuvvsG5OBVXQ4X8iV-AbBxdc6_=RvPQ@mail.gmail.com>
+        Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH qemu 2/2] dump: Only use the makedumpfile flattened
+ format when necessary
+Message-ID: <ZQAgsmXRYFqRx7dI@redhat.com>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 References: <20230717163855.7383-1-stephen.s.brennan@oracle.com>
-         <20230717163855.7383-3-stephen.s.brennan@oracle.com>
-         <CAJ+F1C+VFpU=xpqOPjJU1VLt4kofVqV8EN4pj5MjkkwWvVuxZw@mail.gmail.com>
-         <87edl4d9wi.fsf@oracle.com> <87fs4aha4t.fsf@oracle.com>
-         <CAJ+F1CKCdy3J8AD9EGvVO+CU6-yFPrLZ2Lum1SDgdj_kghFdQw@mail.gmail.com>
-         <CAJ+F1CK0PTM-wHaK90EiuvvsG5OBVXQ4X8iV-AbBxdc6_=RvPQ@mail.gmail.com>
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38)
+ <20230717163855.7383-3-stephen.s.brennan@oracle.com>
+ <CAJ+F1C+VFpU=xpqOPjJU1VLt4kofVqV8EN4pj5MjkkwWvVuxZw@mail.gmail.com>
+ <87edl4d9wi.fsf@oracle.com>
+ <87fs4aha4t.fsf@oracle.com>
+ <CAJ+F1CKCdy3J8AD9EGvVO+CU6-yFPrLZ2Lum1SDgdj_kghFdQw@mail.gmail.com>
+ <CAJ+F1CK0PTM-wHaK90EiuvvsG5OBVXQ4X8iV-AbBxdc6_=RvPQ@mail.gmail.com>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJ+F1CK0PTM-wHaK90EiuvvsG5OBVXQ4X8iV-AbBxdc6_=RvPQ@mail.gmail.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
 Precedence: bulk
 List-ID: <linux-debuggers.vger.kernel.org>
 X-Mailing-List: linux-debuggers@vger.kernel.org
 
-On Tue, 2023-09-12 at 10:34 +0400, Marc-Andr=C3=A9 Lureau wrote:
+On Tue, Sep 12, 2023 at 10:34:04AM +0400, Marc-André Lureau wrote:
 > Hi
->=20
-> On Wed, Aug 23, 2023 at 2:03=E2=80=AFPM Marc-Andr=C3=A9 Lureau
+> 
+> On Wed, Aug 23, 2023 at 2:03 PM Marc-André Lureau
 > <marcandre.lureau@gmail.com> wrote:
-> >=20
+> >
 > > Hi
-> >=20
-> > On Wed, Aug 23, 2023 at 4:31=E2=80=AFAM Stephen Brennan
+> >
+> > On Wed, Aug 23, 2023 at 4:31 AM Stephen Brennan
 > > <stephen.s.brennan@oracle.com> wrote:
-> > >=20
+> > >
 > > > Stephen Brennan <stephen.s.brennan@oracle.com> writes:
-> > > > Marc-Andr=C3=A9 Lureau <marcandre.lureau@gmail.com> writes:
-> > > > > I am a bit reluctant to change the dump format by default.
-> > > > > But since the
-> > > > > flatten format is more "complicated" than the "normal"
-> > > > > format, perhaps we
-> > > > > can assume all users will handle it.
-> > > > >=20
-> > > > > The change is probably late for 8.1 though..
-> > > >=20
+> > > > Marc-André Lureau <marcandre.lureau@gmail.com> writes:
+> > > >> I am a bit reluctant to change the dump format by default. But since the
+> > > >> flatten format is more "complicated" than the "normal" format, perhaps we
+> > > >> can assume all users will handle it.
+> > > >>
+> > > >> The change is probably late for 8.1 though..
+> > > >
 > > > > Thank you for your review and testing!
-> > > >=20
-> > > > I totally understand the concern about making the change by
-> > > > default. I
-> > > > do believe that nobody should notice too much because the
-> > > > normal format
-> > > > should be easier to work with, and more broadly compatible. I
-> > > > don't know
-> > > > of any tool which deals with the flattened format that can't
-> > > > handle the
+> > > >
+> > > > I totally understand the concern about making the change by default. I
+> > > > do believe that nobody should notice too much because the normal format
+> > > > should be easier to work with, and more broadly compatible. I don't know
+> > > > of any tool which deals with the flattened format that can't handle the
 > > > > normal format, except for "makedumpfile -R" itself.
-> > > >=20
-> > > > If it's a blocker, I can go ahead and add a new flag to the
-> > > > command to
-> > > > enable the behavior. However there are a few good
-> > > > justifications not to
-> > > > add a new flag. I think it's going to be difficult to explain
-> > > > the
+> > > >
+> > > > If it's a blocker, I can go ahead and add a new flag to the command to
+> > > > enable the behavior. However there are a few good justifications not to
+> > > > add a new flag. I think it's going to be difficult to explain the
 > > > > difference between the two formats in documentation, as the
-> > > > implementation of the formats is a bit "into the weeds". The
-> > > > libvirt API
+> > > > implementation of the formats is a bit "into the weeds". The libvirt API
 > > > > also specifies each format separately (kdump-zlib, kdump-lzo,
 > > > > kdump-snappy) and so adding several new options there would be
 > > > > unfortunate for end-users as well.
-> > > >=20
-> > > > At the end of the day, it's your judgment call, and I'll
-> > > > implement it
+> > > >
+> > > > At the end of the day, it's your judgment call, and I'll implement it
 > > > > how you prefer.
-> > >=20
-> > > I just wanted to check back on this to clarify the next step. Are
-> > > you
-> > > satisfied with this and waiting to apply it until the right time?
-> > > Or
+> > >
+> > > I just wanted to check back on this to clarify the next step. Are you
+> > > satisfied with this and waiting to apply it until the right time? Or
 > > > would you prefer me to send a new version making this opt-in?
-> > >=20
-> >=20
-> > Nobody seems to raise concerns. If it would be just me, I would
-> > change
-> > it. But we should rather be safe, so let's make it this opt-in
-> > please.
-> >=20
-> >=20
->=20
-> Alex, Daniel, Thomas .. Do you have an opinion on changing the dump
-> format?
+> > >
+> >
+> > Nobody seems to raise concerns. If it would be just me, I would change
+> > it. But we should rather be safe, so let's make it this opt-in please.
+> 
+> Alex, Daniel, Thomas .. Do you have an opinion on changing the dump format?
 
-I just double-checked with Janosch Frank, and from s390x perspective
-we're mostly interested in the ELF dump format, so from the s390x side
-of view: =C2=AF\_(=E3=83=84)_/=C2=AF
+I think it is a bad idea for the command to output data in a different
+format, silently switching based on whether it is passed a pipe or and
+file FD.
 
- Thomas
+Libvirt may pass either a plain file FD or a pipe FD, depending on
+whether the user set the VIR_DUMP_BYPASS_CACHE API flag. IMHO it
+is unacceptable for that to result in a change of data format as a
+silent side effect.
+
+Looking back at the history, the patches originally did NOT use the
+flatten makedumpfile format, but to ensure it was able to work with
+non-seekable files, it jumped through hoops to write to a temporary
+file first process it and then write to the real file. Switching to
+makedumpfile format was to enable it to avoid temp files and always
+be compatible with non-seekable FDs.
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 

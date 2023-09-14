@@ -2,137 +2,195 @@ Return-Path: <linux-debuggers-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 900B2CA5501
-	for <linux-debuggers@archiver.kernel.org>; Wed, 13 Sep 2023 07:23:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 49F96EE0206
+	for <linux-debuggers@archiver.kernel.org>; Thu, 14 Sep 2023 01:03:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235421AbjIMHX4 (ORCPT
+        id S231935AbjINBDo (ORCPT
         <rfc822;linux-debuggers@archiver.kernel.org>);
-        Wed, 13 Sep 2023 03:23:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33622 "EHLO
+        Wed, 13 Sep 2023 21:03:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238572AbjIMHX4 (ORCPT
+        with ESMTP id S233245AbjINBDn (ORCPT
         <rfc822;linux-debuggers@vger.kernel.org>);
-        Wed, 13 Sep 2023 03:23:56 -0400
-X-Greylist: delayed 2703 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 13 Sep 2023 00:23:52 PDT
-Received: from sender4-of-o51.zoho.com (sender4-of-o51.zoho.com [136.143.188.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 951F71728
-        for <linux-debuggers@vger.kernel.org>; Wed, 13 Sep 2023 00:23:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1694587121; cv=none; 
-        d=zohomail.com; s=zohoarc; 
-        b=DZzWWErpsiCQU8WLD5pvqu/JgfR9qZAja4dzed8+NeIls5RwzR6ayfJ9ufOmQs1MKIoQMETfb4+VU9zeXkkxMrTk+k9dlVfqmid3vb3Ugtnq9NF7g7clN1Vst+NZQcHpSnGq5EwxsucqTC2IOolPnTUiaK4tVDK2kSFBM4sCUcE=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-        t=1694587121; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
-        bh=dypCVOF/KKl70MOToLdCJ/V8ZHQzOGX4MdOyUG6jOUI=; 
-        b=by9nW3dcxwSZfs0Pe+f8AAKaig9yJQtmP9kUFeMEouXALjpLxAF3VRnmrF78nGxLmZZ4mIfhLJBJxKK2dLPKfpTv4UcSRWNwYXiUpQVj2osjeka66iQ9IoJ0CmkmO/mC4Cr5jC6Vgbcol5gSHVpaNJykkL+Mdfx00hLTegVvdoQ=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-        dkim=pass  header.i=brennan.io;
-        spf=pass  smtp.mailfrom=stephen@brennan.io;
-        dmarc=pass header.from=<stephen@brennan.io>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1694587121;
-        s=selector01; d=brennan.io; i=stephen@brennan.io;
-        h=From:From:To:To:Cc:Cc:Subject:Subject:In-Reply-To:References:Date:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-        bh=dypCVOF/KKl70MOToLdCJ/V8ZHQzOGX4MdOyUG6jOUI=;
-        b=NfHssmDVmW191vVcrVzp8r38oXTZUl0wOh8EkrK4h85cd+5+zXCYZJUmOphEKBDR
-        r7zZkznFNokDRUBe4AA1GIB7wYSMPWlOpcDByehSBf4nzZ1NPOhELWAGIiCC69KCAwd
-        ZfNHRkwTKMm163m7/Cfh9JhNJ88qQMqVPt1DotIE=
-Received: from localhost (136.24.52.195 [136.24.52.195]) by mx.zohomail.com
-        with SMTPS id 1694587118513156.9937277734624; Tue, 12 Sep 2023 23:38:38 -0700 (PDT)
-From:   Stephen Brennan <stephen@brennan.io>
-To:     =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@gmail.com>,
-        Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
-        "Daniel P. Berrange" <berrange@redhat.com>
-Cc:     qemu-devel@nongnu.org, linux-debuggers@vger.kernel.org,
-        joao.m.martins@oracle.com,
-        Richard Henderson <richard.henderson@linaro.org>,
-        Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH qemu 2/2] dump: Only use the makedumpfile flattened
- format when necessary
-In-Reply-To: <CAJ+F1CK0PTM-wHaK90EiuvvsG5OBVXQ4X8iV-AbBxdc6_=RvPQ@mail.gmail.com>
-References: <20230717163855.7383-1-stephen.s.brennan@oracle.com>
- <20230717163855.7383-3-stephen.s.brennan@oracle.com>
- <CAJ+F1C+VFpU=xpqOPjJU1VLt4kofVqV8EN4pj5MjkkwWvVuxZw@mail.gmail.com>
- <87edl4d9wi.fsf@oracle.com> <87fs4aha4t.fsf@oracle.com>
- <CAJ+F1CKCdy3J8AD9EGvVO+CU6-yFPrLZ2Lum1SDgdj_kghFdQw@mail.gmail.com>
- <CAJ+F1CK0PTM-wHaK90EiuvvsG5OBVXQ4X8iV-AbBxdc6_=RvPQ@mail.gmail.com>
-Date:   Tue, 12 Sep 2023 23:38:38 -0700
-Message-ID: <87a5tq8tn5.fsf@brennan.io>
+        Wed, 13 Sep 2023 21:03:43 -0400
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D8D11BCD
+        for <linux-debuggers@vger.kernel.org>; Wed, 13 Sep 2023 18:03:39 -0700 (PDT)
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38DGFlpt013674;
+        Thu, 14 Sep 2023 01:03:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : content-transfer-encoding : content-type :
+ mime-version; s=corp-2023-03-30;
+ bh=bUBpr/41z2nneCaY5mrf2Ws2Tmr2pjPFvw0jP1+I/XI=;
+ b=tqcAP2l5WmODu+qTmzByI1sdE4OtY/WZPNVi3PA+xP6ixfkqzsdgVzpwev3yOlw8GWKR
+ z+6/yoR+04kzAA6czix+PJnB31pEyZqq4QkmCHsykaJXxOIqHngBTfOWLDWZo91XpWO7
+ 6SC8ffdvMqpdaqutwLvU51I1u660zAlU+zf81pUJxn7et9yB+Wv9vz0TeYG97IO+oD7C
+ EMTNcZCMzsU59s4Gio3LCvZ8MBldM8IokyWaMkN1SUreZiOvarXy4LOxW2xfx308Vdqn
+ H8OBiCPzC1X14T9jldI4FilwoIzd7+5lMnEJLVjgifziuesMpKlHpHqRQ6Y576X1ulxa ug== 
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3t2y7kkghb-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 14 Sep 2023 01:03:22 +0000
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+        by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 38DMSQwR002629;
+        Thu, 14 Sep 2023 01:03:21 GMT
+Received: from nam04-bn8-obe.outbound.protection.outlook.com (mail-bn8nam04lp2042.outbound.protection.outlook.com [104.47.74.42])
+        by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3t0f5e9b75-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 14 Sep 2023 01:03:20 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=BsgrFDVLe7cNdChDUtCQ9cL9fS7j8nhXd0iEHA38jTAqZqAOYG/TeYUWc5xWUq0Ei1Bm6WDQdMstIu5CM60ehHXzy5zSO8WK76YEVOOFhYdJmFXcNTz7mWGdy8LyQKtehQ2B0VZrhxSlf9koKZwbPe7FE7DPkgLM6frVxR05w3VuSjEUOhIKdAFYTRwNxZJ9/YMOkErPvWrEnixwZHWRp5q8FbDCVNVjdHaVAVbTxVByd8mmC0flQj3C9qDmZp0FuMNWw+ZOuRiyvIMeIJGYtOlQN8TeJMOQQLYpRR64MInL973f5p30xQDZ5K73jjcjoV3z2SK9g9o7/CknjWkVrw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bUBpr/41z2nneCaY5mrf2Ws2Tmr2pjPFvw0jP1+I/XI=;
+ b=Axj/UtC/IgphE42Hv25Wwx6XDuiwJ24Ye48+S7P4rFBkr059FAUvFA9aQZ/125fx89f3g2svtjjxYG+D9n11xQ63DuWWDRu+7AM6rFrty5J2TBxiSWzcmSwYmOlmhzW8eqpBvtFofSn0VSaUkUNzGWm4lngB1CPZ5Ku9Z5n78qkSFA8cCWLsNF9ChDalNbhO+jW6X9UpjRN8v7HoIRjEK7N5r/w7mrt3bLwQVDqTXXq16PQqjtydGjj9gx113N2geUrzazZpP6jVdhdOjXtnJotLc0Yu1uppFg4A61q3WxGlHC3cIIbAh0wfolczkSMNKrgTRGTBtAaX4SlUURbriw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bUBpr/41z2nneCaY5mrf2Ws2Tmr2pjPFvw0jP1+I/XI=;
+ b=FW+XJvul/dF1guf5d8+Mp/ipzGLMXfdnrlJijnkfowSmygdAMGOX8T3pkx/2DH68jpoNfHDc7ARqMSmc5F1phS7z/FVrdruPQ4YYfn7Qv94N/bs0SO8EkCaZf3rjFoW4DnnsT+G8fritaEjl3SAh3YbASTpRdF0QlkUGZuwRPas=
+Received: from PH8PR10MB6597.namprd10.prod.outlook.com (2603:10b6:510:226::20)
+ by DS7PR10MB4975.namprd10.prod.outlook.com (2603:10b6:5:3b1::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.20; Thu, 14 Sep
+ 2023 01:03:19 +0000
+Received: from PH8PR10MB6597.namprd10.prod.outlook.com
+ ([fe80::35e3:7e4c:72b2:cf74]) by PH8PR10MB6597.namprd10.prod.outlook.com
+ ([fe80::35e3:7e4c:72b2:cf74%7]) with mapi id 15.20.6768.029; Thu, 14 Sep 2023
+ 01:03:19 +0000
+From:   Stephen Brennan <stephen.s.brennan@oracle.com>
+To:     qemu-devel@nongnu.org
+Cc:     linux-debuggers@vger.kernel.org, stephen.s.brennan@oracle.com,
+        =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>,
+        Omar Sandoval <osandov@osandov.com>,
+        Thomas Huth <thuth@redhat.com>,
+        =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH v2 qemu 0/3] Allow dump-guest-memory to output standard kdump format
+Date:   Wed, 13 Sep 2023 18:03:12 -0700
+Message-Id: <20230914010315.945705-1-stephen.s.brennan@oracle.com>
+X-Mailer: git-send-email 2.39.3
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SN6PR08CA0029.namprd08.prod.outlook.com
+ (2603:10b6:805:66::42) To PH8PR10MB6597.namprd10.prod.outlook.com
+ (2603:10b6:510:226::20)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-ZohoMailClient: External
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR10MB6597:EE_|DS7PR10MB4975:EE_
+X-MS-Office365-Filtering-Correlation-Id: c844ec4c-5719-4a08-94bb-08dbb4be6240
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 3v7N1zE2o1BXsII0HSwJvJW3mjcww5xdKZyi2K8vmR/H+Tu+Xl4Dymreo7gBzylYWU6FoxiHn5uAeOce9zl4G/+ayOF6waUHHvWM4UiMz6QUiFV1+jSuQkDY0gpNHl+CWJuuD/KQEhpeV+gOrUEAmiX2iviWIbE4yCn1goa/DvcJrZEs6+M3a5E2Qq5MWWKhomTrfqoAAgKEw3vHH3J0mfFeei9Iovn2tBjoAF1o9Wcif5mNGwNfT/l+0WZSX+vRGV6ZFXhhLn/g3kDUF/hp9yZRjwyc9hE9mjzkNQKp3a0JGF0eu+hwU/eyEZWq7dKUNqTtfKD36WZXfVhAGjQU+2Wy17rqI1jnGmHItHtWzfD72yFS1CTu+cS8Ei7a95UL2SeSy9yQIXSZOWA469iROHGE6alAu/9KS/x6fHRvKewqDpK4AzGviquErBGP5yBLH5YuPq/0EDdbonMt67ueqYZ/0rrn2RU/notsWxyj3bAUbJ9t/NSrjWEgDyLmiZRWWQnIybTnWzyrfJIPE6xBFLpxFaJLzWDZk//JDnQ5vQ8lET3ZK/h5wyvAgviAGpPIcZjTnms7dZBPt+J52ttPAw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR10MB6597.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(396003)(136003)(346002)(376002)(39860400002)(451199024)(1800799009)(186009)(38100700002)(5660300002)(36756003)(86362001)(103116003)(83380400001)(66946007)(1076003)(66476007)(478600001)(966005)(66556008)(6506007)(6666004)(6486002)(6916009)(316002)(41300700001)(8676002)(8936002)(4326008)(54906003)(6512007)(2616005)(2906002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?DGPrUcVjasueLw92CtupsBAU3xv/mjU8VNQpn0frf2yISPZ1W0dgJklasQTX?=
+ =?us-ascii?Q?ilAt9hhScbdIZyiPyNqW/9vqbtcym3+W9WO/Zlcq5C6Kr7NEoTjGstRb1YP7?=
+ =?us-ascii?Q?7UaSySo+6bnZsrLgWtJaPUDmJ1nkoIxFhYyDXqz0ACV7x5p/xi84wrR5K+v6?=
+ =?us-ascii?Q?fHgLlxhzDeUKs2hPBKugtXwE1X2KO+B5Wf5saT9oUDj/rnTq7t2l6WrTNXsT?=
+ =?us-ascii?Q?bTlTla/PJMsp+oApj7kcumV7Zuslr/70i2pyfEb5HP+kirre3dsc/iVZNGRz?=
+ =?us-ascii?Q?f8k5w9k7aPSzypgTwNhc2FK18U/c6OqywjWIVKhkBVapuWvpIbKuCdj4qvDU?=
+ =?us-ascii?Q?moNr1LGxpBS/l02K+vC+SQ+Zpmc38s5aX1hXrFQtHCRotKPC2fzspyBB02zl?=
+ =?us-ascii?Q?kUYZMEHXppMxmaAzz69EvqSO9GJJ4dkbniSNU4wAASZzPDtemVqd+bH0T6dL?=
+ =?us-ascii?Q?nBta6V2clDPHTPxzUlUGDH8I+XbTEdK4CL8D6M74fIrPWm2LWvy7lNwTEOj7?=
+ =?us-ascii?Q?HAcjZFE90kHr8Fl0L0AAHR03VwWkahp6iBIjzcI0Pacw/Tex8pGC3We/Uzp0?=
+ =?us-ascii?Q?UkFGuYPz/OfenrL51rTE5w56KGxM0JTxFCQgq6A/X07XRfjAiBTCOqhQCkEp?=
+ =?us-ascii?Q?IeH8/d40wJ6SxmROopF/Y0zZxLQr8ZUZ1D+MMbni3GKuXJ3uRKEiNLC01/ZO?=
+ =?us-ascii?Q?OQyKonItbBxa1I+7PbVo0MOO18A97tSoxwlpVG93gkT6ErRCDnGlR4rlj9K7?=
+ =?us-ascii?Q?nMSiuyBKrDFM1FN2zPKal+A82JyWcvK5kaP7w1/H4Ma2PTmo/2QDuq3hDMDX?=
+ =?us-ascii?Q?9bRQtXLt07rL3PZdsGB69nnl/WyEJiTtDx11/i1MWQdpWZWUpnkUIdq4EHtO?=
+ =?us-ascii?Q?F7z66fWIzzm8W0hMu9BNCTydBZ4Zh2xg30023smSQm7e1h6of8bD/AgHNx+T?=
+ =?us-ascii?Q?vaoGZhxYojmjaR6lwXeeDImaYjI53Z0YJpMKU7iIU3jAZlS0ymsy0tw99OXT?=
+ =?us-ascii?Q?VSCQY+VtpzcZQh1zTHNWTzdQ7zfLts7QWBhPy3vqjetJN/Xsdvz6lpCoCLIJ?=
+ =?us-ascii?Q?PSbz1UqTmKvpRA3vOkXM37jMfQ5Jq2gfl0qe0i3xISZtYcDZVpIuK60MLTrt?=
+ =?us-ascii?Q?qzu1w6W1+QKcBr64BiH+JvNubHzXJ4kmegHT4brUUvG9zxNtVPJ+6OeVy77E?=
+ =?us-ascii?Q?psphDOe0FGV9SvYhvwaGPqv1O7CeccC6Ro8uwwrErqxR7ZZ77yoQBpX/HeuE?=
+ =?us-ascii?Q?aBqQ3wE4/potLtAsNPbyolDbFceSOKm/jhrDOr+rcrcd1x26EO+j3lw0sGHl?=
+ =?us-ascii?Q?a8q9UsE0dAtEjR51NOzhJvGd7H8XBVdgIHf6HNH69VluvR0/iQEsmOgX+uCQ?=
+ =?us-ascii?Q?MXDj0QlCQ1Ot1Fp9W+d4WsVFV0s0w1Cxg0U2oNp0Z1U/ZCnVp+goEMcgVScd?=
+ =?us-ascii?Q?iVjFMrMc9guzEGhTYZf/SrNjEbD1wXJM6cSR7cJ+uz32nQxzzJqPbFTTn22Y?=
+ =?us-ascii?Q?QNVCSCsYyG1vpg64bAkEhUB72b9q4+HC6tSbR38ncux77X6HFZANNdNz7pZe?=
+ =?us-ascii?Q?bLHdPyg9u8LT0LyJIFBQsOp1/eJ2f6fGsHAmKUbsHxScxdp7YSwHKZTbl8yy?=
+ =?us-ascii?Q?cgwEfZi3cq7U5KbQAto8mIWeQYOBEOwNf0QlFfE0tLNC?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: fWzJ6e6EYi5YrMbaJ2SjOsFDN7WN/37SRVYsaswmCKKWlp6VN/thhluNEfHqw/fnIOzceKuQhhsmeg3Grtg8gCyrlew+VU5nCH6IDciCgl/1FwE/shSH3wY6ygRugPQe03mHlU6Q463RiBl6QdGs0IRj+shO+DyYMHhVfTSOhtqRoVqc/Ce0QxCHhcyh2QfVDEVngTrGvelL2GcZOLtEsZvTUDD8zXi641BdceLah44kgr4m0LE9mEKDzN1arMrqvFfUV20YndNr3IdJto6FaOdzpoBWWY98nNUpWshOYMLPjCJj2yh4GqOAhv5a6SUv+ggdkWMeGMP3T7oUS3V/5mpg1Wi6M2vrleY5vApHKtQJTpw9QLm1S5Gp2EiSByZ6AB8e7+uihKv10g1Ac7pCYl4vKoY8a1qrYnnEU0Rdyb0MpRmb+DnBdjpvw/lbxrAZxpeBzhEZY2G2H0h29jX67fICl0zho5wkuX3+O7B7y98iNybhK7V47jsqad5NUvfErxWZNynOcPDg9+VlvIKeVHf6mbWX4kYAFZlGjvAe6xAdubzrUYjfxHsdbn97FFpYOpBbqm8q4bpZE68vyuyfzxXd1m4a7dl3j2Vh59K1qJNadUwqooH9RcaRGcARKV/daEk8MM8GGw0GvyjvPVzWaAG6/Ua/CJ3vllX4Kh2fKPPB52Jk4O9bzOVkP8tQ+oyNxuLkTGwBTFPg1eaBd4lFkqXSkNPwUotHeQlbs9ZGHGtTkupEBm2oqQ8pNfxVZd7+PXtL7G7oouN9x65pXA6KRRU5ecMKcyXrEZumVWBE8xLJS2HnTpqgpjJP3Z5SlYsXi34TQqTI7txbOX7b3Ax36Cip5DX6Zk3kFTdfKil8NrtAceHrxxcGmtnsGW3qZ1kv
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c844ec4c-5719-4a08-94bb-08dbb4be6240
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR10MB6597.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2023 01:03:18.9655
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: aZrNYocEtnPMIFNH37UcFjHNXU4ZBzyyJysEBZSqIRxr/4DtYCSF8lKATgbA+4yCqDIE//05YgTfGu9tY3nrAFWm+Q+d0zoVBPPh9cBIIU4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR10MB4975
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-13_19,2023-09-13_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0 bulkscore=0
+ adultscore=0 phishscore=0 spamscore=0 mlxlogscore=999 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
+ definitions=main-2309140007
+X-Proofpoint-GUID: SCsqtnNvB1Acxb1sISIYklpeAxd15BFw
+X-Proofpoint-ORIG-GUID: SCsqtnNvB1Acxb1sISIYklpeAxd15BFw
 Precedence: bulk
 List-ID: <linux-debuggers.vger.kernel.org>
 X-Mailing-List: linux-debuggers@vger.kernel.org
 
-Marc-Andr=C3=A9 Lureau <marcandre.lureau@gmail.com> writes:
+Hello all,
 
-> Hi
->
-> On Wed, Aug 23, 2023 at 2:03=E2=80=AFPM Marc-Andr=C3=A9 Lureau
-> <marcandre.lureau@gmail.com> wrote:
->>
->> Hi
->>
->> On Wed, Aug 23, 2023 at 4:31=E2=80=AFAM Stephen Brennan
->> <stephen.s.brennan@oracle.com> wrote:
->> >
->> > Stephen Brennan <stephen.s.brennan@oracle.com> writes:
->> > > Marc-Andr=C3=A9 Lureau <marcandre.lureau@gmail.com> writes:
->> > >> I am a bit reluctant to change the dump format by default. But sinc=
-e the
->> > >> flatten format is more "complicated" than the "normal" format, perh=
-aps we
->> > >> can assume all users will handle it.
->> > >>
->> > >> The change is probably late for 8.1 though..
->> > >
->> > > Thank you for your review and testing!
->> > >
->> > > I totally understand the concern about making the change by default.=
- I
->> > > do believe that nobody should notice too much because the normal for=
-mat
->> > > should be easier to work with, and more broadly compatible. I don't =
-know
->> > > of any tool which deals with the flattened format that can't handle =
-the
->> > > normal format, except for "makedumpfile -R" itself.
->> > >
->> > > If it's a blocker, I can go ahead and add a new flag to the command =
-to
->> > > enable the behavior. However there are a few good justifications not=
- to
->> > > add a new flag. I think it's going to be difficult to explain the
->> > > difference between the two formats in documentation, as the
->> > > implementation of the formats is a bit "into the weeds". The libvirt=
- API
->> > > also specifies each format separately (kdump-zlib, kdump-lzo,
->> > > kdump-snappy) and so adding several new options there would be
->> > > unfortunate for end-users as well.
->> > >
->> > > At the end of the day, it's your judgment call, and I'll implement it
->> > > how you prefer.
->> >
->> > I just wanted to check back on this to clarify the next step. Are you
->> > satisfied with this and waiting to apply it until the right time? Or
->> > would you prefer me to send a new version making this opt-in?
->> >
->>
->> Nobody seems to raise concerns. If it would be just me, I would change
->> it. But we should rather be safe, so let's make it this opt-in please.
->>
->>
->
-> Alex, Daniel, Thomas .. Do you have an opinion on changing the dump forma=
-t?
->
-> Stephen, do you have a new version of the patches to make it opt-in?
+This is the second version of my patch series about the kdump format,
+you can see the first version here [1].
 
-Thanks for the reminder, I did have a start on the patches, but they're
-not quite ready to share just yet. I'm learning about the QMP command
-JSON schemas, which I'll need to update. I ended up receiving a new work
-laptop which disrupted my work. I'll try to get a new patch series out
-during my Wednesday (US Pacific time) workday.
+The current output format for dump-guest-memory's kdump compressed
+format is actually the "makedumpfile flattened" format. It was done
+intentionally to allow the flexibility to write to non-seekable file
+descriptors, like pipes [2], without using temporary files. Currently
+libvirt uses this ability when VIR_DUMP_BYPASS_CACHE flag is set, to
+avoid the dump process using page cache. The standard kdump output
+format needs the page cache so that it can seek back and forth as part
+of writing the dump file.
 
-Thanks,
-Stephen
+So the default kdump dump format cannot be changed to the standard
+format. This patch series adds the ability to use the standard format,
+and adds a QMP / HMP argument to enable it.
+
+An open question for Daniel et al.:
+
+Would it be possible to make flattened the default only for libvirt? I
+totally agree that this would be a bad backward incompatible change
+there. But for QMP / HMP commands, I think using the standard, broadly
+compatible format as the default is important for user friendliness. If
+a user needs to know the difference between flavors of kdump formats
+like the flattened format, in order to set the correct option, then
+we've already lost.
+
+Changes from v1 to v2:
+- Keep the default as the flattened format
+- Add QMP / HMP arguments for "reassembled"
+
+[1]: https://lore.kernel.org/qemu-devel/20230717163855.7383-1-stephen.s.brennan@oracle.com/
+[2]: https://lore.kernel.org/qemu-devel/1390890126-17377-1-git-send-email-qiaonuohan@cn.fujitsu.com/
+-> see "changes from v4 to v5" in this patch
+
+Stephen Brennan (3):
+  dump: Pass DumpState to write_ functions
+  dump: Allow directly outputting reassembled kdumps
+  dump: Add qmp argument "reassembled"
+
+ dump/dump-hmp-cmds.c  |  8 +++-
+ dump/dump.c           | 86 ++++++++++++++++++++++++++++++-------------
+ hmp-commands.hx       |  7 +++-
+ include/sysemu/dump.h |  3 +-
+ qapi/dump.json        | 14 ++++++-
+ 5 files changed, 87 insertions(+), 31 deletions(-)
+
+-- 
+2.39.3
+

@@ -2,59 +2,59 @@ Return-Path: <linux-debuggers-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C1A4CD37B0
-	for <linux-debuggers@archiver.kernel.org>; Mon, 18 Sep 2023 11:15:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D4DBECD37B0
+	for <linux-debuggers@archiver.kernel.org>; Mon, 18 Sep 2023 11:17:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234440AbjIRLP1 (ORCPT
+        id S233284AbjIRLRG (ORCPT
         <rfc822;linux-debuggers@archiver.kernel.org>);
-        Mon, 18 Sep 2023 07:15:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43396 "EHLO
+        Mon, 18 Sep 2023 07:17:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241544AbjIRLOy (ORCPT
+        with ESMTP id S240032AbjIRLQf (ORCPT
         <rfc822;linux-debuggers@vger.kernel.org>);
-        Mon, 18 Sep 2023 07:14:54 -0400
-Received: from mail-oi1-x22a.google.com (mail-oi1-x22a.google.com [IPv6:2607:f8b0:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 802EAE6D
-        for <linux-debuggers@vger.kernel.org>; Mon, 18 Sep 2023 04:13:40 -0700 (PDT)
-Received: by mail-oi1-x22a.google.com with SMTP id 5614622812f47-3adba522a5dso1528251b6e.2
-        for <linux-debuggers@vger.kernel.org>; Mon, 18 Sep 2023 04:13:40 -0700 (PDT)
+        Mon, 18 Sep 2023 07:16:35 -0400
+Received: from mail-qt1-x82b.google.com (mail-qt1-x82b.google.com [IPv6:2607:f8b0:4864:20::82b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 282EC101
+        for <linux-debuggers@vger.kernel.org>; Mon, 18 Sep 2023 04:16:08 -0700 (PDT)
+Received: by mail-qt1-x82b.google.com with SMTP id d75a77b69052e-4135f3d1213so25780521cf.1
+        for <linux-debuggers@vger.kernel.org>; Mon, 18 Sep 2023 04:16:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695035620; x=1695640420; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1695035767; x=1695640567; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Muytw7Xb3bSzzBX7EybLQFIvJbCJQTp+2CyV7XtpksY=;
-        b=Qi+OgpLTyUcX4ldqxFTtyWg2llNVRa/u7yROIEL91Gp4ZB5EWep1PzRZ5hoXcNb5/5
-         NHGX1B0973gwPQqyUsAuG2z9ZB9d3O4/xnfGO45zI1KoxwZH26NiKBJWP//ALG5FwYIp
-         GMGhXz8bkctEPDW7payrYGxfp+FAah/B+nU/TaSXoWl5sFoRoEngjJ3wynBbhYAjQm33
-         /Ekwy7U45ABX3QOiBTnJPWsjX4BD++Lnfye7gC+t1WC+dZkJRQ31FFqkrP6ME0+KOv2G
-         kVpqOpAxThv3tXKs9NhKPqhOmTFZY3vtE0C4lRW5D+EHmzkYqXChbxQAnoFndliTBmum
-         X5UA==
+        bh=MUlZ0YcSMol8OYE5fUSjDOxC0F0uI+1cUnDhDBAua1U=;
+        b=hlDwbORfnCLovdW84n5OuTWMPBTJcoGpZwLzUe3gkC1xV+Q+ATSh7j5BpmV7QmAzr/
+         Lxafohbar2MpoIFfTIsYAMgDOpYSq3tbl6d9ERzn2tBeTIUug1Sketzxp9tpukLagwSV
+         d/ddVdtYn0f4cs+FbMdYZYHs++M8cOXrx5nxOsAeSTim2CyAM1vGU1As47j/Nk1vDczj
+         6xjZaWtryITZ9pR/j2+bTu8tsTWdLBzPMYUqSGIHepMwdRtUWpQhFVSeTfNfbocu73t0
+         AJfrRJNnPeUDqmGB+5i5dHwZvD5D9fA6oH0JTlWLAK8b0yHe/bAYqpkFkCk3iHTumoV0
+         l1Sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695035620; x=1695640420;
+        d=1e100.net; s=20230601; t=1695035767; x=1695640567;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Muytw7Xb3bSzzBX7EybLQFIvJbCJQTp+2CyV7XtpksY=;
-        b=k9K3pzZEKr9KJ7oVCpLJeyQeJ7yim4Lumb3r36Ta4lzh0Nzhs9NwTlKrKZuj/CQIl4
-         znCnL+7QlXDJDPhIrKM45QvYwqUX4lxB1pD7airEyNWMNFBDdOc2vnMgk+2Oy0u06S3a
-         r5yBjAIpCO3KbK2M7WMZVN5jW6wPfs1gfTns19mk4ur6BArFoPhTCZ9mbYN2n5+cf+X/
-         TWhkHx15GLqfIXqJmgowkex62qvCRPcZd8JiM7/ew18gxvUBtTsyGjCxvlNZG1bnt4uA
-         /6PZTi0oOpHIQqoV/K6alNTYln1AJhocJepMpx04IMDW1U8opnXgFz2RyGC3j0LRBXMb
-         lT9A==
-X-Gm-Message-State: AOJu0YzFc/hnKT1k6xNfnyzGYG80Yk74F48r44wHbumTfDvSctKjJfTA
-        qZcggyYssLqmjElqphqKwLOcFY9FRmaVEubdtpGYBZnZPcU=
-X-Google-Smtp-Source: AGHT+IFIi7FYpZ7QGaNe6e+jd8ZoMjoM0RUuOEuL6Emc4X3VThBzglUCDwHhDY+uB1Om6hu0o2UhBxxEgfs9oowIk8E=
-X-Received: by 2002:a05:6808:64c:b0:3a7:36f9:51aa with SMTP id
- z12-20020a056808064c00b003a736f951aamr8023601oih.17.1695035619688; Mon, 18
- Sep 2023 04:13:39 -0700 (PDT)
+        bh=MUlZ0YcSMol8OYE5fUSjDOxC0F0uI+1cUnDhDBAua1U=;
+        b=c0McHc/I+qnbVaTKkKwzDBC3EajOQ0d+AJlxeKUrXt0X8JGjNagZ/DKvI18CsRMgVA
+         kRATjUfS5mcFqTW8Gutv1XElZPfGw04Ko2Kba5HXvtD0B8Npzbfnn8Lf/VPQ690wGvPr
+         8xaKw3K0CpsLqnqO5ujBTClpEY+98luGhRtPkCfGvD+ze2SDoxu5Va9bh1GBYFV3n+hz
+         HlDSsbqM9x931GA1WtAJ9vaICSl5uu1tgRSnNufAFn5vng1IG2EzFKAIYttbfrX3EoY2
+         yCadbNH/JX3yzXPvAS/nK5MP7M+sVUw4e38ga+FHEdjrmGmLiTL+VADfty11iDKDpJW1
+         cMWw==
+X-Gm-Message-State: AOJu0YzuBZqrKE0Ee2YAkkGBEsv8fpCn1qDwmb6F+oAa8X0WT9c6Im3j
+        DDus51VqrlbIvCxL+U8zlErA4zurah3qQV2K2Zw=
+X-Google-Smtp-Source: AGHT+IEM9u0REq9MN60ViPYHi3AIusEPjm3JRFnrvrdTjzE9/rfN1Zi27GpFI0jNLJV2BM1Q50uGOBx8xYh7cQvkGuA=
+X-Received: by 2002:a05:622a:1a25:b0:403:b2fc:1e69 with SMTP id
+ f37-20020a05622a1a2500b00403b2fc1e69mr10023143qtb.12.1695035767155; Mon, 18
+ Sep 2023 04:16:07 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230914010315.945705-1-stephen.s.brennan@oracle.com> <20230914010315.945705-3-stephen.s.brennan@oracle.com>
-In-Reply-To: <20230914010315.945705-3-stephen.s.brennan@oracle.com>
+References: <20230914010315.945705-1-stephen.s.brennan@oracle.com> <20230914010315.945705-4-stephen.s.brennan@oracle.com>
+In-Reply-To: <20230914010315.945705-4-stephen.s.brennan@oracle.com>
 From:   =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date:   Mon, 18 Sep 2023 15:13:28 +0400
-Message-ID: <CAJ+F1CJK60Mu5DJTgPg1ytGaxQ3aoXiV9GXG61+rOOYDuk6Dmg@mail.gmail.com>
-Subject: Re: [PATCH v2 qemu 2/3] dump: Allow directly outputting reassembled kdumps
+Date:   Mon, 18 Sep 2023 15:15:55 +0400
+Message-ID: <CAJ+F1CJmBg_v3982=TdKTRQF2m88Cf-2Jfj1JcCrtR3OdWqKVg@mail.gmail.com>
+Subject: Re: [PATCH v2 qemu 3/3] dump: Add qmp argument "reassembled"
 To:     Stephen Brennan <stephen.s.brennan@oracle.com>
 Cc:     qemu-devel@nongnu.org, linux-debuggers@vger.kernel.org,
         Omar Sandoval <osandov@osandov.com>,
@@ -68,151 +68,206 @@ X-Mailing-List: linux-debuggers@vger.kernel.org
 
 Hi
 
-On Thu, Sep 14, 2023 at 5:04=E2=80=AFAM Stephen Brennan
+On Thu, Sep 14, 2023 at 5:03=E2=80=AFAM Stephen Brennan
 <stephen.s.brennan@oracle.com> wrote:
 >
-> The flattened format (currently output by qemu) is used by makedumpfile
-> only when it is outputting a vmcore to a file which is not seekable. The
-> flattened format functions essentially as a set of instructions of the
-> form "seek to the given offset, then write the given bytes out".
->
-> The flattened format can be reconstructed using makedumpfile -R, or
-> makedumpfile-R.pl, but it is a slow process because it requires copying
-> the entire vmcore. The flattened format can also be directly read by
-> crash, but still, it requires a lengthy reassembly phase.
->
-> To sum up, the flattened format is not an ideal one: it should only be
-> used on files which are actually not seekable. This is the exact
-> strategy which makedumpfile uses, as seen in the implementation of
-> "write_buffer()" in makedumpfile [1]. However, Qemu has always used the
-> flattened format. For compatibility it is best not to change the default
-> output format without warning. So, add a flag to DumpState which changes
-> the output to use the normal (i.e. reassembled) format. This flag will
-> be added to the QMP commands in the next change.
->
-> [1]: https://github.com/makedumpfile/makedumpfile/blob/f23bb943568188a274=
-6dbf9b6692668f5a2ac3b6/makedumpfile.c#L5008-L5040
+> This can be used from QMP command line as "-R" to mirror the
+> corresponding flag for makedumpfile. This enables the kdump_reassembled
+> flag introduced in the previous patch.
 >
 > Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
 > ---
->  dump/dump.c           | 38 +++++++++++++++++++++++++++++++-------
->  include/sysemu/dump.h |  1 +
->  2 files changed, 32 insertions(+), 7 deletions(-)
+>  dump/dump-hmp-cmds.c |  8 +++++++-
+>  dump/dump.c          | 12 +++++++++++-
+>  hmp-commands.hx      |  7 +++++--
+>  qapi/dump.json       | 14 +++++++++++++-
+>  4 files changed, 36 insertions(+), 5 deletions(-)
 >
+> diff --git a/dump/dump-hmp-cmds.c b/dump/dump-hmp-cmds.c
+> index b038785fee..1d882e4bd8 100644
+> --- a/dump/dump-hmp-cmds.c
+> +++ b/dump/dump-hmp-cmds.c
+> @@ -24,9 +24,11 @@ void hmp_dump_guest_memory(Monitor *mon, const QDict *=
+qdict)
+>      bool has_begin =3D qdict_haskey(qdict, "begin");
+>      bool has_length =3D qdict_haskey(qdict, "length");
+>      bool has_detach =3D qdict_haskey(qdict, "detach");
+> +    bool has_reassembled =3D qdict_haskey(qdict, "reassembled");
+>      int64_t begin =3D 0;
+>      int64_t length =3D 0;
+>      bool detach =3D false;
+> +    bool reassembled =3D false;
+>      enum DumpGuestMemoryFormat dump_format =3D DUMP_GUEST_MEMORY_FORMAT_=
+ELF;
+>      char *prot;
+>
+> @@ -61,11 +63,15 @@ void hmp_dump_guest_memory(Monitor *mon, const QDict =
+*qdict)
+>      if (has_detach) {
+>          detach =3D qdict_get_bool(qdict, "detach");
+>      }
+> +    if (has_reassembled) {
+> +        reassembled =3D qdict_get_bool(qdict, "reassembled");
+> +    }
+>
+>      prot =3D g_strconcat("file:", file, NULL);
+>
+>      qmp_dump_guest_memory(paging, prot, true, detach, has_begin, begin,
+> -                          has_length, length, true, dump_format, &err);
+> +                          has_length, length, true, has_reassembled,
+> +                          reassembled, dump_format, &err);
+>      hmp_handle_error(mon, err);
+>      g_free(prot);
+>  }
 > diff --git a/dump/dump.c b/dump/dump.c
-> index 74071a1565..fb9040cfbc 100644
+> index fb9040cfbc..42d4015fb3 100644
 > --- a/dump/dump.c
 > +++ b/dump/dump.c
-> @@ -814,6 +814,16 @@ static int write_start_flat_header(DumpState *s)
->      MakedumpfileHeader *mh;
->      int ret =3D 0;
->
-> +    /* The user can request we not use the flattened format, but
-> +     * if the file is not seekable, we need to fall back to flattened. *=
-/
-> +    if (s->kdump_reassembled) {
-> +        if (lseek(s->fd, 0, SEEK_CUR) =3D=3D (loff_t) -1) {
-> +            s->kdump_reassembled =3D false;
-
-Since it was explicitly asked by the user, we better return an error
-instead of falling back silently on flattened.
-
-
-> +        } else {
-> +            return 0;
-> +        }
-> +    }
-> +
->      QEMU_BUILD_BUG_ON(sizeof *mh > MAX_SIZE_MDF_HEADER);
->      mh =3D g_malloc0(MAX_SIZE_MDF_HEADER);
->
-> @@ -837,6 +847,10 @@ static int write_end_flat_header(DumpState *s)
->  {
->      MakedumpfileDataHeader mdh;
->
-> +    if (s->kdump_reassembled) {
-> +        return 0;
-> +    }
-> +
->      mdh.offset =3D END_FLAG_FLAT_HEADER;
->      mdh.buf_size =3D END_FLAG_FLAT_HEADER;
->
-> @@ -853,13 +867,21 @@ static int write_buffer(DumpState *s, off_t offset,=
- const void *buf, size_t size
->  {
->      size_t written_size;
->      MakedumpfileDataHeader mdh;
-> +    loff_t seek_loc;
->
-> -    mdh.offset =3D cpu_to_be64(offset);
-> -    mdh.buf_size =3D cpu_to_be64(size);
-> +    if (s->kdump_reassembled) {
-> +        seek_loc =3D lseek(s->fd, offset, SEEK_SET);
-> +        if (seek_loc =3D=3D (off_t) -1) {
-> +            return -1;
-> +        }
-> +    } else {
-> +        mdh.offset =3D cpu_to_be64(offset);
-> +        mdh.buf_size =3D cpu_to_be64(size);
->
-> -    written_size =3D qemu_write_full(s->fd, &mdh, sizeof(mdh));
-> -    if (written_size !=3D sizeof(mdh)) {
-> -        return -1;
-> +        written_size =3D qemu_write_full(s->fd, &mdh, sizeof(mdh));
-> +        if (written_size !=3D sizeof(mdh)) {
-> +            return -1;
-> +        }
->      }
->
->      written_size =3D qemu_write_full(s->fd, buf, size);
-> @@ -1775,7 +1797,8 @@ static void vmcoreinfo_update_phys_base(DumpState *=
-s)
->
->  static void dump_init(DumpState *s, int fd, bool has_format,
->                        DumpGuestMemoryFormat format, bool paging, bool ha=
-s_filter,
-> -                      int64_t begin, int64_t length, Error **errp)
-> +                      int64_t begin, int64_t length, bool kdump_reassemb=
-led,
-> +                      Error **errp)
+> @@ -2089,6 +2089,7 @@ void qmp_dump_guest_memory(bool paging, const char =
+*file,
+>                             bool has_detach, bool detach,
+>                             bool has_begin, int64_t begin, bool has_lengt=
+h,
+>                             int64_t length, bool has_format,
+> +                           bool has_reassembled, bool reassembled,
+>                             DumpGuestMemoryFormat format, Error **errp)
 >  {
 >      ERRP_GUARD();
->      VMCoreInfoState *vmci =3D vmcoreinfo_find();
-> @@ -1786,6 +1809,7 @@ static void dump_init(DumpState *s, int fd, bool ha=
-s_format,
->      s->has_format =3D has_format;
->      s->format =3D format;
->      s->written_size =3D 0;
-> +    s->kdump_reassembled =3D kdump_reassembled;
+> @@ -2119,6 +2120,12 @@ void qmp_dump_guest_memory(bool paging, const char=
+ *file,
+>                           "filter");
+>          return;
+>      }
+> +    if (has_reassembled && format !=3D DUMP_GUEST_MEMORY_FORMAT_KDUMP_ZL=
+IB
+> +                        && format !=3D DUMP_GUEST_MEMORY_FORMAT_KDUMP_LZ=
+O
+> +                        && format !=3D DUMP_GUEST_MEMORY_FORMAT_KDUMP_SN=
+APPY) {
+> +        error_setg(errp, "'reassembled' only applies to kdump format");
+> +        return;
+> +    }
+>      if (has_begin && !has_length) {
+>          error_setg(errp, QERR_MISSING_PARAMETER, "length");
+>          return;
+> @@ -2130,6 +2137,9 @@ void qmp_dump_guest_memory(bool paging, const char =
+*file,
+>      if (has_detach) {
+>          detach_p =3D detach;
+>      }
+> +    if (!has_reassembled) {
+> +        reassembled =3D false;
+> +    }
 >
->      /* kdump-compressed is conflict with paging and filter */
->      if (has_format && format !=3D DUMP_GUEST_MEMORY_FORMAT_ELF) {
-> @@ -2168,7 +2192,7 @@ void qmp_dump_guest_memory(bool paging, const char =
+>      /* check whether lzo/snappy is supported */
+>  #ifndef CONFIG_LZO
+> @@ -2192,7 +2202,7 @@ void qmp_dump_guest_memory(bool paging, const char =
 *file,
 >      dump_state_prepare(s);
 >
 >      dump_init(s, fd, has_format, format, paging, has_begin,
-> -              begin, length, errp);
-> +              begin, length, false, errp);
+> -              begin, length, false, errp);
+> +              begin, length, reassembled, errp);
 >      if (*errp) {
 >          qatomic_set(&s->status, DUMP_STATUS_FAILED);
 >          return;
-> diff --git a/include/sysemu/dump.h b/include/sysemu/dump.h
-> index e27af8fb34..71ec492fce 100644
-> --- a/include/sysemu/dump.h
-> +++ b/include/sysemu/dump.h
-> @@ -157,6 +157,7 @@ typedef struct DumpState {
->      MemoryMappingList list;
->      bool resume;
->      bool detached;
-> +    bool kdump_reassembled;
->      hwaddr memory_offset;
->      int fd;
+> diff --git a/hmp-commands.hx b/hmp-commands.hx
+> index 2cbd0f77a0..c3062da470 100644
+> --- a/hmp-commands.hx
+> +++ b/hmp-commands.hx
+> @@ -1085,14 +1085,15 @@ ERST
 >
+>      {
+>          .name       =3D "dump-guest-memory",
+> -        .args_type  =3D "paging:-p,detach:-d,windmp:-w,zlib:-z,lzo:-l,sn=
+appy:-s,filename:F,begin:l?,length:l?",
+> -        .params     =3D "[-p] [-d] [-z|-l|-s|-w] filename [begin length]=
+",
+> +        .args_type  =3D "paging:-p,detach:-d,windmp:-w,zlib:-z,lzo:-l,sn=
+appy:-s,reassembled:-R,filename:F,begin:l?,length:l?",
+> +        .params     =3D "[-p] [-d] [-z|-l|-s|-w] [-R] filename [begin le=
+ngth]",
+>          .help       =3D "dump guest memory into file 'filename'.\n\t\t\t=
+"
+>                        "-p: do paging to get guest's memory mapping.\n\t\=
+t\t"
+>                        "-d: return immediately (do not wait for completio=
+n).\n\t\t\t"
+>                        "-z: dump in kdump-compressed format, with zlib co=
+mpression.\n\t\t\t"
+>                        "-l: dump in kdump-compressed format, with lzo com=
+pression.\n\t\t\t"
+>                        "-s: dump in kdump-compressed format, with snappy =
+compression.\n\t\t\t"
+> +                      "-R: when using kdump (-z, -l, -s), try to avoid t=
+he flattened format.\n\t\t\t"
+>                        "-w: dump in Windows crashdump format (can be used=
+ instead of ELF-dump converting),\n\t\t\t"
+>                        "    for Windows x86 and x64 guests with vmcoreinf=
+o driver only.\n\t\t\t"
+>                        "begin: the starting physical address.\n\t\t\t"
+> @@ -1115,6 +1116,8 @@ SRST
+>      dump in kdump-compressed format, with lzo compression.
+>    ``-s``
+>      dump in kdump-compressed format, with snappy compression.
+> +  ``-R``
+> +    when using kdump (-z, -l, -s), try to avoid the flattened format.
+>    ``-w``
+>      dump in Windows crashdump format (can be used instead of ELF-dump co=
+nverting),
+>      for Windows x64 guests with vmcoreinfo driver only
+> diff --git a/qapi/dump.json b/qapi/dump.json
+> index 4ae1f722a9..9cc7c3ea93 100644
+> --- a/qapi/dump.json
+> +++ b/qapi/dump.json
+> @@ -69,6 +69,18 @@
+>  #     to dump all guest's memory, please specify the start @begin and
+>  #     @length
+>  #
+> +# @reassembled: if false (the default), the kdump output formats will us=
+e the
+> +#     "makedumpfile flattened" variant of the format, which is less broa=
+dly
+> +#     compatible with analysis tools. The flattened dump can be reassemb=
+led
+> +#     after the fact using the command "makedumpfile -R". If true, Qemu
+
+QEMU
+
+> +#     attempts to generate the standard kdump format. This requires a
+> +#     seekable file as output -- if the output file is not seekable, the=
+n
+> +#     the flattened format is still generated. The standard format is mo=
+re
+
+Will have to be adjusted to return an error if we drop the fallback behavio=
+ur.
+
+> +#     broadly compatible with debugging tools, but generating it require=
+s a
+> +#     seekable output file descriptor, and could use more system memory =
+due
+> +#     to page cache utilization. This should be left unspecified for non=
+-kdump
+> +#     output formats.
+> +#
+>  # @format: if specified, the format of guest memory dump.  But non-elf
+>  #     format is conflict with paging and filter, ie.  @paging, @begin
+>  #     and @length is not allowed to be specified with non-elf @format
+> @@ -89,7 +101,7 @@
+>  { 'command': 'dump-guest-memory',
+>    'data': { 'paging': 'bool', 'protocol': 'str', '*detach': 'bool',
+>              '*begin': 'int', '*length': 'int',
+> -            '*format': 'DumpGuestMemoryFormat'} }
+> +            '*reassembled': 'bool', '*format': 'DumpGuestMemoryFormat'} =
+}
+>
+>  ##
+>  # @DumpStatus:
 > --
 > 2.39.3
 >
 
 
---
+--=20
 Marc-Andr=C3=A9 Lureau

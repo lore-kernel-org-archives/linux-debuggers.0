@@ -2,67 +2,67 @@ Return-Path: <linux-debuggers-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8E6ABC04ABA
-	for <linux-debuggers@archiver.kernel.org>; Wed, 20 Sep 2023 17:35:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CC603C04ABA
+	for <linux-debuggers@archiver.kernel.org>; Wed, 20 Sep 2023 17:43:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229541AbjITRf4 (ORCPT
+        id S229523AbjITRnj (ORCPT
         <rfc822;linux-debuggers@archiver.kernel.org>);
-        Wed, 20 Sep 2023 13:35:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60202 "EHLO
+        Wed, 20 Sep 2023 13:43:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229546AbjITRfz (ORCPT
+        with ESMTP id S229445AbjITRni (ORCPT
         <rfc822;linux-debuggers@vger.kernel.org>);
-        Wed, 20 Sep 2023 13:35:55 -0400
+        Wed, 20 Sep 2023 13:43:38 -0400
 Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6274B4
-        for <linux-debuggers@vger.kernel.org>; Wed, 20 Sep 2023 10:35:49 -0700 (PDT)
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38KGiM3m002354;
-        Wed, 20 Sep 2023 17:35:35 GMT
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4B41C6
+        for <linux-debuggers@vger.kernel.org>; Wed, 20 Sep 2023 10:43:32 -0700 (PDT)
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38KGiJXw030528;
+        Wed, 20 Sep 2023 17:43:23 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
  subject : in-reply-to : references : date : message-id : content-type :
  mime-version; s=corp-2023-03-30;
- bh=cDl02ApOyaNmrnM1oneJMGYsVmNvGQpPN+vH7l3kd1M=;
- b=LiRsDXC9xXpoLiRYl+W679CPcqizjvMKf3VRoR2cRJXYBD+IzoabJBuPiD1BaraDOgoD
- dJzgN8TOX7bptkDujfiwDx1ZYzjfs//RONt61ObLmdvQOUqdsHoHEpD2Yp435SBqNZhS
- fvEbzThL1r3VMIzp5WsFZXJxfOIqyUFTWxoCc58cFqXCL2WMGXz7JuVaMHtc+V02Lt3R
- aEbowewrJOR4Pd8bKBDbwhhvZVwPQ5ACfcQD7sDsNPof9OE565esdfuv+egr/ug4aR7K
- k4a7WMTKYxaRuYn1WzNuBLwlxxbVzAqIkU1U6EjS9xb8pVZhjQjclR1D56dpCdoiw3IQ 7w== 
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3t5353010c-1
+ bh=Mv/g2U9ex7f5ef2dpDnoX7wEOAk8grV7dQ9KuXQ81Fg=;
+ b=NOLhw66iqE36oJJUSHbfX66tZG01kl4DLm13yM6ahzvdJSmrBEDzFaTZspuHQs2x+LNg
+ WLrpODF8I0/xF5hdslBDat7QbwPmX/LyLPhFiMknDD6Zz2D4HZLjwOnkk0ZjnRUOxvby
+ OCfDlavysvRmpzD0ycmeRoEwHvheG1CCL0C8OUwmgBcTbdAKKUHDfEORXDtVr825n2BG
+ +LM6VuD1NYy7GfepuOdZdDqyNnJStP5z/Lf/RlAtQ54d03ZXkSHU9KM34/1emm7fOsX3
+ Euxji0WLHu7xDmWPWhf+wZdEPSA6dwLjd+JAAQcfL4Krde0KmywMC+22d9YdjjtAwa+6 sg== 
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3t53yu7y2h-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 20 Sep 2023 17:35:35 +0000
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-        by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 38KHKmE2027258;
-        Wed, 20 Sep 2023 17:35:34 GMT
-Received: from nam11-co1-obe.outbound.protection.outlook.com (mail-co1nam11lp2170.outbound.protection.outlook.com [104.47.56.170])
-        by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3t52t7nwpm-1
+        Wed, 20 Sep 2023 17:43:22 +0000
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+        by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 38KGZ6sI030918;
+        Wed, 20 Sep 2023 17:43:22 GMT
+Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2104.outbound.protection.outlook.com [104.47.55.104])
+        by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3t52t7e24r-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 20 Sep 2023 17:35:34 +0000
+        Wed, 20 Sep 2023 17:43:21 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UnZxED+DSN6b0eNye/g5qzoE9pu3e0fajNI1aZ7zt0ATxAhVZoiGB6JR3WhRNlzVFv3yBajezOqpcHrqGrvpp1kkSuHEhFExoB4pNMqiov5tNgpy9uTtFKnHMch5aNEdyQaIM6IsztJT9VrD7ZBOkxW+54EGCcP6scb9yQlU0s49B0JcTP657CdGFO66TdaYhkE0SYJwYSKOfBgYqqrTP8GM5cfU0AfsOwQDgXtHf14vkuuA5+rnAR7MCBQBPnHqH4pdyskmy//T39RFJs/dIIAm65egxJ8GzaMZi48s8QOkjPXxAOMs7/6g+W2PCVBs2/R4F7HDxBonZH78YmqyhA==
+ b=R0L99A7eum5wNig91Bd+8LH98wlBFFIRV/9+3VfnVLRa74YyopAS3RgYn0+AXl5/oyt2X3kf4JFRUzvcmhjPhmCCr2XLpl/FFihIESGy3Hu3+S2Xqvwkyd3ZFZckBp46wCrQnrRcqFOoHRraPZcUAIE4wmcDWB21rWOCM0yw+31TaQ2ku0n3IfeNFnEmcGUcY5GrY5C1S3asAoybyCBYiT1QhRZ74rXaEJoMjkR6fZEw7Sb2IRTyoSkuxsVPuYYRR8GUU7tPxyXd4UZFYsXiOsCB+T6kvkD0gpT1wiNudXl8hpSuvZOB/ury6DVcU5c2Fgl2DuB3jgZq7YEeKA/wfQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cDl02ApOyaNmrnM1oneJMGYsVmNvGQpPN+vH7l3kd1M=;
- b=UBVc9hivapG2/fEc9YTdOmipLF/j4TcWQpc6NyeJK/nhYn1XFViIm/+C96PgiXtRe8UuPR+FhFJfT/t6/Otc6Ke4zbhWnvuGCH5BQvsJveUVJqTJVSZcCsop6k1t308Lhk3sjJjxfqBs5N5S2MwFNoqb4DVHd0v7/vuOScqP+QgmNOAj0sC4n0QouPiIVZSJSFlXpA4Nf7mV4N5/BIV2Umn396FDUesh3KiYc+LdGhpd5ls6kLIRgC/I3PN2M6FfIn8AaBdjPvVKpmjLcN4RUtaZjpqHgNlsH2v24UFug17U7QogkP8mpOzOdrqnsJU3xejgPIZfiHcYAQEDMVfNrw==
+ bh=Mv/g2U9ex7f5ef2dpDnoX7wEOAk8grV7dQ9KuXQ81Fg=;
+ b=S7PdACfCwaZX/O9ayGfk1nzmjPpg6ZpnZI09wvTJ2jv+Hy6vZrSf1yoIufcqubjGxazIN9BwfrsPvwoNBX87DR6wzH+IAmwhOY9BvOdwhwRW/oijzb9kwhkFHqCa3GRGaaj8nwpzVkz4XWPmtY4iUHFMOpIG0ORM33O9BBrC3UW8ZjndZ4TYKMuaE3+mswKFeJTWG6NmS+UrMtFtQCkfPjUwSchJhnQloXoZJVKeDpiWWz7YUB5vGQ6DdeXTlj9bjmt60AnUo94scB+EBpf04K87Y6yeGkGIw4T48D2/6Gx0gOBUD6DREEM9IQm9gUsn1xI7aV+7wZ/MECgy2A0uUg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cDl02ApOyaNmrnM1oneJMGYsVmNvGQpPN+vH7l3kd1M=;
- b=WRTdNGyknR+/AKu9qAeYtDD5RgcZBie2uzooC+YMkJXGctOSrmKaRbZnwyhi4QOh2x3KZa/UF7d0720aVQBquBO5thnfhzZR0CGNsxVtSEeH+Bk1XdgRjqN1tXpJSeOngJWiBP36nkpgd/pTDDaq8XOTsEqITBjt4cbv2RrfJF8=
+ bh=Mv/g2U9ex7f5ef2dpDnoX7wEOAk8grV7dQ9KuXQ81Fg=;
+ b=hz8zcyGVMSRVMwsA2gvi4cRNnWEKO47vqwG/HQz/hYg0AB9gvSVH85trRTVQF16Ohe+kW3qp+40KEPskt+0hxPjqUbyfXlWh2UH4G37/9r77rEkIOswAV9xNrw9xiQB7q/H+CmEptCw4zAhrCgU07+dTFO5zDr+NlP1auITdZIU=
 Received: from PH8PR10MB6597.namprd10.prod.outlook.com (2603:10b6:510:226::20)
- by PH7PR10MB5855.namprd10.prod.outlook.com (2603:10b6:510:13f::16) with
+ by SA3PR10MB7000.namprd10.prod.outlook.com (2603:10b6:806:316::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.21; Wed, 20 Sep
- 2023 17:35:31 +0000
+ 2023 17:43:19 +0000
 Received: from PH8PR10MB6597.namprd10.prod.outlook.com
  ([fe80::35e3:7e4c:72b2:cf74]) by PH8PR10MB6597.namprd10.prod.outlook.com
  ([fe80::35e3:7e4c:72b2:cf74%7]) with mapi id 15.20.6792.026; Wed, 20 Sep 2023
- 17:35:31 +0000
+ 17:43:19 +0000
 From:   Stephen Brennan <stephen.s.brennan@oracle.com>
 To:     Jon Doron <arilou@gmail.com>
 Cc:     qemu-devel@nongnu.org, linux-debuggers@vger.kernel.org,
@@ -70,143 +70,154 @@ Cc:     qemu-devel@nongnu.org, linux-debuggers@vger.kernel.org,
         <marcandre.lureau@redhat.com>, Laszlo Ersek <lersek@redhat.com>
 Subject: Re: Concerns regarding e17bebd049 ("dump: Set correct vaddr for ELF
  dump")
-In-Reply-To: <ZQqj9tFS7cLMTkHv@jondnuc>
+In-Reply-To: <87edisycgu.fsf@oracle.com>
 References: <87h6nqxdth.fsf@oracle.com> <ZQqj9tFS7cLMTkHv@jondnuc>
-Date:   Wed, 20 Sep 2023 10:35:29 -0700
-Message-ID: <87edisycgu.fsf@oracle.com>
-Content-Type: text/plain
-X-ClientProxiedBy: PH0PR07CA0027.namprd07.prod.outlook.com
- (2603:10b6:510:5::32) To PH8PR10MB6597.namprd10.prod.outlook.com
+ <87edisycgu.fsf@oracle.com>
+Date:   Wed, 20 Sep 2023 10:43:16 -0700
+Message-ID: <87bkdwyc3v.fsf@oracle.com>
+Content-Type: multipart/mixed; boundary="=-=-="
+X-ClientProxiedBy: DS7PR03CA0266.namprd03.prod.outlook.com
+ (2603:10b6:5:3b3::31) To PH8PR10MB6597.namprd10.prod.outlook.com
  (2603:10b6:510:226::20)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR10MB6597:EE_|PH7PR10MB5855:EE_
-X-MS-Office365-Filtering-Correlation-Id: 885ef600-3946-414e-dccf-08dbb9fffcd0
+X-MS-TrafficTypeDiagnostic: PH8PR10MB6597:EE_|SA3PR10MB7000:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7cc7f0ef-cc64-4e15-686a-08dbba0113c2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: HxJErwdlEtT+0gZPH0MQarx5V2pOIq+Pb0bgktncFXPcI89hB47P1UWquFYEY35XfnvmmgHzmhAEV9pPPg7a2rt3om+dxWlLFj56o6Ee7a/Dpt4HWOPtZd7PLMaL3CPb895e9eDB54grqDNwQOqcnPjBFjLTpHwyRt04Tn6dgVPLmY/RwC5//PGIMuQCuUzA8YyCqCZnk6wheddLmgLRmKnwVZt4U8j1o4xSi4hxKuX+HFz80Bjp473TIvhsooQNsXtMn/CPwNf5AZCvF9Ltp1AbydF0WB7D6R5uNjWaBX/eZc/xMGWF77LcfNZ9iJVczAJJYtppqDny6CzVeTZnq2+cSoTRsQntHX4rQPvTjiYZuBcrY8d2rvpjf2b5DKamOUhQ1Kei9rd6JfcMLTO9mngHXxr5Btck4ps4AK3Lug+yAkJQIjdHk2rCH1pBThoSboerdeAlEWW+pzvy6lYVE0ILZ/Wmx0K96JseoQH7OAK6DhfnXQ1d5nBezCobkmCmlQk9nRQMoC9M3tQUBc/GZRRCcdoyI77k6rN0iUCxXS8090ty+rAyG9Y8FD+ElvU1HKV9KoLndB/l1R/1ywBXcIoaHCMSKr2VhB5uLqAc6II=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR10MB6597.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(39860400002)(346002)(366004)(396003)(136003)(186009)(451199024)(1800799009)(6486002)(6506007)(478600001)(6512007)(2616005)(2906002)(54906003)(66556008)(66476007)(316002)(66946007)(41300700001)(5660300002)(8936002)(4326008)(6916009)(38100700002)(8676002)(86362001)(36756003)(83380400001)(2004002);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: 2YPePqCdQOOcjoczdNwbmRdbe7EElzmj4VS6vAcATDu07C8k7WQLZ7h2cK8MQFIifciDuZ2fqtIPaWzQfT3q7q0u+HzMhMFlp7wjqYo2kUmFXpGqV254Q3XO2miD4k+wX0s2vLjfTTDOJCPtdW7hX7EU79V6mS+FkbEECCERIwS0/RJJOB/w1qYTHY/nz1XUTjY99xgj6KNu78h933MIJZFTBu94MZHXKtCOwyP1q9jh7MNggVMLJeBCVPNvipnSctmRcUjj3mS0Sh09TjNXjkch3yz8Nx6aI4IXv1sekf3rlDKyGn4DHYvpG+KucBLaSz1/2i/6Ia2QXQhRUvX5XsBm+njiqUAiBrAQElYC1LBhtNRc+6WpEqB80+/wNmIFWQXGYglq2Jxti78z4J6UAAoHAHYBZRp4gTd4Jm+DHcU1QAqISna9LTDUZ7rZ6KIrrs3skocueEMChJYH3++SC+BWbaemdvZZN3kqq5k/dkKlGV/OTbsaoC+5XRHrV23YPxjDSJNPwZF1nsieehwzwwg7cNkOzoFUmRXkeAqfOdvlMBBE9iWSB+syLp/VJERnitbMnl29yqVxMMxYro/cNDMQV8VCygMtUD8XUwzIXjg=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR10MB6597.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(376002)(396003)(366004)(346002)(39860400002)(186009)(451199024)(1800799009)(83380400001)(6506007)(6512007)(4326008)(5660300002)(36756003)(2906002)(54906003)(41300700001)(316002)(235185007)(8676002)(6916009)(8936002)(478600001)(6666004)(2616005)(6486002)(66946007)(38100700002)(86362001)(66476007)(66556008)(2004002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?CvctVYoL80NU8+pCgaHFwsmOJeUgqwO2d2Q88kWJIwiUvvUH//d6oE6sqYLY?=
- =?us-ascii?Q?44TPH7eBnxBNDsCxNYsMeEyr57ChZ1oonQQxy/DpYBPNOkDp9AgjJzZXs3yM?=
- =?us-ascii?Q?0ByE1i6jcC9TljNuho1YO+WevxmkAP3qrUIUyULw5vzZd80Ps5VkSia7CDVp?=
- =?us-ascii?Q?DQdYbtCVL6tBOXqseWVyaCruzFeh+8PN7kgtJ0DKTelLrkQCi5mpiABEg+7X?=
- =?us-ascii?Q?lwikKFyuMhZSkQg/W7u0EPtI6AYANfI9AqFpNn5TjyqDJ1nTmacQ+ui/CXPT?=
- =?us-ascii?Q?YqtKiWAvIWxl9ymIOErNhw0jmseGfo7SUAoZFwV62LjAXU/Xl5KWZApTjkR0?=
- =?us-ascii?Q?vEeD/YfjKfZDZp8YZ/nWMGMm3O50slh1EMxWxi3nmEBGqF6W1VX8LG221Nr5?=
- =?us-ascii?Q?W46iXfEs82da/zE1HjTwT6R6ZyXEcATRt/byAPS27tOCpv2HKneTTRQGHUcI?=
- =?us-ascii?Q?TA2BbCFw3nt4eu6IWF+k4JUHxru1am0EUQrAbwTkHc1bk0cUhNPBc9ZdaZbi?=
- =?us-ascii?Q?Jt9QoWocv8lR9mbn69Dh0CDgRVd1jUFF0mNfAT0byMahy+34nnb+vLjBy4xG?=
- =?us-ascii?Q?MRgyXoIL6HCwBWC8IiEwD9r3DId4S5EbLzVYVaPmxFwvS39yFm6e4MC7xOlA?=
- =?us-ascii?Q?wOkU8bOR7HyeC3Kb33JFExeJSQ6vdbp5srrq17wag8XDlGgZY+aTSnERMbvk?=
- =?us-ascii?Q?UqlczvTQOm3/ydTy8ma/uFakhE3xMKSyFItTIiYL7+25rCg/KHwQEH+TIhGD?=
- =?us-ascii?Q?/WuObkaD5SDj/dhTNPkktyrxBhxCLUVSWtKC5bkU52VXOAxAXfR3QJHzKU9Z?=
- =?us-ascii?Q?euhbDGny5KnU9vAp3MEtWx5v4Y5u6+vGf3WEW41GsfhzzU1wPtNvbpGy0Mad?=
- =?us-ascii?Q?SQSWVOr32XcNX+fVrQLIf8FPg2ZwZAv/tk+TuF3xvhKai9xbDn+nmhGfJIsC?=
- =?us-ascii?Q?ZZerf8WlbrxF+wKElmATM9tmNc+LU9LNa77LIFzV0bLU8V027fNXPl0xOHbV?=
- =?us-ascii?Q?+9He2qHoJJCa2cmMhX8GOM4z2OV12JSII0AzlYQL7JGFGw1EiAMDDb1DqN+z?=
- =?us-ascii?Q?bq/WvtoBiFKdbwqXvQg7vrkw3c0kfRzWDKqW0SwbuujRdzGeiWNV9r8z4PtE?=
- =?us-ascii?Q?t0Ha30PJfOxkwwK2WIfphCrdysB6TxNfTJbjv3BnkMmNd5O15d9Ea3QZx3ig?=
- =?us-ascii?Q?DDa/Xo5jJhlRXuV3EY3y3BAccZFICK8bCUUt96z2BqIup9snsGbU6FSZ7/ab?=
- =?us-ascii?Q?UlLOWvWN5FA30y+9IYD4QGx5fPu5SnMMkx4X/XUmreOz6gIYMm61esLj9SKd?=
- =?us-ascii?Q?L7kCpAwq+wucBYHwt5Z4asGulj5S0P74cJynYHsSID6zoVvMQnERhU6qCyGB?=
- =?us-ascii?Q?lFEJSPLX+YVlZof/JNgVfnolHCkhG/CfSscKT3ETbmfD0AYNNoWPW8V7FCFW?=
- =?us-ascii?Q?6XRsKzLaru5dpk7Thw2lPyGlenb2cPRjOTuM8BrVPxcdKin2n0IWH+j3Qv8w?=
- =?us-ascii?Q?Boa9DQjnhfQWVk0XA9JJeqJfiHa/yiS3cu2O8oEkDZ43lmBP/th4HpLHeDiR?=
- =?us-ascii?Q?5/4SIXQoQoapNDo07uv1zUe70mibKvTpYdq/ZQ848AISpHY8mW5yl2ZlHtAz?=
- =?us-ascii?Q?uSw/XoV3SZwh/P09+y7KzIAsUYkHBHL+pY/AxCOBJLR/?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?8AdU0nl9OmsXClPpJf+FT6sRsk3cH6T2HlxcEIeLLpYfoudPZEjTzkMwinAF?=
+ =?us-ascii?Q?bFyC5Fztq8PShx+YP4h4WfFScaujaeBK3Lih/HtDJVHFYUNafTSh/Nqd19GO?=
+ =?us-ascii?Q?xUAPPsyYdeJPuY3UhVBgnXEIyTEsxEY3y2ag1VHYTsEDu/24YpWQzzP4q8gZ?=
+ =?us-ascii?Q?tG/MwaUJ+OPkLsdZRvaZ4iotQG3qUGmU8B5diSBNqo9eoNF0w8sNLy596kC0?=
+ =?us-ascii?Q?Qsb2rlyIXtM06cgJY4CVwNT//7kCyIcjHh5OFQJorFydnpTltJZa+Dy9eGzp?=
+ =?us-ascii?Q?h9HSZGNEyyLMzLDO6u//bqXm/xO+1BHzP47Ejgv9p39vNZxbReboTwZK+QqY?=
+ =?us-ascii?Q?vojnJ3tBhpDGGLoug//wDJIX7iyaiHsT5XHaJKuW2oDb8i+wDAo0O9HLEo8p?=
+ =?us-ascii?Q?7KGL0G3T1JOM+Y2+9Q5LMSujJelOY1H75TtcC1ztzk9ibRLINy76F6bBvnME?=
+ =?us-ascii?Q?9VAWlDF0/GJ7Ogq/jZVWU8heAA70EsNqimwypTYQZLPhHseU3tzGQwCvoEVz?=
+ =?us-ascii?Q?PWD6BXHXZ0hRuU3oI6To/DkvJaT2RCrymebIgNUtjgMUYpUU0tHcANOerzOb?=
+ =?us-ascii?Q?SxXqy96nBn6FwAK3F7KkMQZUS0Oy2PhhBP3M5vVMlddEogEZByXFo/LL1PJ1?=
+ =?us-ascii?Q?ZCb++jW7J0RHhWuTae38oOPaB+Z67CBsded6JVaIyVfn5kOMI6mpGeKsePyn?=
+ =?us-ascii?Q?VZz0eRnnSv2Rxxq+p+rm4Rk28gUeDHcMgKNSX6FMUPWW9X7aQyNBrWOmrjpv?=
+ =?us-ascii?Q?I/EM63Jkj3G1TM5ZsnIhYfPt3Etag1czlpb9ePWw5sybCGzGr/q8zv6ctgL0?=
+ =?us-ascii?Q?AMTRVVAv3cQ/TqIiXyWS8AsrkFv7VBw+Hbj8DHQx2Es+6qCiRVpoZqpjK+2S?=
+ =?us-ascii?Q?uurqvlfr5Nv+BtQG0vpa15abuPSJMDQ9GWITfXWZwJvLYzRglBSThyGflzTU?=
+ =?us-ascii?Q?Bj8V0bIx4TuswRIjStFYTdUl00XQW5IA9heXfLD5r3038V8wbYjLLbaQqxDW?=
+ =?us-ascii?Q?RzcbcbUepk/TC5EeSMgPw2G6KqdONPqeuoUZ8Bfp8q2WXxWktr0qr2R7qcTI?=
+ =?us-ascii?Q?sHXytiZNPH6mE7sU/9ILuLzhQNvLKOQuEcwZT/kea5BJ7G22errn06R98gBK?=
+ =?us-ascii?Q?IwCpbsHM/dGLaS4ZHK+W+usSfeboXqGXn1QrAlHc5do/jufyeyaDD0eSz51m?=
+ =?us-ascii?Q?vje2SVeMVtGp1HAoDhYltRUchwEICROXK6wyhLCc9DdBdI/RveYgNsG1d6xH?=
+ =?us-ascii?Q?KdBvf+ZlxBFjoUEPBi8Cz3Gwy1xjqrIj4vyxPyFntPuIBDncng9SbTMFX506?=
+ =?us-ascii?Q?Q8iuXG3UG2bkKo+0wRCNqDainw0VMkEd8bxfPArVJnOF7UskV0pXMoRpvu97?=
+ =?us-ascii?Q?vqzRltLXxco553iPzvzpmZxaQ3rx8O8//Q3RHYcBAnIvxTAO8g9xoh0pBV1u?=
+ =?us-ascii?Q?OIqVdcuXI2hP0u18ovajAUOjt/nFxILkN0hEbrtVYicHO7klzKAJ2ZItU/cD?=
+ =?us-ascii?Q?9j2XfGdrgDah5xySQff1XreVTWLzUp5f3OHIJ9arUSDl7jH0UVhxggAS4bRX?=
+ =?us-ascii?Q?LCxZXd0Geja7CuSDAwyQjIU4i7/X3V4H679PXt5BzwVH9qnjYSZUW9vWESSx?=
+ =?us-ascii?Q?Y8z7X989MTg8etBNLMdHd9wCF8rWdlT5yDZBpd6Tx2Cx?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: ObDQRuOnd7eGHOJLlNKVhVzeIHYmNnJ+GaEMsTho1aWrLNgYVPzz//6sdTpTFSKc1G5Ke4T+TQT5R+nVYz+9DMrCbSJV1+Qajz02zCHL1Y7RpZ5P3/tRq5Le2EDmi7B7dy6uBfuzuhMq8zPYc8DbEt+6Q+aQwKlya0epTKrol+bdX5lV9rzdYF0pObQNT8zvnjlLdVDwZWjhq3d0gigMpLNu2ynW1/OZHlDdo9rXSC50LB25Pxd8keGTdtVqpi+H8dhpOQvsMIfWgGpX/eXddo3a2Yar+erOTZcisSwy9fdo/+3E4W9YrqNCgjPoRN7djQyugTEgx9+9B7j4Cr0sTGKPFgRa75/rSu2hptiAjErfxD/P/SzXCLVwA5O4iaVwDcFb+a7FdvxywfuHZP8+4kgLePH0HVBirTWF0nevxDF8K8+XV2oTLSjhA3DILk6iheG56/OeowZP4m7Z2xb6JxM+tkQQQX6f3bDZKxLKn2aZSf0xQvAY42FD/2peXK1OvMEHqJkhiv4k2aV0X0SFwiQZuy8Sq16Ji5EKl4+tFGspCYtpRfeA9yGDWrunyUo5uZdHmfuUZGJJ7LhXkg1oXW9mchgsmZqlx8WIOo017yRSPdyKFotC8QxpP0WWDZRA4FtUtqCoIGqC85XInNLP+iVhXZo4RqLs/2FqZiu0jrdyYqjtnAJbF8fbWvSANchh19jY0E0Lg58ZW7ddkK7grMoUq28vRsAxQpjjfngzAhdWjAhLEUioxqDJsivW4yb9Tf7KYfV1eqioWi0KldKhtkxuyg1HHPz7BjyTj8TQx3PfPd19MwKS8T4fDjffgMjvxKH7MI2/VFjCM1x7NFYWrdMcip0TBcSnOe3FxoqYgqs=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: NnBDzyXS3ykHiVxc0cR1i0hr6euCATewGnEOjY+Xq7S6qTe6R6RBPlhm6AospBsJbJiPRoZtCCIW+9lIruBWPx3OtnhI3AcpCVvxua2cu5lgv7B6T97hSrkZ2hnT8leQMGBV6VGgYgn0BzHIgKA8XclgK8OkAPIJyiPeMhvfaF0bOXinEJQNJNVtCEAJC9vlySVp2ttrXpQT3j47HZMK33pqs2lcgf2WndIFqC+PWFaBmSWQUFMaXireSnzhAx9ezM5j7gP54JodpRIs3XtNi73S8ivnBVlbt8Bm9R9UvZ+lpO2olhy+ptI0px7HtTzKQ7Vr3tj+2BuFkm3BLAyeFrss8plZ1luv9OidysEusaHX0303m5xYSm++jlada5ziy6VX+LgjhK5+B2DnMfxSHdoMd0pmQKGc4hQqxzmYYHqSOxQTeVnyQLh4kLe274YEhT5clEOrB5V/Jp6Dfr1FhUWjOaxbt6VI03Fz2uvrM6jKHTRJKapsVUBJYBWyg7UMFi9ApWxh2PAwqH/D1/rzpo0ExVGqzj8VKON6hOTLzdjQcfk4U9NDv13uy9goNMPDLRhMhU6Y3CVDRs9p0tMRSpJX3nVHKnIIxWk7e6bJjLslfuvQz5QEwErHjHmKSuHT4F1zCb0Wc9V6N3L1+OGOWeY0C8P9M5zG6CG+skM2lHFKUj/CynAdXF4MEH9JsDP+7FBOliLlsu/fowABVjXgBGXhtvRn1P/ZbNTUDGh+cZbnwWr1r3K5r/loasaPrwCL1l827OgTV721wc0zYXeJjxaQTWRbs5KvxPOi3dbVJAQ/+St6D0JqDhND1GmbmOHTi+bU/yy3gDhKDfyrr2E3sed4/uaC5tp3dadAgp5EINA=
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 885ef600-3946-414e-dccf-08dbb9fffcd0
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7cc7f0ef-cc64-4e15-686a-08dbba0113c2
 X-MS-Exchange-CrossTenant-AuthSource: PH8PR10MB6597.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Sep 2023 17:35:31.4175
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Sep 2023 17:43:19.3323
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wRTfe+BcZ3eLrWVbtxeQXOMWMF8IUBp84G+gRCiU/QP2Iov19vRqQtMzP3rvAr03DZhYQEOjNmYEIT5f7c8vu8HzAgkbf/AP9iiOproSOjE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR10MB5855
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9AM5MRKcNzlB8DKjNZYkLahhdIVYKhIHcmbfFZ95p5wnoQc8d101/5+ooG5F0RExQPvbuqvMM5Ea8LhRbPVdDyFdcOD1bN54AertQvfoaLc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR10MB7000
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
  definitions=2023-09-20_08,2023-09-20_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 spamscore=0
- malwarescore=0 adultscore=0 phishscore=0 bulkscore=0 mlxscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309200145
-X-Proofpoint-ORIG-GUID: NezhkSQvYjzQzW_HuVKp45e_Tyun0Njn
-X-Proofpoint-GUID: NezhkSQvYjzQzW_HuVKp45e_Tyun0Njn
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 mlxscore=0
+ mlxlogscore=999 bulkscore=0 malwarescore=0 suspectscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
+ definitions=main-2309200146
+X-Proofpoint-GUID: hM9Rl48J93-9XVe2gtUa_dyMZACnszpE
+X-Proofpoint-ORIG-GUID: hM9Rl48J93-9XVe2gtUa_dyMZACnszpE
 Precedence: bulk
 List-ID: <linux-debuggers.vger.kernel.org>
 X-Mailing-List: linux-debuggers@vger.kernel.org
 
-Hi Jon,
+--=-=-=
+Content-Type: text/plain
 
-Jon Doron <arilou@gmail.com> writes:
-> Hi Stephen,
-> Like you have said the reason is as I wrote in the commit message, 
-> without "fixing" the vaddr GDB is messing up mapping and working with 
-> the generated core file.
+Stephen Brennan <stephen.s.brennan@oracle.com> writes:
+> Hi Jon,
+>
+> Jon Doron <arilou@gmail.com> writes:
+>> Hi Stephen,
+>> Like you have said the reason is as I wrote in the commit message, 
+>> without "fixing" the vaddr GDB is messing up mapping and working with 
+>> the generated core file.
+>
+> For the record I totally love this workaround :)
+>
+> It's clever and gets the job done and I would have done it in a
+> heartbeat. It's just that it does end up making vmcores that have
+> incorrect data, which is a pain for debuggers that are actually designed
+> to look at kernel core dumps.
+>
+>> This patch is almost 4 years old, perhaps some changes to GDB has been 
+>> introduced to resolve this, I have not checked since then.
+>
+> Program Headers:
+>   Type           Offset             VirtAddr           PhysAddr
+>                  FileSiz            MemSiz              Flags  Align
+>   NOTE           0x0000000000000168 0x0000000000000000 0x0000000000000000
+>                  0x0000000000001980 0x0000000000001980         0x0
+>   LOAD           0x0000000000001ae8 0x0000000000000000 0x0000000000000000
+>                  0x0000000080000000 0x0000000080000000         0x0
+>   LOAD           0x0000000080001ae8 0x0000000000000000 0x00000000fffc0000
+>                  0x0000000000040000 0x0000000000040000         0x0
+>
+> (gdb) info files
+> Local core dump file:
+>         `/home/stepbren/repos/test_code/elf/dumpfile', file type elf64-x86-64.
+>         0x0000000000000000 - 0x0000000080000000 is load1
+>         0x0000000000000000 - 0x0000000000040000 is load2
+>
+> $ gdb --version 
+> GNU gdb (GDB) Red Hat Enterprise Linux 10.2-10.0.2.el9
+> Copyright (C) 2021 Free Software Foundation, Inc.
+> License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+> This is free software: you are free to change and redistribute it.
+> There is NO WARRANTY, to the extent permitted by law.
+>
+>
+> It doesn't *look like* anything has changed in this version of GDB. But
+> I'm not really certain that GDB is expected to use the physical
+> addresses in the load segments: it's not a kernel debugger.
+>
+> I think hacking the p_vaddr field _is_ the way to get GDB to behave in
+> the way you want: allow you to read physical memory addresses.
+>
+>> As I'm no longer using this feature and have not worked and tested it 
+>> in a long while, so I have no obligations to this change, but perhaps
+>> someone else might be using it...
+>
+> I definitely think it's valuable for people to continue being able to
+> use QEMU vmcores generated with paging=off in GDB, even if GDB isn't
+> desgined for it. It seems like a useful hack that appeals to the lowest
+> common denominator: most people have GDB and not a purpose-built kernel
+> debugger. But maybe we could point to a program like the below that will
+> tweak the p_paddr field after the fact, in order to appeal to GDB's
+> sensibilities?
 
-For the record I totally love this workaround :)
-
-It's clever and gets the job done and I would have done it in a
-heartbeat. It's just that it does end up making vmcores that have
-incorrect data, which is a pain for debuggers that are actually designed
-to look at kernel core dumps.
-
-> This patch is almost 4 years old, perhaps some changes to GDB has been 
-> introduced to resolve this, I have not checked since then.
-
-Program Headers:
-  Type           Offset             VirtAddr           PhysAddr
-                 FileSiz            MemSiz              Flags  Align
-  NOTE           0x0000000000000168 0x0000000000000000 0x0000000000000000
-                 0x0000000000001980 0x0000000000001980         0x0
-  LOAD           0x0000000000001ae8 0x0000000000000000 0x0000000000000000
-                 0x0000000080000000 0x0000000080000000         0x0
-  LOAD           0x0000000080001ae8 0x0000000000000000 0x00000000fffc0000
-                 0x0000000000040000 0x0000000000040000         0x0
-
-(gdb) info files
-Local core dump file:
-        `/home/stepbren/repos/test_code/elf/dumpfile', file type elf64-x86-64.
-        0x0000000000000000 - 0x0000000080000000 is load1
-        0x0000000000000000 - 0x0000000000040000 is load2
-
-$ gdb --version 
-GNU gdb (GDB) Red Hat Enterprise Linux 10.2-10.0.2.el9
-Copyright (C) 2021 Free Software Foundation, Inc.
-License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
-This is free software: you are free to change and redistribute it.
-There is NO WARRANTY, to the extent permitted by law.
+And of course I sent the wrong copy of the file. Attached is the program
+I intended to send (which properly handles endianness and sets the vaddr
+as expected).
 
 
-It doesn't *look like* anything has changed in this version of GDB. But
-I'm not really certain that GDB is expected to use the physical
-addresses in the load segments: it's not a kernel debugger.
+--=-=-=
+Content-Type: text/x-c
+Content-Disposition: attachment; filename=phys2virt.c
+Content-Description: phys2virt.c
 
-I think hacking the p_vaddr field _is_ the way to get GDB to behave in
-the way you want: allow you to read physical memory addresses.
-
-> As I'm no longer using this feature and have not worked and tested it 
-> in a long while, so I have no obligations to this change, but perhaps
-> someone else might be using it...
-
-I definitely think it's valuable for people to continue being able to
-use QEMU vmcores generated with paging=off in GDB, even if GDB isn't
-desgined for it. It seems like a useful hack that appeals to the lowest
-common denominator: most people have GDB and not a purpose-built kernel
-debugger. But maybe we could point to a program like the below that will
-tweak the p_paddr field after the fact, in order to appeal to GDB's
-sensibilities?
-
-Thanks,
-Stephen
-
----
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -256,7 +267,6 @@ int main(int argc, char **argv)
 	Elf64_Phdr *phdrs;
 	off_t phoff;
 	int phnum, phentsize;
-	bool bswap;
 
 	if (argc != 2 || strcmp(argv[1], "-h") == 0)
 		usage();
@@ -275,7 +285,7 @@ int main(int argc, char **argv)
 	if (hdr.e_ident[EI_CLASS] != ELFCLASS64)
 		fail("file is not 64-bits: unsupported");
 
-	if (bswap) {
+	if (endian() != hdr.e_ident[EI_DATA]) {
 		phoff = bswap_64(hdr.e_phoff);
 		phnum = bswap_16(hdr.e_phnum);
 		phentsize = bswap_16(hdr.e_phentsize);
@@ -298,7 +308,7 @@ int main(int argc, char **argv)
 		perror_fail("fread phdrs");
 
 	for (int i = 0; i < phnum; i++)
-		phdrs[i].p_vaddr = 0; //phdrs[i].p_paddr;
+		phdrs[i].p_vaddr = phdrs[i].p_paddr;
 
 	if (fseek(f, phoff, SEEK_SET) < 0)
 		perror_fail("fseek");
@@ -308,3 +318,5 @@ int main(int argc, char **argv)
 	fclose(f);
 	return EXIT_SUCCESS;
 }
+
+--=-=-=--

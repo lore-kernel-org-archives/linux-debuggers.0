@@ -2,52 +2,93 @@ Return-Path: <linux-debuggers-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E491C4332F
-	for <linux-debuggers@archiver.kernel.org>; Tue, 31 Oct 2023 20:18:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B6F39C4332F
+	for <linux-debuggers@archiver.kernel.org>; Wed,  1 Nov 2023 19:13:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232108AbjJaUSk (ORCPT
+        id S233554AbjKATNH (ORCPT
         <rfc822;linux-debuggers@archiver.kernel.org>);
-        Tue, 31 Oct 2023 16:18:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46732 "EHLO
+        Wed, 1 Nov 2023 15:13:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232698AbjJaUSj (ORCPT
+        with ESMTP id S232693AbjKATNG (ORCPT
         <rfc822;linux-debuggers@vger.kernel.org>);
-        Tue, 31 Oct 2023 16:18:39 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65E59102
-        for <linux-debuggers@vger.kernel.org>; Tue, 31 Oct 2023 13:18:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD71DC433C8;
-        Tue, 31 Oct 2023 20:18:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698783517;
-        bh=eOWEzrVGT43Yq5DG3XY/9cpTpAHPrkYEepW41L0OedU=;
-        h=Date:From:To:Subject:From;
-        b=Y/LRYzMwllfUH3InSEGne6LdCS+UHt+wFAaxUM+3CP8igYtWYa3WlBu2iFT/qSH0j
-         BnYFCKHRTl1VpDz2ZqBq/v38/FgbKl3QN86RtBqWjMJuAKz+qwgt4Sb8KNG8OB+wqS
-         x+gFqPzRz3d3donquDpWE+86IBcJ89MCGXr+cWwg=
-Date:   Tue, 31 Oct 2023 16:18:35 -0400
-From:   Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-To:     linux-debuggers@vger.kernel.org
-Subject: PSA: migrating linux-debuggers to new vger infrastructure
-Message-ID: <20231031-congenial-phenomenal-millipede-ee7ef7@nitro>
+        Wed, 1 Nov 2023 15:13:06 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D8D9A2;
+        Wed,  1 Nov 2023 12:13:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=aOxi51YH1v/j/EjAwpYLjGYkjIinbzkIxdgV5FAKI4Y=; b=WiEoVg5PNV6trJEHAP57v4vapE
+        HsiW/WaZ1ywph9RexV0ygy2ZNrDMriWecYuLgXXGjhgj5ea8iXbze4mpWGJ8D41YGwCm2AuITpkmA
+        dXf1k2mIT1kA5v98uqJ3rZ0VYbcZFfJTzjrlZCKsim3z0E2GpPRfmfrABWdlLG2y5HR80EX3O1/n/
+        0VhCE43Q/f/EotzJFbGu3M1OZX/hiYAQXqB1T41syyxv8F4vOgZpMvjrUm7lnjkULJWdOZhwRlsKO
+        b2L3E61WXB6xLejqKmV28FFWDjsF0fx84eEJCvQZWCJlh/UNFGXs/43jy2bnPjHs6w4Iim08mtZCI
+        ERZ/FrPQ==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
+        id 1qyGe4-0080C0-0r;
+        Wed, 01 Nov 2023 19:12:52 +0000
+Date:   Wed, 1 Nov 2023 12:12:52 -0700
+From:   Luis Chamberlain <mcgrof@kernel.org>
+To:     Stephen Brennan <stephen.s.brennan@oracle.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-debuggers@vger.kernel.org,
+        Mike Christie <michael.christie@oracle.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        "Christian Brauner (Microsoft)" <brauner@kernel.org>,
+        Petr Mladek <pmladek@suse.com>, Marco Elver <elver@google.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Maninder Singh <maninder1.s@samsung.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Zhen Lei <thunder.leizhen@huawei.com>,
+        Kees Cook <keescook@chromium.org>,
+        Zhaoyang Huang <zhaoyang.huang@unisoc.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Sami Tolvanen <samitolvanen@google.com>
+Subject: Re: [PATCH v3 1/1] kernel/config: Introduce
+ CONFIG_DEBUG_INFO_IKCONFIG
+Message-ID: <ZUKjNJBoglBdRJbg@bombadil.infradead.org>
+References: <20231027171756.1241002-1-stephen.s.brennan@oracle.com>
+ <20231027171756.1241002-2-stephen.s.brennan@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20231027171756.1241002-2-stephen.s.brennan@oracle.com>
+Sender: Luis Chamberlain <mcgrof@infradead.org>
 Precedence: bulk
 List-ID: <linux-debuggers.vger.kernel.org>
 X-Mailing-List: linux-debuggers@vger.kernel.org
 
-Good day!
+On Fri, Oct 27, 2023 at 10:17:56AM -0700, Stephen Brennan wrote:
+> The option CONFIG_IKCONFIG allows the gzip compressed kernel
+> configuration to be included into vmlinux or a module. In these cases,
+> debuggers can access the config data and use it to adjust their behavior
+> according to the configuration. However, distributions rarely enable
+> this, likely because it uses a fair bit of kernel memory which cannot be
+> swapped out.
+> 
+> This means that in practice, the kernel configuration is rarely
+> available to debuggers.
+> 
+> So, introduce an alternative, CONFIG_DEBUG_INFO_IKCONFIG. This strategy,
+> which is only available if IKCONFIG is not already built-in, adds a
+> section ".debug_linux_ikconfig", to the vmlinux ELF. It will be stripped
+> out of the final images, but will remain in the debuginfo files. So
+> debuggers which rely on vmlinux debuginfo can have access to the kernel
+> configuration, without incurring a cost to the kernel at runtime.
+> 
+> The configuration is enabled whenever DEBUG_INFO=y and IKCONFIG!=y. The
+> added section is not large compared to debug info sizes. It won't affect
+> the runtime kernel at all, and this default will ensure that
+> distributions intending to create useful debuginfo will get this new
+> addition for kernel debuggers.
+> 
+> Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
 
-I plan to migrate the linux-debuggers@vger.kernel.org list to the new
-infrastructure this week. We're still doing it list-by-list to make sure that
-we don't run into scaling issues with the new infra.
+Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
 
-The migration will be performed live and should not require any downtime.
-There will be no changes to how anyone interacts with the list after
-migration is completed, so no action is required on anyone's part.
+Although this begs to support something other than old gz in the future.
 
-Please let me know if you have any concerns.
-
-Best wishes,
--K
+  Luis

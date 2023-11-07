@@ -1,56 +1,46 @@
-Return-Path: <linux-debuggers-owner@vger.kernel.org>
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CE0A4C4332F
-	for <linux-debuggers@archiver.kernel.org>; Mon,  6 Nov 2023 12:15:06 +0000 (UTC)
-Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229922AbjKFMPI (ORCPT
-        <rfc822;linux-debuggers@archiver.kernel.org>);
-        Mon, 6 Nov 2023 07:15:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50342 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229583AbjKFMPH (ORCPT
-        <rfc822;linux-debuggers@vger.kernel.org>);
-        Mon, 6 Nov 2023 07:15:07 -0500
-Received: from bee.tesarici.cz (bee.tesarici.cz [77.93.223.253])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A90A192
-        for <linux-debuggers@vger.kernel.org>; Mon,  6 Nov 2023 04:15:03 -0800 (PST)
-Received: from meshulam.tesarici.cz (dynamic-2a00-1028-83b8-1e7a-4427-cc85-6706-c595.ipv6.o2.cz [IPv6:2a00:1028:83b8:1e7a:4427:cc85:6706:c595])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by bee.tesarici.cz (Postfix) with ESMTPSA id B452D1975E2
-        for <linux-debuggers@vger.kernel.org>; Mon,  6 Nov 2023 13:15:00 +0100 (CET)
-Authentication-Results: mail.tesarici.cz; dmarc=fail (p=none dis=none) header.from=tesarici.cz
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tesarici.cz; s=mail;
-        t=1699272900; bh=W+ELNbQI8RStMwEzKzNgUJYAH6Bt7LuzuBZG7/UgYkg=;
-        h=Date:From:To:Subject:From;
-        b=1gdeTWErrPG2tGHKD+efEp+aywtyEyONkmgM2s4scuoDeon/N9DfENvyuwTZKL8s0
-         zuFSJkGAMXRVdNXHk7fOft4qpC6a6QkUTDd+LUxLX2bFGkzNCms+vP0I2d7g16YBlB
-         Lbov+JWYoC2uZC8rfdBz7vMEYRSY9Uy8HLI3Q3GuvNHJ/8VyGkpzI2SYsfdKyV7KDA
-         j9LHWLfL7P/3iVo4bbgTKb4oxo/vOuk4SaglTWlEE3k1MEB2JYNdRD/HqgqiiFJJ7V
-         rA4Ww2NahV4lQohUypMVTIvWbSSr2PBdq7uf2Igf8pcdzCatiekITImBUh4myognny
-         /TfF9RCvUTS6g==
-Date:   Mon, 6 Nov 2023 13:14:59 +0100
-From:   Petr =?UTF-8?B?VGVzYcWZw61r?= <petr@tesarici.cz>
-To:     linux-debuggers@vger.kernel.org
-Subject: libkdumpfile and makdumpfile flattened format
-Message-ID: <20231106131459.146c1d5a@meshulam.tesarici.cz>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-suse-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3AB18F;
+	Tue,  7 Nov 2023 00:00:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2FYYS8MO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E2A7C433C7;
+	Tue,  7 Nov 2023 00:00:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1699315253;
+	bh=gWSQwVS/DuFY8epvQLsUoxyqrJ0L53S7NX9Y3cpdBb4=;
+	h=Date:From:To:Subject:From;
+	b=2FYYS8MOF+g1KB68wRaTBLt4qdi1oVNOVrcDhGPFKyzvQpkvWgDuhvgDRlPv0wRJ9
+	 JnCnzHfzpUgAfDJzf3Ko047wJ9qpjDPxUaQ+vacrgU1ekeVhxA1SkM+w7u2PxssFC5
+	 3MfQ3cbwb3IY+DCqoN+XoJe/TnyNPHlODGXbQPMA=
+Date: Mon, 6 Nov 2023 19:00:52 -0500
+From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+To: lartc@vger.kernel.org, linux-alpha@vger.kernel.org, 
+	linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-assembly@vger.kernel.org, linux-bcache@vger.kernel.org, linux-bcachefs@vger.kernel.org, 
+	linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org, linux-btrace@vger.kernel.org, 
+	linux-btrfs@vger.kernel.org, linux-can@vger.kernel.org, linux-cifs@vger.kernel.org, 
+	linux-clk@vger.kernel.org, linux-crypto@vger.kernel.org, linux-csky@vger.kernel.org, 
+	linux-debuggers@vger.kernel.org, linux-edac@vger.kernel.org, linux-efi@vger.kernel.org
+Subject: PSA: this list has been migrated (no action required)
+Message-ID: <20231106-courageous-soft-caiman-7b3e6a@meerkat>
 Precedence: bulk
-List-ID: <linux-debuggers.vger.kernel.org>
 X-Mailing-List: linux-debuggers@vger.kernel.org
+List-Id: <linux-debuggers.vger.kernel.org>
+List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 
-Hi all,
+Hello:
 
-JFYI, after encountering flattened crash dumps more often lately, I got
-tired of the rearrangement step and implemented support for this dump
-file variant in libkdumpfile.
+This list has been migrated to the new vger infrastructure. You should't need
+to change anything about how you participate with the list or how you receive
+mail.
 
-Enjoy (and report bugs)!
+If something isn't working right, please reach out to helpdesk@kernel.org.
 
-Petr T
+Best regards,
+Konstantin

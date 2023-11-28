@@ -1,589 +1,212 @@
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C621B647
-	for <linux-debuggers@vger.kernel.org>; Wed, 15 Nov 2023 02:50:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=brennan.io header.i=stephen@brennan.io header.b="RKw57FKc"
-X-Greylist: delayed 903 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 14 Nov 2023 18:50:15 PST
-Received: from sender4-of-o51.zoho.com (sender4-of-o51.zoho.com [136.143.188.51])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14B41CC
-	for <linux-debuggers@vger.kernel.org>; Tue, 14 Nov 2023 18:50:14 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1700015710; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=YvzL9Lku/E6a+lqzLkYTlurNwTvEVupM/db901OSNUS+RfFRw8NyYDif23WbP9R3XHEXDtMbRZGiHdCbAwggwOt/dzq8YM6WwbUCT3Cnrmz4zD/p7j9XNLU/KuEV6Pt3ujmFRggt+Eomc4BGDfxdgEjW25D7UQiQ4ot1Bn5ym3E=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1700015710; h=Content-Type:Content-Transfer-Encoding:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To:Cc; 
-	bh=35kFQSGdbUCzEAkBcPZs20yLuyW6yno+4PchIowusQ0=; 
-	b=IBOm9Sy0k3qA+tJ5ayrM5Am7+iV/HDxVYZkKaLC+A2H9c1OmS3XuzobPlU0QRa5aYxA9rmuQKPvqWQZbEdKaMbnHLS5Js571ZxFvIyill86uE5z42QcOWFeNCo/+ldiHuAbRQUmbLSfDsg7ih9P7dH9TvH/ZpAgO5nwWt/thg+k=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=brennan.io;
-	spf=pass  smtp.mailfrom=stephen@brennan.io;
-	dmarc=pass header.from=<stephen@brennan.io>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1700015710;
-	s=selector01; d=brennan.io; i=stephen@brennan.io;
-	h=From:From:To:To:Subject:Subject:In-Reply-To:References:Date:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
-	bh=35kFQSGdbUCzEAkBcPZs20yLuyW6yno+4PchIowusQ0=;
-	b=RKw57FKcLT9tepsRITvU2uNmnfjafDXMABzK+bZy+AMduea5Qqs1WlDe1MUFb6+G
-	PLDSsWCdGWM+Sm5IcONAo25YP7yyoOHKhmaMf54KxUPIdvJLx+rbkc4Pm/4g1yOYead
-	W/oDB7ZDugznfynL9VgPChJQZfZH51hP633dcFG0=
-Received: from localhost (12.186.190.1 [12.186.190.1]) by mx.zohomail.com
-	with SMTPS id 1700015708943434.64937814107066; Tue, 14 Nov 2023 18:35:08 -0800 (PST)
-From: Stephen Brennan <stephen@brennan.io>
-To: linux-debuggers@vger.kernel.org
-Subject: Re: Linux Kernel Debugging MC - Thank You & Notes
-In-Reply-To: <87il64yxwh.fsf@brennan.io>
-References: <87il64yxwh.fsf@brennan.io>
-Date: Tue, 14 Nov 2023 18:35:01 -0800
-Message-ID: <87fs17zqui.fsf@brennan.io>
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="GxKqN3PG";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="mvt14LmS"
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0C83D60
+	for <linux-debuggers@vger.kernel.org>; Tue, 28 Nov 2023 06:57:30 -0800 (PST)
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3ASEhtGU024228;
+	Tue, 28 Nov 2023 14:57:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : content-transfer-encoding : content-type :
+ mime-version; s=corp-2023-11-20;
+ bh=2wCMfWJs5TyN5gezoCTCxnCblwaeMW8YR6EqohML6Oo=;
+ b=GxKqN3PGUfncAHGp6OdyYy8YqU8DsB2dsYw53HQpLgdb/E22x26cKLiMYQZVB9E74BTx
+ OVJcGj/J8e++raYnmIv7ZjMX7Zgj3VpA5MmlIsWtE2H/sgD/LfIZ2z5ogLyRo3S8g44r
+ yPpHh0GWGbsGeWxuw8WlOO0x8lN1EQImo51We24UKtCIyXbMdsegOGQvuDF6BvYTpepE
+ qscH0OPtngfarasOaA0Z7ZEdXOsTjSj3WAkBMB+bCDUkP4zMx9VFyxlYXRCYkDpMii19
+ J+W7dGZBFtZq7XEaYDQc72pLo8faJ0ZY7UmTL5oHnwxsw4dRtNHdokSad+fL2QgMCIwV Vg== 
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3uk8hu60vm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 28 Nov 2023 14:57:29 +0000
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 3ASEeOao027670;
+	Tue, 28 Nov 2023 14:57:28 GMT
+Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2100.outbound.protection.outlook.com [104.47.55.100])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3uk7cd7uqq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 28 Nov 2023 14:57:28 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=UWRdbdxFABkNbnjoHqFye7Xn7cv5/xqLZO8t2TqPLQ6c5VmG/UA6AHGyRSoYh6p8sQmk+aBnxPXJW+7GDYAqIS+112cMEErFTCnQT232K41GLFxye3WHkBS9e1tANZVPOlGUMFlduRCV8CcjmCp80XdztSbu6V0EULSUB27XZFU3rsoLoPEJxoiEWAfzG1jbjXCAMOjc5oyvTesom+W+/4GDkngaIAA3M16qdUN7idNgFXklOwx6R1aQ1bh1N36RzD7KqXYn4KDbIkq0Kkb8+WnbwL7gZ85hadHleEGwVsLzybSU6ZENmOdQ4nH3BCNRhWb48UKo8GPwr5YheLBMFw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2wCMfWJs5TyN5gezoCTCxnCblwaeMW8YR6EqohML6Oo=;
+ b=M9dEMmCVOgQYUPLfq0b1cbjE3guILRIMBq8vgQ2VvvdGVazLd8ccSuLvYg+SZopvOK0/Uk+O5dV02W8GnAAkIE3tfxCeHDcfb9c5RrP7T4fX85Hrl31sw2P7H8RFxG7ne8HDctK2qwl2ZwD9/x08x3LTGgUS86bOBvnzbqDO0ZdHyJ30clnUArKFbisgwB7c/pTfGObn+s9XGD5tbTgUuYAFerIaaabPRXNNxSB306XLYIg7MQGLMokv/NE3/Tf2c1h2PNGwHeG1E1ylapecCddmQehAkfOAwxEB/ZkcT91zowwwIt1szW1TRmd7kSWJ4azHxLupqts2MbwwCIKkyQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2wCMfWJs5TyN5gezoCTCxnCblwaeMW8YR6EqohML6Oo=;
+ b=mvt14LmSQNqbX0Z8mWXsji9kt7vPaBzc88G5OUF/lYdXIdI4gal8gG/DBl4wo3FOMh+8HTCdwMT7esQwJ7Du7XcOeQN+XxNOsw4ekUCYs4CewBb/ixMuuUtW62gCLqAwbZFFup99P3GPMJzTpmGgeiHouTci0cv+2HHA0piYKFQ=
+Received: from SA1PR10MB6590.namprd10.prod.outlook.com (2603:10b6:806:2bc::13)
+ by DS7PR10MB7280.namprd10.prod.outlook.com (2603:10b6:8:e2::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7025.29; Tue, 28 Nov 2023 14:57:26 +0000
+Received: from SA1PR10MB6590.namprd10.prod.outlook.com
+ ([fe80::befc:b95b:2b72:17a9]) by SA1PR10MB6590.namprd10.prod.outlook.com
+ ([fe80::befc:b95b:2b72:17a9%6]) with mapi id 15.20.7002.026; Tue, 28 Nov 2023
+ 14:57:26 +0000
+From: Stephen Brennan <stephen.s.brennan@oracle.com>
+To: devel@lists.crash-utility.osci.io
+Cc: linux-debuggers@vger.kernel.org,
+        Stephen Brennan <stephen.s.brennan@oracle.com>
+Subject: [PATCH] symbols: handle module symbols outside strbuf
+Date: Tue, 28 Nov 2023 06:57:22 -0800
+Message-Id: <20231128145723.689860-1-stephen.s.brennan@oracle.com>
+X-Mailer: git-send-email 2.39.3
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: CH0P223CA0025.NAMP223.PROD.OUTLOOK.COM
+ (2603:10b6:610:116::23) To SA1PR10MB6590.namprd10.prod.outlook.com
+ (2603:10b6:806:2bc::13)
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-ZohoMailClient: External
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA1PR10MB6590:EE_|DS7PR10MB7280:EE_
+X-MS-Office365-Filtering-Correlation-Id: 51c577a5-c044-42c6-c049-08dbf02254ff
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 
+	l3+7Z3xChyhH5nQxTJ+zYHRTTtSSM04NzNiVzHxxn3OomwZeVEGOQKfmLY3ziqV9VIF62sZBznb65AEiRyr7qAYtYRi5KvRhWhkFsbf76bPENgveVOj65bY/K9kFl7hhtVGqzAVxCEKCKEum4+WnQiMJFJpkuVNAi8xk5ree6TpVXTM3Q48bJAvWTxYaUdOPjxdpMRyCpiuKryTeB5fPFz+pJhrsXck4+7nxIKsdD1IrUPX0Ry8fHt19zH8rgzb9/u6GGrrzg5gU2o4iEdm16jPgyMEicOZIhddGTsvd2kbqFtCU6zcQfbm7W3ZDqnfNGD/G/05DyGzJP5iI3QfKlIQiLcqGORXJvyVoYTpERDSzBYLyXIOXfXcmDZfuPTXnxwWjrN849O/GIDxZYyhiCY+iWAx85+qGUyzZ5TypLFH4htI2GKCobpdr8ncSGw9pt875QPfBalDvC91/oshSkhznrg9r3Qnb0cYZrJutG8Bh1bikXhK4PEgr84Rdo/QXY7z6NYh28weGxhIk8E4IGS2YXBERoNg40pVPJVEd6U+HgOFTRICOnZh0+5FkpQeK
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR10MB6590.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(396003)(39860400002)(346002)(136003)(376002)(230922051799003)(1800799012)(64100799003)(451199024)(186009)(2906002)(5660300002)(4326008)(8676002)(8936002)(41300700001)(316002)(66476007)(66946007)(66556008)(6916009)(86362001)(6486002)(107886003)(1076003)(478600001)(2616005)(6512007)(6506007)(36756003)(26005)(6666004)(83380400001)(103116003)(38100700002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?us-ascii?Q?9ROSidGNj4mJE6w82iPDLyXSSej5dd59Dxb7bxnLoBxXaWC9B7CZEQSAhDfz?=
+ =?us-ascii?Q?BeAm18YUBGEXst1RTUXizx/ZNMEupOn/Xm3bpbyavpXmG6z+M/hxs0IeA6ua?=
+ =?us-ascii?Q?zuwEBIStDFtI+xCduIKWcU3ss6dL7UC5A0sx+GdVe4pBGZacezTxaA55FE7p?=
+ =?us-ascii?Q?880nAQFpgRXUBxPotiP64am1wslDD6r3Nryv5ctztDU7dvVgRtN9oMBrCb6R?=
+ =?us-ascii?Q?Ny0LXdLtRAjTgWkI5gtPrUgOt1847EcufXB8teaAwxVzpncQjMGjWvqbQixG?=
+ =?us-ascii?Q?VOKEyr0339pPQjM/oO8P09K5nW0w/gvcM/6klmE5mePiLxe15FLcxHeoGjum?=
+ =?us-ascii?Q?DUCeVyHVomAqF5M9WPCx7QGX+yrVgdolbdkPhrCwxuLJv7WBRQgLVNht7oD+?=
+ =?us-ascii?Q?vFPpagN3KOT5TPfMtdvAJ9sJjDJaPMD7WG91pDFHDiuHhwdhPNNjlcVdic7W?=
+ =?us-ascii?Q?WTOXeFTW6lWzvL5/5XFaoVxCP7/Ww3TLBpgdFyqxo1o7BFa31itEc4Me1I4t?=
+ =?us-ascii?Q?o33wJCeK0WnYLuu6E3zbBNx6ZNwZdSFTtqhLiFjCLTFD7/worRz8+Q0b/jUy?=
+ =?us-ascii?Q?3HrBv4tIMuoAPcU86ym2ChSLuDhbNQ5rDvdPubXxn10ETFbpNPQAw+BABvns?=
+ =?us-ascii?Q?m1xCcuU3MII+Boyk7eLmudTn+cCE8B4yL6vNP7kT43Ya3LxtYe/s8yBIUEO+?=
+ =?us-ascii?Q?Jfp36qmpRnx1NdyXujqgD6K856Ez1d0xdAIL32kMqy4KtmhVjZJ2aT0e/JjN?=
+ =?us-ascii?Q?Z/nbddLI7XPa/a/0MVPlsmYp7WxjU7cXVfIGMl+Vu1Wb0hSb2Pb3+Wm3X/mJ?=
+ =?us-ascii?Q?GxsIix8YQ372tApPME27W5DdUXr2SEeBHRbieIpOIYdURCHtj4/+3nWa7cIC?=
+ =?us-ascii?Q?Mx152BBo7L/cke5ZDrIEvTzSxoWlpPlxIkxlQyaM7CHKuXn/WJ8Mc8CfbPSK?=
+ =?us-ascii?Q?hosK0tnNCymD6hKnTgrhthJmkzb7DvDYuph7bHVI/Mo0kQHkd6A48Z18jnU2?=
+ =?us-ascii?Q?B+WQy39qvMWzpSsYSh9fnQNzeMhhqDGaHweFGRPyRU/8jSaf7fMgsZOQzyFv?=
+ =?us-ascii?Q?9JFJSSdR3Vzyzf2oFdZprlRpr71eTy/+DxrHFUHbm2frWJ21qiU3DG/QkqcU?=
+ =?us-ascii?Q?wQMtr71AIJ5onV6+1rNUR6Pv8je+tZ0/n1S2qh/+aOsVMwk44X/Fg+zBDGEm?=
+ =?us-ascii?Q?RgBYR0gOryyv1vMit1+DG9PDbhtcgB9eH8QvXspmoCzzsA/zOGEKhGx+ajYM?=
+ =?us-ascii?Q?lv9/b3i75Zs7UIpUCwqrWw5mIeL6gdm9MsUjoNvjAcUF1Oqf+pDi/lUcLNfV?=
+ =?us-ascii?Q?4Fd+OAt8wt7sL9OxT9gZPMJcXObrDzYAH/DVMiVR7EaqwD5vXKWmypRRd2nh?=
+ =?us-ascii?Q?ejDneEeoWSxIi4+HRk0Hd1CcMT8+gJRmDCg/y2/WckyU/Rs6HL9B55nkiUeY?=
+ =?us-ascii?Q?xPSFpVtmt3FCSF0BLww8Dr3P33ZaoA4sGzfurtbfaWkdWu6IN58urkc7UEr4?=
+ =?us-ascii?Q?LfJFlyKQHbHp5UheTivvIBPzDKRRTeEeJNM3QhHtlIPcBPQiLRlOUoWZt05X?=
+ =?us-ascii?Q?Wa00GGJkuwhzLQIW6l/RRb0cb9HD6rt123h2Oha6UGxEdWRPQW3Wzo6UheDv?=
+ =?us-ascii?Q?Og=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
+	b9NxVbyIYBT+kBrTwx+1vUzUE5X78r0a9tVuARLpPgVwbGnHL3pxAbYZACLSMrZHOHjjMAkJPNCHgO47UDJZsiW44//HWGR1fxH4I5J8UeIYAv2iyo4urdFUfW2f6O3ZetCrxpqM4g3BTGyc1zXE6ymSna1o9c23fM0+qCJZfzCdSdryfum0r7ffQED8g29leur7BhNlwMT8fgPIakf5W/29/CosM3q5Ta7ly+6mf2TL4+nYSfjsx8r7iAr++QbndyJmSDfcGpZaKXYrioy0RpfusmJDqOiNWUW62277beC5EFZKaa3BIPzAWD0KFMYO2Rqv6/e81v2Py2EPwkdAzelzqo2W2uIMWhQIzTZW8yv7N+My36WKdP9RpZaCks+2IWYa889mf1cMEXK4K10m63KDwV4XvbcVtbJtMsn+vB2FiARvDfEzELqFn/mdA/4IICouKZn3uOyHouvlvDny82gh1h9ISzsVCcr2328FLcCNtBK30GJEuVgyWJUFva0GteTjwch+h/Sbjybqf9MuiBphoZAl6mI4Z9l4bkbvLHjSk+Uvi0DTmc8pV0T8dXH7Q+Y8crn4eLwDSLfJhdM7g25rsNWJkaK/KScZKLUJMPwfxcYHfx7t4xbec5O6oU1a+6hM0cPIp74JniI8rapIX/GFD87Qttv5RMoxOAwXJZZBfetzpM6snAtvFJ7VqelnEQZEMhNlLuHCkkz6ofmkixYSW4k3pW30+hRhBwghEmfi+e5tMgFmRAMIaGr+bR4JAEaf4EmiNFN63rZJJIjlPoNadpv4ItFdZp+GkTzmAiQYSwG0Bikdkr5L8tAieMATDjacww4jQm3ziuGBrtRN9g==
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 51c577a5-c044-42c6-c049-08dbf02254ff
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR10MB6590.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Nov 2023 14:57:26.3391
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: oscnFC/A1QmMRXaMtUGjA0J1ikBeSB8ntG6b7G+lT1gvlgk66uqUvAP+XDIoquqsYz1W4bFD6ycq8oKNihycEQ9y2w9BBJTh6N9dh7onMqc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR10MB7280
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-28_16,2023-11-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 malwarescore=0
+ suspectscore=0 spamscore=0 mlxlogscore=999 mlxscore=0 phishscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311280119
+X-Proofpoint-GUID: 0VqdsXHR5dpuAGUYYIzgMfrOWKH1KIGc
+X-Proofpoint-ORIG-GUID: 0VqdsXHR5dpuAGUYYIzgMfrOWKH1KIGc
 
-Hello everyone,
+Module symbol names can get overwritten by live patches or ksplice in
+odd corner cases, so that the pointer no longer points within the string
+buffer. Gracefully fallback to reading the string directly from the
+kernel image in these cases, to avoid possible segmentation faults
+reading outside the bounds of strbuf.
 
-A follow-up here, I went through the livestream video and found the
-timestamp for the start time of each video. The videos are not edited
-and they are strictly just whatever video went out on the livestream.
-The quality isn't perfect, but from what I can see, the audio is
-satisfactory and the main point of the video (the slides) is good.
+Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
+---
 
-I think there will be edited videos that come out in the future, however
-for now, you can share these links with anybody who may have missed
-talks and would like to catch up.
+Hi folks - I encountered a segfault on a vmcore which had a module
+symbol that had gotten its name overwritten by a ksplice (live patch).
+It seems like there's not a guarantee that module symbol names _must_
+live within the same symbol buffer, and there is even logic to prevent
+reading too much data into strbuf in those cases.
 
-The Taming of the Kernel Dump
-Petr Tesa=C5=99=C3=ADk
-https://www.youtube.com/live/68EBBgEltXA?t=3D16854
+This patch simply ensures that symbol names which start outside of the
+strbuf which we copied, are read directly from the kernel image, rather
+than indexing past the bounds of strbuf. I encountered this in
+store_module_symbols_v2() and have tested it there, but I replicated the
+code to the other versions. I will try to test it out on the other
+variants as well, but I thought I'd share the patch now.
 
-drgn Writing to Memory and Breakpoints, Safely in Production?=20
-Omar Sandoval
-https://www.youtube.com/live/68EBBgEltXA?t=3D18665
+ symbols.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-Beyond DWARF: Debugging the Kernel with Drgn, BTF/CTF, and kallsyms=20
-Stephen Brennan
-https://www.youtube.com/live/68EBBgEltXA?t=3D20451
+diff --git a/symbols.c b/symbols.c
+index 176c950..e70dd69 100644
+--- a/symbols.c
++++ b/symbols.c
+@@ -1704,7 +1704,7 @@ store_module_symbols_v1(ulong total, int mods_installed)
+ 
+ 			BZERO(buf1, BUFSIZE);
+ 
+-			if (strbuf) 
++			if (strbuf && (unsigned long)modsym->name - first < strbuflen)
+ 				strcpy(buf1,
+ 					&strbuf[(ulong)modsym->name - first]);
+ 			else 
+@@ -2080,7 +2080,7 @@ store_module_symbols_6_4(ulong total, int mods_installed)
+ 
+ 			BZERO(buf1, BUFSIZE);
+ 
+-			if (strbuf)
++			if (strbuf && modsym_name(syms, modsym, i) - first < strbuflen)
+ 				strcpy(buf1, &strbuf[modsym_name(syms, modsym, i) - first]);
+ 			else
+ 				read_string(modsym_name(syms, modsym, i), buf1, BUFSIZE-1);
+@@ -2148,7 +2148,7 @@ store_module_symbols_6_4(ulong total, int mods_installed)
+ 
+ 			BZERO(buf1, BUFSIZE);
+ 
+-			if (strbuf)
++			if (strbuf && modsym_name(gpl_syms, modsym, i) - first < strbuflen)
+ 				strcpy(buf1, &strbuf[modsym_name(gpl_syms, modsym, i) - first]);
+ 			else
+ 				read_string(modsym_name(gpl_syms, modsym, i), buf1, BUFSIZE-1);
+@@ -2456,7 +2456,7 @@ store_module_symbols_v2(ulong total, int mods_installed)
+ 
+ 			BZERO(buf1, BUFSIZE);
+ 
+-			if (strbuf) 
++			if (strbuf && modsym_name(syms, modsym, i) - first < strbuflen)
+ 				strcpy(buf1,
+ 					&strbuf[modsym_name(syms, modsym, i) - first]);
+ 			else 
+@@ -2529,7 +2529,7 @@ store_module_symbols_v2(ulong total, int mods_installed)
+ 
+ 			BZERO(buf1, BUFSIZE);
+ 
+-			if (strbuf) 
++			if (strbuf && modsym_name(gpl_syms, modsym, i) - first < strbuflen)
+ 				strcpy(buf1,
+ 					&strbuf[modsym_name(gpl_syms, modsym, i) - first]);
+ 			else 
+-- 
+2.39.3
 
-When kdump is way too much
-Guilherme Piccoli
-https://www.youtube.com/live/68EBBgEltXA?t=3D24102
-
-Minidump to debug end user device crashes
-Elliot Berman
-Mukesh Ojha
-https://www.youtube.com/live/68EBBgEltXA?t=3D25803
-
-Kernel Livedump
-Luk=C3=A1=C5=A1 Hru=C5=A1ka
-https://www.youtube.com/live/68EBBgEltXA?t=3D27556
-
-Thanks,
-Stephen
-
-Stephen Brennan <stephen@brennan.io> writes:
-> Hello everyone!
->
-> Thank you for spending part of your morning with us on the first ever
-> Linux Kernel Debugging MC. It was really exciting seeing a packed room,
-> the turnout exceeded (my) expectations, as did the quality of the
-> speakers and discussion.
->
-> I was taking notes in the "Shared Notes" section on BBB, and Guilherme
-> took notes during my session. There are definitely conversations that I
-> missed as I was juggling some other responsibilities, but I think the
-> notes are a good place to start if you want to refer back to what was
-> discussed during a particular session. I've copy/pasted the notes into
-> the message below, and I'll attach a PDF of them as well (though, I
-> don't have high hopes that vger will let that through).
->
-> Once again, a big thank you to the attendees and presenters!
->
-> Stephen
->
-> -------------------------------------------------------------------------=
--------
->
-> Taming of the kernel dump
-> Petr Tesarik
-> Talk about libkdumpfile.
->
-> Motivation: identifying kernel versions for unknown dumps.
->
-> Goals:
-> - Fast, broad support
-> - Support other OS than linux
-> - Working within the kexec kernel.
-> - Simple API - pull requests welcome :)
->
-> Now, supports 5 architectures and a bunch of core dump formats.
->
-> Support zoo
-> - supports 5 architectures, but compared to crash/makedumpfile, it suppor=
-ts far fewer
-> - Supports quite a range of core dump formats
->
-> Adding support for architectures is well-documented based on the recent a=
-rchitecture addition work.
->
-> Wild ideas:
-> - gdbserver - actually working!
-> - Write support
->     - API design is an interesting problem
->     - It's on the agenda, not actively worked on.
->
-> Questions:
-> - Omar: can we do a better job sharing page table support between drgn an=
-d libkdumpfile?
->     - Yes, it would be nice to do, but adds a hard dependency on libkdump=
-file
->     - A pull request was offered :)
->     - Open question: userspace address translation (how to support multip=
-le userspace pids)
-> - Stephen: any thoughts on making it easier to do the "linux support" per=
--architecture (e.g. finding page table base)
->     - It's an open question, most of the time is spent focusing on suppor=
-ting what's in the wild already.=E2=80=8B
->=20=20=20=20=20
-> -------------------------------------------------------------------------=
--------
->
-> drgn - writing to memory in production
-> Omar Sandoval
->
-> Starting with an introduction to drgn - stack traces, helpers, variable a=
-ccess, etc. However, everything in the demo is read-only. RW features would=
- be nice:
-> - write a variable?
-> - set a breakpoint?
-> - Would be great for development workflows, e.g. a gdbstub via QEMU
->
-> API Proposal
->
-> - Low-level: `prog.write(address, bytes)` - basic write function
-> - Object-based: `Object.write_(value)` - drgn can take care of converting=
- a Python value into the correct type format, and determine address+size
-> - Up for debate, these are just proposals
-> - Breakpoint:
->     - `prog.set_breakpoint(address)`
->     - `prog.set_breakpoint("function_name"`
->     - `prog.set_breakpoint("file.c:lineno"`
->     - Add an API such as `prog.get_thread_event()` to wait for breakpoint=
- events.
->     - Event (thread) would have a `resume()` method.
-> - Breakpoint: API suggestion: frequently I only want breakpoints to be hi=
-t if they are called from a specific function
->     - Could be done via Drgn APIs without needing to add support
->     - but if it was a common and slow operation, could add a fast path (e=
-.g. BPF to filter)
-> - Suggestion: watchpoint support?
-> - What about error injection?
->     - E.g. set breakpoint on the `ret`, overwrite register value.
->     - That would need to have a new item in the API for overwriting regis=
-ters.
->
-> Why In Production?
-> - There have been several issues where you could easily mitigate a critic=
-al error, if only you could overwrite one little value! (Concrete example a=
-t Meta w/ btrfs)
-> - Need to be very careful about these sorts of things:
->     - Race conditions are a thing
->     - Not a replacement for a live patch
->
-> How to???
-> - Memory writing is not supported by `/proc/kcore`, but it is via QEMU in=
- development. What about production use cases?
->     - Return `/dev/kmem` :P  - probably not an option, we've all celebrat=
-ed at its funeral.
->     - Custom kernel module? (That's basically `/dev/kmem`). This is not m=
-uch better...
-> - KGDB - already provides breakpoints, and memory writing. Provides a gdb=
- stub.
->     - Not really designed for the live system - stops every CPU.
-> - Question: is it really bad if KGDB stops all CPUS?
->     - Then, drgn can't run... It's great if you're running from a second =
-machine, not great for production.
->     - Follow-up: what if you set a breakpoint and then Drgn calls a funct=
-ion that hits it?
->     - Omar hopes to do this from the same local machine.
->     - kprobes? Would still need a way to call out to Drgn.
-> - Question: what about lockdown?
->     - Clearly this mechanism should not try to work around lockdown. It s=
-hould be disabled by that.
-> - Access control?
->     - Seems like a user/capabilities approach would not be sufficient, gi=
-ven the community's current stance on `/dev/kmem`
->     - What if we have a keyring that would sign drgn and the script?
-> - Q: What about translating breakpoint code into BPF?
->
-> -------------------------------------------------------------------------=
--------
->
-> Beyond DWARF: Debugging the Kernel with Drgn, BTF/CTF, and kallsyms
-> By Stephen Brennan
->
-> - Stephen works on Linux Sustaining team
-> at Oracle, investigating customer bugs
-> (investigate vmcores rom customers, etc).
->
-> - Debugging with a customer is hard!
-> A frequent problem is having the customer
-> to install debuginfo pkgs. Internally,
-> it's easier (shared debug symbols server).
->
-> - Debuginfo could be a showstopper for some,
-> like Arch Linux doesn't even have by
-> default debug symbols for kernel.
-> In other distros, it's a custom process,
-> distro-specific. Would like that it was
-> easier to do it...
->
-> - DWARF is big - for vmlinux alone,
-> 400M-1G. Good features, but a big "price".
-> Majority of Drgn features though, rely
-> on 3 things: symbol table, type info and
-> maybe (for some cases), stack unwinder.
->
-> - Well, kernel already has a symbol table
-> and reliable stack unwiding (frame ptrs or
-> ORC!). It also could come with some type
-> info beyond DWARF (BTF!). Oracle kernels
-> come with CTF (to be discussed ahead).
->
-> - So, goals: mix&match approach for drgn =3D>
-> symbol tables (built-in kallsyms, ELF symtab),
-> modules exports.
-> Debuginfo: CTF / BTF
-> ??? 3rd point
->
-> - Examples
-> 1) DWARF-less: kallsyms, FP/ORC
-> 2) vmlinux available but no modules: modules
-> exports, BTF
-> 3) ??
->
-> - What is CTF? Compact C Type Format
-> Built-in to GCC/GDB/binutils, put in
-> .ctf ELF section. Shouldn't be stripped.
-> Kernel CTF: special case, linked and
-> placed as standalone file, packaged with
-> kernel usually.
->
-> - Next steps
-> (1) Pluggable Symbol Finder: one thing you
-> can't do it right now is plug an "additional"
-> symbol table (proposal under review). An
-> example was provided in python.
->
-> (2) Implementing kallsyms: to be able to
-> plug kallsyms on drgn (under review/draft).
-> It's a C implementation, could either
-> read /proc/kallsyms directly (given user
-> has permissions) or load from a core
-> dump, by reading the data structure.
->
-> - Issues:
-> (#1) No symbol sizes: some info on kallsyms
-> (like saying a symbol is Dynamic and Global),
-> but no size info. Percpu makes it harder,
-> also overlapping symbols (x86 entry).
->
-> (#2) Kallsyms enconding changes: "recent"
-> change that increased the symbol name sizes
-> (Rust might have big ones, due to namespacing).
->
-> - Back to steps:
-> (3) Add CTF implementation
-> Drgn has 2 abstractions that are pluggable:
-> type finder and obj finder. Kernel CTF has no
-> symbol table, but maps symbol names to their
-> types. Implementation not so simple though.
->
-> (3b) Add BTF implementation? After CTF is done,
-> there's an old/stale BTF implementation by
-> Stephen, maybe gonna revive it (depending
-> on if there's going to be users).
->
-> Discussion questions:
-> Would you use CTF/BTF in drgn?
-> How do you manage your debuginfo?
->
->
-> Questions:
-> [audience 1]: About the percpu, no addr is that small,
->  this is an offset from the base (in the example)
-> Stephen: However is implement in arch, drgn must
-> know how it works.
->
-> [2] Smaller runtime debuginfo would be
-> great, a pain to download it. What you'd give
-> up by going this path?
-> Stephen: one big thing that is lost is
-> source code mapping, also lose some detail
-> regarding function unwiding (nested inline
-> function calls, for example), also lose variable
-> names.=20
->
-> [Philip]: One thing that would also be interesting,
-> is for OOT modules (that vendors don't provide
-> debug info).
->
-> [4]: Has anyone tried to make dwarf symbols
-> smaller?
-> Stephen: very good question, Omar might give some info.
->
-> Omar: If you control debuginfo, that's feasible. But since
-> it's under distro control, they include it all.
->
-> [the person that did the question]: the question was more
-> like if we could stop enabling it all and restricting
-> a bit what to include.
->
-> Omar:??
->
-> [5]: Part of the issue is that, when you
-> build the debuginfo,=20
->
-> Omar: So, you mentioned CTF is not included in the kernel image.
->
-> Stephen: yeah
->
-> Omar: that is one thing BTF has compared to CTF, right?
->
-> Stephen: yeah
->
->
-> Omar: you mentioned debuginfod, drgn
-> also supports that - we could support
-> for the kernel as well, but there's the
-> download time (convenience)...server
-> side works took 3h
->
-> Stephen: RPMs are not the greatest format for seeking to random files wit=
-hin.
->
-> -------------------------------------------------------------------------=
--------
->
-> When kdump is way too much
-> Guilherme Piccoli
->
-> Motivation - steam deck - based on Arch linux. Want to capture logs on pa=
-nic!
-> - kdump is a good option, but but heavyweight
-> - pstore is an option?
->
-> What to collect on panic?
-> - vmcore
->     - It's really big
->     - Contains memory contents, might be too much information
-> - dmesg
->     - This is good, but would like to have more information.
->     - Could have userspace processes send more data as well? Include user=
-space logs.
->
-> Infrastructure (kdump)
-> - Most are familiar, reserve memory and load a backup kernel.
-> - Reserved memory is difficult to determine! `crashkernel=3Dxx`. Normally=
- >200MiB now. Difficult to estimate. Users would also like to be able to us=
-e that memory.
-> - Size of the vmcore can be quite large, which can be problems for the us=
-er.
-> - There are privacy issues with kdump vmcores. Risks after rebooting with=
- the privacy.
-> - Plus, there are risks during the kexec operation, (PCI devices, etc).
->
-> Pstore - lightweight ways
-> - Saves the kernel log to persistent storage backend (RAM, UEFI, ACPI ERS=
-T, block device)
-> - Common for embedded devices, steam deck, chromebook
-> - Benefits
->     - Can use it for ftrace, dmesg, pmsg (userspace messages!)
->     - No userspace memory reservation (`crashkernel`). Uses UEFI backend.
-> - Drawbacks
->     - Can't store a full vmcore.
->     - Runs after panic notifiers (for now)
->     - Difficult configuration (for now)
->
-> New tool: kdumpst
-> - For arch linux, available in AUR already. Allows to configure vmcore or=
- pstore.
-> - Pstore is the default, only supports ramoops, but planning to support U=
-EFI.
-> - Used by default for Steam deck, but would like MOAR LOGS.
->
-> `panic_print` - prints additional data at panic time
-> - Can print each task's status, other info. (I missed some of the items).
-> - Runs after the panic notifiers :(
->
-> What are panic notifiers?
-> - Callbacks to be executed on `panic()`
-> - Any driver can register any one for any reason.
->     - Some are necessary!
->     - Some are risky
->     - The kernel has `crash_kexec_post_notifiers` which gives the option =
-to run kexec after panic notifiers. But it's not a very flexible solution.
->
-> Discussion:
-> - Is pstore risky?
-> - ramoops limitations
->     - There's a risk of FW corrupting memory on boot
-> - Panic notifier risk?
-> - Not enough data still? even with `panic_print`
->
-> Q&A:
-> - Stephen Brennan: how to keep `panic_print` safe? trylocks?
->     - yes, try locks
-> - Grant Grundler (Google) - we do use pstore, there are still privacy con=
-cerns and we're careful. There are two types of panics - precise (fault, e.=
-g.), and imprecise (hung task panic). For imprecise, we would like more inf=
-ormation: how to get it?
-> - Omar: maybe you could have BPF programs for collecting more specific in=
-fo? When a customer crash happens, if you need more info, write a BPF progr=
-am to collect it and send it out to your devices, so next crash will includ=
-e it. Long debug cycles, but worth it?
->
-> -------------------------------------------------------------------------=
--------
->
-> Minidump to debug end user crashes
-> Mukesh Ojha & Elliot Berman
->
-> Problem:
-> - for development, phones dump the full memory image, ~ 12GiB or higher, =
-it's getting out of hand.
-> - minidump is an option to nominate what memory regions (e.g. ARM specifi=
-c) you want to store.
->
-> Alternatives:
-> - kdump
->     - Uses a lot of memory reservation for the crashkernel
->     - Need two kernels
->     - Time & space overhead.
-> - pstore
->     - Less overhead, but ramoops still needs a reservation
-> - minidump
->
-> Minidump Overview
-> - Firmware enabled
-> - User writes a table of contents defining what entries you want, each en=
-try has an array of regions to dump.
-> - Firmware uses this to create an ELF dump file with each entry/regions i=
-ncluded.
-> - Firmware can have a limited number of regions in the past, however it s=
-ounds like now the limitations are less.
-> - The hope is to allow in-kernel users to register their structures or cr=
-itical information to be included as a region/entry.
-> - Patches are on v5 upstream.
->
-> Remote processor support
-> - I missed much of this but refer to slides.
->
-> Info we'd like to include
-> - The initial/boot dmesg logs
-> - MMIO tracing, IRQ statistics
-> - Run queue information
->
-> Minidump is not just for kernel crashes, you can trigger it for non-kerne=
-l issues.
->
-> Feedback! Can it be used outside Qualcomm? Useful for other SoC vendors, =
-or other use cases?
->
-> - Stephen: the idea of using opt-in support for kernel data, is very inte=
-resting compared to makedumpfile's filtering approach. Does it support user=
-space registering information?
->     - No, the userspace support was mentioned in a different context for =
-remote VM.
-> - Grant: two questions
->     - Why is it lighter weight than pstore?
->         - Just that ramoops needs copying, whereas this doesn't.
->     - What are examples of non-kernel crashes?
->         - Sometimes chipset errors, security regions, etc.
-> - Omar: we'd like to avoid more dumps that look like ELF but are missing =
-critical data, could you include VMCOREINFO note?
->     - Yeah, we'd be interested in looking into it.
-> - (Missed the question asker's name): Do you interpret the dmesg structur=
-es, or do you just copy memory data?
->     - Copy memory data. Users of the dump will need to know the kernel st=
-ructures, and so know the kernel image as well.
->     - Omar: VMCOREINFO helps with knowing the kernel version.
-> - Guiherme Piccoli: your firmware writes to SD, do you need MMC drivers i=
-n order to make this work?
->     - I missed this answer
-> - Hari Bathini: Is the primary motive with minidump to avoid having to re=
-serve memory that is needed for a full kdump?
->     - Yes, among other things.
-> - Omar: do you register the physical addresses of the task structs to be =
-debugged?
->     - This is something we want to be doing, but haven't implemented yet.
->=20=20=20=20=20
-> -------------------------------------------------------------------------=
--------
->
-> Livedump
-> Lukas Hruska
->
-> What is livedump?
-> - Create a consistent image of memory, but without needing to stop the ma=
-chine (panic, kdump, reboot, etc).
-> - Already introduced by Yoshida Maasanori in 2012, this was used as a sta=
-rting point. Thank you for the work!
->
-> Features:
-> - You don't need to restart. Uses copy-on-write to handle writes to froze=
-n pages.
-> - Currently x86 only, but will extend
->
-> Implementation: split into parts.
->
-> wrprotect
-> - Makes page frames RO.
-> - Only supporting 4K pages right now
-> - Need to store the previous page frame permissions, to ensure that we re=
-store the correct page permissions later.
-> - Can split large pages into smaller ones in order to do fine-grained acc=
-ess control.
-> - Registers a custom page fault handler. Gets a lot of page faults initia=
-lly!
->     - For protection errors, can check whether if the error is because of=
- our updated permissions, or if it would have happened for the original pag=
-es as well.
->
-> Dumping
-> - Thread goes through each page and dumps it. If the page has already bee=
-n dumped, skip.
->
-> Queue Size Problem:
-> - I/O might cause page fault which requires I/O, risk of recursion.
-> - Setting a larger queue size can help.
->
-> PF Handling Variants
-> - Small inconsistencies in data may be ok.
-> - Can do:
->     - 100% consistent variant, but would cause disruption and performance=
- loss
->     - More inconsistent option with minimal impact.
->
-> Todo:
-> - vmap area support: needs to handle synchronization
->     - Other issues too.
->     - Omar: most debuggers don't actually need/want the vmap region dumpe=
-d, as long as you have the corresponding phys/direct map data. You could sk=
-ip this altogether and let the debugger handle the page table translation f=
-or vmalloc.
-> - Interrupt instead of stop-machine state.
-> - Performance analysis for splitting hugepages -- there's likely regressi=
-ons here.
-> - Storage support
->
-> Q&A:
-> - Stephen: Dump filtering like makedumpfile? Do you do this yet? Could sa=
-ve a lot of work.
-> - Stephen: For I/O recursion issues, can you set a flag during I/O and ha=
-ve "emergency reserve" space to use in recursive page faults?

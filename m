@@ -1,166 +1,242 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED8C194A5F;
-	Fri,  7 Jun 2024 15:14:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717773248; cv=none; b=dNJLzH2/5BUtnsCTIuIWcS8DKqzW9K6exr0inWS9QCOrGkjAppd3KkzpzEU2fprMmWJDaH8jTgH2cHUSQHwTnr92K7wdq/qzWEAkJk3KsYuq2LmRkcuOp+TzdjmrG9sCOAskQ3wTwOYkHsCJi1F6XJ+h7OtVK5aBoOndOvYM/dY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717773248; c=relaxed/simple;
-	bh=bOlBKkHFjo5WOPdbthyGW/B7AwUCWnxawK0nxHrgEs8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fxze7mxRId3IEgxmMS0aK2qno5ZacEUk0Qps12+Cmo3tWVDKqBcQgkajEhWVIj4RTGLp7DJ+7XV+UEw5aGgdqLmWQns2efla2HBdMVioaF8tVWfZjaRJehZNlcuteILomRcHvRHAgP8eSQmPM7IQw+Q1Jx3LMCdN5fuQ9+mnNc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kBeaLN9N; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B34B51552FE;
+	Fri,  7 Jun 2024 20:30:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717792243; cv=fail; b=NXK0Go2AgeAbS5xEbTCjN6Pc6yyGflqftz1JA9NDM8+Z0JFKGM+llFRZJULfOcc9644P8hfg85XbtP50R9uQaOu1LBahqeg3yS6eaFBQR0kUm0VMFIei+A/GALOPt6ktuQyYURlZLnDcXL77Re+pdYGP43s0w6Q/WaD9y1D/6+k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717792243; c=relaxed/simple;
+	bh=s5vwL0gIyqStJgJdeYn0Ll0U3tjtmKTGJFNT85ckHs8=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=pq0C412JviapBnvZq0mM5DOHjKpIXYoPCqF2ukOBw+qwZtjUDeJZ2IHX58RPpgTG3gAbGa+fnEI4TJuwQ+EKmgGQeYXpSCjDDrxTjMLNZXAA5BSWjGNl+h9H2JK3OPgOPgiz1/OrS1N1zNwm+A2NxUvDiVw4Mm4hoqgSjIPlAvI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=LHEeGxj0; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=WKJ/mTYt; arc=fail smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kBeaLN9N"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717773247; x=1749309247;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=bOlBKkHFjo5WOPdbthyGW/B7AwUCWnxawK0nxHrgEs8=;
-  b=kBeaLN9Ni4PeDylNGA4MaNLPnw5piSdXOyGTaPp7og/JLrrEMxhc0lH5
-   7XZEQZxR+SIaB49ywUTcR3YwfnteivVNmRzeo/jUh2fuPymxk9tKe4mGt
-   q4gKoSK/FkWOLJ/zxbAs7vdldIZa0L1lpJfl3TeUi1mOxBhpj8RtdQAVt
-   WgzPnE14iUZP9nOJS8Qimy5xy07WM1xNyIMxlngAgq8GxcAfwMfiik0C4
-   YvA6qe8DpXPhrBSyz9fSi17AHurV0ZzdLuhqpiYeLieVW7BMwBzZNO78D
-   dP9K4cMoFQC/24Sb3bW+vb9p+OiOTrMUxypNAUwX/VPQNWMMsFUM1lkk3
-   w==;
-X-CSE-ConnectionGUID: jGhFwBmcSoqmprWDbeGL0Q==
-X-CSE-MsgGUID: 8e6gyLOWShK471NMDzajCA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="37027953"
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; 
-   d="scan'208";a="37027953"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2024 08:14:06 -0700
-X-CSE-ConnectionGUID: pzyuSpVlRZGfY/++XMrl8w==
-X-CSE-MsgGUID: 6CmrAG3XR06+3ESGqCwpvA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; 
-   d="scan'208";a="43280270"
-Received: from lkp-server01.sh.intel.com (HELO b4d3d4be9bbf) ([10.239.97.150])
-  by orviesa005.jf.intel.com with ESMTP; 07 Jun 2024 08:14:03 -0700
-Received: from kbuild by b4d3d4be9bbf with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sFbI0-00001O-1K;
-	Fri, 07 Jun 2024 15:14:00 +0000
-Date: Fri, 7 Jun 2024 23:13:40 +0800
-From: kernel test robot <lkp@intel.com>
-To: Stephen Brennan <stephen.s.brennan@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
-	Omar Sandoval <osandov@osandov.com>,
-	linux-debuggers@vger.kernel.org,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Stephen Brennan <stephen.s.brennan@oracle.com>,
-	David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
-	Hao Ge <gehao@kylinos.cn>, Vlastimil Babka <vbabka@suse.cz>
-Subject: Re: [PATCH v3] mm: convert page type macros to enum
-Message-ID: <202406072244.8rZnMpsR-lkp@intel.com>
-References: <20240607001116.1061485-1-stephen.s.brennan@oracle.com>
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="LHEeGxj0";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="WKJ/mTYt"
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 457Cuc0Q020071;
+	Fri, 7 Jun 2024 20:30:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc :
+ content-transfer-encoding : content-type : date : from : message-id :
+ mime-version : subject : to; s=corp-2023-11-20;
+ bh=pbyrtduys5jlGj7QioDhK1ww5y69hPgjfX1hvgHBIO8=;
+ b=LHEeGxj0CnEVshJ2xMvdb8VNrR65Uv2o8Y/pPPG3LPL3ekilcYrSok/HV98xSPXyDOJq
+ biqiQCa1fOFtrS28ryt9lv2fsM6Nm33xe1Rg3Oghcmznq4k58g+qT8kj8UTiHVjdmnKe
+ tP8+7TRTmW1+UGeqm6f5su6fPnKcNzL6hynvvBHdMqAE/CLVB++X/OffVVAiLjt49iTA
+ uFavyi+Bc6nuWv+f+wgepVVWyJMly8tRy4B99xRVuAR2M4uRBdb3lp1GOZL2i0r5SnWO
+ VOB8Q4m1U5deCIdLkZHV8LoUUSX13ianswOvJpmwWY/55eqN2+d0WhR8oK/Do3FSb3bH bw== 
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3yjbsyedwu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 07 Jun 2024 20:29:59 +0000
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 457J0kRW016146;
+	Fri, 7 Jun 2024 20:29:58 GMT
+Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10lp2041.outbound.protection.outlook.com [104.47.70.41])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3ygrsexgjt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 07 Jun 2024 20:29:58 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=UgeWYIA1ulJcdLxf2E4fBhZbgEYWL7NlwM8rdpbi5ECoeEPjGOJsbspeO1FLUOBVFMR0vFsh4tNHaQQ+2+kJL5UK7veqvADNLMkG5Y+OpQoA/PZeTJW3N7EzsIwUd/jw4L5RWFN4O7KpFcIZaDvljbN7IwYhi4760pzAfNR6dyZZBqQyxa9d0xv4T6qrDh6Q2wZDwXlqKs6IU1VPYT9FeNdPNQyPX0pWbWdo/krtR94HxyBRnxC3jpwNEzckRbOr4ypS4iVEl8bROlsnx/6m1kYCqHcINbhplF3obW4ydo6344wOFV6tLg4LKMOFO0b6lAF7V3cxfErFIhFqXMuvCw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pbyrtduys5jlGj7QioDhK1ww5y69hPgjfX1hvgHBIO8=;
+ b=b7LYbAM30vse7Luz9uvEt0a11yvAbOKl1O0aiI1WN9WjbEb9bXDZtKDLpF9bM3Ds2/XKc0kDoPQFk46oFUE8RKunhI0x3Tivm9YM/cV2Wry0x+o9nGRyqJ8dUp0d6HQu32dUXQY5338IaopC47eJntRXTiwxZ5ZtibjnMBb1enxhj9DtyVbRCvCQK9/HkAuKHvmIHDEWfA8d3YzUPTOReMK8OWZ53pAsTcVVExGvKZhr7Hv1K7YXIlXo/kAGT6SWQkPP3kX7E4lxMueT80ej6wak13M054lEoCky3KIsQp5kQRW8DNeiCY/okNbSOcdYLx4ErZZpLGPRIUPp4FW/5g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pbyrtduys5jlGj7QioDhK1ww5y69hPgjfX1hvgHBIO8=;
+ b=WKJ/mTYtYlopAbdDNtlvz8W26Z4p1ob6z7yp4GcQ4beWPAl8s3rclkOAxVKGclJF/uxs3H+UkJ7r8nYZyMYgsRLwCBeuDLDQkO+BGHe/sU+wQJSEdYI30EU5rKMuxGObNlB3ZUzIwRt7Id13VYcxgiqP8rBOlWYzW8KfnvbA1N8=
+Received: from PH8PR10MB6597.namprd10.prod.outlook.com (2603:10b6:510:226::20)
+ by DS7PR10MB7251.namprd10.prod.outlook.com (2603:10b6:8:da::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.33; Fri, 7 Jun
+ 2024 20:29:56 +0000
+Received: from PH8PR10MB6597.namprd10.prod.outlook.com
+ ([fe80::6874:4af6:bf0a:6ca]) by PH8PR10MB6597.namprd10.prod.outlook.com
+ ([fe80::6874:4af6:bf0a:6ca%3]) with mapi id 15.20.7611.030; Fri, 7 Jun 2024
+ 20:29:56 +0000
+From: Stephen Brennan <stephen.s.brennan@oracle.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, Vlastimil Babka <vbabka@suse.cz>,
+        Stephen Brennan <stephen.s.brennan@oracle.com>,
+        "Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+        Omar Sandoval <osandov@osandov.com>,
+        David Hildenbrand <david@redhat.com>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Hao Ge <gehao@kylinos.cn>, linux-debuggers@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v4] mm: convert page type macros to enum
+Date: Fri,  7 Jun 2024 13:29:53 -0700
+Message-ID: <20240607202954.1198180-1-stephen.s.brennan@oracle.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MN2PR19CA0019.namprd19.prod.outlook.com
+ (2603:10b6:208:178::32) To PH8PR10MB6597.namprd10.prod.outlook.com
+ (2603:10b6:510:226::20)
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240607001116.1061485-1-stephen.s.brennan@oracle.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR10MB6597:EE_|DS7PR10MB7251:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0b20a55d-360e-45f6-89bf-08dc87309857
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230031|366007|1800799015|7416005|376005;
+X-Microsoft-Antispam-Message-Info: 
+	=?us-ascii?Q?UKb6fXqgaJXlYvW9PwAtkPIxrkRpGJ0ejFf2HEApoiwvvkhTlMqF4o5FqvuV?=
+ =?us-ascii?Q?uDulWJZEm9fCgTWB37m8IOJXBb8Ml8IBN4NlBCoYa++Ox/wkxk5HbWFyBnOM?=
+ =?us-ascii?Q?pffjoNWorc7JQAU0hesJrXXOxLGAfMmNUPlO535t0nXh4QlsFBYQ3BznuRaQ?=
+ =?us-ascii?Q?lozlkLEVUOyVRRWK/fDtDd5NTZCP8rTch6As856i46m75TBGlqbBUDyFAC4f?=
+ =?us-ascii?Q?p2JvJ+GpNzpI6xP3Fn30SNEyPvTJIET8XGHAEOqzjqzojIlYgNM0d+HncxKq?=
+ =?us-ascii?Q?RjHct7gDQPWz8PknlPKSajKNZ3Bv2ma6b9aTZs5SslFhe6CCqoqNcFEjwm0e?=
+ =?us-ascii?Q?UaQXZUdZqRtM+acONmpo2Kq412EYexDN85nyt/Htiqqu8nIALtM3E30RXZYv?=
+ =?us-ascii?Q?IU7chTdgPHxCIOt/G3UO8xau5f6A8I50Z36YYais4M2ZkyH1GuDeFfNj8+mh?=
+ =?us-ascii?Q?2SMzgB6tKvZxNoeG6NhSIUYjyWVA1+bZxKgkvhlBGtVzYybY+5aZ+5A+nvV+?=
+ =?us-ascii?Q?fLWIfsAu2II/9ZyFgIGFZV6rc4rgMiuBoGkTs4nGx+fm784AaT+TFspZSeZ9?=
+ =?us-ascii?Q?qAk822k7yoYy5VIFjKxq2gnRx/RpCwmgEbynAvp8aMbrW/parOzHLxz18qfc?=
+ =?us-ascii?Q?wJRXOq48HFPR4hIdMREEIFLqP2s4OGYTwXIA7O4yAKlOCzvimWEaCEu4MbE8?=
+ =?us-ascii?Q?vocHHeK+BZd+fBUlbAMPvbFmEZeEfp6jZDwz0ckX6i55ksGFi29dGa87VxHt?=
+ =?us-ascii?Q?TzlMO0NMN0jtx+znTPa4u3JIj1AFKhaXP5HQPjQqaPm/3g3eLqhAnBnEvz8s?=
+ =?us-ascii?Q?Uv3GOv/uUEdbh1l3uqwTZPVSTOzh/ZkpL+2N5peRrxUwvpYjBQuJxOtkxhCV?=
+ =?us-ascii?Q?7/KFc+yCw3qO1BiXVpocoJu3+htVa3QgeETJwPgzV4aAuJKb6cNfoAPLtGLm?=
+ =?us-ascii?Q?2Q8EBHe/GtR7JyPpKB/VlGz/KAo3uAP0DILaGdop41dKHaRmcWYnmYiKB9jI?=
+ =?us-ascii?Q?pJKolGVWGy3ZkFW8Rhur+rlScBKzeInvhmbDBdTabAYqV3uJVY1mkR2a+iIA?=
+ =?us-ascii?Q?bTzM62Yw9H5KWEKV8BNc+qptSPkr5VfzH46x7hi7quncE5tqQng89AE8pw3l?=
+ =?us-ascii?Q?OC9mCDlrC1t7cwtnfcaV1POq+H0KGVDlk2qrg3vNPqm58p3XqoeVU5/ppXs4?=
+ =?us-ascii?Q?m7lt+iH/f99muVtA2zF/lECU1cwTfedh3VYgTwXlL7t+b1JgLzaExRHHwO4I?=
+ =?us-ascii?Q?6d6ygRCPnDgBy3bXbir3vgj5lV/azUPFwnpvAsYd34RwWeSEA62DEtccSENL?=
+ =?us-ascii?Q?QGzE+QaXcn6udFFD6n2bdnrh?=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR10MB6597.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(7416005)(376005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?us-ascii?Q?YlN4k2MehHKBY/DDLpq/nCmKzeu1+acaMrgpAiwBllcAC2ScxSHDDZOpOiRw?=
+ =?us-ascii?Q?Y96CdQMQRdEdckKGY+gm4WXuPoGkHmZpqaOzM9AcGUO1xBI9gBMiw03mrzfQ?=
+ =?us-ascii?Q?ftqzYVHCOvMm5Io1CJKUjFloXrX4Zh/f89tVdCHEm82naA4NSQ3SHbX8yAne?=
+ =?us-ascii?Q?BY9npUR+eWpMyoHXNmXReZsL5smpv7KUqtL2TuRNEdH2vPDrWRdBM/LF/TRf?=
+ =?us-ascii?Q?8ixAj0UVTRcRj4e24nO6MKX/WjtlJvZzniB36n+3QhbW3Kemc1PCNYoscvtv?=
+ =?us-ascii?Q?K/MUSEMva6vZZvnbJpL9IG6a0haU1+rXjwrehCQuKjsVWIbYq4EKpIqbRodo?=
+ =?us-ascii?Q?y7P/0oveRWx2/jlVyF5AXa45F3zYtXB45vOBG8pJAGnWQqMGF65Nr+xcpWMa?=
+ =?us-ascii?Q?DKX8O5IzSRUGLsF3+FXDdi+SE8G9s5u1Md3J4VzZ9D+IsAYETKbnNerv0Tlj?=
+ =?us-ascii?Q?Wf3tr/wrvZtjvvy4X27a7kbK87ys6XqurX5UD0/bQYlBZM38nf0lHJrf26X9?=
+ =?us-ascii?Q?ZwrDYL7gFwtNqAaaw5+gB2fL3O2NRhT1pYRT+icNDnIQmnguT0W102AqClWR?=
+ =?us-ascii?Q?7STpxXSi6ASbXVCDAA/hooyQwDhf1ubtIwIeP+xeA+nzOx8Yw4Z1T/6JjZUp?=
+ =?us-ascii?Q?9EySPeEhkPHuHjRWcF2kcQUgFPPt9RoqqtiUQRMexqXRrPAwB5rvV4HFNI+1?=
+ =?us-ascii?Q?CI0xW2SM0psuOGAhLRK/6vIwPQJMdLvCS9LlZLEIEmez+L7HdC+AnbesA80X?=
+ =?us-ascii?Q?xE1wLDNm3o8DUT0DTA3DASEebk4+WDNI4OZOpLbSZQnQASX51qsQpqCK372T?=
+ =?us-ascii?Q?U1E2emmvEAOAMhhG28uhG5X7dSiTtutbgmvoy2Pauy5Thnvsq5corIhCGBSZ?=
+ =?us-ascii?Q?r7DFVcqdxWBkbIn3MJjCwtv2zKmtIMtmAzx7JUsinsJdc/wtVXf2wZYTQPag?=
+ =?us-ascii?Q?I3VETrulZ3TS8E/MzzInW42kkseSi6eC1Ycpe/i9qUn0M1A3Rcby28AccM/f?=
+ =?us-ascii?Q?Smnr00+DFioTD3tyDY4d6K2s1R8STWDidV1obGT1wsSk/FRSUzk53NsNL2n+?=
+ =?us-ascii?Q?jgZA4zZ44eT/OGSRNS/2Z0FF/CBfdtN++0lWLS4jBGor5GMtNrGZBTEPKwTJ?=
+ =?us-ascii?Q?eThKKLb7d1bhFezImlX2GIUtMNvI1X9lFRT++TFeltvgCl4fh/Nn1imh0w1t?=
+ =?us-ascii?Q?f8iCu5Uco/Hljp0Cnhq/hspb+X+iXjshlHtSPRd9IfMcLHT78vtvzt4hKidC?=
+ =?us-ascii?Q?oLC44TdurBK7UCwZEL0CayWJ+rtnabQ7G/Rcc0n+Wu5/ENBzbCWlmrp0fRts?=
+ =?us-ascii?Q?XZc7HJxekPw0epSGT3SPL87BvkB0ag/zz1huEFbSrTs3zogt/S/ydEh2Aw77?=
+ =?us-ascii?Q?eoUDQT+xM9WtioOHabA7Rs9NU0Vfk+rs5n4pIDGXpFJjmUCpi17m/o6WzO/k?=
+ =?us-ascii?Q?D0n7T+fKa5xkTzbvp5KGB9pHDmg4BnefKTbNu85yACsIhFStHzyFiCTXo5ZT?=
+ =?us-ascii?Q?/gPi9T1a6qfmIHy7bagKCg+LhWLRQa+ETxRkk0XwYssDEF72m8adWXoKEkvg?=
+ =?us-ascii?Q?zRxbtRBTr4nYbRw95lP08ss21H0tvmZqzIU1mcg/XXUBlPRXjbYmDZuym6Xa?=
+ =?us-ascii?Q?5g=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
+	1HwiAKX1f5/J2ZedtfJeGQZfDm25X3XJGjeQshpueyAYqTFozJS/zPqg9mxikcPdBp1y4GHxpcAkqihr9ZzMKvfTHV69p2Hp3nR7gEB2DCOfY0h/xBkvpZ1XPX/J5fS3SDoDa1m5SOPd39LO6kbVLDpU5iPbvSqh2QNDRSyukNJ27014H5XVEbFs7yFh66DdXqYSFjKZWUr+g5AgBYPtPmKCK05aimwGAzPjVuz+S7ZxzYXYMfwhn0Tp7rDrEFSZfaESvz1ddrPp1w+fPnwcYUfKt39ArRx+Ak0dsyh2aLM7LfWP5vt09LfM0QkNC3HydY/mRneMhU/DJOIaB/LH+9X0lkGr3cUNIs+HxmWabqbc4n6wlLGug3uhGvs7nvutwj1IVV/WBOFTMXyN2LsmljZiq+VbLzA8yiRbWB/hBiDZ3Pegx54eR0uTykUBP0llMPFb/Zhp6kCNwNq0ZGRcn4OjwbKTE3rZ7d4IvskZiUhzHlZFIRXeZIpt13SDCwMvphsvUDQWnCQhbmZJRjgHdlggam26LRyXk9CP+Rjq7qv7VQhaA6WpF9v9HJLuRXq3wxzD6V4yCGiWHv3rXjqtL+f2ri++IYXVxyWx1X1kryo=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0b20a55d-360e-45f6-89bf-08dc87309857
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR10MB6597.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jun 2024 20:29:56.4779
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: YsbekK4rUI4Y3U7feC2TFqqnaEGoOq7+wCJ4Z4gMUcUhYa1TD8lAe0BblVfJDgEu7C9yJMwMc/SQWBkkn9O9+nvuUtn+9pccPMFLam9+5lU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR10MB7251
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-07_12,2024-06-06_02,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 suspectscore=0 phishscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2405010000
+ definitions=main-2406070151
+X-Proofpoint-GUID: b8kITbBsEjvOOPsz0VKdrrl5Cjc1PjRL
+X-Proofpoint-ORIG-GUID: b8kITbBsEjvOOPsz0VKdrrl5Cjc1PjRL
 
-Hi Stephen,
+Changing PG_slab from a page flag to a page type in commit 46df8e73a4a3
+("mm: free up PG_slab") in has the unintended consequence of removing
+the PG_slab constant from kernel debuginfo. The commit does add the
+value to the vmcoreinfo note, which allows debuggers to find the value
+without hardcoding it. However it's most flexible to continue
+representing the constant with an enum. To that end, convert the page
+type fields into an enum. Debuggers will now be able to detect that
+PG_slab's type has changed from enum pageflags to enum pagetype.
 
-kernel test robot noticed the following build errors:
+Fixes: 46df8e73a4a3 ("mm: free up PG_slab")
 
-[auto build test ERROR on akpm-mm/mm-everything]
+Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
+---
+v3 -> v4: rename to enum pagetype, avoiding conflict in f2fs.h and matching
+          the name of enum pageflags
+v2 -> v3: rebase on mm-unstable
+v1 -> v2: include PAGE_TYPE_BASE and PAGE_MAPCOUNT_RESERVE
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Stephen-Brennan/mm-convert-page-type-macros-to-enum/20240607-081253
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20240607001116.1061485-1-stephen.s.brennan%40oracle.com
-patch subject: [PATCH v3] mm: convert page type macros to enum
-config: x86_64-rhel-8.3-rust (https://download.01.org/0day-ci/archive/20240607/202406072244.8rZnMpsR-lkp@intel.com/config)
-compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240607/202406072244.8rZnMpsR-lkp@intel.com/reproduce)
+ include/linux/page-flags.h | 31 +++++++++++++++++--------------
+ 1 file changed, 17 insertions(+), 14 deletions(-)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202406072244.8rZnMpsR-lkp@intel.com/
-
-All error/warnings (new ones prefixed by >>):
-
-   In file included from fs/f2fs/dir.c:13:
->> fs/f2fs/f2fs.h:1118:6: error: redefinition of 'page_type'
-    1118 | enum page_type {
-         |      ^
-   include/linux/page-flags.h:948:6: note: previous definition is here
-     948 | enum page_type {
-         |      ^
-   1 error generated.
---
-   In file included from fs/f2fs/data.c:25:
->> fs/f2fs/f2fs.h:1118:6: error: redefinition of 'page_type'
-    1118 | enum page_type {
-         |      ^
-   include/linux/page-flags.h:948:6: note: previous definition is here
-     948 | enum page_type {
-         |      ^
-   fs/f2fs/data.c:2373:10: warning: variable 'index' set but not used [-Wunused-but-set-variable]
-    2373 |         pgoff_t index;
-         |                 ^
-   1 warning and 1 error generated.
---
-   In file included from fs/f2fs/segment.c:21:
->> fs/f2fs/f2fs.h:1118:6: error: redefinition of 'page_type'
-    1118 | enum page_type {
-         |      ^
-   include/linux/page-flags.h:948:6: note: previous definition is here
-     948 | enum page_type {
-         |      ^
->> fs/f2fs/segment.c:3403:7: warning: case value not in enumerated type 'enum page_type' [-Wswitch]
-    3403 |         case DATA:
-         |              ^
-   fs/f2fs/segment.c:3414:7: warning: case value not in enumerated type 'enum page_type' [-Wswitch]
-    3414 |         case NODE:
-         |              ^
-   fs/f2fs/segment.c:3425:7: warning: case value not in enumerated type 'enum page_type' [-Wswitch]
-    3425 |         case META:
-         |              ^
-   3 warnings and 1 error generated.
-
-
-vim +/page_type +1118 fs/f2fs/f2fs.h
-
-39a53e0ce0df01 Jaegeuk Kim 2012-11-28  1104  
-39a53e0ce0df01 Jaegeuk Kim 2012-11-28  1105  /*
-e1c42045203071 arter97     2014-08-06  1106   * The below are the page types of bios used in submit_bio().
-39a53e0ce0df01 Jaegeuk Kim 2012-11-28  1107   * The available types are:
-39a53e0ce0df01 Jaegeuk Kim 2012-11-28  1108   * DATA			User data pages. It operates as async mode.
-39a53e0ce0df01 Jaegeuk Kim 2012-11-28  1109   * NODE			Node pages. It operates as async mode.
-39a53e0ce0df01 Jaegeuk Kim 2012-11-28  1110   * META			FS metadata pages such as SIT, NAT, CP.
-39a53e0ce0df01 Jaegeuk Kim 2012-11-28  1111   * NR_PAGE_TYPE		The number of page types.
-39a53e0ce0df01 Jaegeuk Kim 2012-11-28  1112   * META_FLUSH		Make sure the previous pages are written
-39a53e0ce0df01 Jaegeuk Kim 2012-11-28  1113   *			with waiting the bio's completion
-39a53e0ce0df01 Jaegeuk Kim 2012-11-28  1114   * ...			Only can be used with META.
-39a53e0ce0df01 Jaegeuk Kim 2012-11-28  1115   */
-7d5e510944ce60 Jaegeuk Kim 2013-11-18  1116  #define PAGE_TYPE_OF_BIO(type)	((type) > META ? META : (type))
-87161a2b0aed9e Jaegeuk Kim 2024-02-06  1117  #define PAGE_TYPE_ON_MAIN(type)	((type) == DATA || (type) == NODE)
-39a53e0ce0df01 Jaegeuk Kim 2012-11-28 @1118  enum page_type {
-6b8beca0edd320 Chao Yu     2022-05-06  1119  	DATA = 0,
-6b8beca0edd320 Chao Yu     2022-05-06  1120  	NODE = 1,	/* should not change this */
-39a53e0ce0df01 Jaegeuk Kim 2012-11-28  1121  	META,
-39a53e0ce0df01 Jaegeuk Kim 2012-11-28  1122  	NR_PAGE_TYPE,
-39a53e0ce0df01 Jaegeuk Kim 2012-11-28  1123  	META_FLUSH,
-3db1de0e582c35 Daeho Jeong 2022-04-28  1124  	IPU,		/* the below types are used by tracepoints only. */
-8ce67cb07dbf6b Jaegeuk Kim 2015-03-17  1125  	OPU,
-39a53e0ce0df01 Jaegeuk Kim 2012-11-28  1126  };
-39a53e0ce0df01 Jaegeuk Kim 2012-11-28  1127  
-
+diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+index f04fea86324d9..32722c6e8397b 100644
+--- a/include/linux/page-flags.h
++++ b/include/linux/page-flags.h
+@@ -945,20 +945,23 @@ PAGEFLAG_FALSE(HasHWPoisoned, has_hwpoisoned)
+  * mistaken for a page type value.
+  */
+ 
+-#define PAGE_TYPE_BASE	0x80000000
+-/*
+- * Reserve 0xffff0000 - 0xfffffffe to catch _mapcount underflows and
+- * allow owners that set a type to reuse the lower 16 bit for their own
+- * purposes.
+- */
+-#define PG_buddy	0x40000000
+-#define PG_offline	0x20000000
+-#define PG_table	0x10000000
+-#define PG_guard	0x08000000
+-#define PG_hugetlb	0x04000000
+-#define PG_slab		0x02000000
+-#define PG_zsmalloc	0x01000000
+-#define PAGE_MAPCOUNT_RESERVE	(~0x0000ffff)
++enum pagetype {
++	/*
++	 * Reserve 0xffff0000 - 0xfffffffe to catch _mapcount underflows and
++	 * allow owners that set a type to reuse the lower 16 bit for their own
++	 * purposes.
++	 */
++	PG_buddy	= 0x40000000,
++	PG_offline	= 0x20000000,
++	PG_table	= 0x10000000,
++	PG_guard	= 0x08000000,
++	PG_hugetlb	= 0x04000000,
++	PG_slab		= 0x02000000,
++	PG_zsmalloc	= 0x01000000,
++
++	PAGE_TYPE_BASE	= 0x80000000,
++	PAGE_MAPCOUNT_RESERVE	= ~0x0000ffff,
++};
+ 
+ #define PageType(page, flag)						\
+ 	((page->page_type & (PAGE_TYPE_BASE | flag)) == PAGE_TYPE_BASE)
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.0
+

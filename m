@@ -1,29 +1,29 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F18DD7492;
-	Mon, 17 Jun 2024 20:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7560B18F2E1;
+	Mon, 17 Jun 2024 21:29:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718657948; cv=none; b=JfsJyAfaR59lNze7TTgvjn4A1czN3f7gRPOKAjxmd/0qRA5vlB5fO6WL9xOH7bPCvunPCZSlWDNUeZxRdzwWVxAT3tsYU5z5z5GsQURuKvSS0geZbAzs+wHhKB5ceei4b/Sp0XFvE5hKfzS72s4KTTQep/5Dqxcm6JFNGT05MKQ=
+	t=1718659792; cv=none; b=N/9o86bphvLesYV5vCicCIokjc4dSEhBzJPr3OnUMr3CcIhd9BzY1bQoct2D+jGBgPBp8mwi17a1oT/jd6R01oqrHNwvGO4bjPcvn3YVYUh8k9pEWMld9pTmDBcBqhP7Ba1ReylMSM+qVp9SIEbiQfPfJHvbPpje0kp1X4FVsNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718657948; c=relaxed/simple;
-	bh=r/evhBHUMNraidh5cABHZlCVwZYX8ZukKZmz3qLDGk4=;
+	s=arc-20240116; t=1718659792; c=relaxed/simple;
+	bh=Ut0KAyrVV4smqcRV54hBWMF2hJaIfY47Llm6WJvhIYM=;
 	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=rfhvTk0ipyo1SwFYdg2cWzquySjO3FxR/ORAwNP1yjSuOeUkVaFBlxpsZiTPDV/VgNHteRPL0KE9ljC/+TEhB2xSXzS10OGg6AsjcdrwaQCpNiWNGR7w3p6uwdy5pzUjQIbvtyzeuPzK1DyBsa+x2gkiRkr8u6vrLMzVe6DBfdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=T+yOyCJn; arc=none smtp.client-ip=10.30.226.201
+	 Mime-Version:Content-Type; b=rCaNbX9KUG7l8gJWw8h1TX/OTAjTlZqxAfyrAdwKXEHPkHG9RQ9A7nQUf7iztSmPDYU4UpK8MB1U7zq749uA4RIBcj8v1LAfsefP5+pGf8FAExGSX7nmN5sJgXhswY57/1rj3EhwKJe1YHkN+oop+/FeIjBNFH/Lw0iehiLaUFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=zmL/tEBM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="T+yOyCJn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA61C2BD10;
-	Mon, 17 Jun 2024 20:59:07 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="zmL/tEBM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC6A4C2BD10;
+	Mon, 17 Jun 2024 21:29:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1718657947;
-	bh=r/evhBHUMNraidh5cABHZlCVwZYX8ZukKZmz3qLDGk4=;
+	s=korg; t=1718659792;
+	bh=Ut0KAyrVV4smqcRV54hBWMF2hJaIfY47Llm6WJvhIYM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=T+yOyCJnosetdXpxxwzSmzvK0TVXxCqa3olEllMPjwQsHcOLPDa6Kw41leAiWkKE+
-	 aBfyED0EHEo4ylmEb0j+AL51piBRWkaTIxWgvWlLOzcgAqBifqbp4YyJPmtYdarF2n
-	 0+TnY6TwYDGdEvIcwOKBe37cU/vmlMgslyNHtpQw=
-Date: Mon, 17 Jun 2024 13:59:06 -0700
+	b=zmL/tEBMrfdGilrS36BdO+Nqc6pivOT+eFsbUpD7PzogUbAj0zq+5VJPNi6yfMJtW
+	 jOd8Fi901UZR4AUlpU6QjTv0eYjG/RXPESwadqPOcurAcyoV6Tu4uaM0Hf/dgTJOJW
+	 9Jn2l6i4fepY3sAzeD4IDhjRVN4o5gCy1azVLd9U=
+Date: Mon, 17 Jun 2024 14:29:51 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
 To: Stephen Brennan <stephen.s.brennan@oracle.com>
 Cc: linux-mm@kvack.org, Vlastimil Babka <vbabka@suse.cz>,
@@ -32,7 +32,7 @@ Cc: linux-mm@kvack.org, Vlastimil Babka <vbabka@suse.cz>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>, Hao Ge <gehao@kylinos.cn>,
  linux-debuggers@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v4] mm: convert page type macros to enum
-Message-Id: <20240617135906.4bd6faecf5ab5775408bd629@linux-foundation.org>
+Message-Id: <20240617142951.08a9cdc791c8edeeca50509b@linux-foundation.org>
 In-Reply-To: <87bk3z1f76.fsf@oracle.com>
 References: <20240607202954.1198180-1-stephen.s.brennan@oracle.com>
 	<20240607212738.bf55318aebd7172fadaa11c5@linux-foundation.org>
@@ -70,4 +70,136 @@ On Mon, 17 Jun 2024 13:34:21 -0700 Stephen Brennan <stephen.s.brennan@oracle.com
 > Can you confirm if mm-unstable will get merged in this release cycle? Or
 > else, would it be possible to include it in a branch that will?
 
-OK, thanks, I moved it into mm-hotfixes-unstable for a 6.10-rcX merge.
+Turns out the patch as sent was based on David's "mm: allow reuse of
+the lower 16 bit of the page type with an actual type", which changed
+the page flags a lot,  I redid this patch thusly:
+
+--- a/include/linux/page-flags.h~mm-convert-page-type-macros-to-enum
++++ a/include/linux/page-flags.h
+@@ -944,15 +944,22 @@ PAGEFLAG_FALSE(HasHWPoisoned, has_hwpois
+  * mistaken for a page type value.
+  */
+ 
+-#define PAGE_TYPE_BASE	0xf0000000
+-/* Reserve		0x0000007f to catch underflows of _mapcount */
+-#define PAGE_MAPCOUNT_RESERVE	-128
+-#define PG_buddy	0x00000080
+-#define PG_offline	0x00000100
+-#define PG_table	0x00000200
+-#define PG_guard	0x00000400
+-#define PG_hugetlb	0x00000800
+-#define PG_slab		0x00001000
++enum pagetype {
++	/*
++	 * Reserve 0xffff0000 - 0xfffffffe to catch _mapcount underflows and
++	 * allow owners that set a type to reuse the lower 16 bit for their own
++	 * purposes.
++	 */
++	PG_buddy	= 0x00000080,
++	PG_offline	= 0x00000100,
++	PG_table	= 0x00000200,
++	PG_guard	= 0x00000400,
++	PG_hugetlb	= 0x00000800,
++	PG_slab		= 0x00001000,
++
++	PAGE_TYPE_BASE	= 0xf0000000,
++	PAGE_MAPCOUNT_RESERVE	= -128,
++};
+ 
+ #define PageType(page, flag)						\
+ 	((page->page_type & (PAGE_TYPE_BASE | flag)) == PAGE_TYPE_BASE)
+_
+
+(please check carefully)
+
+and David's later "mm: allow reuse of the lower 16 bit of the page type
+with an actual type" becomes 
+
+ include/linux/mm_types.h   |    5 +++++
+ include/linux/page-flags.h |   16 ++++++++--------
+ 2 files changed, 13 insertions(+), 8 deletions(-)
+
+--- a/include/linux/mm_types.h~mm-allow-reuse-of-the-lower-16-bit-of-the-page-type-with-an-actual-type
++++ a/include/linux/mm_types.h
+@@ -157,6 +157,11 @@ struct page {
+ 		 *
+ 		 * See page-flags.h for a list of page types which are currently
+ 		 * stored here.
++		 *
++		 * Owners of typed folios may reuse the lower 16 bit of the
++		 * head page page_type field after setting the page type,
++		 * but must reset these 16 bit to -1 before clearing the
++		 * page type.
+ 		 */
+ 		unsigned int page_type;
+ 
+--- a/include/linux/page-flags.h~mm-allow-reuse-of-the-lower-16-bit-of-the-page-type-with-an-actual-type
++++ a/include/linux/page-flags.h
+@@ -951,15 +951,15 @@ enum pagetype {
+ 	 * allow owners that set a type to reuse the lower 16 bit for their own
+ 	 * purposes.
+ 	 */
+-	PG_buddy	= 0x00000080,
+-	PG_offline	= 0x00000100,
+-	PG_table	= 0x00000200,
+-	PG_guard	= 0x00000400,
+-	PG_hugetlb	= 0x00000800,
+-	PG_slab		= 0x00001000,
++	PG_buddy	= 0x40000000,
++	PG_offline	= 0x20000000,
++	PG_table	= 0x10000000,
++	PG_guard	= 0x08000000,
++	PG_hugetlb	= 0x04008000,
++	PG_slab		= 0x02000000,
+ 
+-	PAGE_TYPE_BASE	= 0xf0000000,
+-	PAGE_MAPCOUNT_RESERVE	= -128,
++	PAGE_TYPE_BASE	= 0x80000000,
++	PAGE_MAPCOUNT_RESERVE	=  (~0x0000ffff),
+ };
+ 
+ #define PageType(page, flag)						\
+_
+
+and that patch's fixup becomes
+
+--- a/include/linux/page-flags.h~mm-allow-reuse-of-the-lower-16-bit-of-the-page-type-with-an-actual-type-fix
++++ a/include/linux/page-flags.h
+@@ -955,7 +955,7 @@ enum pagetype {
+ 	PG_offline	= 0x20000000,
+ 	PG_table	= 0x10000000,
+ 	PG_guard	= 0x08000000,
+-	PG_hugetlb	= 0x04008000,
++	PG_hugetlb	= 0x04000000,
+ 	PG_slab		= 0x02000000,
+ 
+ 	PAGE_TYPE_BASE	= 0x80000000,
+_
+
+and "mm/zsmalloc: use a proper page type" becomes, in part,
+
+--- a/include/linux/page-flags.h~mm-zsmalloc-use-a-proper-page-type
++++ a/include/linux/page-flags.h
+@@ -957,6 +957,7 @@ enum pagetype {
+ 	PG_guard	= 0x08000000,
+ 	PG_hugetlb	= 0x04000000,
+ 	PG_slab		= 0x02000000,
++	PG_zsmalloc	= 0x01000000,
+ 
+ 	PAGE_TYPE_BASE	= 0x80000000,
+ 	PAGE_MAPCOUNT_RESERVE	=  (~0x0000ffff),
+
+
+
+and the end result is identical to yesterday's mm-everything so that's
+all good.
+
+However I wouldn't want to send the altered version of "mm: convert
+page type macros to enum" into 6.10-rcX because it gets so altered by
+David's mm-unstable changes for the next merge window.  The new version
+of the hotfixes patch won't have had any valid testing on its own.
+
+So I'll temporarily drop David's "mm: page_type, zsmalloc and
+page_mapcount_reset()" series from mm-unstable.  To permit the new "mm:
+convert page type macros to enum" to get some linux-next exposure. 
+David, please remind me to restore that series in a week or so?

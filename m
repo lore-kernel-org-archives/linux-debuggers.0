@@ -1,216 +1,171 @@
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A807615F41B;
-	Mon, 17 Jun 2024 22:15:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718662530; cv=fail; b=N6ztzNkfxlIqQNW/zZqUuOjqKzILp5mH7VYYtofl0IVYbjZ3wAB1XQlrXhcVklS+6QcNvDPl6Wj3JwDUbgmG3tIOQoBcptlLDGKR41R7eyqCZzrvlTcLNlyT7Hi+XKkhalEX5FiKU+XSmyn7161TgXQ6kH9iXKRVKSqZvpNXS90=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718662530; c=relaxed/simple;
-	bh=suugAVSEi4l2pI+m2KWaJDxK+soG7q0dH30gglyHYS4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 Content-Type:MIME-Version; b=IwmwitbX5EqLxexNREksrUoWHXoV+ppOb8xCszi6QqDPC6iylBao2R93BiiYI1CWXSQGVEFHNZuXxLPGRSBDaOlRs0DJySL8cB3UQvWDLPTPSK32qbSwhxWsMOQTJ2Z0/R67hVtWcUtV+Pb2KbzIUHAheHVp6KyWZLCXuKiRGnY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=KR1fYO5B; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=zyQcD1Mz; arc=fail smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05084500C
+	for <linux-debuggers@vger.kernel.org>; Tue, 18 Jun 2024 06:35:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1718692535; cv=none; b=fWlwsZdglMrhgFniynXod4xzUiDKaPYkigBWmtyAug5kmbQLLbLQo+wijNxXd7i9ZDklTLMYmvPEO2KZiKNuVFJdeJ0H7lT+sr/KoP0pSY0Jm6P/SVcEdUK/EGmtZbKQpvbrqBkFliV1l0bIpADJHFjvlJ3uhnyEf7QJEqcQUb0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1718692535; c=relaxed/simple;
+	bh=75EzXSlIOr3eCHGyDlfdqxPM1qXslIc+io1cCCwt9+g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AHfhmZBxWFRxGVrxOmn0H2v2bEJ9hc64ksVgl55DTUJN342iqf/InicqZ96FKfD7luMYYwMu8GT853xAkFeH3/3RawxZM80IcTJE4dIp9gFpJsUasHPqhAQlVJrnkXx9F3/RdYnCYoAOqKdfC3WriLOpjEajfirz7GFpugHBTD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Tb1A7BqI; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="KR1fYO5B";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="zyQcD1Mz"
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45HItQol027874;
-	Mon, 17 Jun 2024 22:15:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
-	from:to:cc:subject:in-reply-to:references:date:message-id
-	:content-type:mime-version; s=corp-2023-11-20; bh=Cfuqsr5VII/8Z6
-	lEPdfOHDgvWe++XgHKABErUf6YD+U=; b=KR1fYO5BYao/jsYtn1EHubzRiWU3t6
-	9DODhtWPweaYvGsKPm2UpvTLUWcJrQTKw0AiWYConuuO5Q2KtII0V1W2XmVtZrSB
-	YBfL0gao424ZJoHJucEt8/5hRlurQURppz9kjTPxB5soavXkor9DIzWAU4YQPYqN
-	oOt0dR3CUchpfXAA06vP4mPJXZG8SBmXIxb9IiokmV8Gur/PnLSDgjvHJImLbASx
-	AeNnFx2LLuxkSywEF2dpVttkoegphrIe7v2N+6eK/NbcBBA3ETZPjEIqiyW6IVbD
-	UX5zq3mhkf1zcEupPBRdsyPUVaXZjq46A/tPnFBKdj1dC0dN5pd+2/HQ==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3ys30bkqy1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 17 Jun 2024 22:15:04 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 45HKq7oa029244;
-	Mon, 17 Jun 2024 22:15:03 GMT
-Received: from nam12-bn8-obe.outbound.protection.outlook.com (mail-bn8nam12lp2169.outbound.protection.outlook.com [104.47.55.169])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3ys1d76r6a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 17 Jun 2024 22:15:03 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=d0y04gTEhc8nYXMDrYyaNlobolG9KRFlFxi+g5QpWRRB4e4CuJQIzXfclijTIVSkBbiW1FvMkw+1rcLRRTFFWyR/DUTUsoaYKNvMY7z6B3qXump5M10wUYMc/czPiuGQ6hc9+5y8zq63+Fyrxwde5oeQKeVuhyiJhyvhH2JacLzVlZtr8KBABcyQLft7Sj+ELjFByXAjjHmbfM9OI9m65z6XddLtvDk3naBbQm1kc2ayYurxftnHPAFmiGg0x7zG6Vr5lgvr9uXbi9Pmzm3BtNiwk2qGlh6+9+sIdM6jNvjX85vTZUgdrijiAdSiGqdl7v409a0GOJWaa91CN6USOQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Cfuqsr5VII/8Z6lEPdfOHDgvWe++XgHKABErUf6YD+U=;
- b=Kh862LK2Md1lgsdlDCSslEJmk8Q+wdJtqSw5I1Bh2JinPJ9dE+E9Zbed+/lUnuiki21gMb+WFTEdyXweVJXUWe12T2Or8+gZv2uleabTBzh45cAvhWSq1Pcj3hVhnPio9psCrAu+LkRoQdmFZpdmDGwq5nynt87Qu2XghgrEiT1DfZnSpbl9uUiGQKhvRk4/Br8WGIoZCJehbpmgbnnx8Fl/uYokvYI4eQLO/2q2bZle5jiKJ8vMYZv98CNsuuFRSe04Fxlolbh7XHDszybWmNDg4i3Zl45R5rcLSGD1btL1yL7Y3uLFpp5eib1DAf/M88g2RmU/39emTIcM48Nl/g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Cfuqsr5VII/8Z6lEPdfOHDgvWe++XgHKABErUf6YD+U=;
- b=zyQcD1Mzl2ttFO46AzvBCXRo4xUqYlVw3CWnmSlRp32cRNyFHqApp7EqrdAq2R+e+OzbH9qi1G5isw6DX4OryMkbds9CKQnmjP8Qi4InUPEpMtkk/ZXSmlSewLt9gdpWDS+IDHla8pOpUm4xTynYv4lw5rYUVM8qXpsXlYMWYS4=
-Received: from PH8PR10MB6597.namprd10.prod.outlook.com (2603:10b6:510:226::20)
- by CO6PR10MB5540.namprd10.prod.outlook.com (2603:10b6:303:137::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.31; Mon, 17 Jun
- 2024 22:15:00 +0000
-Received: from PH8PR10MB6597.namprd10.prod.outlook.com
- ([fe80::6874:4af6:bf0a:6ca]) by PH8PR10MB6597.namprd10.prod.outlook.com
- ([fe80::6874:4af6:bf0a:6ca%3]) with mapi id 15.20.7677.030; Mon, 17 Jun 2024
- 22:15:00 +0000
-From: Stephen Brennan <stephen.s.brennan@oracle.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, Vlastimil Babka <vbabka@suse.cz>,
-        "Vishal Moola
- (Oracle)" <vishal.moola@gmail.com>,
-        Omar Sandoval <osandov@osandov.com>,
-        David Hildenbrand <david@redhat.com>,
-        "Matthew Wilcox (Oracle)"
- <willy@infradead.org>,
-        Hao Ge <gehao@kylinos.cn>, linux-debuggers@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4] mm: convert page type macros to enum
-In-Reply-To: <20240617142951.08a9cdc791c8edeeca50509b@linux-foundation.org>
-References: <20240607202954.1198180-1-stephen.s.brennan@oracle.com>
- <20240607212738.bf55318aebd7172fadaa11c5@linux-foundation.org>
- <87ikygo1yb.fsf@oracle.com> <87bk3z1f76.fsf@oracle.com>
- <20240617142951.08a9cdc791c8edeeca50509b@linux-foundation.org>
-Date: Mon, 17 Jun 2024 15:14:58 -0700
-Message-ID: <878qz31ajh.fsf@oracle.com>
-Content-Type: text/plain
-X-ClientProxiedBy: BL1PR13CA0290.namprd13.prod.outlook.com
- (2603:10b6:208:2bc::25) To PH8PR10MB6597.namprd10.prod.outlook.com
- (2603:10b6:510:226::20)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Tb1A7BqI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1718692531;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=75uo9YHVDFDNzO2TP5t8b5ORyU7MVa6C97VletJyJ/A=;
+	b=Tb1A7BqIz2H8EQBiHgZfdCjO1L9fLuPIOqGj/OA73D27PYwKSd/W9IiDtb88zRllP+bb36
+	gm/d84xBstQsuqBS5mIVp9iqBkn7m1X4JSrbUrZPmKm5taqCtNrudSxqKJf/XnCMRKD6y7
+	ooiIiJx1lMVLBOzTra11aJQEqTVGojs=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-376-7jc0YypJNxORAz8-rXqITw-1; Tue, 18 Jun 2024 02:35:30 -0400
+X-MC-Unique: 7jc0YypJNxORAz8-rXqITw-1
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-421759c3556so30338605e9.1
+        for <linux-debuggers@vger.kernel.org>; Mon, 17 Jun 2024 23:35:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718692529; x=1719297329;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=75uo9YHVDFDNzO2TP5t8b5ORyU7MVa6C97VletJyJ/A=;
+        b=bTzB3B0ptUZZ+VkRO0CRGkj51bXHMiBb6RXQvVoYa65uMnD89WKDVokWsTTqESssW8
+         ZkyYSGNIQb9h1qzNqiSj+TLssO1MruQ9rP5NdYuh94tzXtVntrfR05yhvIkhrtj251vM
+         kPSnKkW/+p7Lpr5oaQucTkXk+2Fn/O+WVoPsz7IK6WHR9Jo4+Kgr623c0G+Sj130waWL
+         rSWb2jF1Frmw+1Zc4e/eV3nr6HJk9lfWDqZW2CvtGtsSUWhKGPOP73OLCVm7jncsieGm
+         wHOcsBXzzQdqxpIOp423TqbhutEmALa2025EPdBucZo2u9ECjl8qrIr8GNbWn1QaKOou
+         p+GA==
+X-Forwarded-Encrypted: i=1; AJvYcCWk76H08GyKrN06kyBcic3HMnWPgJlBmhyI3nGwptJpBJ6SArUfUzODhZDHBZN+DmFbewdI5e2SpS1E5bbY0jCFLMM+82WZdJ9QrVksySmV
+X-Gm-Message-State: AOJu0YxuSlk4p7JvN41/iuklsfXsszG/a/oiPoe/KpFJilsqZmUts94h
+	tUki3F9cEYczSuNxfcM64gh9oTCcsTR9T2+9tUevizzlk05WSssE6xn2Z1dS+GIQ9WTpWz5+I2z
+	E9hgKxbpd+FA4vbBSSDOy9w0weHRPVvMr+nzsN8t9aoB/nZhYYBRLd/jNWFa/+d/caA==
+X-Received: by 2002:a05:600c:3781:b0:422:12bf:27be with SMTP id 5b1f17b1804b1-4246f597c94mr13379015e9.11.1718692529252;
+        Mon, 17 Jun 2024 23:35:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHYqMY9BBToQN3U/9HKkUTz0jJk1GTJFCpqtXngA8tUYs0G7ByLGIcrApkEe/BxGWj5go1BSA==
+X-Received: by 2002:a05:600c:3781:b0:422:12bf:27be with SMTP id 5b1f17b1804b1-4246f597c94mr13378755e9.11.1718692528724;
+        Mon, 17 Jun 2024 23:35:28 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c705:1400:78ba:c2d2:22a1:8858? (p200300cbc705140078bac2d222a18858.dip0.t-ipconnect.de. [2003:cb:c705:1400:78ba:c2d2:22a1:8858])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3608accd8b3sm7966387f8f.71.2024.06.17.23.35.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 17 Jun 2024 23:35:28 -0700 (PDT)
+Message-ID: <dc8467bf-4f27-4aac-b7a2-a0aaff6a3eaa@redhat.com>
+Date: Tue, 18 Jun 2024 08:35:27 +0200
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR10MB6597:EE_|CO6PR10MB5540:EE_
-X-MS-Office365-Filtering-Correlation-Id: e2e3b9f3-ff8f-4881-0f54-08dc8f1aedfe
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230037|376011|7416011|1800799021|366013;
-X-Microsoft-Antispam-Message-Info: 
-	=?us-ascii?Q?tAVWKZLw4Cvw6BvIbx+Kq3ZkdhhUNf4PMM37IhftV435nksderKI92NlvBq4?=
- =?us-ascii?Q?JFT8A9AjE6sJWDjXF/XcB96ktxKz7n+LIq7Tmi4vsuudYgbDruoalK9WZyht?=
- =?us-ascii?Q?ilAhHdPTzF1wh/CqjpSKN+CoBJwlzmI7nCrfvhdHFGPuLDfZ35lNfP6La428?=
- =?us-ascii?Q?enah1n/I+2S89YtBejcOX1daJMh4cKYcflAU2gu/4Lhmfa0zhcFWUr8s1g/J?=
- =?us-ascii?Q?iBlhLbpZhkVYj3If/jOJiGPhzya5NEN950rbmS5PUtAhDVc3tJPTRijE6Con?=
- =?us-ascii?Q?AakZghg+jbRO/Q790WYbM7pR/QgkZ7klddgXlSgnK67/w0JlSyTjSvh7rNmA?=
- =?us-ascii?Q?xv3ozoxb5gg9rxMqgjefbEnMunD0GKPSdYIdoKpYDYpc0kHnoGmjHgKZUQta?=
- =?us-ascii?Q?KnsklGERKqxPXZJXuxxEpsR2GYKG6LPltlXEZGY1fO/TYx+hI8N3yuhZIpHF?=
- =?us-ascii?Q?WKWEZhTPCJte6ypZ2Qc1pNAoZmae/yh7dG0tjA2MsEMpQ0Fkw4mWQ1g3OU3e?=
- =?us-ascii?Q?nJqaKfQ18NrkDfWhfGFQ3bq4ErL1Bk9qjoirOqRESGFJANt8XtJ0y8IgGO9y?=
- =?us-ascii?Q?qT1Y6+idKStyLsbimj2/6xNHAycSQRcsxq4nZ5TbTxmgEaB6TW+GFgdJGm7t?=
- =?us-ascii?Q?DxhSKfEphDhvQS1mLdXYS2yQFWRtIKC2pMcz4ztHIqhQNXVUJgNNi+82Pma1?=
- =?us-ascii?Q?gYEXBs7c0ECmcEqkB8bwjz9dnd1KEiGFy1hRz26xQJtRDYI+xTJFylK1Df9Y?=
- =?us-ascii?Q?0J/+OUxFJd3OQMdg1ATXM4AVNt9Jp8Ri8G/H9UTvogtMZI7fqopSdIsYp1mL?=
- =?us-ascii?Q?Wh3LeSSL2SZzwTkM6AglGW0YmcPzkGnaRs44I4bB+MTV6v+Y3UWSzPA3RkKU?=
- =?us-ascii?Q?sTWWHgD3sMps4AzvalnsuqbKdUOtwNkfOpW7mxvxMO7VEpD9q4TrJET7Lmgy?=
- =?us-ascii?Q?3utILUAnoWVe83WwMrWIKxIQPQ79I+5l94FJvMu0g2qTo07MMTCSGUxd34bX?=
- =?us-ascii?Q?jCi1nvy2UXmNYza5XQvLr5oeF/GOaaPA59tbYgiYVxd9d1gbbDLO0Aj0BjX+?=
- =?us-ascii?Q?jbfFM05VRUYY9yqVtilsmlR/eQMxi3z6RMPQ8HrQT5p3NXXAFHT0E5lDwFGD?=
- =?us-ascii?Q?a/Le7beUD6Wpk/48c6WQgGAQBn1MwWYU29X1EeW5+PIdzAIE2VK6PdAopYqs?=
- =?us-ascii?Q?UwxoHNSuoRHS+9i3vxKuoDeCQGQth+qhp55A9t30QIHQoplxQjip/ugEpGmm?=
- =?us-ascii?Q?OhMvWx2imoOf7kozonKV?=
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR10MB6597.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(376011)(7416011)(1800799021)(366013);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?/a7c6CLa5ejkMvYyLcXXtSWG0wTQQuKTwHbCeJMHY2aBmeQgStsxeshjoCoK?=
- =?us-ascii?Q?aEPFPSABADErivSFcbLjE7jIX2/phV5KywJ+23eymLQhLMkmpzaJEhib6Yxt?=
- =?us-ascii?Q?NZ+OPeSQ9ATT5nSrCK3pElhSi3y8+nvd7BbIHCNgZT0Vz3XICJNs03WeVriU?=
- =?us-ascii?Q?zh6MKeyy1LPoHDAdSTBwjsupjDdFEqFnrGsjWGH1mEJxPH/brsPn5+3Nx9v3?=
- =?us-ascii?Q?s6GaIgLA38BT2R4jN63IQF+fb2+/LBqDxu4++EBu6Z6i628KYkDpGTu0aKk4?=
- =?us-ascii?Q?TFI7yu4SkF6vA1JUUMaCqW3STgEoaTmwYZKhMZO9cm/J70ba/uHNCTG1OTyD?=
- =?us-ascii?Q?/VSiGYA6YJC88Y2uwc5zRNeG23CdHtFtnLqyHBNtMYzV/NlDh8ge4LgKi5oU?=
- =?us-ascii?Q?QtZ8bFsH/8qBqrR9VTrWv7zdtRzr3BqkvAhaRLUydtXY3v3G/i8lhnIwh8od?=
- =?us-ascii?Q?w961vxzKUe6EqsHKzJDrCgQLFZshZz7Fext+jSBtklqWKQwctvaXs+9nmgRg?=
- =?us-ascii?Q?PskW54JTpvGl/6FFx7eOhbwU4yBsP1H2KcfWvVipczGzVqYWOjYYYV/lbl+C?=
- =?us-ascii?Q?B9SeanlSaU7VeurX3laYjfzCPQ32o6FJMZGdxJhasBbQYrpGdIHTKxZmIwc8?=
- =?us-ascii?Q?DGXa2AdF4CxUZVnYvq+TMErAy4LmVob6+zJSeVolQamw9KIoGrVleQy9gkRn?=
- =?us-ascii?Q?PUqhBUdMCsa8TTL4P/RF0of0AaxCGVoB34R2isHz0qS63YhVPYcDqEgPyxxg?=
- =?us-ascii?Q?sS/ggOM1Ksce/cjQU5wSF0ekpIYUHt6CqDd36IwdTKIh7h20wIRxa72hQx8m?=
- =?us-ascii?Q?0mGnZcLCLdIUWX67nBSWHUERpbrSNRREyz/ykKIVn4TFF9sCoxZSN9MN7Rv/?=
- =?us-ascii?Q?SUFRbceCWKu6x5O2cnCCz0zjNwDQf7dim7De7s5aTlSXZt+ZXisCmTEfR8bz?=
- =?us-ascii?Q?24NOdB6A2yAlQcW//8xyZOlP3AMxGP2LzRaLtH/Werz9/IzpPQyK5hFKtENU?=
- =?us-ascii?Q?QTitxb7rd7Rg8XbjjsGeuoU+MCUKEPoC3p+h21teuo/zWrWfIr2ARGyBEvsI?=
- =?us-ascii?Q?hPjU65W+umNwlW8e/6LGefvjl0C/83VCsg/ROlGVl65SSa/9eYpoQvC9Pezs?=
- =?us-ascii?Q?gj8ZxQDcv/FWUB/Fyuz0WpxW2RQWIhmCCitznu95xK08/jcuyjorwDqgB3Dx?=
- =?us-ascii?Q?fpuDySfuBZdEbTCjaIeO5F8C+GLofTdFClEqYDBVn9FrZ8+WnFVV2MOnBmnX?=
- =?us-ascii?Q?hGSQ1ZzpWeIVGGe5hK7LpK2M7WmmWIX3L1wtC0nvQ7dfcLKmN76ivFys98Lo?=
- =?us-ascii?Q?SBmOUlyoVFm0AMpJrvRRuVLArWHdCainvh2A8LpHcSV7V3tvlPOXVz03IW8W?=
- =?us-ascii?Q?qaeANxnH/McEdNKGOGh2x0GZvmc1glFTQrj1oYBNgygrDlJdsgCXkuyM3Lc5?=
- =?us-ascii?Q?nAnieKFajfHpgvSY6kAsgWau14AzKL2FzimDxOvnFK7zkMKoUTnZftDNzHpL?=
- =?us-ascii?Q?AmYckFU6fsJKBECUXCFCh613ucRry2vaMaLmEWS4xDOGqWSfpubyXAxlMM8e?=
- =?us-ascii?Q?gjSkFs6LVsyh8l2qU/nTn55c3WhaKqhgJn3fyx6+qONnmZECOM3KIilxfifO?=
- =?us-ascii?Q?Yg=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
-	XG/KKCYVjt78lCl7HEYkczfHS+O4KTxfBkQM7HNQEC9BzqRfTxzQcupUR0DfNSUhfw1UgisHFAZPcf9HHzwJS0h+1O73xlCqcb7JAQvyK9wc8Wk+Y8Ngt063aET5l6IA5Kn9cb/iQZHTG6LnUk2jIZODLUbB3+CmcsmHRcM67sjAeVUK0nLN+X0g7Hfao3/APFJJ8ElMBd/xrUfaPrWNXa9SYR8+N2NoKHVaSCdewmxNis2/l/ToqYVGlalo3n569IAMNBhUMTn3u9VRy/ahaotT3QiyApDkZAaHu/+9LJdu1+vmIVXadz4My4A9koyXLN7bBr+1qWPcVueJ+sma3DY5nnk80EVnnzjHfFBGk10EeduiqJMUxYsvpburyaVFs0x5Yfjj/p9Clk1u4QR8hKaulxhDcykJ7UyQk018mryhfEoGs/PTy6JM7LrdamRkPUwIJmI6ajvwx1/DK7LnSH22H212gQW8CxgjDdfsAwV+aeXH0XGFZ+5ZS9rvDl93X3CQJj5m9StSZmOL5FsGg+7l0nEhIv/AKkNr9y09ma+ml65uLdk+xBZzzYb4GvkNnxnZnLbK+0PLQQ1l4tDkZLjelqCMU+479Pgj2UaVvGs=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e2e3b9f3-ff8f-4881-0f54-08dc8f1aedfe
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR10MB6597.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2024 22:15:00.5773
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: EdSw8PDx8B7qHjNclBkvK6M6+tUDRQiKv72eZe5lUiU9y6JfPDf2174WWIULwE6a3ZZRtt3gpsk4WbzAn8FunOcEdh/jkq0xp+d36tyx2CM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO6PR10MB5540
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-17_14,2024-06-17_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxscore=0 malwarescore=0
- mlxlogscore=999 phishscore=0 spamscore=0 adultscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2405010000
- definitions=main-2406170172
-X-Proofpoint-GUID: mFfX9s2cE27xWaXS7jSWmoqvtcHPs-9z
-X-Proofpoint-ORIG-GUID: mFfX9s2cE27xWaXS7jSWmoqvtcHPs-9z
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] mm: convert page type macros to enum
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Stephen Brennan <stephen.s.brennan@oracle.com>
+Cc: linux-mm@kvack.org, Vlastimil Babka <vbabka@suse.cz>,
+ "Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+ Omar Sandoval <osandov@osandov.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Hao Ge <gehao@kylinos.cn>,
+ linux-debuggers@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240607202954.1198180-1-stephen.s.brennan@oracle.com>
+ <20240607212738.bf55318aebd7172fadaa11c5@linux-foundation.org>
+ <87ikygo1yb.fsf@oracle.com> <87bk3z1f76.fsf@oracle.com>
+ <20240617142951.08a9cdc791c8edeeca50509b@linux-foundation.org>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20240617142951.08a9cdc791c8edeeca50509b@linux-foundation.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Andrew Morton <akpm@linux-foundation.org> writes:
+On 17.06.24 23:29, Andrew Morton wrote:
 > On Mon, 17 Jun 2024 13:34:21 -0700 Stephen Brennan <stephen.s.brennan@oracle.com> wrote:
->
->> >>> Fixes: 46df8e73a4a3 ("mm: free up PG_slab")
->> >>
->> >> Should we backport this into 6.9.x?
->> >
->> > Hi Andrew,
->> >
->> > Looks like commit 46df8e73a4a3 ("mm: free up PG_slab") is introduced in
->> > the v6.10-rc's, and not backported to 6.9. So PG_slab is still part of
->> 
+> 
+>>>>> Fixes: 46df8e73a4a3 ("mm: free up PG_slab")
+>>>>
+>>>> Should we backport this into 6.9.x?
+>>>
+>>> Hi Andrew,
+>>>
+>>> Looks like commit 46df8e73a4a3 ("mm: free up PG_slab") is introduced in
+>>> the v6.10-rc's, and not backported to 6.9. So PG_slab is still part of
+>>
 >> Hi Andrew,
->> 
+>>
 >> I saw that you've merged this into mm-unstable, thank you!
->> 
+>>
 >> Since 46df8e73a4a3 ("mm: free up PG_slab") is part of the current 6.10
 >> RC, it would be great if this patch could be part of the 6.10 release so
 >> we don't release a kernel missing the PG_slab info.
->> 
+>>
 >> Can you confirm if mm-unstable will get merged in this release cycle? Or
 >> else, would it be possible to include it in a branch that will?
->
+> 
 > Turns out the patch as sent was based on David's "mm: allow reuse of
 > the lower 16 bit of the page type with an actual type", which changed
 > the page flags a lot,  I redid this patch thusly:
->
+> 
 > --- a/include/linux/page-flags.h~mm-convert-page-type-macros-to-enum
 > +++ a/include/linux/page-flags.h
 > @@ -944,15 +944,22 @@ PAGEFLAG_FALSE(HasHWPoisoned, has_hwpois
->   * mistaken for a page type value.
->   */
->  
+>    * mistaken for a page type value.
+>    */
+>   
 > -#define PAGE_TYPE_BASE	0xf0000000
 > -/* Reserve		0x0000007f to catch underflows of _mapcount */
 > -#define PAGE_MAPCOUNT_RESERVE	-128
@@ -227,13 +182,7 @@ Andrew Morton <akpm@linux-foundation.org> writes:
 > +	 * purposes.
 > +	 */
 
-This comment is a bit out of place now, because it refers to David's
-change which has not yet been applied. Maybe it should continue to read
-
-"Reserve	0x0000007f to catch underflows of _mapcount"
-
-until "mm: allow reuse of the lower 16 bit of the page type with an
-actual type" changes it?
+As noted, we better maintain the original comment here.
 
 > +	PG_buddy	= 0x00000080,
 > +	PG_offline	= 0x00000100,
@@ -245,48 +194,44 @@ actual type" changes it?
 > +	PAGE_TYPE_BASE	= 0xf0000000,
 > +	PAGE_MAPCOUNT_RESERVE	= -128,
 > +};
->  
->  #define PageType(page, flag)						\
->  	((page->page_type & (PAGE_TYPE_BASE | flag)) == PAGE_TYPE_BASE)
+>   
+>   #define PageType(page, flag)						\
+>   	((page->page_type & (PAGE_TYPE_BASE | flag)) == PAGE_TYPE_BASE)
 > _
 >
+
+Apart from that LGTM.
+
+
 > (please check carefully)
-
-The rest looks great, and otherwise equivalent to the v2 I sent which
-was based on the master branch at the time:
-https://lore.kernel.org/linux-mm/20240606182630.851750-1-stephen.s.brennan@oracle.com/
-
-Reviewed-by: Stephen Brennan <stephen.s.brennan@oracle.com>
-
-In case you'd like the tag.
-
+> 
 > and David's later "mm: allow reuse of the lower 16 bit of the page type
-> with an actual type" becomes 
->
->  include/linux/mm_types.h   |    5 +++++
->  include/linux/page-flags.h |   16 ++++++++--------
->  2 files changed, 13 insertions(+), 8 deletions(-)
->
+> with an actual type" becomes
+> 
+>   include/linux/mm_types.h   |    5 +++++
+>   include/linux/page-flags.h |   16 ++++++++--------
+>   2 files changed, 13 insertions(+), 8 deletions(-)
+> 
 > --- a/include/linux/mm_types.h~mm-allow-reuse-of-the-lower-16-bit-of-the-page-type-with-an-actual-type
 > +++ a/include/linux/mm_types.h
 > @@ -157,6 +157,11 @@ struct page {
->  		 *
->  		 * See page-flags.h for a list of page types which are currently
->  		 * stored here.
+>   		 *
+>   		 * See page-flags.h for a list of page types which are currently
+>   		 * stored here.
 > +		 *
 > +		 * Owners of typed folios may reuse the lower 16 bit of the
 > +		 * head page page_type field after setting the page type,
 > +		 * but must reset these 16 bit to -1 before clearing the
 > +		 * page type.
->  		 */
->  		unsigned int page_type;
->  
+>   		 */
+>   		unsigned int page_type;
+>   
 > --- a/include/linux/page-flags.h~mm-allow-reuse-of-the-lower-16-bit-of-the-page-type-with-an-actual-type
 > +++ a/include/linux/page-flags.h
 > @@ -951,15 +951,15 @@ enum pagetype {
->  	 * allow owners that set a type to reuse the lower 16 bit for their own
->  	 * purposes.
->  	 */
+>   	 * allow owners that set a type to reuse the lower 16 bit for their own
+>   	 * purposes.
+>   	 */
 > -	PG_buddy	= 0x00000080,
 > -	PG_offline	= 0x00000100,
 > -	PG_table	= 0x00000200,
@@ -299,61 +244,67 @@ In case you'd like the tag.
 > +	PG_guard	= 0x08000000,
 > +	PG_hugetlb	= 0x04008000,
 > +	PG_slab		= 0x02000000,
->  
+>   
 > -	PAGE_TYPE_BASE	= 0xf0000000,
 > -	PAGE_MAPCOUNT_RESERVE	= -128,
 > +	PAGE_TYPE_BASE	= 0x80000000,
 > +	PAGE_MAPCOUNT_RESERVE	=  (~0x0000ffff),
->  };
->  
->  #define PageType(page, flag)						\
+>   };
+>   
+>   #define PageType(page, flag)						\
 > _
->
+> 
 > and that patch's fixup becomes
->
+> 
 > --- a/include/linux/page-flags.h~mm-allow-reuse-of-the-lower-16-bit-of-the-page-type-with-an-actual-type-fix
 > +++ a/include/linux/page-flags.h
 > @@ -955,7 +955,7 @@ enum pagetype {
->  	PG_offline	= 0x20000000,
->  	PG_table	= 0x10000000,
->  	PG_guard	= 0x08000000,
+>   	PG_offline	= 0x20000000,
+>   	PG_table	= 0x10000000,
+>   	PG_guard	= 0x08000000,
 > -	PG_hugetlb	= 0x04008000,
 > +	PG_hugetlb	= 0x04000000,
->  	PG_slab		= 0x02000000,
->  
->  	PAGE_TYPE_BASE	= 0x80000000,
+>   	PG_slab		= 0x02000000,
+>   
+>   	PAGE_TYPE_BASE	= 0x80000000,
 > _
->
+> 
 > and "mm/zsmalloc: use a proper page type" becomes, in part,
->
+> 
 > --- a/include/linux/page-flags.h~mm-zsmalloc-use-a-proper-page-type
 > +++ a/include/linux/page-flags.h
 > @@ -957,6 +957,7 @@ enum pagetype {
->  	PG_guard	= 0x08000000,
->  	PG_hugetlb	= 0x04000000,
->  	PG_slab		= 0x02000000,
+>   	PG_guard	= 0x08000000,
+>   	PG_hugetlb	= 0x04000000,
+>   	PG_slab		= 0x02000000,
 > +	PG_zsmalloc	= 0x01000000,
->  
->  	PAGE_TYPE_BASE	= 0x80000000,
->  	PAGE_MAPCOUNT_RESERVE	=  (~0x0000ffff),
->
->
->
+>   
+>   	PAGE_TYPE_BASE	= 0x80000000,
+>   	PAGE_MAPCOUNT_RESERVE	=  (~0x0000ffff),
+> 
+> 
+> 
 > and the end result is identical to yesterday's mm-everything so that's
 > all good.
->
+
+Looks good.
+
+> 
 > However I wouldn't want to send the altered version of "mm: convert
 > page type macros to enum" into 6.10-rcX because it gets so altered by
 > David's mm-unstable changes for the next merge window.  The new version
 > of the hotfixes patch won't have had any valid testing on its own.
->
+> 
 > So I'll temporarily drop David's "mm: page_type, zsmalloc and
 > page_mapcount_reset()" series from mm-unstable.  To permit the new "mm:
-> convert page type macros to enum" to get some linux-next exposure. 
+> convert page type macros to enum" to get some linux-next exposure.
 > David, please remind me to restore that series in a week or so?
 
-Sorry for all the shuffling, and thank you very much for helping out on
-this.
+I'll be on vacation next week, but will try to think of it. If you want 
+a resend based on the new mm-unstable state with that hotfix, let me know.
 
-Thanks,
-Stephen
+-- 
+Cheers,
+
+David / dhildenb
+

@@ -1,135 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B29176AB2;
-	Tue, 18 Jun 2024 21:14:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A662139D1
+	for <linux-debuggers@vger.kernel.org>; Wed, 19 Jun 2024 05:00:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718745267; cv=none; b=uWrqkJKskf5PemO2kjIgWuSB0wcTK1qfGcQbr7IU8oi3bku2D5/j/zrULGVbnhUxxzXd5nuj12Y17HxhSQB66Brqqe6epqwVJS6tYllzDzaUtPPnnF0llZ7rux6I/ZAS8XzxRUjNOtXtxUZ7ReO7uLvC7z4tKDmwz2TeL8Kc90U=
+	t=1718773231; cv=none; b=Zg5sHELJ6xlTn2cZjCJcjI2X/sleofET+co8Z4nl/HnJpZqq1xW4aAGF74U+QD8oHVHshkCjs+NnRedMjAu7K1VhpUB8GsQ9czHk/weA9kiWBrcwNAm+sjMlkp+r41bcPIrMDsL1zmNd8ar+SkQa7xsQWE2W7C7+mY+eRKJ4H0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718745267; c=relaxed/simple;
-	bh=z9XvycQfjh13D3iusq5+A1VVeBIk2Ofyo59g4rSmQHU=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=GKczZ/eOYCwDijd7z0HsGC9XmiQh64xw/GKrs4NO6Iu269rWwc3hQkmotol3X5pd/pOhKQ2kE11okXVmXEbqW1umhqAYG/Xu9FjWdVVFShYuGC3PydqED46GS2no0D30JlsT9ceY5t0o52igbXuLCSPnG2HQRnNLuoZmpYZgzVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Rw5MiVuX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1718773231; c=relaxed/simple;
+	bh=9ebGMCuJ6JyHf8sylUNs2qiUmGPwFUPPpKR/nsrZUBE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=p3ch311qv2yzZgEdySWH66Nigf078iwJelqzwJw+dPSunjDSzPj57R8ShuCqCkZv8cZq+CusSj1TzFACZ2BfyUkcQvs6dHWZfp/k9qPlcgvSZmIgNT0lICx008zql8lKZjqeNEoBjmrf5VesoGPuxbOklIuetn+j7lFChF+PMwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com; spf=none smtp.mailfrom=osandov.com; dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b=aGcF8kgQ; arc=none smtp.client-ip=209.85.161.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=osandov.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Rw5MiVuX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A933EC32786;
-	Tue, 18 Jun 2024 21:14:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1718745265;
-	bh=z9XvycQfjh13D3iusq5+A1VVeBIk2Ofyo59g4rSmQHU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Rw5MiVuX3wIP8cGngGfu7tr1Y2f8+/hZRIv3MFq9Hhbk683v6sG0QeBYio9TQfq6e
-	 dFsmxt1OzzToGd+ZDSGKrY5A9KIM25NvyeghgRwMCdjd9kB6zF6jcGvBT2xG+jjpl5
-	 csStnF0f/UZsBOGt4DmcsL3ckzZ6HxbzD6wxLzCs=
-Date: Tue, 18 Jun 2024 14:14:24 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Stephen Brennan <stephen.s.brennan@oracle.com>
-Cc: linux-mm@kvack.org, Vlastimil Babka <vbabka@suse.cz>,
- "Vishal Moola (Oracle)" <vishal.moola@gmail.com>, Omar Sandoval
- <osandov@osandov.com>, David Hildenbrand <david@redhat.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Hao Ge <gehao@kylinos.cn>,
- linux-debuggers@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4] mm: convert page type macros to enum
-Message-Id: <20240618141424.0bd414c8fcc537e7709eadcd@linux-foundation.org>
-In-Reply-To: <878qz31ajh.fsf@oracle.com>
-References: <20240607202954.1198180-1-stephen.s.brennan@oracle.com>
-	<20240607212738.bf55318aebd7172fadaa11c5@linux-foundation.org>
-	<87ikygo1yb.fsf@oracle.com>
-	<87bk3z1f76.fsf@oracle.com>
-	<20240617142951.08a9cdc791c8edeeca50509b@linux-foundation.org>
-	<878qz31ajh.fsf@oracle.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b="aGcF8kgQ"
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-5bfa5f9bbe6so1747430eaf.3
+        for <linux-debuggers@vger.kernel.org>; Tue, 18 Jun 2024 22:00:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1718773229; x=1719378029; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wxOU2UBK31A2MsvvrU8KfdPolr+I7zX14JcLUR83OuY=;
+        b=aGcF8kgQ6t5+x7evwHiil9Fm/PVXTgBS2ChXDqaVk4oM2GRp5ThiaYg7SlEBUBBG9d
+         FkAQPUAnDyr194upvQHg6ySnyzPTq2dhJW16w8x7W59H8tuSun8oZFzWN7sn4Sl8Vi4+
+         zUshrWGV9juiUQEP/KMcXbMYukJBzGJjZWXBJlugWGAWwuFJh1P4cdiwnwezib2p1yWW
+         u7i3CwwlcwnFOOdg7x5PB44yxvGrRMYJt7zuGXYtbtLX3F+T2rm2jv34k2dbta2gZiol
+         cXSRC351XJh/SIVMHJTkJvtasWXazfplFtzN9wNQ79IOkgaMXXWeRBulz+OlmvdTqjqE
+         ENUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718773229; x=1719378029;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wxOU2UBK31A2MsvvrU8KfdPolr+I7zX14JcLUR83OuY=;
+        b=U6NtiCIQBqxRMjS9bwUkk6EZuDiZoqjdZJxOJmoVIcK5PPKIy+pR/DK4pvwMt+csmc
+         JOtUO71BcSO9abdWfWfn+l1ieFHkW93aIESx7vvB/3S0g83OydBEV/AbowQ8QY35gkh1
+         r2hiEWKzk4Y8yWJ3Ex4dZNSIxzxUjBOCZCCOByLpeRcOu0zA57erAlL3ExUMn70XrG10
+         qbiyKjHFlGWsYrJg1HIRbEtJebMGQ5dFV0l0LLwRn/uANxjAZQF+ozj0CvEp+4IgpZFs
+         jnk2ReMrkYpAAIRNdNchMpcAENlojph1gaSFFMiEiciPr/sKshMlpJtiAlPO/SKsOG+n
+         XvHA==
+X-Forwarded-Encrypted: i=1; AJvYcCVRHRMjmAezFaRUWXau4iqTbnrGDiBgN7Y0GFfUj/rqQTKew9NPUJlZPp2UtvjgH44CiOEseseO4J7UkHJpZfxCK1f+/9f+WTHMws43z8lr
+X-Gm-Message-State: AOJu0YxFYCtat2VvadSh+yTAF+NCPlAMKJjaL8P8iXZAk+0dCvOvMdTR
+	XqLI9RB6og2wV90ispODR2R29a4Ob6WVOitJsC+Ro8FK5/PesygFoWXg9Vl3shw=
+X-Google-Smtp-Source: AGHT+IFnRK+olC27LLdSl+gitic7LAbd0SqQcny58N5Rx0UD++iUFr60Z1/P8h7FqL77+abhYXrbkg==
+X-Received: by 2002:a05:6358:5207:b0:1a2:46b:9278 with SMTP id e5c5f4694b2df-1a2046b95e6mr48914055d.19.1718773228755;
+        Tue, 18 Jun 2024 22:00:28 -0700 (PDT)
+Received: from telecaster.hsd1.wa.comcast.net ([2601:602:8980:9170::2f17])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-6fedcf36be7sm7457523a12.1.2024.06.18.22.00.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Jun 2024 22:00:28 -0700 (PDT)
+From: Omar Sandoval <osandov@osandov.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org,
+	qemu-ppc@nongnu.org,
+	Richard Henderson <richard.henderson@linaro.org>,
+	David Hildenbrand <david@redhat.com>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Thomas Huth <thuth@redhat.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Daniel Henrique Barboza <danielhb413@gmail.com>,
+	linux-debuggers@vger.kernel.org
+Subject: [PATCH 1/2] target/s390x/arch_dump: use correct byte order for pid
+Date: Tue, 18 Jun 2024 22:00:12 -0700
+Message-ID: <5929f76d536d355afd04af51bf293695a1065118.1718771802.git.osandov@osandov.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <cover.1718771802.git.osandov@osandov.com>
+References: <cover.1718771802.git.osandov@osandov.com>
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Mon, 17 Jun 2024 15:14:58 -0700 Stephen Brennan <stephen.s.brennan@oracle.com> wrote:
+The pid field of prstatus needs to be big endian like all of the other
+fields.
 
-> > -#define PAGE_TYPE_BASE	0xf0000000
-> > -/* Reserve		0x0000007f to catch underflows of _mapcount */
-> > -#define PAGE_MAPCOUNT_RESERVE	-128
-> > -#define PG_buddy	0x00000080
-> > -#define PG_offline	0x00000100
-> > -#define PG_table	0x00000200
-> > -#define PG_guard	0x00000400
-> > -#define PG_hugetlb	0x00000800
-> > -#define PG_slab		0x00001000
-> > +enum pagetype {
-> > +	/*
-> > +	 * Reserve 0xffff0000 - 0xfffffffe to catch _mapcount underflows and
-> > +	 * allow owners that set a type to reuse the lower 16 bit for their own
-> > +	 * purposes.
-> > +	 */
-> 
-> This comment is a bit out of place now, because it refers to David's
-> change which has not yet been applied. Maybe it should continue to read
-> 
-> "Reserve	0x0000007f to catch underflows of _mapcount"
-> 
-> until "mm: allow reuse of the lower 16 bit of the page type with an
-> actual type" changes it?
+Fixes: f738f296eaae ("s390x/arch_dump: pass cpuid into notes sections")
+Signed-off-by: Omar Sandoval <osandov@osandov.com>
+---
+ target/s390x/arch_dump.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Updated, thanks.
-
-The post-Stephen code is now
-
-/*
- * For pages that are never mapped to userspace,
- * page_type may be used.  Because it is initialised to -1, we invert the
- * sense of the bit, so __SetPageFoo *clears* the bit used for PageFoo, and
- * __ClearPageFoo *sets* the bit used for PageFoo.  We reserve a few high and
- * low bits so that an underflow or overflow of _mapcount won't be
- * mistaken for a page type value.
- */
-
-enum pagetype {
-	PG_buddy	= 0x00000080,
-	PG_offline	= 0x00000100,
-	PG_table	= 0x00000200,
-	PG_guard	= 0x00000400,
-	PG_hugetlb	= 0x00000800,
-	PG_slab		= 0x00001000,
-
-	PAGE_TYPE_BASE	= 0xf0000000,
-	/* Reserve 0x0000007f to catch underflows of _mapcount */
-	PAGE_MAPCOUNT_RESERVE	= -128,
-};
-
-
-And the post-David code is now:
-
-/*
- * For pages that are never mapped to userspace,
- * page_type may be used.  Because it is initialised to -1, we invert the
- * sense of the bit, so __SetPageFoo *clears* the bit used for PageFoo, and
- * __ClearPageFoo *sets* the bit used for PageFoo.  We reserve a few high and
- * low bits so that an underflow or overflow of _mapcount won't be
- * mistaken for a page type value.
- */
-
-enum pagetype {
-	PG_buddy	= 0x40000000,
-	PG_offline	= 0x20000000,
-	PG_table	= 0x10000000,
-	PG_guard	= 0x08000000,
-	PG_hugetlb	= 0x04008000,
-	PG_slab		= 0x02000000,
-
-	PAGE_TYPE_BASE	= 0x80000000,
-
-	/*
-	 * Reserve 0xffff0000 - 0xfffffffe to catch _mapcount underflows and
-	 * allow owners that set a type to reuse the lower 16 bit for their own
-	 * purposes.
-	 */
-	PAGE_MAPCOUNT_RESERVE	= ~0x0000ffff,
-};
-
+diff --git a/target/s390x/arch_dump.c b/target/s390x/arch_dump.c
+index 7e8a1b4fc0..029d91d93a 100644
+--- a/target/s390x/arch_dump.c
++++ b/target/s390x/arch_dump.c
+@@ -102,7 +102,7 @@ static void s390x_write_elf64_prstatus(Note *note, S390CPU *cpu, int id)
+         regs->acrs[i] = cpu_to_be32(cpu->env.aregs[i]);
+         regs->gprs[i] = cpu_to_be64(cpu->env.regs[i]);
+     }
+-    note->contents.prstatus.pid = id;
++    note->contents.prstatus.pid = cpu_to_be32(id);
+ }
+ 
+ static void s390x_write_elf64_fpregset(Note *note, S390CPU *cpu, int id)
+-- 
+2.45.2
 

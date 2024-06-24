@@ -1,207 +1,99 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4AE93B1BC
-	for <linux-debuggers@vger.kernel.org>; Mon, 24 Jun 2024 07:28:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C5D13D8A4;
+	Mon, 24 Jun 2024 13:29:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719214084; cv=none; b=XNKiD7jU0Oi+8TAshj4Vv/Af6llB6bFyt6NeSXcouoD+vuLSjpqUbZwWYgXv43Anw3juA+4hfhXfUiPNutVSPMRozkIRo/r04a0R3rwVzH5jF88uTYqQrYbmEl41Xivml33Up8kC3K885Z9bvt1pXzd8jCwQtAbxRtUiU5n9yGY=
+	t=1719235777; cv=none; b=Wbi5Mgi39ekHfeM/9DmgJXSQCr04CGUxHoK70ffTa9wTUUCLxL3CNcgwfeT2UTBZVvQhI7k9hmkLaxEkcz5roncxj2w0MPb/oI6zfMGxnURlNgJv9G2rNvxmrhrBPk01hNbm812Sxrs+bgse4tyN9ag+1pjil514sTdq1iNQEx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719214084; c=relaxed/simple;
-	bh=cYDI3mTRUH7jf6F7kyzXBmYIGewz/SMDbrn0JOQZ5Q8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EK83VcQqNc1HEhtT4RvKOJxCjSkLpL0j4Cnc2fwj2z3HNu66a+ZQYKxObpHdWjLjSCEjgGW7AnOoz68UaRU+4cqwdHc2gkzPVlxVpDtBtidFEJKKx9LLlDTaYG3gbDfyijeE3aht+ZKCCZAT2wQYUTGMo3ReM5fzFGlW/0DL3Uw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=hPDoGUOE; arc=none smtp.client-ip=148.163.156.1
+	s=arc-20240116; t=1719235777; c=relaxed/simple;
+	bh=84vJ542JRtby8eCchV2tJXKQxGZbveqrrwFaZAic2IM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HcuFQnItHvYQKT+QBLsG6Rq/xIZE4uqqY4r0N761V9z1IIK1J97Xmo8n1GJSTaA8Y6Jx54bX5HQJlChAMsgMosv8D655ifT15l9wjZVyWUi3q9jzyAT0EqS9UOztEEQDlXMVjMR3azETRK8h15j9gPT3pcx+lq8M8RediXCNWGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=a24OML9u; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="hPDoGUOE"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45O5TshA006195;
-	Mon, 24 Jun 2024 07:27:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=o
-	5eUvLJLf7rnvgOafZmBPyYbZxH8hq1yCtixkm7FE2Q=; b=hPDoGUOEeMSV/sm/z
-	E7oESzdywoZ2qAf4nKifO6VRMAZVMImvMz/Vuup+6WLvBCVI+ni6Px1o2Ssm0GQi
-	RZYWa2HfVQWGH6H+soa2DJDREPcrdULGizJ+46+GaWdSzZegxZvGf2cxacMbDXR2
-	AZ4p2zb88EiwOLyPOBPpJxovlMWWPHNL8ZRX05WhIfmeTfor1tRCHIufFHxwvBdg
-	t/27CqZY9kRsOWTeP69kxukImaGvll1788AehyS9W1/diDNzTodf+QyJndFNhr9N
-	N+lROXWEtA4K/rL3dAYJvhi8V83pok16c6f/XfwtE7kU6zkpsdKZa40hjDhMbwdM
-	IZSTw==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yy2pp8b62-1
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="a24OML9u"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45ODMHOI008890;
+	Mon, 24 Jun 2024 13:29:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date
+	:from:to:cc:subject:message-id:references:mime-version
+	:content-type:in-reply-to; s=pp1; bh=84vJ542JRtby8eCchV2tJXKQxGZ
+	bveqrrwFaZAic2IM=; b=a24OML9ukaIOVAX9zS6D8aMn3mki+ODjECn3602zd7a
+	T93Dh/3MDMgexWlzGOplIqWgT9ctvrKfKI+5ixKF3VhT78A5owYr4+IfLhmiC/63
+	kwMu0fOOnYtEYHjOMXyNXV+os3uQl7y5criOWWXx09qHvjF873JlpboLlK6uUvrA
+	9JvJ+Vi3fQeczoXQyrWApE4gshF/RmuQp+ygAUbbobtfRpACWKzv384gkoI6xTfr
+	qj0p1zaB9Kit4C/oH+bADpBa2HKBn3VmqDcnOaDzTQ/dDvaNL56/TUTHGzDHzop3
+	EHQw16AmN+W32xpTXBVDAloYUoezwUmMYLAkzibn3HA==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yy7ha8dg2-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Jun 2024 07:27:53 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 45O7Qt4b024519;
-	Mon, 24 Jun 2024 07:27:53 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yy2pp8b3w-1
+	Mon, 24 Jun 2024 13:29:33 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 45OAgYxS020024;
+	Mon, 24 Jun 2024 13:29:32 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3yxb5m8ph1-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Jun 2024 07:27:52 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 45O7JP5c019548;
-	Mon, 24 Jun 2024 07:23:09 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3yx9xpp73h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Jun 2024 07:23:09 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 45O7N6t35374472
+	Mon, 24 Jun 2024 13:29:32 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 45ODTSWg47120892
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 24 Jun 2024 07:23:09 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C2B8A58071;
-	Mon, 24 Jun 2024 07:23:04 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 62ACA58082;
-	Mon, 24 Jun 2024 07:23:01 +0000 (GMT)
-Received: from [9.109.242.165] (unknown [9.109.242.165])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 24 Jun 2024 07:23:01 +0000 (GMT)
-Message-ID: <d719e182-eff7-48d6-a6fe-618c784ed433@linux.ibm.com>
-Date: Mon, 24 Jun 2024 12:52:59 +0530
+	Mon, 24 Jun 2024 13:29:30 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 911D82004D;
+	Mon, 24 Jun 2024 13:29:28 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 36F1520043;
+	Mon, 24 Jun 2024 13:29:28 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.179.30.36])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 24 Jun 2024 13:29:28 +0000 (GMT)
+Date: Mon, 24 Jun 2024 15:29:26 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Omar Sandoval <osandov@osandov.com>
+Cc: Sven Schnelle <svens@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-debuggers@vger.kernel.org
+Subject: Re: Incorrect vmcoreinfo KERNELOFFSET after "s390/boot: Rework
+ deployment of the kernel image"
+Message-ID: <Znl0trzTF4gaPraE@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+References: <ZnS8dycxhtXBZVky@telecaster.dhcp.thefacebook.com>
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] target/ppc/arch_dump: set prstatus pid to cpuid
-To: Omar Sandoval <osandov@osandov.com>, qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
-        Richard Henderson <richard.henderson@linaro.org>,
-        David Hildenbrand <david@redhat.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Daniel Henrique Barboza <danielhb413@gmail.com>,
-        linux-debuggers@vger.kernel.org
-References: <cover.1718771802.git.osandov@osandov.com>
- <ac09da04c8e6dd777945219815d1c53b02291b5b.1718771802.git.osandov@osandov.com>
-Content-Language: en-US
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <ac09da04c8e6dd777945219815d1c53b02291b5b.1718771802.git.osandov@osandov.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZnS8dycxhtXBZVky@telecaster.dhcp.thefacebook.com>
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 4uvSc5ez22pzUqe8Ye740KIB_wl9HYjr
-X-Proofpoint-ORIG-GUID: RgZiazhRHMw6P-pUTBLv24qg3kGQpUB0
+X-Proofpoint-GUID: NzvMGOYtXf5NnUPpdP14ajt31T0Sv2bE
+X-Proofpoint-ORIG-GUID: NzvMGOYtXf5NnUPpdP14ajt31T0Sv2bE
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-24_07,2024-06-21_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 bulkscore=0
- spamscore=0 clxscore=1011 priorityscore=1501 mlxlogscore=962 mlxscore=0
- malwarescore=0 adultscore=0 phishscore=0 suspectscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2406140001
- definitions=main-2406240058
+ definitions=2024-06-24_10,2024-06-24_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=564 bulkscore=0
+ malwarescore=0 adultscore=0 suspectscore=0 impostorscore=0
+ priorityscore=1501 spamscore=0 clxscore=1011 phishscore=0
+ lowpriorityscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2406140001 definitions=main-2406240107
 
-Hi Omar,
+On Thu, Jun 20, 2024 at 04:34:15PM -0700, Omar Sandoval wrote:
 
-On 6/19/24 10:30, Omar Sandoval wrote:
-> Every other architecture does this, and debuggers need it to be able to
-> identify which prstatus note corresponds to which CPU.
-> 
-> Signed-off-by: Omar Sandoval <osandov@osandov.com>
-> ---
->   target/ppc/arch_dump.c | 21 ++++++++++++---------
->   1 file changed, 12 insertions(+), 9 deletions(-)
-> 
-> diff --git a/target/ppc/arch_dump.c b/target/ppc/arch_dump.c
-> index a8315659d9..78b4205319 100644
-> --- a/target/ppc/arch_dump.c
-> +++ b/target/ppc/arch_dump.c
-> @@ -47,9 +47,11 @@ struct PPCUserRegStruct {
->   } QEMU_PACKED;
->   
->   struct PPCElfPrstatus {
-> -    char pad1[112];
-> +    char pad1[32];
-> +    uint32_t pid;
-> +    uint8_t pad2[76];
->       struct PPCUserRegStruct pr_reg;
-> -    char pad2[40];
-> +    char pad3[40];
->   } QEMU_PACKED;
->   
+Hi Omar!
 
-Could you please add a comment above the struct providing reference to 
-the spec being referred here for member position across the status bits?
+Thank you for the report!
 
-With that,
+...
+> Any ideas what's going on here?
 
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+Yes. I will look into it this week.
 
->   
-> @@ -96,7 +98,7 @@ typedef struct NoteFuncArg {
->       DumpState *state;
->   } NoteFuncArg;
->   
-> -static void ppc_write_elf_prstatus(NoteFuncArg *arg, PowerPCCPU *cpu)
-> +static void ppc_write_elf_prstatus(NoteFuncArg *arg, PowerPCCPU *cpu, int id)
->   {
->       int i;
->       reg_t cr;
-> @@ -109,6 +111,7 @@ static void ppc_write_elf_prstatus(NoteFuncArg *arg, PowerPCCPU *cpu)
->   
->       prstatus = &note->contents.prstatus;
->       memset(prstatus, 0, sizeof(*prstatus));
-> +    prstatus->pid = cpu_to_dump32(s, id);
->       reg = &prstatus->pr_reg;
->   
->       for (i = 0; i < 32; i++) {
-> @@ -127,7 +130,7 @@ static void ppc_write_elf_prstatus(NoteFuncArg *arg, PowerPCCPU *cpu)
->       reg->ccr = cpu_to_dump_reg(s, cr);
->   }
->   
-> -static void ppc_write_elf_fpregset(NoteFuncArg *arg, PowerPCCPU *cpu)
-> +static void ppc_write_elf_fpregset(NoteFuncArg *arg, PowerPCCPU *cpu, int id)
->   {
->       int i;
->       struct PPCElfFpregset  *fpregset;
-> @@ -146,7 +149,7 @@ static void ppc_write_elf_fpregset(NoteFuncArg *arg, PowerPCCPU *cpu)
->       fpregset->fpscr = cpu_to_dump_reg(s, cpu->env.fpscr);
->   }
->   
-> -static void ppc_write_elf_vmxregset(NoteFuncArg *arg, PowerPCCPU *cpu)
-> +static void ppc_write_elf_vmxregset(NoteFuncArg *arg, PowerPCCPU *cpu, int id)
->   {
->       int i;
->       struct PPCElfVmxregset *vmxregset;
-> @@ -178,7 +181,7 @@ static void ppc_write_elf_vmxregset(NoteFuncArg *arg, PowerPCCPU *cpu)
->       vmxregset->vscr.u32[3] = cpu_to_dump32(s, ppc_get_vscr(&cpu->env));
->   }
->   
-> -static void ppc_write_elf_vsxregset(NoteFuncArg *arg, PowerPCCPU *cpu)
-> +static void ppc_write_elf_vsxregset(NoteFuncArg *arg, PowerPCCPU *cpu, int id)
->   {
->       int i;
->       struct PPCElfVsxregset *vsxregset;
-> @@ -195,7 +198,7 @@ static void ppc_write_elf_vsxregset(NoteFuncArg *arg, PowerPCCPU *cpu)
->       }
->   }
->   
-> -static void ppc_write_elf_speregset(NoteFuncArg *arg, PowerPCCPU *cpu)
-> +static void ppc_write_elf_speregset(NoteFuncArg *arg, PowerPCCPU *cpu, int id)
->   {
->       struct PPCElfSperegset *speregset;
->       Note *note = &arg->note;
-> @@ -211,7 +214,7 @@ static void ppc_write_elf_speregset(NoteFuncArg *arg, PowerPCCPU *cpu)
->   
->   static const struct NoteFuncDescStruct {
->       int contents_size;
-> -    void (*note_contents_func)(NoteFuncArg *arg, PowerPCCPU *cpu);
-> +    void (*note_contents_func)(NoteFuncArg *arg, PowerPCCPU *cpu, int id);
->   } note_func[] = {
->       {sizeof_field(Note, contents.prstatus),  ppc_write_elf_prstatus},
->       {sizeof_field(Note, contents.fpregset),  ppc_write_elf_fpregset},
-> @@ -282,7 +285,7 @@ static int ppc_write_all_elf_notes(const char *note_name,
->           arg.note.hdr.n_descsz = cpu_to_dump32(s, nf->contents_size);
->           strncpy(arg.note.name, note_name, sizeof(arg.note.name));
->   
-> -        (*nf->note_contents_func)(&arg, cpu);
-> +        (*nf->note_contents_func)(&arg, cpu, id);
->   
->           note_size =
->               sizeof(arg.note) - sizeof(arg.note.contents) + nf->contents_size;
+> Thanks!
+> Omar
+
+Thanks!

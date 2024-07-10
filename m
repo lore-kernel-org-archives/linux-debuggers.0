@@ -1,119 +1,138 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50DF217C228;
-	Wed, 10 Jul 2024 08:56:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA21DF71
+	for <linux-debuggers@vger.kernel.org>; Wed, 10 Jul 2024 20:47:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720601798; cv=none; b=pFH+iQnSEHkDwcb7tWP+ObKVUNsHXGddWJBMlRrWtBqdmJ/ucHAO8O4o29Q6dJVdSLAOU28TMSSu1IK/ZwfhItutX8LlgrAVK2cGKaFh/WgZEUPaWrrvf8dKfg3yiMtZGH7tHvQB/MYsn8WClXoJVw3JpkAXBRn51tDbpRoU7e0=
+	t=1720644445; cv=none; b=ZDWQb1Io+oPkMOECU5R3iKzLhCbdJZcg89geYSvrotZfWSs3k1uyHmhpeseu+XAxSAL8eM9M3x4VwHFxWZ6Q/3uYKMScpot9p8Qk5lnkUwhbAd4/EiG2IoOuU2zt2jJC+YrXUPB3BhaJq61Tlb+tulLdjM1agxBWtMDKkNmXDXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720601798; c=relaxed/simple;
-	bh=rOMbhdaJbHmZDPs6iV5DzNfV0ysvfub6FKVnIIQCMsM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ensh9g7gYw0dhkzxPtjK+IDqTwvAfDRCtHxmEdMNW43+ZwOw/JsZZjLQIMK3j8rgxIdxKuP6F2p7gCMzJzKTv3tKGYj1ACd6eAYSRxv8+Rs3P+iiBC8J/tGq+QK1ACU7F9KEoUuSf4SxkeU1p49sk+Z4Ff1xc8GKFJkV6ShA72A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=OaPgS4tN; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1720644445; c=relaxed/simple;
+	bh=vGBIcBvmeTdU7DQa3VC5+RW7M4X7ipjsU7I8K2fNn1M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cLuNGR1b0lWYGJMiFz0tlHNp+5WjLqpnTvs+/cfbhi1KxXThKYWXGgk7LpL7mxUNkxFzmb74tmk29s0s/YWkk/BgsFQON4kyUb2wYHQnjHrUy3lX9JLEpBfw2+NQrLLK/td2+e2WpU68VgLbvdQ/fJqs3u4sIaX8Ul2Y4FjFGRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com; spf=none smtp.mailfrom=osandov.com; dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b=qsSmRMug; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=osandov.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="OaPgS4tN"
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46A7xFGI012802;
-	Wed, 10 Jul 2024 08:56:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date
-	:from:to:cc:subject:message-id:references:mime-version
-	:content-type:content-transfer-encoding:in-reply-to; s=pp1; bh=v
-	EDA+lPOnZ+sw70MnnvxuN9TYG7rrNJE/wN4s+twg0U=; b=OaPgS4tNDcWIs4HSV
-	Q2CAgMGgshdWg4KtyTEs1y7IeEEeifaFB37bEl5EAfArSyr/lTIdkXK4mN/0yo1m
-	Xdl1mlRBdvRUbhJt9f9vSeLefdn0MbJyTZBwIBwPwjcIm/JNnMLpec+qbJWvS9WS
-	7F6mmqGeGOtd7/OLGn2bbs06WGZnB78o8WVpB3VnBWtaODnMWvWau0cpIBD0xOUM
-	FtzsGtJqziaR+Q/PoSKzDf7R7Y/foCFVNK0AiiArqPafZINaW3OAWHzo/acoDYY5
-	gsRaJ9MU5+cCuuOgi4oAzGzhmLhhFLcztPBTSHFmCUVzs8yZxUUhd7jS8gGwxIO+
-	Ck7kw==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 409pcug52x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 10 Jul 2024 08:56:32 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 46A703UB025952;
-	Wed, 10 Jul 2024 08:56:31 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 407hrmt6m0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 10 Jul 2024 08:56:31 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 46A8uRv157475482
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 10 Jul 2024 08:56:29 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3519C20040;
-	Wed, 10 Jul 2024 08:56:27 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CA66920043;
-	Wed, 10 Jul 2024 08:56:26 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.171.94.3])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 10 Jul 2024 08:56:26 +0000 (GMT)
-Date: Wed, 10 Jul 2024 10:56:25 +0200
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Petr =?utf-8?B?VGVzYcWZw61r?= <petr@tesarici.cz>
-Cc: Omar Sandoval <osandov@osandov.com>, linux-s390@vger.kernel.org,
-        Ilya Leoshkevich <iii@linux.ibm.com>, linux-debuggers@vger.kernel.org
-Subject: Re: Incorrect vmcoreinfo KERNELOFFSET after "s390/boot: Rework
- deployment of the kernel image"
-Message-ID: <Zo5MuXGcQwcC2pyw@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
-References: <ZnS8dycxhtXBZVky@telecaster.dhcp.thefacebook.com>
- <Zn1uTZdlYNaRFUqK@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
- <20240709212141.31160508@meshulam.tesarici.cz>
- <Zo2j3hgOhh9EQld1@telecaster.dhcp.thefacebook.com>
- <20240710070246.001873c4@meshulam.tesarici.cz>
+	dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b="qsSmRMug"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-1fb72eb3143so1600735ad.1
+        for <linux-debuggers@vger.kernel.org>; Wed, 10 Jul 2024 13:47:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1720644443; x=1721249243; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=I29wQ4cK8G8p67UqSleTUzA6bTgv4PXvM5++AXzjg1E=;
+        b=qsSmRMugV3kl74FlZzIqHUlEQnxhADTV7Pp1X3j7kZRoQIzZsKrcVik0dnJGtb17Am
+         nTyiOdDBrce1r/0HhUdbxE93jVl/LTJTev5HsJ0Ees6Z/QqGMoDwPiW8fvjuCoKSn+1t
+         9SHA6Qzz74pf7Eb4YaM/vgVGF5pzcEB6M/Tq6lVH+rWJyRnB8Q0m9J+uSYPeR4OMIrzR
+         hwcv+mrshexj1b1lan6fB/R7iW06mXVsr1iEavpk+on/u0Bjy4fm30XN1XgLK/qgyZEC
+         IHySTQ5Wam6evAl1RZuY/OmO6gS/4nsgPgNDGc1mjrsMEDpiXVbgPytsVLV5JMruwlt8
+         xTww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720644443; x=1721249243;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=I29wQ4cK8G8p67UqSleTUzA6bTgv4PXvM5++AXzjg1E=;
+        b=wlcJKfc65jSWt8vZ9BKUq9A8TxrCESgYCrRnYtVJuUzELQL9bV7WVfr0TVAcNSH3gJ
+         1lIxsvTYGpnYZ3RozRRYsKqcHsd9pXRBkhEtupJwmw1Ylm4ST/G2pPyCSbVZZOnoDqTx
+         U3BiX26hZ2pkdiPqEcP8bUngG8kjAF5lOd+MN2odB7lBN5ODEMv8zxPI0dSbJS7ZCATz
+         LhgdaOiqk+I2b7wmpBGxvWD/Mqn0r5dFJ1vhFlINxXz5qYK0kHoKewpT9dkNfStIbGb6
+         qiTctRVl1nTpZi4UHsg2mdBjBFWMFicrKHEi/pTKThkMzh8Y5mymwjZIl/DgGqi+1tIC
+         Oidg==
+X-Gm-Message-State: AOJu0Yyae8zHXgqDvUsPBap5EIut4bqv/gPD1s4pnQfwCMGE8juU1sJR
+	XlkMQNAiB1iQTZrU9j3szFIWMPKVFAES/89oGznTHgenrvmgpeT9QwTzlDMqC5TwiPE0b1QrgGC
+	K
+X-Google-Smtp-Source: AGHT+IFq5LXLdgUUvhDh2V6OK9rv41Q7Y/l5y1N+6zV164SN+C8/HR8QNDe7Ge9+LyWmRlWzOMD4qw==
+X-Received: by 2002:a17:902:c401:b0:1fa:fe30:fc16 with SMTP id d9443c01a7336-1fbdba4a0aamr12156035ad.25.1720644443086;
+        Wed, 10 Jul 2024 13:47:23 -0700 (PDT)
+Received: from telecaster.thefacebook.com ([2620:10d:c090:500::5:134a])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fbb6ad5be3sm37698025ad.301.2024.07.10.13.47.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Jul 2024 13:47:22 -0700 (PDT)
+From: Omar Sandoval <osandov@osandov.com>
+To: elfutils-devel@sourceware.org
+Cc: linux-debuggers@vger.kernel.org
+Subject: [PATCH 0/3] debuginfod: speed up extraction from kernel debuginfo packages by 200x
+Date: Wed, 10 Jul 2024 13:47:10 -0700
+Message-ID: <cover.1720644134.git.osandov@fb.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240710070246.001873c4@meshulam.tesarici.cz>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ZIz4oM2LQrFVc5S4QQGvYs7n03mMtJyg
-X-Proofpoint-ORIG-GUID: ZIz4oM2LQrFVc5S4QQGvYs7n03mMtJyg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-10_05,2024-07-09_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- adultscore=0 clxscore=1015 phishscore=0 mlxlogscore=594 suspectscore=0
- impostorscore=0 spamscore=0 lowpriorityscore=0 malwarescore=0 mlxscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2407100059
 
-On Wed, Jul 10, 2024 at 07:02:46AM +0200, Petr Tesařík wrote:
-...
-> > I wasn't able to get real KASLR working on my s390x VM, but what I found
-> > in testing without KASLR was:
-> > 
-> > - Before commit c98d2ecae08f ("s390/mm: Uncouple physical vs virtual
-> >   address spaces"), KERNELOFFSET was not set at all (this is expected).
-> > - After commit c98d2ecae08f ("s390/mm: Uncouple physical vs virtual
-> >   address spaces"), but before commit 56b1069c40c7 ("s390/boot: Rework
-> >   deployment of the kernel image"), KERNELOFFSET was set in a way that
-> >   drgn understands even without KASLR (that's a little odd but fine with
-> >   me).
-> > - After commit 56b1069c40c7 ("s390/boot: Rework deployment of the kernel
-> >   image"), KERNELOFFSET was set "incorrectly"
-> > 
-> > So at least for no KASLR, the breakage has been limited only to the 6.10
-> > rcs, which isn't too late to fix. I'd be curious what the behavior was
-> > with KASLR before 6.10, though.
-> 
-> OK, I'll check SLES 15 SP5 (kernel 5.14) and SP6 (kernel 6.4). Both
-> enable KASLR, but it can be turned off on the command line (or I can
-> even rebuild the kernel without CONFIG_RANDOMIZE_BASE if that makes a
-> difference).
+From: Omar Sandoval <osandov@fb.com>
 
-'nokaslr' kernel option should be enough.
+drgn [1] currently uses debuginfod with great success for debugging
+userspace processes.  However, for debugging the Linux kernel (drgn's
+main use case), we have had some performance issues with debuginfod, so
+we intentionally avoid using it.  Specifically, it sometimes takes over
+a minute for debuginfod to respond to queries for vmlinux and kernel
+modules (not including the actual download time).
 
-> Petr T
+The reason for the slowness is that Linux kernel debuginfo packages are
+very large and contain lots of files.  To respond to a query for a Linux
+kernel debuginfo file, debuginfod has to decompress and iterate through
+the whole package until it finds that file.  If the file is towards the
+end of the package, this can take a very long time.  This was previously
+reported for vdso files [2][3], which debuginfod was able to mitigate
+with improved caching and prefetching.  However, kernel modules are far
+greater in number, vary drastically by hardware and workload, and can be
+spread all over the package, so in practice I've still been seeing long
+delays.  This was also discussed on the drgn issue tracker [4].
 
-Thanks!
+The fundamental limitation is that Linux packages, which are essentially
+compressed archives with extra metadata headers, don't support random
+access to specific files.  However, the multi-threaded xz compression
+format does actually support random access.  And, luckily, the kernel
+debuginfo packages on Fedora, Debian, and Ubuntu all happen to use
+multi-threaded xz compression!
+
+debuginfod can take advantage of this: when it scans a package, if it is
+a seekable xz archive, it can save the uncompressed offset and size of
+each file.  Then, when it needs a file, it can seek to that offset and
+extract it from there.  This requires some understanding of the xz
+format and low-level liblzma code, but the speedup is massive: where the
+worst case was previously about 50 seconds just to find a file in a
+kernel debuginfo package, with this change the worst case is 0.25
+seconds, a ~200x improvement! This works for both .rpm and .deb files.
+
+Patch 1 is a preparatory refactor.  Patch 2 implements saving the
+uncompressed offsets and sizes in the database.  Patch 3 implements the
+seekable xz extraction.
+
+I tested this by requesting and verifying the digest of every file from
+a few kernel debuginfo rpms and debs [5].
+
+P.S. The biggest downside of this change is that it depends on a very
+specific compression format.  I think this is something we should
+formalize with Linux distributions: large debuginfo packages should use
+a seekable format.  Currently, xz in multi-threaded mode is the only
+option, but Zstandard also has an experimental seekable format that is
+worth looking into [6].
+
+1: https://github.com/osandov/drgn
+2: https://sourceware.org/bugzilla/show_bug.cgi?id=29478
+3: https://bugzilla.redhat.com/show_bug.cgi?id=1970578
+4: https://github.com/osandov/drgn/pull/380
+5: https://gist.github.com/osandov/89d521fdc6c9a07aa8bb0ebf91974346
+6: https://github.com/facebook/zstd/tree/dev/contrib/seekable_format
+
+Omar Sandoval (3):
+  debuginfod: factor out common code for responding from an archive
+  debuginfod: add archive entry size, mtime, and uncompressed offset to
+    database
+  debuginfod: optimize extraction from seekable xz archives
+
+ configure.ac              |   5 +
+ debuginfod/Makefile.am    |   2 +-
+ debuginfod/debuginfod.cxx | 870 +++++++++++++++++++++++++++++++-------
+ 3 files changed, 722 insertions(+), 155 deletions(-)
+
+-- 
+2.45.2
+

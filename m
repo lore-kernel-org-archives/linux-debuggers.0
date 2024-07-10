@@ -1,63 +1,62 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A743F18C161
-	for <linux-debuggers@vger.kernel.org>; Wed, 10 Jul 2024 20:47:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D061DF71
+	for <linux-debuggers@vger.kernel.org>; Wed, 10 Jul 2024 20:47:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720644448; cv=none; b=pe1NS3kZkKKTcyJ3BmuJryAYi/eloJ/CAXBnz/lpPAzRqHmrUdMawps/Sh2ogNWUY6YtFANZN0vTN6jj2VTJT+JFqqhtX05B4XpQFri3qLOI0k3Frkx09rGY0xvNrSdeYDquCArqXPR5krAZjZWSifJy+marTlKXpWmLPrD1+oI=
+	t=1720644450; cv=none; b=cYJoj82xFR+C2j5BXRbb6UHblmp0uy5j7qo7NoyhZPcRC/YIPOKNHh7bnNJiXSfyF90U3XenpA+KcNoioVlqTVtcHLOWcmxfMOpe9CjsTtSUOLflHyFo8rn/99tJHntaTcLn1b2wBOv+2GTOeJnyvYnafLOuFgLGG6eqzuc7IE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720644448; c=relaxed/simple;
-	bh=dJY8CNP8GKLS6r3+BLfvPT4P3nVXMzQEltYOG1OuEXI=;
+	s=arc-20240116; t=1720644450; c=relaxed/simple;
+	bh=21XyRQVjhttTDq5lm7yIAP6dmRC4F1BqgunJYPnoum8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BbLB9DujYiKy2OJ6C8QRwUAS3hvn+/IcKVRlXRgO7WTICLsCbYIQrhcwvspru4ghnJfW1KE1zj0X7p5jwxrrZ0j5lGrPgB40tePZcvPM95+IDgSiWh4j8vEKIhry4BromTyahXfxxBcZvvp67Bzjk8p8EREYemr7AJn6DyPKPQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com; spf=none smtp.mailfrom=osandov.com; dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b=hpxNTpz/; arc=none smtp.client-ip=209.85.214.171
+	 MIME-Version; b=AXSEcUh7gf6SBP8yn1VJs9iSXiDX5IwJ0YdV6SVn6AD9RhJVFlKxIPQP7N5djlnIeOyMD56P+6Ka1rPOlTp9lJe4NxUrnErKNp8BYjccUbPZez/cryK4+A0lS+iVF3ojhhzhk+wjBg1eRMmHjzy3bR7tkRLHruqa5Gex3r9j+HA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com; spf=none smtp.mailfrom=osandov.com; dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b=SuTDqrba; arc=none smtp.client-ip=209.85.214.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=osandov.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b="hpxNTpz/"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-1fb222a8eaeso989405ad.3
-        for <linux-debuggers@vger.kernel.org>; Wed, 10 Jul 2024 13:47:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b="SuTDqrba"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-1f65a3abd01so1073685ad.3
+        for <linux-debuggers@vger.kernel.org>; Wed, 10 Jul 2024 13:47:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1720644446; x=1721249246; darn=vger.kernel.org;
+        d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1720644447; x=1721249247; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WqGEo7EQR7CBkBq/zBsKd7MHoi8uizQ+EwHstDMkJZg=;
-        b=hpxNTpz/Qet+2OD2rtWsNb41n8w21tEjLM5Kmg7AT1tSoXRlTqmoGv7TZlD8Sn/edP
-         Sg7D3PL5m22158GOz9nnKvHsicTvR4nkDMoUMn4bjFiGJTys29Rx0zPG4FhisPedD4/m
-         JMjoPv+W3k7X3irgZTIxTZ7ThZzsjvnHo3S0n48Yp5VzhWCeILrXyG1Js/ycse+0Uk3G
-         H51vuoKVRID2vbOkIBg2JqmS5oNpTxtqcKluiXDStd5L9K941z8mvlE5u1FEte8ZW/FT
-         yDPlhVAS3445NqUrT3WeFX8PIhGNSE9P1Hd16L5zYZM51vZQB+S9mgGYqQKw6Izd6cGG
-         +xQw==
+        bh=6EPkiReHLdg4rOLsZZtkJON5+jcpMUzk+vrv1pi/FoE=;
+        b=SuTDqrbaLkA373fqROq4QcTgAqmxg8OwtotCrlV81g0dOZB4M4OpF4U2g5wyH9xJ9s
+         sb8z0sPwOZXAU1v7NgWJthtgELw8nuhyNDQMMp5TcX4DSQ57cSIcg+O55BRJCwMzNFu8
+         ey2ZXWLi1aCHH/YYVi9Q8YlEv7630xq0EKjQ8WK347p68YkgBb+mRjHjS0AjC7vr3kZW
+         PGZtdhlSONYJWB4JarNYfHx8rt6vV/VQ59cxxKSybURW9BIYlNcadcKvTUTn6tGGXLta
+         Srr2ZBLACOJaqcZk/mppbEcRcij53cLS1P1jwWwphYAvQLEJt7gnSXFRFpAYFL7w7Y0P
+         oUuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720644446; x=1721249246;
+        d=1e100.net; s=20230601; t=1720644447; x=1721249247;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=WqGEo7EQR7CBkBq/zBsKd7MHoi8uizQ+EwHstDMkJZg=;
-        b=AQP4HKPAguHi8BhRl7FM8thPWJDwC1TSRlciZrg6w+lb6KRY7i1assazXUF+O4Y7GG
-         XA8L4kUVm+O56iz9bLTCP8CzDjmXpAF9SiUwZpDqUwkj37OMZ0YUyZdeidCoVtaHwYf9
-         gp9DA331aBuKV7e59yJqjP36M/kKcTA2MD8/jZcPJGRY5EbvGiDmK4XJpUxs19Cz1HpA
-         CschFea8rJThu8TPRrjmpSfYaSyt4eIrr3P4LjFX9Bu6oGdLSxExMBPLfSsxcpFuDqXk
-         F3HF8hU18BHg833NdJy9bUnHKg6Bq1srXk0LTY/RjsXYateH2iXaJnWJCzPuvy00QqAO
-         oEEQ==
-X-Gm-Message-State: AOJu0YzRoZ97SZURtVjPwDN3cEsYYMQTPtxEImdQ/neubwykRlWZ4ezk
-	0g1ELUuKUUHd6gFK6Fn99OIk8gbtMMGVO56uSx4VPyvcAdTruYA2T2lKx/nXpQzNPKFClGUJnnz
-	a
-X-Google-Smtp-Source: AGHT+IHHClIvksZSOcHk2YaLP2hTeYKbWFTwgNKaG7Eg11A3x/aXAmjmAhPGqgX6pGn9vgf1QuZUwA==
-X-Received: by 2002:a17:902:f68e:b0:1fb:396c:7532 with SMTP id d9443c01a7336-1fbb6d90e10mr54938475ad.56.1720644445730;
-        Wed, 10 Jul 2024 13:47:25 -0700 (PDT)
+        bh=6EPkiReHLdg4rOLsZZtkJON5+jcpMUzk+vrv1pi/FoE=;
+        b=vniwLDFvHLirRB5Z2qBYIgP23jICRLOL+N/xYZjZU1eiU+p+iWGqhZoNvUpwah9h6D
+         Mm1Zi0jdN+MEXzNpRwDylAOz4sVTxODIejovVX7GyWzvfHCs0sRSVomkKpn8sXAvFVgh
+         ZS1HhO7t2p7K2NnA/Jz4jV2723rHNIIEEBU/I02cL6bl5OTbzo0/2iszZBU38JMzC4if
+         /jMXLDRBBXy8ktVIVD43bcGTH32kF9eKoH5IEN6WtEdKlMzQImPct+9iBJBTRRhZ9tmp
+         yPHa7vC8Hx+eWAXdMAL3KMA/i3gGr6fDlM79kTgfqnmYRBbtXr6MNRpe4uWxlYycP8z+
+         o3pA==
+X-Gm-Message-State: AOJu0Ywkb8DK/ynDTblP3oZQ8Klq3peVmMnP5AyIy3igv80zrzUhg4io
+	HNLj49asUjvsrq6MUUcb2iZz0evFNKhx0Wg6kA96qf2EH59+5TeqKiS/X5ngA3c=
+X-Google-Smtp-Source: AGHT+IFl8wK3v17MCajfleA7g8mqUhI38FmvrR90ZIFkf5nj1RfS+6tjZYYZISGX0puQDIVtpCP8sw==
+X-Received: by 2002:a17:903:32d0:b0:1fb:7435:c2c7 with SMTP id d9443c01a7336-1fbb6ef842bmr53229255ad.57.1720644447187;
+        Wed, 10 Jul 2024 13:47:27 -0700 (PDT)
 Received: from telecaster.thefacebook.com ([2620:10d:c090:500::5:134a])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fbb6ad5be3sm37698025ad.301.2024.07.10.13.47.24
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fbb6ad5be3sm37698025ad.301.2024.07.10.13.47.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jul 2024 13:47:25 -0700 (PDT)
+        Wed, 10 Jul 2024 13:47:26 -0700 (PDT)
 From: Omar Sandoval <osandov@osandov.com>
 To: elfutils-devel@sourceware.org
 Cc: linux-debuggers@vger.kernel.org
-Subject: [PATCH 2/3] debuginfod: add archive entry size, mtime, and uncompressed offset to database
-Date: Wed, 10 Jul 2024 13:47:12 -0700
-Message-ID: <5e992fd7344f67918e72c2bd3019af18591e40ae.1720644134.git.osandov@fb.com>
+Subject: [PATCH 3/3] debuginfod: optimize extraction from seekable xz archives
+Date: Wed, 10 Jul 2024 13:47:13 -0700
+Message-ID: <54b1cd82e066537ce232940175e2e1b485b648dd.1720644134.git.osandov@fb.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <cover.1720644134.git.osandov@fb.com>
 References: <cover.1720644134.git.osandov@fb.com>
@@ -71,207 +70,64 @@ Content-Transfer-Encoding: 8bit
 
 From: Omar Sandoval <osandov@fb.com>
 
-In order to extract a file from a seekable archive, we need to know
-where in the uncompressed archive the file data starts and its size.
-Additionally, in order to populate the response headers, we need the
-file modification time (since we won't be able to get it from the
-archive metadata).  Add the size, modification time, and uncompressed
-offset to the _r_de table and _query_d and _query_e views.  Note that
-_r_de already has a column for the mtime of the archive itself, so that
-one is renamed to mtime0 and the one for the entry is mtime1.
+The kernel debuginfo packages on Fedora, Debian, and Ubuntu, and many of
+their downstreams, are all compressed with xz in multi-threaded mode,
+which allows random access.  We can use this to bypass the full archive
+extraction and dramatically speed up kernel debuginfo requests (from ~50
+seconds in the worst case to < 0.25 seconds).
 
-We need a little bit of liblzma magic to detect whether a file is
-seekable.  If so, we populate the uncompressed_offset column, and
-otherwise we set it to null.  size and mtime1 are populated
-unconditionally for simplicity.
+This works because multi-threaded xz compression splits up the stream
+into many independently compressed blocks.  The stream ends with an
+index of blocks.  So, to seek to an offset, we find the block containing
+that offset in the index and then decompress and throw away data until
+we reach the offset within the block.  We can then decompress the
+desired amount of data, possibly from subsequent blocks.  There's no
+high-level API in liblzma to do this, but we can do it by stitching
+together a few low-level APIs.
 
-Before this change, the database for a single kernel debuginfo RPM
-(kernel-debuginfo-6.9.6-200.fc40.x86_64.rpm) was about 15MB.  This
-change increases that by about 70kB, only a 0.5% increase.
+Since we now save the uncompressed offset and size of each archive file,
+pass that information down so we can do the optimized extraction when
+applicable.
 
 Signed-off-by: Omar Sandoval <osandov@fb.com>
 ---
- configure.ac              |   5 +
- debuginfod/Makefile.am    |   2 +-
- debuginfod/debuginfod.cxx | 234 +++++++++++++++++++++++++++++++++-----
- 3 files changed, 213 insertions(+), 28 deletions(-)
+ debuginfod/debuginfod.cxx | 431 ++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 417 insertions(+), 14 deletions(-)
 
-diff --git a/configure.ac b/configure.ac
-index 24e68d94..9c5f7e51 100644
---- a/configure.ac
-+++ b/configure.ac
-@@ -441,8 +441,13 @@ eu_ZIPLIB(bzlib,BZLIB,bz2,BZ2_bzdopen,bzip2)
- # We need this since bzip2 doesn't have a pkgconfig file.
- BZ2_LIB="$LIBS"
- AC_SUBST([BZ2_LIB])
-+save_LIBS="$LIBS"
-+LIBS=
- eu_ZIPLIB(lzma,LZMA,lzma,lzma_auto_decoder,[LZMA (xz)])
-+lzma_LIBS="$LIBS"
-+LIBS="$lzma_LIBS $save_LIBS"
- AS_IF([test "x$with_lzma" = xyes], [LIBLZMA="liblzma"], [LIBLZMA=""])
-+AC_SUBST([lzma_LIBS])
- AC_SUBST([LIBLZMA])
- eu_ZIPLIB(zstd,ZSTD,zstd,ZSTD_decompress,[ZSTD (zst)])
- AS_IF([test "x$with_zstd" = xyes], [LIBZSTD="libzstd"], [LIBLZSTD=""])
-diff --git a/debuginfod/Makefile.am b/debuginfod/Makefile.am
-index b74e3673..e199dc0c 100644
---- a/debuginfod/Makefile.am
-+++ b/debuginfod/Makefile.am
-@@ -70,7 +70,7 @@ bin_PROGRAMS += debuginfod-find
- endif
- 
- debuginfod_SOURCES = debuginfod.cxx
--debuginfod_LDADD = $(libdw) $(libelf) $(libeu) $(libdebuginfod) $(argp_LDADD) $(fts_LIBS) $(libmicrohttpd_LIBS) $(sqlite3_LIBS) $(libarchive_LIBS) $(rpm_LIBS) $(jsonc_LIBS) $(libcurl_LIBS) -lpthread -ldl
-+debuginfod_LDADD = $(libdw) $(libelf) $(libeu) $(libdebuginfod) $(argp_LDADD) $(fts_LIBS) $(libmicrohttpd_LIBS) $(sqlite3_LIBS) $(libarchive_LIBS) $(rpm_LIBS) $(jsonc_LIBS) $(libcurl_LIBS) $(lzma_LIBS) -lpthread -ldl
- 
- debuginfod_find_SOURCES = debuginfod-find.c
- debuginfod_find_LDADD = $(libdw) $(libelf) $(libeu) $(libdebuginfod) $(argp_LDADD) $(fts_LIBS) $(jsonc_LIBS)
 diff --git a/debuginfod/debuginfod.cxx b/debuginfod/debuginfod.cxx
-index 2d709026..95a7d941 100644
+index 95a7d941..c3822be3 100644
 --- a/debuginfod/debuginfod.cxx
 +++ b/debuginfod/debuginfod.cxx
-@@ -63,6 +63,10 @@ extern "C" {
- #undef __attribute__ /* glibc bug - rhbz 1763325 */
- #endif
- 
-+#ifdef USE_LZMA
-+#include <lzma.h>
-+#endif
-+
- #include <unistd.h>
- #include <stdlib.h>
- #include <locale.h>
-@@ -162,7 +166,7 @@ string_endswith(const string& haystack, const string& needle)
+@@ -1971,6 +1971,16 @@ handle_buildid_f_match (bool internal_req_t,
  
  
- // Roll this identifier for every sqlite schema incompatibility.
--#define BUILDIDS "buildids10"
-+#define BUILDIDS "buildids11"
- 
- #if SQLITE_VERSION_NUMBER >= 3008000
- #define WITHOUT_ROWID "without rowid"
-@@ -239,15 +243,18 @@ static const char DEBUGINFOD_SQLITE_DDL[] =
-   "        debuginfo_p integer not null,\n"
-   "        executable_p integer not null,\n"
-   "        file integer not null,\n"
--  "        mtime integer not null,\n"
-+  "        mtime0 integer not null,\n"
-   "        content integer not null,\n"
-+  "        size integer not null,\n"
-+  "        mtime1 integer not null,\n"
-+  "        uncompressed_offset integer,\n"
-   "        foreign key (file) references " BUILDIDS "_files(id) on update cascade on delete cascade,\n"
-   "        foreign key (content) references " BUILDIDS "_files(id) on update cascade on delete cascade,\n"
-   "        foreign key (buildid) references " BUILDIDS "_buildids(id) on update cascade on delete cascade,\n"
--  "        primary key (buildid, debuginfo_p, executable_p, file, content, mtime)\n"
-+  "        primary key (buildid, debuginfo_p, executable_p, file, content, mtime0)\n"
-   "        ) " WITHOUT_ROWID ";\n"
-   // Index for faster delete by archive file identifier
--  "create index if not exists " BUILDIDS "_r_de_idx on " BUILDIDS "_r_de (file, mtime);\n"
-+  "create index if not exists " BUILDIDS "_r_de_idx on " BUILDIDS "_r_de (file, mtime0);\n"
-   // Index for metadata searches
-   "create index if not exists " BUILDIDS "_r_de_idx2 on " BUILDIDS "_r_de (content);\n"  
-   "create table if not exists " BUILDIDS "_r_sref (\n" // outgoing dwarf sourcefile references from rpm
-@@ -268,22 +275,22 @@ static const char DEBUGINFOD_SQLITE_DDL[] =
-   // create views to glue together some of the above tables, for webapi D queries
-   "create view if not exists " BUILDIDS "_query_d as \n"
-   "select\n"
--  "        b.hex as buildid, n.mtime, 'F' as sourcetype, f0.name as source0, n.mtime as mtime, null as source1\n"
-+  "        b.hex as buildid, 'F' as sourcetype, f0.name as source0, n.mtime as mtime0, null as source1, null as size, null as mtime1, null as uncompressed_offset\n"
-   "        from " BUILDIDS "_buildids b, " BUILDIDS "_files_v f0, " BUILDIDS "_f_de n\n"
-   "        where b.id = n.buildid and f0.id = n.file and n.debuginfo_p = 1\n"
-   "union all select\n"
--  "        b.hex as buildid, n.mtime, 'R' as sourcetype, f0.name as source0, n.mtime as mtime, f1.name as source1\n"
-+  "        b.hex as buildid, 'R' as sourcetype, f0.name as source0, n.mtime0 as mtime0, f1.name as source1, n.size as size, n.mtime1 as mtime1, n.uncompressed_offset as uncompressed_offset\n"
-   "        from " BUILDIDS "_buildids b, " BUILDIDS "_files_v f0, " BUILDIDS "_files_v f1, " BUILDIDS "_r_de n\n"
-   "        where b.id = n.buildid and f0.id = n.file and f1.id = n.content and n.debuginfo_p = 1\n"
-   ";"
-   // ... and for E queries
-   "create view if not exists " BUILDIDS "_query_e as \n"
-   "select\n"
--  "        b.hex as buildid, n.mtime, 'F' as sourcetype, f0.name as source0, n.mtime as mtime, null as source1\n"
-+  "        b.hex as buildid, 'F' as sourcetype, f0.name as source0, n.mtime as mtime0, null as source1, null as size, null as mtime1, null as uncompressed_offset\n"
-   "        from " BUILDIDS "_buildids b, " BUILDIDS "_files_v f0, " BUILDIDS "_f_de n\n"
-   "        where b.id = n.buildid and f0.id = n.file and n.executable_p = 1\n"
-   "union all select\n"
--  "        b.hex as buildid, n.mtime, 'R' as sourcetype, f0.name as source0, n.mtime as mtime, f1.name as source1\n"
-+  "        b.hex as buildid, 'R' as sourcetype, f0.name as source0, n.mtime0 as mtime0, f1.name as source1, n.size as size, n.mtime1 as mtime1, n.uncompressed_offset as uncompressed_offset\n"
-   "        from " BUILDIDS "_buildids b, " BUILDIDS "_files_v f0, " BUILDIDS "_files_v f1, " BUILDIDS "_r_de n\n"
-   "        where b.id = n.buildid and f0.id = n.file and f1.id = n.content and n.executable_p = 1\n"
-   ";"
-@@ -324,8 +331,23 @@ static const char DEBUGINFOD_SQLITE_DDL[] =
- // data over instead of just dropping it.  But that could incur
- // doubled storage costs.
- //
--// buildids10: split the _files table into _parts
-+// buildids11: add size, mtime1, and uncompressed_offset to _r_de, _query_d, and _query_e
-   "" // <<< we are here
-+// buildids10: split the _files table into _parts
-+  "DROP VIEW IF EXISTS buildids10_stats;\n"
-+  "DROP VIEW IF EXISTS buildids10_query_s;\n"
-+  "DROP VIEW IF EXISTS buildids10_query_e;\n"
-+  "DROP VIEW IF EXISTS buildids10_query_d;\n"
-+  "DROP TABLE IF EXISTS buildids10_r_sdef;\n"
-+  "DROP TABLE IF EXISTS buildids10_r_sref;\n"
-+  "DROP TABLE IF EXISTS buildids10_r_de;\n"
-+  "DROP TABLE IF EXISTS buildids10_f_s;\n"
-+  "DROP TABLE IF EXISTS buildids10_f_de;\n"
-+  "DROP TABLE IF EXISTS buildids10_file_mtime_scanned;\n"
-+  "DROP TABLE IF EXISTS buildids10_buildids;\n"
-+  "DROP VIEW IF EXISTS buildids10_files_v;\n"
-+  "DROP TABLE IF EXISTS buildids10_files;\n"
-+  "DROP TABLE IF EXISTS buildids10_fileparts;\n"
- // buildids9: widen the mtime_scanned table
-   "DROP VIEW IF EXISTS buildids9_stats;\n"
-   "DROP INDEX IF EXISTS buildids9_r_de_idx;\n"
-@@ -1947,6 +1969,140 @@ handle_buildid_f_match (bool internal_req_t,
-   return r;
- }
- 
-+
-+#ifdef USE_LZMA
-+// Neither RPM nor deb files support seeking to a specific file in the package.
-+// Instead, to extract a specific file, we normally need to read the archive
-+// sequentially until we find the file.  This is very slow for files at the end
-+// of a large package with lots of files, like kernel debuginfo.
-+//
-+// However, if the compression format used in the archive supports seeking, we
-+// can accelerate this.  As of July 2024, xz is the only widely-used format that
-+// supports seeking, and usually only in multi-threaded mode.  Luckily, the
-+// kernel-debuginfo package in Fedora and its downstreams, and the
-+// linux-image-*-dbg package in Debian and its downstreams, all happen to use
-+// this.
-+//
-+// The xz format [1] ends with an index of independently compressed blocks in
-+// the stream.  In RPM and deb files, the xz stream is the last thing in the
-+// file, so we assume that the xz Stream Footer is at the end of the package
-+// file and do everything relative to that.  For each file in the archive, we
-+// remember the size and offset of the file data in the uncompressed xz stream,
-+// then we use the index to seek to that offset when we need that file.
-+//
-+// 1: https://xz.tukaani.org/format/xz-file-format.txt
-+
-+// Return whether an archive supports seeking.
-+static bool
-+is_seekable_archive (const string& rps, struct archive* a)
+ #ifdef USE_LZMA
++struct lzma_exception: public reportable_exception
 +{
-+  // Only xz supports seeking.
-+  if (archive_filter_code (a, 0) != ARCHIVE_FILTER_XZ)
-+    return false;
++  lzma_exception(int rc, const string& msg):
++    // liblzma doesn't have a lzma_ret -> string conversion function, so just
++    // report the value.
++    reportable_exception(string ("lzma error: ") + msg + ": error " + to_string(rc)) {
++      inc_metric("error_count","lzma",to_string(rc));
++    }
++};
 +
-+  int fd = open (rps.c_str(), O_RDONLY);
-+  if (fd < 0)
-+    return false;
-+  defer_dtor<int,int> fd_closer (fd, close);
+ // Neither RPM nor deb files support seeking to a specific file in the package.
+ // Instead, to extract a specific file, we normally need to read the archive
+ // sequentially until we find the file.  This is very slow for files at the end
+@@ -2094,12 +2104,352 @@ is_seekable_archive (const string& rps, struct archive* a)
+   // The file is only seekable if it has more than one Block.
+   return num_records > 1;
+ }
 +
-+  // Seek to the xz Stream Footer.  We assume that it's the last thing in the
-+  // file, which is true for RPM and deb files.
++// Read the Index at the end of an xz file.
++static lzma_index*
++read_xz_index (int fd)
++{
 +  off_t footer_pos = -LZMA_STREAM_HEADER_SIZE;
 +  if (lseek (fd, footer_pos, SEEK_END) == -1)
-+    return false;
++    throw libc_exception (errno, "lseek");
 +
-+  // Decode the Stream Footer.
 +  uint8_t footer[LZMA_STREAM_HEADER_SIZE];
 +  size_t footer_read = 0;
 +  while (footer_read < sizeof (footer))
@@ -282,233 +138,503 @@ index 2d709026..95a7d941 100644
 +        {
 +          if (errno == EINTR)
 +            continue;
-+          return false;
++          throw libc_exception (errno, "read");
 +        }
 +      if (bytes_read == 0)
-+        return false;
++        throw reportable_exception ("truncated file");
 +      footer_read += bytes_read;
 +    }
 +
 +  lzma_stream_flags stream_flags;
 +  lzma_ret ret = lzma_stream_footer_decode (&stream_flags, footer);
 +  if (ret != LZMA_OK)
-+    return false;
++    throw lzma_exception (ret, "lzma_stream_footer_decode");
 +
-+  // Seek to the xz Index.
 +  if (lseek (fd, footer_pos - stream_flags.backward_size, SEEK_END) == -1)
-+    return false;
++    throw libc_exception (errno, "lseek");
 +
-+  // Decode the Number of Records in the Index.  liblzma doesn't have an API for
-+  // this if you don't want to decode the whole Index, so we have to do it
-+  // ourselves.
-+  //
-+  // We need 1 byte for the Index Indicator plus 1-9 bytes for the
-+  // variable-length integer Number of Records.
-+  uint8_t index[10];
-+  size_t index_read = 0;
-+  while (index_read == 0) {
-+      ssize_t bytes_read = read (fd, index, sizeof (index));
-+      if (bytes_read < 0)
-+        {
-+          if (errno == EINTR)
-+            continue;
-+          return false;
-+        }
-+      if (bytes_read == 0)
-+        return false;
-+      index_read += bytes_read;
-+  }
-+  // The Index Indicator must be 0.
-+  if (index[0] != 0)
-+    return false;
++  lzma_stream strm = LZMA_STREAM_INIT;
++  lzma_index* index = NULL;
++  ret = lzma_index_decoder (&strm, &index, UINT64_MAX);
++  if (ret != LZMA_OK)
++    throw lzma_exception (ret, "lzma_index_decoder");
++  defer_dtor<lzma_stream*,void> strm_ender (&strm, lzma_end);
 +
-+  lzma_vli num_records;
-+  size_t pos = 0;
-+  size_t in_pos = 1;
++  uint8_t in_buf[4096];
 +  while (true)
 +    {
-+      if (in_pos >= index_read)
++      if (strm.avail_in == 0)
 +        {
-+          ssize_t bytes_read = read (fd, index, sizeof (index));
++          ssize_t bytes_read = read (fd, in_buf, sizeof (in_buf));
 +          if (bytes_read < 0)
-+          {
-+            if (errno == EINTR)
-+              continue;
-+            return false;
-+          }
++            {
++              if (errno == EINTR)
++                continue;
++              throw libc_exception (errno, "read");
++            }
 +          if (bytes_read == 0)
-+            return false;
-+          index_read = bytes_read;
-+          in_pos = 0;
++            throw reportable_exception ("truncated file");
++          strm.avail_in = bytes_read;
++          strm.next_in = in_buf;
 +        }
-+      ret = lzma_vli_decode (&num_records, &pos, index, &in_pos, index_read);
-+      if (ret == LZMA_STREAM_END)
-+        break;
-+      else if (ret != LZMA_OK)
-+        return false;
++
++        ret = lzma_code (&strm, LZMA_RUN);
++        if (ret == LZMA_STREAM_END)
++          break;
++        else if (ret != LZMA_OK)
++          throw lzma_exception (ret, "lzma_code index");
 +    }
 +
-+  if (verbose > 3)
-+    obatched(clog) << rps << " has " << num_records << " xz Blocks" << endl;
-+
-+  // The file is only seekable if it has more than one Block.
-+  return num_records > 1;
++  ret = lzma_index_stream_flags (index, &stream_flags);
++  if (ret != LZMA_OK)
++    {
++      lzma_index_end (index, NULL);
++      throw lzma_exception (ret, "lzma_index_stream_flags");
++    }
++  return index;
 +}
-+#else
-+static bool
-+is_seekable_archive (const string& rps, struct archive* a)
++
++static void
++my_lzma_index_end (lzma_index* index)
 +{
-+  return false;
++  lzma_index_end (index, NULL);
 +}
-+#endif
 +
++static void
++free_lzma_block_filter_options (lzma_block* block)
++{
++  for (int i = 0; i < LZMA_FILTERS_MAX; i++)
++    {
++      free (block->filters[i].options);
++      block->filters[i].options = NULL;
++    }
++}
 +
- // For security/portability reasons, many distro-package archives have
- // a "./" in front of path names; others have nothing, others have
- // "/".  Canonicalize them all to a single leading "/", with the
-@@ -2557,16 +2713,16 @@ handle_buildid (MHD_Connection* conn,
++static void
++free_lzma_block_filters (lzma_block* block)
++{
++  if (block->filters != NULL)
++    {
++      free_lzma_block_filter_options (block);
++      free (block->filters);
++    }
++}
++
++static void
++extract_xz_blocks_into_fd (const string& srcpath,
++                           int src,
++                           int dst,
++                           lzma_index_iter* iter,
++                           uint64_t offset,
++                           uint64_t size)
++{
++  // Seek to the Block.  Seeking from the end using the compressed size from the
++  // footer means we don't need to know where the xz stream starts in the
++  // archive.
++  if (lseek (src,
++             (off_t) iter->block.compressed_stream_offset
++             - (off_t) iter->stream.compressed_size,
++             SEEK_END) == -1)
++    throw libc_exception (errno, "lseek");
++
++  offset -= iter->block.uncompressed_file_offset;
++
++  lzma_block block{};
++  block.filters = (lzma_filter*) calloc (LZMA_FILTERS_MAX + 1,
++                                         sizeof (lzma_filter));
++  if (block.filters == NULL)
++    throw libc_exception (ENOMEM, "cannot allocate lzma_block filters");
++  defer_dtor<lzma_block*,void> filters_freer (&block, free_lzma_block_filters);
++
++  uint8_t in_buf[4096];
++  uint8_t out_buf[4096];
++  size_t header_read = 0;
++  bool need_log_extracting = verbose > 3;
++  while (true)
++    {
++      // The first byte of the Block is the encoded Block Header Size.  Read the
++      // first byte and whatever extra fits in the buffer.
++      while (header_read == 0)
++        {
++          ssize_t bytes_read = read (src, in_buf, sizeof (in_buf));
++          if (bytes_read < 0)
++            {
++              if (errno == EINTR)
++                continue;
++              throw libc_exception (errno, "read");
++            }
++          if (bytes_read == 0)
++            throw reportable_exception ("truncated file");
++          header_read += bytes_read;
++        }
++
++      block.header_size = lzma_block_header_size_decode (in_buf[0]);
++
++      // If we didn't buffer the whole Block Header earlier, get the rest.
++      eu_static_assert (sizeof (in_buf)
++                        >= lzma_block_header_size_decode (UINT8_MAX));
++      while (header_read < block.header_size)
++        {
++          ssize_t bytes_read = read (src, in_buf + header_read,
++                                     sizeof (in_buf) - header_read);
++          if (bytes_read < 0)
++            {
++              if (errno == EINTR)
++                continue;
++              throw libc_exception (errno, "read");
++            }
++          if (bytes_read == 0)
++            throw reportable_exception ("truncated file");
++          header_read += bytes_read;
++        }
++
++      // Decode the Block Header.
++      block.check = iter->stream.flags->check;
++      lzma_ret ret = lzma_block_header_decode (&block, NULL, in_buf);
++      if (ret != LZMA_OK)
++        throw lzma_exception (ret, "lzma_block_header_decode");
++      ret = lzma_block_compressed_size (&block, iter->block.unpadded_size);
++      if (ret != LZMA_OK)
++        throw lzma_exception (ret, "lzma_block_compressed_size");
++
++      // Start decoding the Block data.
++      lzma_stream strm = LZMA_STREAM_INIT;
++      ret = lzma_block_decoder (&strm, &block);
++      if (ret != LZMA_OK)
++        throw lzma_exception (ret, "lzma_block_decoder");
++      defer_dtor<lzma_stream*,void> strm_ender (&strm, lzma_end);
++
++      // We might still have some input buffered from when we read the header.
++      strm.avail_in = header_read - block.header_size;
++      strm.next_in = in_buf + block.header_size;
++      strm.avail_out = sizeof (out_buf);
++      strm.next_out = out_buf;
++      while (true)
++        {
++          if (strm.avail_in == 0)
++            {
++              ssize_t bytes_read = read (src, in_buf, sizeof (in_buf));
++              if (bytes_read < 0)
++                {
++                  if (errno == EINTR)
++                    continue;
++                  throw libc_exception (errno, "read");
++                }
++              if (bytes_read == 0)
++                throw reportable_exception ("truncated file");
++              strm.avail_in = bytes_read;
++              strm.next_in = in_buf;
++            }
++
++          ret = lzma_code (&strm, LZMA_RUN);
++          if (ret != LZMA_OK && ret != LZMA_STREAM_END)
++            throw lzma_exception (ret, "lzma_code block");
++
++          // Throw away anything we decode until we reach the offset, then
++          // start writing to the destination.
++          if (strm.total_out > offset)
++            {
++              size_t bytes_to_write = strm.next_out - out_buf;
++              uint8_t* buf_to_write = out_buf;
++
++              // Ignore anything in the buffer before the offset.
++              if (bytes_to_write > strm.total_out - offset)
++                {
++                  buf_to_write += bytes_to_write - (strm.total_out - offset);
++                  bytes_to_write = strm.total_out - offset;
++                }
++
++              // Ignore anything after the size.
++              if (strm.total_out - offset >= size)
++                bytes_to_write -= strm.total_out - offset - size;
++
++              if (need_log_extracting)
++                {
++                  obatched(clog) << "extracting from xz archive " << srcpath
++                                 << " size=" << size << endl;
++                  need_log_extracting = false;
++                }
++
++              while (bytes_to_write > 0)
++                {
++                  ssize_t written = write (dst, buf_to_write, bytes_to_write);
++                  if (written < 0)
++                    {
++                      if (errno == EAGAIN)
++                        continue;
++                      throw libc_exception (errno, "write");
++                    }
++                  bytes_to_write -= written;
++                  buf_to_write += written;
++                }
++
++              // If we reached the size, we're done.
++              if (strm.total_out - offset >= size)
++                return;
++            }
++
++          strm.avail_out = sizeof (out_buf);
++          strm.next_out = out_buf;
++
++          if (ret == LZMA_STREAM_END)
++            break;
++        }
++
++      // This Block didn't have enough data.  Go to the next one.
++      if (lzma_index_iter_next (iter, LZMA_INDEX_ITER_BLOCK))
++        throw reportable_exception ("no more blocks");
++      if (strm.total_out > offset)
++        size -= strm.total_out - offset;
++      offset = 0;
++      // If we had any buffered input left, move it to the beginning of the
++      // buffer to decode the next Block Header.
++      if (strm.avail_in > 0)
++        {
++          memmove (in_buf, strm.next_in, strm.avail_in);
++          header_read = strm.avail_in;
++        }
++      else
++        header_read = 0;
++      free_lzma_block_filter_options (&block);
++    }
++}
++
++static int
++extract_from_seekable_archive (const string& srcpath,
++                               char* tmppath,
++                               uint64_t offset,
++                               uint64_t size)
++{
++  int src = open (srcpath.c_str(), O_RDONLY);
++  if (src < 0)
++    throw libc_exception (errno, string("open ") + srcpath);
++  defer_dtor<int,int> src_closer (src, close);
++
++  try
++    {
++      lzma_index* index = read_xz_index (src);
++      defer_dtor<lzma_index*,void> index_ender (index, my_lzma_index_end);
++
++      // Find the Block containing the offset.
++      lzma_index_iter iter;
++      lzma_index_iter_init (&iter, index);
++      if (lzma_index_iter_locate (&iter, offset))
++        throw reportable_exception ("offset not found");
++
++      if (verbose > 3)
++        obatched(clog) << "seeking in xz archive " << srcpath
++                       << " offset=" << offset << " block_offset="
++                       << iter.block.uncompressed_file_offset << endl;
++
++      int dst = mkstemp (tmppath);
++      if (dst < 0)
++        throw libc_exception (errno, "cannot create temporary file");
++
++      try
++        {
++          extract_xz_blocks_into_fd (srcpath, src, dst, &iter, offset, size);
++        }
++      catch (...)
++        {
++          unlink (tmppath);
++          close (dst);
++          throw;
++        }
++
++      return dst;
++    }
++  catch (const reportable_exception &e)
++    {
++      if (verbose)
++        obatched(clog) << "failed to extract from seekable archive " << srcpath
++                       << ": " << e.message << endl;
++      return -1;
++    }
++}
+ #else
+ static bool
+ is_seekable_archive (const string& rps, struct archive* a)
+ {
+   return false;
+ }
++static int
++extract_from_seekable_archive (const string& srcpath,
++                               char* tmppath,
++                               uint64_t offset,
++                               uint64_t size)
++{
++  return -1;
++}
+ #endif
+ 
+ 
+@@ -2199,9 +2549,12 @@ create_buildid_r_response (int64_t b_mtime0,
+ 
+ static struct MHD_Response*
+ handle_buildid_r_match (bool internal_req_p,
+-                        int64_t b_mtime,
++                        int64_t b_mtime0,
+                         const string& b_source0,
+                         const string& b_source1,
++                        int64_t b_size,
++                        int64_t b_mtime1,
++                        int64_t b_uncompressed_offset,
+                         const string& section,
+                         int *result_fd)
+ {
+@@ -2213,7 +2566,7 @@ handle_buildid_r_match (bool internal_req_p,
+   if (rc != 0)
+     throw libc_exception (errno, string("stat ") + b_source0);
+ 
+-  if ((int64_t) fs.st_mtime != b_mtime)
++  if ((int64_t) fs.st_mtime != b_mtime0)
+     {
+       if (verbose)
+         obatched(clog) << "mtime mismatch for " << b_source0 << endl;
+@@ -2373,7 +2726,7 @@ handle_buildid_r_match (bool internal_req_p,
+           break; // branch out of if "loop", to try new libarchive fetch attempt
+         }
+ 
+-      struct MHD_Response* r = create_buildid_r_response (b_mtime, b_source0,
++      struct MHD_Response* r = create_buildid_r_response (b_mtime0, b_source0,
+                                                           b_source1, section,
+                                                           ima_sig, NULL, fd,
+                                                           fs.st_size,
+@@ -2388,7 +2741,41 @@ handle_buildid_r_match (bool internal_req_p,
+       // NB: see, we never go around the 'loop' more than once
+     }
+ 
+-  // no match ... grumble, must process the archive
++  // no match ... if the archive is seekable, try that first
++  if (b_uncompressed_offset > 0)
++    {
++      char* tmppath = NULL;
++      if (asprintf (&tmppath, "%s/debuginfod-fdcache.XXXXXX", tmpdir.c_str()) < 0)
++        throw libc_exception (ENOMEM, "cannot allocate tmppath");
++      defer_dtor<void*,void> tmmpath_freer (tmppath, free);
++
++      fd = extract_from_seekable_archive (b_source0, tmppath,
++                                          b_uncompressed_offset, b_size);
++      if (fd >= 0)
++        {
++          // Set the mtime so the fdcache file mtimes propagate to future webapi
++          // clients.
++          struct timespec tvs[2];
++          tvs[0].tv_sec = 0;
++          tvs[0].tv_nsec = UTIME_OMIT;
++          tvs[1].tv_sec = b_mtime1;
++          tvs[1].tv_nsec = 0;
++          (void) futimens (fd, tvs);  /* best effort */
++          struct MHD_Response* r = create_buildid_r_response (b_mtime0,
++                                                              b_source0,
++                                                              b_source1,
++                                                              section, ima_sig,
++                                                              tmppath, fd,
++                                                              b_size, b_mtime1,
++                                                              "seekable archive",
++                                                              extract_begin);
++          if (r != 0 && result_fd)
++            *result_fd = fd;
++          return r;
++        }
++    }
++
++  // still nothing ...  process the archive
+   string archive_decoder = "/dev/null";
+   string archive_extension = "";
+   for (auto&& arch : scan_archives)
+@@ -2512,7 +2899,7 @@ handle_buildid_r_match (bool internal_req_p,
+           continue;
+         }
+ 
+-      r = create_buildid_r_response (b_mtime, b_source0, b_source1, section,
++      r = create_buildid_r_response (b_mtime0, b_source0, b_source1, section,
+                                      ima_sig, tmppath, fd,
+                                      archive_entry_size(e),
+                                      archive_entry_mtime(e),
+@@ -2583,21 +2970,26 @@ and will not query the upstream servers");
+ 
+ static struct MHD_Response*
+ handle_buildid_match (bool internal_req_p,
+-                      int64_t b_mtime,
++                      int64_t b_mtime0,
+                       const string& b_stype,
+                       const string& b_source0,
+                       const string& b_source1,
++                      int64_t b_size,
++                      int64_t b_mtime1,
++                      int64_t b_uncompressed_offset,
+                       const string& section,
+                       int *result_fd)
+ {
+   try
+     {
+       if (b_stype == "F")
+-        return handle_buildid_f_match(internal_req_p, b_mtime, b_source0,
++        return handle_buildid_f_match(internal_req_p, b_mtime0, b_source0,
+ 				      section, result_fd);
+       else if (b_stype == "R")
+-        return handle_buildid_r_match(internal_req_p, b_mtime, b_source0,
+-				      b_source1, section, result_fd);
++        return handle_buildid_r_match(internal_req_p, b_mtime0, b_source0,
++                                      b_source1, b_size, b_mtime1,
++                                      b_uncompressed_offset, section,
++                                      result_fd);
+     }
+   catch (const reportable_exception &e)
+     {
+@@ -2713,7 +3105,7 @@ handle_buildid (MHD_Connection* conn,
    if (atype_code == "D")
      {
        pp = new sqlite_ps (thisdb, "mhd-query-d",
--                          "select mtime, sourcetype, source0, source1 from " BUILDIDS "_query_d where buildid = ? "
--                          "order by mtime desc");
-+                          "select mtime0, sourcetype, source0, source1 from " BUILDIDS "_query_d where buildid = ? "
-+                          "order by mtime0 desc");
+-                          "select mtime0, sourcetype, source0, source1 from " BUILDIDS "_query_d where buildid = ? "
++                          "select mtime0, sourcetype, source0, source1, size, mtime1, uncompressed_offset from " BUILDIDS "_query_d where buildid = ? "
+                           "order by mtime0 desc");
        pp->reset();
        pp->bind(1, buildid);
-     }
+@@ -2721,7 +3113,7 @@ handle_buildid (MHD_Connection* conn,
    else if (atype_code == "E")
      {
        pp = new sqlite_ps (thisdb, "mhd-query-e",
--                          "select mtime, sourcetype, source0, source1 from " BUILDIDS "_query_e where buildid = ? "
--                          "order by mtime desc");
-+                          "select mtime0, sourcetype, source0, source1 from " BUILDIDS "_query_e where buildid = ? "
-+                          "order by mtime0 desc");
+-                          "select mtime0, sourcetype, source0, source1 from " BUILDIDS "_query_e where buildid = ? "
++                          "select mtime0, sourcetype, source0, source1, size, mtime1, uncompressed_offset from " BUILDIDS "_query_e where buildid = ? "
+                           "order by mtime0 desc");
        pp->reset();
        pp->bind(1, buildid);
-     }
-@@ -2589,9 +2745,9 @@ handle_buildid (MHD_Connection* conn,
-   else if (atype_code == "I")
-     {
-       pp = new sqlite_ps (thisdb, "mhd-query-i",
--	"select mtime, sourcetype, source0, source1, 1 as debug_p from " BUILDIDS "_query_d where buildid = ? "
-+	"select mtime0, sourcetype, source0, source1, 1 as debug_p from " BUILDIDS "_query_d where buildid = ? "
- 	"union all "
--	"select mtime, sourcetype, source0, source1, 0 as debug_p from " BUILDIDS "_query_e where buildid = ? "
-+	"select mtime0, sourcetype, source0, source1, 0 as debug_p from " BUILDIDS "_query_e where buildid = ? "
- 	"order by debug_p desc, mtime desc");
-       pp->reset();
-       pp->bind(1, buildid);
-@@ -3821,7 +3977,7 @@ archive_classify (const string& rps, string& archive_extension, int64_t archivei
-                   sqlite_ps& ps_upsert_buildids, sqlite_ps& ps_upsert_fileparts, sqlite_ps& ps_upsert_file,
-                   sqlite_ps& ps_lookup_file,
-                   sqlite_ps& ps_upsert_de, sqlite_ps& ps_upsert_sref, sqlite_ps& ps_upsert_sdef,
--                  time_t mtime,
-+                  time_t mtime0,
-                   unsigned& fts_executable, unsigned& fts_debuginfo, unsigned& fts_sref, unsigned& fts_sdef,
-                   bool& fts_sref_complete_p)
- {
-@@ -3875,6 +4031,10 @@ archive_classify (const string& rps, string& archive_extension, int64_t archivei
-   if (verbose > 3)
-     obatched(clog) << "libarchive scanning " << rps << " id " << archiveid << endl;
+@@ -2765,19 +3157,30 @@ handle_buildid (MHD_Connection* conn,
+       if (rc != SQLITE_ROW)
+         throw sqlite_exception(rc, "step");
  
-+  bool seekable = is_seekable_archive (rps, a);
-+  if (verbose > 2 && seekable)
-+    obatched(clog) << rps << " is seekable" << endl;
-+
-   bool any_exceptions = false;
-   while(1) // parse archive entries
-     {
-@@ -3896,6 +4056,12 @@ archive_classify (const string& rps, string& archive_extension, int64_t archivei
-           if (verbose > 3)
-             obatched(clog) << "libarchive checking " << fn << endl;
+-      int64_t b_mtime = sqlite3_column_int64 (*pp, 0);
++      int64_t b_mtime0 = sqlite3_column_int64 (*pp, 0);
+       string b_stype = string((const char*) sqlite3_column_text (*pp, 1) ?: ""); /* by DDL may not be NULL */
+       string b_source0 = string((const char*) sqlite3_column_text (*pp, 2) ?: ""); /* may be NULL */
+       string b_source1 = string((const char*) sqlite3_column_text (*pp, 3) ?: ""); /* may be NULL */
++      int64_t b_size = 0;
++      int64_t b_mtime1 = 0;
++      int64_t b_uncompressed_offset = 0;
++      if (atype_code == "D" || atype_code == "E")
++        {
++          b_mtime1 = sqlite3_column_int64 (*pp, 5);
++          // These may be NULL, in which case sqlite3_column_int64() returns 0.
++          b_size = sqlite3_column_int64 (*pp, 4);
++          b_uncompressed_offset = sqlite3_column_int64 (*pp, 6);
++        }
  
-+          int64_t size = archive_entry_size (e);
-+          time_t mtime1 = archive_entry_mtime (e);
-+          int64_t uncompressed_offset;
-+          if (seekable)
-+            uncompressed_offset = archive_filter_bytes (a, 0);
-+
-           // extract this file to a temporary file
-           char* tmppath = NULL;
-           rc = asprintf (&tmppath, "%s/debuginfod-classify.XXXXXX", tmpdir.c_str());
-@@ -3978,15 +4144,22 @@ archive_classify (const string& rps, string& archive_extension, int64_t archivei
+       if (verbose > 1)
+-        obatched(clog) << "found mtime=" << b_mtime << " stype=" << b_stype
++        obatched(clog) << "found mtime=" << b_mtime0 << " stype=" << b_stype
+              << " source0=" << b_source0 << " source1=" << b_source1 << endl;
  
-           if (executable_p || debuginfo_p)
-             {
--              ps_upsert_de
-+              auto& ps =
-+                ps_upsert_de
-                 .reset()
-                 .bind(1, buildid)
-                 .bind(2, debuginfo_p ? 1 : 0)
-                 .bind(3, executable_p ? 1 : 0)
-                 .bind(4, archiveid)
--                .bind(5, mtime)
-+                .bind(5, mtime0)
-                 .bind(6, fileid)
--                .step_ok_done();
-+                .bind(7, size)
-+                .bind(8, mtime1);
-+              if (seekable)
-+                ps.bind(9, uncompressed_offset);
-+              else
-+                ps.bind(9);
-+              ps.step_ok_done();
-             }
-           else // potential source - sdef record
-             {
-@@ -3994,18 +4167,25 @@ archive_classify (const string& rps, string& archive_extension, int64_t archivei
-               ps_upsert_sdef
-                 .reset()
-                 .bind(1, archiveid)
--                .bind(2, mtime)
-+                .bind(2, mtime0)
-                 .bind(3, fileid)
-                 .step_ok_done();
-             }
- 
-           if ((verbose > 2) && (executable_p || debuginfo_p))
--            obatched(clog) << "recorded buildid=" << buildid << " rpm=" << rps << " file=" << fn
--                           << " mtime=" << mtime << " atype="
-+            {
-+              obatched ob(clog);
-+              auto& o = ob << "recorded buildid=" << buildid << " rpm=" << rps << " file=" << fn
-+                           << " mtime0=" << mtime0 << " size=" << size
-+                           << " mtime1=" << mtime1
-+                           << " atype="
-                            << (executable_p ? "E" : "")
-                            << (debuginfo_p ? "D" : "")
--                           << " sourcefiles=" << sourcefiles.size() << endl;
--
-+                           << " sourcefiles=" << sourcefiles.size();
-+              if (seekable)
-+                o << " uncompressed_offset=" << uncompressed_offset;
-+              o << endl;
-+            }
-         }
-       catch (const reportable_exception& e)
-         {
-@@ -4169,8 +4349,8 @@ scan ()
-                               " from " BUILDIDS "_files f, " BUILDIDS "_fileparts p1, " BUILDIDS "_fileparts p2 \n"
-                               " where f.dirname = p1.id and f.basename = p2.id and p1.name = ? and p2.name = ?;\n");
-   sqlite_ps ps_r_upsert_de (db, "rpm-de-insert",
--                          "insert or ignore into " BUILDIDS "_r_de (buildid, debuginfo_p, executable_p, file, mtime, content) values ("
--                          "(select id from " BUILDIDS "_buildids where hex = ?), ?, ?, ?, ?, ?);");
-+                          "insert or ignore into " BUILDIDS "_r_de (buildid, debuginfo_p, executable_p, file, mtime0, content, size, mtime1, uncompressed_offset) values ("
-+                          "(select id from " BUILDIDS "_buildids where hex = ?), ?, ?, ?, ?, ?, ?, ?, ?);");
-   sqlite_ps ps_r_upsert_sref (db, "rpm-sref-insert",
-                             "insert or ignore into " BUILDIDS "_r_sref (buildid, artifactsrc) values ("
-                             "(select id from " BUILDIDS "_buildids where hex = ?), "
-@@ -4559,7 +4739,7 @@ void groom()
-   // as long as we make progress.
- 
-   sqlite_ps files_del_f_de (db, "nuke f_de", "delete from " BUILDIDS "_f_de where file = ? and mtime = ?");
--  sqlite_ps files_del_r_de (db, "nuke r_de", "delete from " BUILDIDS "_r_de where file = ? and mtime = ?");
-+  sqlite_ps files_del_r_de (db, "nuke r_de", "delete from " BUILDIDS "_r_de where file = ? and mtime0 = ?");
-   sqlite_ps files_del_scan (db, "nuke f_m_s", "delete from " BUILDIDS "_file_mtime_scanned "
-                             "where file = ? and mtime = ?");
- 
+       // Try accessing the located match.
+       // XXX: in case of multiple matches, attempt them in parallel?
+       auto r = handle_buildid_match (conn ? false : true,
+-                                     b_mtime, b_stype, b_source0, b_source1,
++                                     b_mtime0, b_stype, b_source0, b_source1,
++                                     b_size, b_mtime1, b_uncompressed_offset,
+ 				     section, result_fd);
+       if (r)
+         return r;
 -- 
 2.45.2
 

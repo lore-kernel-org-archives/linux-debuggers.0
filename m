@@ -1,62 +1,66 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA21DF71
-	for <linux-debuggers@vger.kernel.org>; Wed, 10 Jul 2024 20:47:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4592F196438
+	for <linux-debuggers@vger.kernel.org>; Wed, 10 Jul 2024 20:47:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720644445; cv=none; b=ZDWQb1Io+oPkMOECU5R3iKzLhCbdJZcg89geYSvrotZfWSs3k1uyHmhpeseu+XAxSAL8eM9M3x4VwHFxWZ6Q/3uYKMScpot9p8Qk5lnkUwhbAd4/EiG2IoOuU2zt2jJC+YrXUPB3BhaJq61Tlb+tulLdjM1agxBWtMDKkNmXDXw=
+	t=1720644446; cv=none; b=O14P1IMy+5l7RgfthRBQEMgxQZDR74al8olbfGOC1Zo+nOrDE+moBcT/pElaJ9uzwKeEVTVMg43BI6CXemjcbeZft85vSjJX61x2HtIn9ZtlaDyfbqqPlVne0cdExybd4WsSYZz0yOjxGOKxw4KjdqxDKYWnpXc48cni6TkgIcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720644445; c=relaxed/simple;
-	bh=vGBIcBvmeTdU7DQa3VC5+RW7M4X7ipjsU7I8K2fNn1M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cLuNGR1b0lWYGJMiFz0tlHNp+5WjLqpnTvs+/cfbhi1KxXThKYWXGgk7LpL7mxUNkxFzmb74tmk29s0s/YWkk/BgsFQON4kyUb2wYHQnjHrUy3lX9JLEpBfw2+NQrLLK/td2+e2WpU68VgLbvdQ/fJqs3u4sIaX8Ul2Y4FjFGRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com; spf=none smtp.mailfrom=osandov.com; dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b=qsSmRMug; arc=none smtp.client-ip=209.85.214.173
+	s=arc-20240116; t=1720644446; c=relaxed/simple;
+	bh=s06NQraKMlouNFxJKhhvr6Zc4iy4hCmI1yY1YriaaKI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CgyHuq0AWNv+9Mms+EuQzeenj5r2pddsJRUK4J0reKr2qRujVo7SOhhxbUrlsp3/v0KyatDe152NA0WLVd+bHAxTgMgYJYNMxWAiIclZEi9HH5LzMqGPU4+PTnc6WdltZXY4QFmNDFWi895PQsiL8E0bwHnV7t753VvufWSaUyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com; spf=none smtp.mailfrom=osandov.com; dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b=3cYFL4HZ; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=osandov.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b="qsSmRMug"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-1fb72eb3143so1600735ad.1
-        for <linux-debuggers@vger.kernel.org>; Wed, 10 Jul 2024 13:47:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b="3cYFL4HZ"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-1f9de13d6baso1108635ad.2
+        for <linux-debuggers@vger.kernel.org>; Wed, 10 Jul 2024 13:47:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1720644443; x=1721249243; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=I29wQ4cK8G8p67UqSleTUzA6bTgv4PXvM5++AXzjg1E=;
-        b=qsSmRMugV3kl74FlZzIqHUlEQnxhADTV7Pp1X3j7kZRoQIzZsKrcVik0dnJGtb17Am
-         nTyiOdDBrce1r/0HhUdbxE93jVl/LTJTev5HsJ0Ees6Z/QqGMoDwPiW8fvjuCoKSn+1t
-         9SHA6Qzz74pf7Eb4YaM/vgVGF5pzcEB6M/Tq6lVH+rWJyRnB8Q0m9J+uSYPeR4OMIrzR
-         hwcv+mrshexj1b1lan6fB/R7iW06mXVsr1iEavpk+on/u0Bjy4fm30XN1XgLK/qgyZEC
-         IHySTQ5Wam6evAl1RZuY/OmO6gS/4nsgPgNDGc1mjrsMEDpiXVbgPytsVLV5JMruwlt8
-         xTww==
+        d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1720644444; x=1721249244; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=flSmarIAFZkeQQAodQ+DS9Q4W6S+b7WB3G19Tv44sVo=;
+        b=3cYFL4HZZqGsoPToJht1DK/kRyXbyYjcndoyg3dOi2f+VrdQ5mJpBqENQ8fQYyEZRP
+         2p0WIcO8lrfjDSbePTxNsYa0ppm3/Z16ftqD63BAQ+ol3+EvylIzldNdVquyjyCAP754
+         Vke976+QBYQsU2r3tt/ZtFKFjLsm5nSM3+cyUGJRhhowl3F1Dspw0sJHDqbrTnlFGofh
+         m9rI9+GZDCEMSvyt6q7ZNuiTnFoIXPxMYuGbHcinmvj5VgyLPJFbhq0HUqzO2Z2Mpqxr
+         innbHG2ODLxAAXuRUKjkM1csjfVlLCn1RC20Zn4Yv51JcP4i42zFvCG7NEmZYxYbQ2Qf
+         DL+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720644443; x=1721249243;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=I29wQ4cK8G8p67UqSleTUzA6bTgv4PXvM5++AXzjg1E=;
-        b=wlcJKfc65jSWt8vZ9BKUq9A8TxrCESgYCrRnYtVJuUzELQL9bV7WVfr0TVAcNSH3gJ
-         1lIxsvTYGpnYZ3RozRRYsKqcHsd9pXRBkhEtupJwmw1Ylm4ST/G2pPyCSbVZZOnoDqTx
-         U3BiX26hZ2pkdiPqEcP8bUngG8kjAF5lOd+MN2odB7lBN5ODEMv8zxPI0dSbJS7ZCATz
-         LhgdaOiqk+I2b7wmpBGxvWD/Mqn0r5dFJ1vhFlINxXz5qYK0kHoKewpT9dkNfStIbGb6
-         qiTctRVl1nTpZi4UHsg2mdBjBFWMFicrKHEi/pTKThkMzh8Y5mymwjZIl/DgGqi+1tIC
-         Oidg==
-X-Gm-Message-State: AOJu0Yyae8zHXgqDvUsPBap5EIut4bqv/gPD1s4pnQfwCMGE8juU1sJR
-	XlkMQNAiB1iQTZrU9j3szFIWMPKVFAES/89oGznTHgenrvmgpeT9QwTzlDMqC5TwiPE0b1QrgGC
-	K
-X-Google-Smtp-Source: AGHT+IFq5LXLdgUUvhDh2V6OK9rv41Q7Y/l5y1N+6zV164SN+C8/HR8QNDe7Ge9+LyWmRlWzOMD4qw==
-X-Received: by 2002:a17:902:c401:b0:1fa:fe30:fc16 with SMTP id d9443c01a7336-1fbdba4a0aamr12156035ad.25.1720644443086;
-        Wed, 10 Jul 2024 13:47:23 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1720644444; x=1721249244;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=flSmarIAFZkeQQAodQ+DS9Q4W6S+b7WB3G19Tv44sVo=;
+        b=NpDYCSDeETsQHPhb/TrJkE+Z46ykZmxxtcxjd8W81/6+FfHVZgBiUBEwy99E+ULw2e
+         3NvAJC/DbySaiz3tR/trDZ7/Gvm1sg4P7MNn6LICvJxjKCLQC56Sf0BnCUJKMxNe6Mna
+         I3iUzreLr4FYY9YEmqqP4AszfOLTMsBQrlsJFUfK4nTLU9oJAYIbH1c58OsEfz0ng8Xg
+         y+/jI70cO7I64Cy54O24T2B4ykcznKuJqr/Zv36ItWf7lfGOw5/x8XQ47siDQDX1Ui/I
+         AVgLxVxwxif+dIK9bJlGDKP9tgwMz5pnfVheg1g0baKbgPd8eTgJxI+guadRPatzxEy5
+         SyvA==
+X-Gm-Message-State: AOJu0YwujZfuENgb9oMmwzRokU3Is2ThoynEpk5UGGhj0f9XwNdPOC2S
+	n+CoPlhsMlrNYcRigIcsdpXvTVHPbr6FVUB8f1DqolyTxNXE/22Lj2XkcZ+DfZdEsRnqyjoj2WW
+	V
+X-Google-Smtp-Source: AGHT+IF/Jacp/yCkB9U28GIYly6JHK2yI9xETTieES95dqEAxgiu4yFN6fSs0ScZFEZmgWAYTTt68w==
+X-Received: by 2002:a17:902:d488:b0:1fa:d319:e09b with SMTP id d9443c01a7336-1fbb6c0aab0mr58960605ad.0.1720644444371;
+        Wed, 10 Jul 2024 13:47:24 -0700 (PDT)
 Received: from telecaster.thefacebook.com ([2620:10d:c090:500::5:134a])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fbb6ad5be3sm37698025ad.301.2024.07.10.13.47.22
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fbb6ad5be3sm37698025ad.301.2024.07.10.13.47.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jul 2024 13:47:22 -0700 (PDT)
+        Wed, 10 Jul 2024 13:47:23 -0700 (PDT)
 From: Omar Sandoval <osandov@osandov.com>
 To: elfutils-devel@sourceware.org
 Cc: linux-debuggers@vger.kernel.org
-Subject: [PATCH 0/3] debuginfod: speed up extraction from kernel debuginfo packages by 200x
-Date: Wed, 10 Jul 2024 13:47:10 -0700
-Message-ID: <cover.1720644134.git.osandov@fb.com>
+Subject: [PATCH 1/3] debuginfod: factor out common code for responding from an archive
+Date: Wed, 10 Jul 2024 13:47:11 -0700
+Message-ID: <d87d4d1e0638490c12bb122880d612f41e63670d.1720644134.git.osandov@fb.com>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <cover.1720644134.git.osandov@fb.com>
+References: <cover.1720644134.git.osandov@fb.com>
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
@@ -67,72 +71,264 @@ Content-Transfer-Encoding: 8bit
 
 From: Omar Sandoval <osandov@fb.com>
 
-drgn [1] currently uses debuginfod with great success for debugging
-userspace processes.  However, for debugging the Linux kernel (drgn's
-main use case), we have had some performance issues with debuginfod, so
-we intentionally avoid using it.  Specifically, it sometimes takes over
-a minute for debuginfod to respond to queries for vmlinux and kernel
-modules (not including the actual download time).
+handle_buildid_r_match has two very similar branches where it optionally
+extracts a section and then creates a microhttpd response.  In
+preparation for adding a third one, factor it out into a function.
 
-The reason for the slowness is that Linux kernel debuginfo packages are
-very large and contain lots of files.  To respond to a query for a Linux
-kernel debuginfo file, debuginfod has to decompress and iterate through
-the whole package until it finds that file.  If the file is towards the
-end of the package, this can take a very long time.  This was previously
-reported for vdso files [2][3], which debuginfod was able to mitigate
-with improved caching and prefetching.  However, kernel modules are far
-greater in number, vary drastically by hardware and workload, and can be
-spread all over the package, so in practice I've still been seeing long
-delays.  This was also discussed on the drgn issue tracker [4].
+Signed-off-by: Omar Sandoval <osandov@fb.com>
+---
+ debuginfod/debuginfod.cxx | 213 +++++++++++++++++---------------------
+ 1 file changed, 96 insertions(+), 117 deletions(-)
 
-The fundamental limitation is that Linux packages, which are essentially
-compressed archives with extra metadata headers, don't support random
-access to specific files.  However, the multi-threaded xz compression
-format does actually support random access.  And, luckily, the kernel
-debuginfo packages on Fedora, Debian, and Ubuntu all happen to use
-multi-threaded xz compression!
-
-debuginfod can take advantage of this: when it scans a package, if it is
-a seekable xz archive, it can save the uncompressed offset and size of
-each file.  Then, when it needs a file, it can seek to that offset and
-extract it from there.  This requires some understanding of the xz
-format and low-level liblzma code, but the speedup is massive: where the
-worst case was previously about 50 seconds just to find a file in a
-kernel debuginfo package, with this change the worst case is 0.25
-seconds, a ~200x improvement! This works for both .rpm and .deb files.
-
-Patch 1 is a preparatory refactor.  Patch 2 implements saving the
-uncompressed offsets and sizes in the database.  Patch 3 implements the
-seekable xz extraction.
-
-I tested this by requesting and verifying the digest of every file from
-a few kernel debuginfo rpms and debs [5].
-
-P.S. The biggest downside of this change is that it depends on a very
-specific compression format.  I think this is something we should
-formalize with Linux distributions: large debuginfo packages should use
-a seekable format.  Currently, xz in multi-threaded mode is the only
-option, but Zstandard also has an experimental seekable format that is
-worth looking into [6].
-
-1: https://github.com/osandov/drgn
-2: https://sourceware.org/bugzilla/show_bug.cgi?id=29478
-3: https://bugzilla.redhat.com/show_bug.cgi?id=1970578
-4: https://github.com/osandov/drgn/pull/380
-5: https://gist.github.com/osandov/89d521fdc6c9a07aa8bb0ebf91974346
-6: https://github.com/facebook/zstd/tree/dev/contrib/seekable_format
-
-Omar Sandoval (3):
-  debuginfod: factor out common code for responding from an archive
-  debuginfod: add archive entry size, mtime, and uncompressed offset to
-    database
-  debuginfod: optimize extraction from seekable xz archives
-
- configure.ac              |   5 +
- debuginfod/Makefile.am    |   2 +-
- debuginfod/debuginfod.cxx | 870 +++++++++++++++++++++++++++++++-------
- 3 files changed, 722 insertions(+), 155 deletions(-)
-
+diff --git a/debuginfod/debuginfod.cxx b/debuginfod/debuginfod.cxx
+index 305edde8..2d709026 100644
+--- a/debuginfod/debuginfod.cxx
++++ b/debuginfod/debuginfod.cxx
+@@ -1965,6 +1965,81 @@ string canonicalized_archive_entry_pathname(struct archive_entry *e)
+ }
+ 
+ 
++// NB: takes ownership of, and may reassign, fd.
++static struct MHD_Response*
++create_buildid_r_response (int64_t b_mtime0,
++                           const string& b_source0,
++                           const string& b_source1,
++                           const string& section,
++                           const string& ima_sig,
++                           const char* tmppath,
++                           int& fd,
++                           off_t size,
++                           time_t mtime,
++                           const string& metric,
++                           const struct timespec& extract_begin)
++{
++  if (tmppath != NULL)
++    {
++      struct timespec extract_end;
++      clock_gettime (CLOCK_MONOTONIC, &extract_end);
++      double extract_time = (extract_end.tv_sec - extract_begin.tv_sec)
++        + (extract_end.tv_nsec - extract_begin.tv_nsec)/1.e9;
++      fdcache.intern(b_source0, b_source1, tmppath, size, true, extract_time);
++    }
++
++  if (!section.empty ())
++    {
++      int scn_fd = extract_section (fd, b_mtime0,
++                                    b_source0 + ":" + b_source1,
++                                    section, extract_begin);
++      close (fd);
++      if (scn_fd >= 0)
++        fd = scn_fd;
++      else
++        {
++          if (verbose)
++            obatched (clog) << "cannot find section " << section
++                            << " for archive " << b_source0
++                            << " file " << b_source1 << endl;
++          return 0;
++        }
++
++      struct stat fs;
++      if (fstat (fd, &fs) < 0)
++        {
++          close (fd);
++          throw libc_exception (errno,
++            string ("fstat ") + b_source0 + string (" ") + section);
++        }
++      size = fs.st_size;
++    }
++
++  struct MHD_Response* r = MHD_create_response_from_fd (size, fd);
++  if (r == 0)
++    {
++      if (verbose)
++        obatched(clog) << "cannot create fd-response for " << b_source0 << endl;
++      close(fd);
++    }
++  else
++    {
++      inc_metric ("http_responses_total","result",metric);
++      add_mhd_response_header (r, "Content-Type", "application/octet-stream");
++      add_mhd_response_header (r, "X-DEBUGINFOD-SIZE", to_string(size).c_str());
++      add_mhd_response_header (r, "X-DEBUGINFOD-ARCHIVE", b_source0.c_str());
++      add_mhd_response_header (r, "X-DEBUGINFOD-FILE", b_source1.c_str());
++      if(!ima_sig.empty()) add_mhd_response_header(r, "X-DEBUGINFOD-IMASIGNATURE", ima_sig.c_str());
++      add_mhd_last_modified (r, mtime);
++      if (verbose > 1)
++        obatched(clog) << "serving " << metric << " " << b_source0
++                       << " file " << b_source1
++                       << " section=" << section
++                       << " IMA signature=" << ima_sig << endl;
++      /* libmicrohttpd will close fd. */
++    }
++  return r;
++}
+ 
+ static struct MHD_Response*
+ handle_buildid_r_match (bool internal_req_p,
+@@ -2142,57 +2217,15 @@ handle_buildid_r_match (bool internal_req_p,
+           break; // branch out of if "loop", to try new libarchive fetch attempt
+         }
+ 
+-      if (!section.empty ())
+-	{
+-	  int scn_fd = extract_section (fd, fs.st_mtime,
+-					b_source0 + ":" + b_source1,
+-					section, extract_begin);
+-	  close (fd);
+-	  if (scn_fd >= 0)
+-	    fd = scn_fd;
+-	  else
+-	    {
+-	      if (verbose)
+-	        obatched (clog) << "cannot find section " << section
+-				<< " for archive " << b_source0
+-				<< " file " << b_source1 << endl;
+-	      return 0;
+-	    }
+-
+-	  rc = fstat(fd, &fs);
+-	  if (rc < 0)
+-	    {
+-	      close (fd);
+-	      throw libc_exception (errno,
+-		string ("fstat archive ") + b_source0 + string (" file ") + b_source1
+-		+ string (" section ") + section);
+-	    }
+-	}
+-
+-      struct MHD_Response* r = MHD_create_response_from_fd (fs.st_size, fd);
++      struct MHD_Response* r = create_buildid_r_response (b_mtime, b_source0,
++                                                          b_source1, section,
++                                                          ima_sig, NULL, fd,
++                                                          fs.st_size,
++                                                          fs.st_mtime,
++                                                          "archive fdcache",
++                                                          extract_begin);
+       if (r == 0)
+-        {
+-          if (verbose)
+-            obatched(clog) << "cannot create fd-response for " << b_source0 << endl;
+-          close(fd);
+-          break; // branch out of if "loop", to try new libarchive fetch attempt
+-        }
+-
+-      inc_metric ("http_responses_total","result","archive fdcache");
+-
+-      add_mhd_response_header (r, "Content-Type", "application/octet-stream");
+-      add_mhd_response_header (r, "X-DEBUGINFOD-SIZE",
+-			       to_string(fs.st_size).c_str());
+-      add_mhd_response_header (r, "X-DEBUGINFOD-ARCHIVE", b_source0.c_str());
+-      add_mhd_response_header (r, "X-DEBUGINFOD-FILE", b_source1.c_str());
+-      if(!ima_sig.empty()) add_mhd_response_header(r, "X-DEBUGINFOD-IMASIGNATURE", ima_sig.c_str());
+-      add_mhd_last_modified (r, fs.st_mtime);
+-      if (verbose > 1)
+-	obatched(clog) << "serving fdcache archive " << b_source0
+-		       << " file " << b_source1
+-		       << " section=" << section
+-		       << " IMA signature=" << ima_sig << endl;
+-      /* libmicrohttpd will close it. */
++        break; // branch out of if "loop", to try new libarchive fetch attempt
+       if (result_fd)
+         *result_fd = fd;
+       return r;
+@@ -2307,13 +2340,12 @@ handle_buildid_r_match (bool internal_req_p,
+       tvs[1].tv_nsec = archive_entry_mtime_nsec(e);
+       (void) futimens (fd, tvs);  /* best effort */
+ 
+-      struct timespec extract_end;
+-      clock_gettime (CLOCK_MONOTONIC, &extract_end);
+-      double extract_time = (extract_end.tv_sec - extract_begin.tv_sec)
+-        + (extract_end.tv_nsec - extract_begin.tv_nsec)/1.e9;
+-      
+       if (r != 0) // stage 3
+         {
++          struct timespec extract_end;
++          clock_gettime (CLOCK_MONOTONIC, &extract_end);
++          double extract_time = (extract_end.tv_sec - extract_begin.tv_sec)
++            + (extract_end.tv_nsec - extract_begin.tv_nsec)/1.e9;
+           // NB: now we know we have a complete reusable file; make fdcache
+           // responsible for unlinking it later.
+           fdcache.intern(b_source0, fn,
+@@ -2324,69 +2356,16 @@ handle_buildid_r_match (bool internal_req_p,
+           continue;
+         }
+ 
+-      // NB: now we know we have a complete reusable file; make fdcache
+-      // responsible for unlinking it later.
+-      fdcache.intern(b_source0, b_source1,
+-                     tmppath, archive_entry_size(e),
+-                     true, extract_time); // requested ones go to the front of the line
+-
+-      if (!section.empty ())
+-	{
+-	  int scn_fd = extract_section (fd, b_mtime,
+-					b_source0 + ":" + b_source1,
+-					section, extract_begin);
+-	  close (fd);
+-	  if (scn_fd >= 0)
+-	    fd = scn_fd;
+-	  else
+-	    {
+-	      if (verbose)
+-	        obatched (clog) << "cannot find section " << section
+-				<< " for archive " << b_source0
+-				<< " file " << b_source1 << endl;
+-	      return 0;
+-	    }
+-
+-	  rc = fstat(fd, &fs);
+-	  if (rc < 0)
+-	    {
+-	      close (fd);
+-	      throw libc_exception (errno,
+-		string ("fstat ") + b_source0 + string (" ") + section);
+-	    }
+-	  r = MHD_create_response_from_fd (fs.st_size, fd);
+-	}
+-      else
+-	r = MHD_create_response_from_fd (archive_entry_size(e), fd);
+-
+-      inc_metric ("http_responses_total","result",archive_extension + " archive");
++      r = create_buildid_r_response (b_mtime, b_source0, b_source1, section,
++                                     ima_sig, tmppath, fd,
++                                     archive_entry_size(e),
++                                     archive_entry_mtime(e),
++                                     archive_extension + " archive",
++                                     extract_begin);
+       if (r == 0)
+-        {
+-          if (verbose)
+-            obatched(clog) << "cannot create fd-response for " << b_source0 << endl;
+-          close(fd);
+-          break; // assume no chance of better luck around another iteration; no other copies of same file
+-        }
+-      else
+-        {
+-          add_mhd_response_header (r, "Content-Type",
+-                                   "application/octet-stream");
+-          add_mhd_response_header (r, "X-DEBUGINFOD-SIZE",
+-                                   to_string(archive_entry_size(e)).c_str());
+-          add_mhd_response_header (r, "X-DEBUGINFOD-ARCHIVE", b_source0.c_str());
+-          add_mhd_response_header (r, "X-DEBUGINFOD-FILE", b_source1.c_str());
+-          if(!ima_sig.empty()) add_mhd_response_header(r, "X-DEBUGINFOD-IMASIGNATURE", ima_sig.c_str());
+-          add_mhd_last_modified (r, archive_entry_mtime(e));
+-          if (verbose > 1)
+-	    obatched(clog) << "serving archive " << b_source0
+-			   << " file " << b_source1
+-			   << " section=" << section
+-			   << " IMA signature=" << ima_sig << endl;
+-          /* libmicrohttpd will close it. */
+-          if (result_fd)
+-            *result_fd = fd;
+-          continue;
+-        }
++        break; // assume no chance of better luck around another iteration; no other copies of same file
++      if (result_fd)
++        *result_fd = fd;
+     }
+ 
+   // XXX: rpm/file not found: delete this R entry?
 -- 
 2.45.2
 

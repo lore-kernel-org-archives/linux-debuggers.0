@@ -1,118 +1,145 @@
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6DB1A071C
-	for <linux-debuggers@vger.kernel.org>; Thu, 11 Jul 2024 23:00:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8599C82488
+	for <linux-debuggers@vger.kernel.org>; Thu, 11 Jul 2024 23:30:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720738803; cv=none; b=P0SN0RUi0GSGOB3F1n/AnbF6KYI0p0VpK7lC5SDcGisOsAJjjW/VYGCoV+JJNukQYkkT2YtIQ2UHNhLbzk/mdS9OuOcD7p6FW4mqwjJ/C6bKUP+X6bV+siqlQWw2mAFFmnXc39+p1AjvL8u+Vy/DIG1OsX58qdBPG8FWBsb1G4s=
+	t=1720740625; cv=none; b=FBGXQSfcaQsooc3Szu37oQNUqeHSRz444wtDr0cGQPsI31M+mWVQByqIdVHAwJWuELpfm3DxNC9OlFyOcBRCXZLjRP3YPBv2P1tajchyLnj0WGz9+CvXo/P2NmdG6OtWW4F987wKNalfhVyEmx5YwbjIvLDyzPZSVsuX/qrIptw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720738803; c=relaxed/simple;
-	bh=Mqu4c3n9l9GcpDukOR3L7lhDohtrNJ2FNiM3uGc+Y54=;
+	s=arc-20240116; t=1720740625; c=relaxed/simple;
+	bh=F9nF7Yz+m4NZkGQG1EYxTjeg9ipPUN02ti/KDvrxsGg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GH7G9o7ZsnZiwca4jWwvzso+3irdQ7Jt6/Ptol17I+zOQMdrEKYRo8fFF8moJoqlAyq1wZhTB7qfxpM15VUNdvf9tF2jN6SUvvIkvqjfAsNh5ihipfseZEury51SVYE3JObUXC313NhAf4s9YOAOEIKI9/eiPgFwl/ZtuM+/N2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com; spf=none smtp.mailfrom=osandov.com; dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b=ipI5jIii; arc=none smtp.client-ip=209.85.215.171
+	 Content-Type:Content-Disposition:In-Reply-To; b=fp508lv4Px/YpMwaSAs7uhlC1SKWgZKort6eeGtS4CMIfo2vSPkBKkm40caj94bR+cSJEDYoRXup70RQd5zoujBch1UJa5CbnaNYrq6dDgKf6VrpRODyemzYpGanzBqUu65nbtsDI39hBAPHjn7ojP3MIp00CjA8RvE+nXYPzdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com; spf=none smtp.mailfrom=osandov.com; dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b=mTPGotz5; arc=none smtp.client-ip=209.85.210.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=osandov.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b="ipI5jIii"
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-7662181d487so869736a12.2
-        for <linux-debuggers@vger.kernel.org>; Thu, 11 Jul 2024 16:00:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b="mTPGotz5"
+Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-7044bda722fso825798a34.2
+        for <linux-debuggers@vger.kernel.org>; Thu, 11 Jul 2024 16:30:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1720738801; x=1721343601; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9EOAxQEAfVOf0C127/72XKyPpvIPkkiRLCuzsJIS3T0=;
-        b=ipI5jIiiLyZL3MLJBAmHfNqezUoUceE/F9RVLS1ScKgpZNhFH6E1Ts747vPsxWehr1
-         zAvSLht6aZgIY8WgiNLkNz3/jawOZPvFU5BJtRb7/UuzTU6vYF8ZKENe/5XjJHb5Y52k
-         hwz60wqtXE5twiIQ4W3xiriXAwhRSGgLRDx2bzok4U6s7IyFFBXstitfEQnRkNBtQeyy
-         +MLDeFs2z/0uD8kHJnN7tIbOp8MRTdXZ3ws5BJJGmbYuZSFjQsB4w90NDkQJf4GJE1dT
-         rekgkgWX7fjJcUAAiHczXEFycik9pHM/MJivFobncZcIJ6DTfvRqVNfjila7PAiYj3+8
-         UFpw==
+        d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1720740623; x=1721345423; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Y9TzbTVOG0XYLX4YLa6pgHfPR+pAPCJVHykkOmeg+tM=;
+        b=mTPGotz5Nc9FTvq4KC9F21e5yTax2i1kauy2WRXpIuSu3lAmRdBn1UVikOomg+l5o1
+         l+XhiM1+ciWUw7qvVAhCN7CodBlSYZFsWgYIbrCjZglj13mQNlAXhb04kKLAjd5Z2Hja
+         WHTeAfMJ1UWpaDM4gA6AloXXKgks9sIIu/s1u6UeySP3twvzpofw8mFmFPlcyL0ta2Vf
+         PZDLjbL5P4BIy57vBHZTa/20h50rshjo0tdN4eFON8cckF8M2zL8qyMna1cqxoPKuTLK
+         /h2ZkPnzScmLRwED40okroEiNQ0wW+0nDo7OgTwDr6sFgSQm5WZzdBKNeDSAZsqRb0oP
+         MgLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720738801; x=1721343601;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9EOAxQEAfVOf0C127/72XKyPpvIPkkiRLCuzsJIS3T0=;
-        b=eQK6QEaOfQzSwo0f6TRug42ptchMRLRFoCLTXw12mrPzl6yqYEgJq0mjOoVKaRBP/K
-         x3tUXaBhH1/TM7GJ4RcVwHmLqevv9FECTVkE0k0VvzlaIFyXUPFsaRJA3uCRpRKFRtiK
-         zUfdCrhiBt3E8ys/thaI1OMfhWgos7D9FZo+jkatsOOA4GMQhbiw3jnSW4y5ppr4LB1A
-         Ho+7h14H/TuL66o2iqE28LNhi+vhnZoPiCUclx4oSR6Y8yYtbG7bZI+fr1nDNMSwl8QI
-         CjHG+J3jRUewYCJz7mQOHbRWQXa6KLZ8ezEqcJUaGL8ocxGCeTY4xKNf9Z1wVimBa9qC
-         0QcA==
-X-Forwarded-Encrypted: i=1; AJvYcCWjKzb08Nyq2ASmnB8TZwwWFla0TxvpaHPJ5P7Qn1WCtudyUa+oHB2puee9xUlMvD0QgFvq2N+HubGNvIrZH/ti6RQEfdgfMloEabMvvG5k
-X-Gm-Message-State: AOJu0Yz2PZJ8xzwMsfVW6Sa/PGZBdvAe1ZCtKXr8lN9gXSaM/f+o0g10
-	db90iAlAFUSoTqiZwyzAX1PJp+WtJNC96nmyjfQnnaL79itUgyAJ5XKV8cEv9AfVZ3/E7e7VFSG
-	5
-X-Google-Smtp-Source: AGHT+IE6p778roYmHL1HUlVvRAcmhLwZRfLcLT2M6uJ0Kpnoa7hWkcKkA1w23rE7JhwZ+J9uXywSag==
-X-Received: by 2002:a05:6a20:6a05:b0:1c0:e8a3:dbfa with SMTP id adf61e73a8af0-1c29820b8a0mr12348196637.2.1720738801386;
-        Thu, 11 Jul 2024 16:00:01 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1720740623; x=1721345423;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y9TzbTVOG0XYLX4YLa6pgHfPR+pAPCJVHykkOmeg+tM=;
+        b=Q8Ahg2Vkg55A4mTrqZhZ/HwnJEYm2CNBhzCUQtjdqp0bWRcpn5Ioo69tZVK8dOKrS1
+         Z9GeakMbUxEb1tb8I1Wpc7eXUVPl6HOfq2yaNF0xVXCvEpmiZ72qQ1ISLmB2B9QQlf/Z
+         A0rvOpF8dwdXjmeLXkmEVr1Uev3LHGb0tTebnxjIokL6HFeFrVGcY7vczM+b+BULqehw
+         1qNzwUVnxMNa5Vuy0i+Zk+q6eJsWGwIYNdICKt/KWR93W5x2vIt0eL2HwKQtEHVkG/w6
+         +9yWeOMXkujUMbvQrN7dFbrmGeimMmjhNAozvPKtH3sYZ4jeVRNqifyqfRhHf2obNZGf
+         HRKw==
+X-Forwarded-Encrypted: i=1; AJvYcCUnhx9ru6PAEyfT7KhFmAn/LUiUYRUS4TBpVxYtWEKqNG1p9mf+l1LTPWoY8dQvSM0SP+LZbLGTsRFJYxNFWfRCdOAoXmtBLakIBgdiLJc8
+X-Gm-Message-State: AOJu0Yyq0mt8o3+dQLrIfIt3opZg929JUatksgggxnyczlJG26hNGlkE
+	CFA4P9CXDlfIh1gr6mQjqJQYR4ny92l2OpZ+rg2NXMQWWK9j94P5DtIdgPMZzrU=
+X-Google-Smtp-Source: AGHT+IENmtYjz2Xe/Odml24hk8FwPfoHqTNBkomJYWb+XMfDl0LlNdqT1m/JXqE2cTHVl8fZIAR/xw==
+X-Received: by 2002:a05:6870:610a:b0:254:88ea:6d90 with SMTP id 586e51a60fabf-25eae756125mr8026175fac.2.1720740623428;
+        Thu, 11 Jul 2024 16:30:23 -0700 (PDT)
 Received: from telecaster ([2601:602:8980:9170::7a8e])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fbb6a11762sm55642885ad.23.2024.07.11.16.00.00
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70b438cbac9sm6222705b3a.77.2024.07.11.16.30.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jul 2024 16:00:00 -0700 (PDT)
-Date: Thu, 11 Jul 2024 16:00:00 -0700
+        Thu, 11 Jul 2024 16:30:23 -0700 (PDT)
+Date: Thu, 11 Jul 2024 16:30:22 -0700
 From: Omar Sandoval <osandov@osandov.com>
-To: "Frank Ch. Eigler" <fche@redhat.com>
-Cc: elfutils-devel@sourceware.org, linux-debuggers@vger.kernel.org
-Subject: Re: [PATCH 0/3] debuginfod: speed up extraction from kernel
- debuginfo packages by 200x
-Message-ID: <ZpBj8Bmqnltd-cfj@telecaster>
-References: <cover.1720644134.git.osandov@fb.com>
- <20240711201625.GD2826@redhat.com>
+To: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Petr =?utf-8?B?VGVzYcWZw61r?= <petr@tesarici.cz>,
+	linux-s390@vger.kernel.org, Ilya Leoshkevich <iii@linux.ibm.com>,
+	linux-debuggers@vger.kernel.org
+Subject: Re: Incorrect vmcoreinfo KERNELOFFSET after "s390/boot: Rework
+ deployment of the kernel image"
+Message-ID: <ZpBrDvUpn4SzaqND@telecaster>
+References: <ZnS8dycxhtXBZVky@telecaster.dhcp.thefacebook.com>
+ <Zn1uTZdlYNaRFUqK@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+ <20240709212141.31160508@meshulam.tesarici.cz>
+ <Zo5L9xZtIs4dCf0E@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240711201625.GD2826@redhat.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Zo5L9xZtIs4dCf0E@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
 
-On Thu, Jul 11, 2024 at 04:16:25PM -0400, Frank Ch. Eigler wrote:
-> Hi, Omar -
+On Wed, Jul 10, 2024 at 10:53:11AM +0200, Alexander Gordeev wrote:
+> On Tue, Jul 09, 2024 at 09:21:41PM +0200, Petr Tesařík wrote:
 > 
-> Thanks.  I wish this sort of amazing kludge weren't necessary, but
-> given that it helps, so be it.
+> Hi Petr,
+> ...
+> > > I would say to some degree there is also inconsisten with regard
+> > > to /proc/ files existence:
+> > > /proc/kcore    is enabled by CONFIG_PROC_KCORE option, while
+> > > /proc/kallsyms is enabled by CONFIG_KALLSYMS option.
+> > > I assume drgn expects both files exist and does not work otherwise.
+> > > 
+> > > Nevertheless, it is still possible to refer to only one file for
+> > > symbol resolution and use an always-present symbol. E.g _stext
+> > > could be leveraged like this:
+> > > 
+> > > # grep -w init_task /proc/kallsyms
+> > > 000003ffe13e9400 D init_task
+> > > # grep -w _stext /proc/kallsyms
+> > > 000003ffe0000000 T _stext
+> > > 
+> > > 0x3ffe13e9400 - 0x3ffe0000000 == 0x13e9400
+> > > 
+> > > # eu-readelf -s vmlinux | grep -w _stext
+> > > 178112: 0000000000100000      0 NOTYPE  GLOBAL DEFAULT        1 _stext
+> > > 
+> > > 0x13e9400 + 0x100000 == 0x14e9400
+> > > 
+> > > # eu-readelf -s vmlinux | grep -w init_task
+> > >   498: 0000000000000000      0 FILE    LOCAL  DEFAULT      ABS init_task.c
+> > > 182344: 00000000014e9400   8960 OBJECT  GLOBAL DEFAULT       28 init_task
+> > > 
+> > > I guess, the above holds true for all architectures.
+> > > If so, I would suggest consider using that approach.
+> > > 
+> > > Having said that, we will try to turn KERNELOFFSET from a synthetic
+> > > value "Used to compute the page offset" to what drgn expects it to be.
+> > 
+> > Thinking about it now, I'm not sure it makes life easier. Because then
+> > we'll have some old kernels with the current (unexpected) definition of
+> > KERNELOFFSET and some new kernels with a more standard definition of
+> > it, but if I read vmcoreinfo, how do I know if the value has the old or
+> > the new meaning?
 > 
-> I'd like to commend you on the effort needed to match your code up
-> with the stylistic idiosyncracies of the debuginfod c++ code.  It
-> looks just like the other code.  My only reservation is the schema
-> change.  Reindexing some of our large repos takes WEEKS.  Here's a
-> possible way to avoid that:
-> 
-> - Preserve the current BUILDID schema id and tables as is.
-> 
-> - Add a new table for the intra-archive coordinates.  Think of it like a cache.
->   Index it with archive-file-name and content-file-name (source0, source1 IIRC).
-> 
-> - During a fetch out of the archive-file-name, check whether the new
->   table has a record for that file.  If yes, cache hit, go through to
->   the xz extraction stuff, winner!
-> 
-> - If not, try the is_seekable() check on the archive.  If it is true, we have an
->   archive that should be seekable, but we don't have it in the intra-archive cache.
->   So take this opportunity to index that archive (only), populate the cache table,
->   as the archive is being extracted.  (No need to use the new cache data then, since
->   we've just paid the effort of decompressing/reading the whole thing already.)
-> 
-> - Need to confirm that during grooming, a disappeared
->   archive-file-name would also drop the corresponding intra-archive
->   rows.
-> 
-> - Heck, during grooming or scanning, maybe the tool could preemptively
->   do the intra-archive coordinate cache thing if it's not already
->   done, just to defeat the latency of doing it on demand.
-> 
-> 
-> What do you think?
+> The approach I suggested to consider would not use KERNELOFFSET at all.
 
-Hi, Frank,
+Hi,
 
-I didn't realize how expensive reindexing could be, thank you for
-pointing that out.  Your proposal makes sense to me, I'll rework this.
+Unfortunately, using kallsyms isn't feasible for a few reasons:
+
+1) /proc/kallsyms is not available when debugging a core dump.
+2) As you pointed out, /proc/kallsyms is not necessarily enabled
+   together with /proc/kcore.
+3) Reading /proc/kallsyms is slow. On my system, drgn starts up in about
+   250ms, and reading /proc/kallsyms takes about 110 ms.  This would
+   slow down startup too much.
+
+drgn intentionally avoids kallsyms for these reasons. (There is one
+corner case on old < 4.11 kernels where we need kallsyms, but that will
+go away eventually.)
+
+I'd be really grateful if KERNELOFFSET was always the difference between
+addresses in the kernel image and in memory like it is on other
+architectures, or even if there was another, s390x-specific field in
+vmcoreinfo for that.
 
 Thanks,
 Omar

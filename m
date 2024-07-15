@@ -1,203 +1,117 @@
-Received: from mail-il1-f181.google.com (mail-il1-f181.google.com [209.85.166.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32AAC185623
-	for <linux-debuggers@vger.kernel.org>; Mon, 15 Jul 2024 10:04:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879DF23BF;
+	Mon, 15 Jul 2024 10:06:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721037900; cv=none; b=GtqpmZxZTKVfP/hF/i+tUBH72S24LNM/ew5ICCrDVW/4ItrEt5VYD4cx0/7Ga3yubdTkRNj6CpMWYXkBwiVeRZ82fOV/9+6VMfnlOWJV0k48/etFjgzHzBwcTPTLNJIrveVGUbxYNWkHP+TWVLIeZChg9JbtaQJAoM7Df/OlesU=
+	t=1721037991; cv=none; b=vB5azNsfTVqKeYH1z6x+z8Y01tY7kL4NG9r4gKZ3k95c6jtPDUWmhUO866HWel6h9yXGUDbwF+M9jHhMjsctGjHuFyEJUZjtYHgyVPKdweynabKVeZVwqzL3V9u2b82UvAq16H0QG6ICSnfQ4w4dIu8OIpYZTNeAKraZLb049wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721037900; c=relaxed/simple;
-	bh=09/FTFXx7nNMLaP+6pAAsVYe92EoSLNwEglmFj2QvvI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V5dW1Yr08J8S59+riCcNdxkDsGNKID/irEiTzOnk9YjRQZ9Yqib1HjhQRWnh+ygHrrOXWRYD6L12T5p9MQRnvMvnGImdMzGb8Awgv5IP+zQ8ugieENbGQhWnVGnsb/UZbtmVu6lVVOheIsWTlW1FaW8hykieWHrMQZKyQjs+Cg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com; spf=none smtp.mailfrom=osandov.com; dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b=GawlTxXi; arc=none smtp.client-ip=209.85.166.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=osandov.com
+	s=arc-20240116; t=1721037991; c=relaxed/simple;
+	bh=6K5SbV3udFSz28nS9nUxd9RGHDx8eKjPW/0+TZMeGjA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=D4dlHB0xkknhfnJYCOwQgyQssIlKLF3u84jGK1BZ5iJrZ9PDS4/QMu5Vrf2kBuoyCxht4M+W843YytjXc3TxbYpwUdgPQeUyW8xkPs1WHsJaxBtR36BSl0wCsu0s0aKIlYQeTUtyxwHCqg8nqaZawp1gHU2qZIt0wUMS4ijl/ZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=DqksaoAw; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b="GawlTxXi"
-Received: by mail-il1-f181.google.com with SMTP id e9e14a558f8ab-376266a65c8so18246455ab.3
-        for <linux-debuggers@vger.kernel.org>; Mon, 15 Jul 2024 03:04:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1721037898; x=1721642698; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tAZSr6VPPWH+Hr6qOOXXtzd7LQWvSzQ8JSSEm7K5XiQ=;
-        b=GawlTxXig7R6JeZeoSB9X8Ui1sxGvoidYjUoiTEac3UWy4Qi2EYtRbZsRJOEPqlKD3
-         Apa7xH8Eoe1bpfZTyS5AfIaUxmdjOieuFV2M7U9gK42D4LrKd8yCfr9stKnL75EOTW3n
-         USiFWE+nFQ/mjxBylHMZNDIineBuFQ10O/oEDdBgnKTb+cN5L1zEa8Ksf1mCQmR+VxrN
-         VPoXdqWk6WCbLjtHOy68qHNWNnChIEneJLWJjoVTyEIZAaLPmye3O9+bFa/oFw9n4Mze
-         OdOkZqdxuUZNuW3EFMsQtNdV9cy30XQf8CbpoW2MyK2tkQqlVNRsjsrF1geHuz4uw1/s
-         BcWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721037898; x=1721642698;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tAZSr6VPPWH+Hr6qOOXXtzd7LQWvSzQ8JSSEm7K5XiQ=;
-        b=EB2x8pKXHyad7zC8k6vp0ZXbAsTOQrMKxK/wLcumB13FSoUjGag1XBIG1VBK385UfB
-         c9rIuXSAnhUln53YdmEDBo0lUvI0Jwzv2/O8lr2VrrkTG74FjGQqlSRsCwAqAnaupK6z
-         dj9Hv7cDKUL++btCXyDnAVUb6tK+Ri/aT/i95b57tLTDZXHBkDFFU29mjnQlYTRZzUjx
-         KhJ3QpWhUSYml2Wjv/5WCBCVOcMskrbC3l3ybdk1S9oSEMQFDR/vaNxdRPiIpEw8kj5E
-         L15uny2sg4S4Gc5Ne4YsPVH/proYmOSJ4NaBSj68qkvKGC6tQ+6AsXJzyMywAaXqRCZt
-         VBbA==
-X-Gm-Message-State: AOJu0Yw2gdVs6o66zsohKzFkvX7rt2rkCTRuSZTm19ryib40KXy14lfs
-	EDPf3mLrLX0AT7ohOiIPBQReh0UJOPVVQIyC6KvvD6yveUTUtcHlHnt0wFUz7XNwL5NRkgCq/Vs
-	U
-X-Google-Smtp-Source: AGHT+IGYMCLLUttpsyMBLFzFjYuSrUNFbrIx1GdJjT4Rxo+2iSEnpOjo28u7JAxnN3F2VaCEbuwfyA==
-X-Received: by 2002:a05:6e02:1a88:b0:374:a6a3:333b with SMTP id e9e14a558f8ab-38a596cab7dmr229741615ab.28.1721037898197;
-        Mon, 15 Jul 2024 03:04:58 -0700 (PDT)
-Received: from telecaster.hsd1.wa.comcast.net ([2601:602:8980:9170::7a8e])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-78e34d2c4d3sm3049100a12.48.2024.07.15.03.04.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jul 2024 03:04:57 -0700 (PDT)
-From: Omar Sandoval <osandov@osandov.com>
-To: elfutils-devel@sourceware.org
-Cc: linux-debuggers@vger.kernel.org
-Subject: [PATCH v2 5/5] debuginfod: populate _r_seekable on request
-Date: Mon, 15 Jul 2024 03:04:36 -0700
-Message-ID: <ad7b3cb4b6568957fba6ddfd5a0cfe97fb68d76b.1721037200.git.osandov@fb.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <cover.1721037200.git.osandov@fb.com>
-References: <cover.1721037200.git.osandov@fb.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="DqksaoAw"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46F8ReWX016639;
+	Mon, 15 Jul 2024 10:06:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date
+	:from:to:cc:subject:message-id:references:mime-version
+	:content-type:in-reply-to; s=pp1; bh=taO/oRZRjXPCGjersHndsBJ0Srw
+	wSFCbNZXcZLUK9pQ=; b=DqksaoAwUZ18/Gywda3GQyu1w8BzTxTcG3E31mPtPbZ
+	v1IaBQq5ykFXX9/KPjTm9k2di2J3dgYzf7cs8lSQNVA+U/75cbxUk8rx9TJ80AYY
+	TGpqjtibK4aK7gEY4Tbv501Kct+F/Rz857uSuexvTT8pYOiUBoAGIx5Fa4TJ1ew9
+	2L1RIH6rDltVvonQ6x1JEB8t33LAvK4X56rrCZ9h5x15t3llrrsOWQ2jvzG30pSz
+	FzaEIvoFT/ZeNOJze4Kx0B07rBZWb+J9hF2JjauqepUUU7jDsiwdwI8U5ENi7OZH
+	tAxGd1Hz4pzEu+xsyYaqTi06JDr6w7C16btdSPv0jnA==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40cxyr8eqn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 15 Jul 2024 10:06:21 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 46F710k2028721;
+	Mon, 15 Jul 2024 10:06:21 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 40c6m2wxch-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 15 Jul 2024 10:06:20 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 46FA6HZL28639780
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 15 Jul 2024 10:06:19 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 34A122006C;
+	Mon, 15 Jul 2024 10:06:17 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 814E620074;
+	Mon, 15 Jul 2024 10:06:16 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.171.68.13])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 15 Jul 2024 10:06:16 +0000 (GMT)
+Date: Mon, 15 Jul 2024 12:06:14 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Omar Sandoval <osandov@osandov.com>
+Cc: Petr =?utf-8?B?VGVzYcWZw61r?= <petr@tesarici.cz>,
+        linux-s390@vger.kernel.org, Ilya Leoshkevich <iii@linux.ibm.com>,
+        linux-debuggers@vger.kernel.org
+Subject: Re: Incorrect vmcoreinfo KERNELOFFSET after "s390/boot: Rework
+ deployment of the kernel image"
+Message-ID: <ZpT0loUJ4KdabiCF@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+References: <ZnS8dycxhtXBZVky@telecaster.dhcp.thefacebook.com>
+ <Zn1uTZdlYNaRFUqK@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+ <20240709212141.31160508@meshulam.tesarici.cz>
+ <Zo5L9xZtIs4dCf0E@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+ <ZpBrDvUpn4SzaqND@telecaster>
+ <ZpEyucQA1rctAts6@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+ <ZpE7AsR-nD2tNuTn@telecaster>
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZpE7AsR-nD2tNuTn@telecaster>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: szJ0jmdYemPWCqIjfZgD4o7D5tyatRLh
+X-Proofpoint-ORIG-GUID: szJ0jmdYemPWCqIjfZgD4o7D5tyatRLh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-15_06,2024-07-11_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 spamscore=0
+ lowpriorityscore=0 impostorscore=0 priorityscore=1501 mlxscore=0
+ suspectscore=0 mlxlogscore=388 phishscore=0 clxscore=1015 bulkscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2406140001 definitions=main-2407150078
 
-From: Omar Sandoval <osandov@fb.com>
+On Fri, Jul 12, 2024 at 07:17:38AM -0700, Omar Sandoval wrote:
 
-Since the schema change adding _r_seekable was done in a backward
-compatible way, seekable archives that were previously scanned will not
-be in _r_seekable.  Whenever an archive is going to be extracted to
-satisfy a request, check if it is seekable.  If so, populate _r_seekable
-while extracting it so that future requests use the optimized path.
+Hi Omar,
 
-The next time that BUILDIDS is bumped, all archives will be checked at
-scan time.  At that point, checking again will be unnecessary and this
-commit can be reverted.
+> On Fri, Jul 12, 2024 at 03:42:17PM +0200, Alexander Gordeev wrote:
+> > On Thu, Jul 11, 2024 at 04:30:22PM -0700, Omar Sandoval wrote:
+> > Hi Omar,
+> > ...
+> > > I'd be really grateful if KERNELOFFSET was always the difference between
+> > > addresses in the kernel image and in memory like it is on other
+> > > architectures, or even if there was another, s390x-specific field in
+> > > vmcoreinfo for that.
+> > 
+> > Do you mean another s390x-specific field that would be the same
+> > as KERNELOFFSET on other architectures?
+> 
+> Yeah. I'd still prefer if KERNELOFFSET itself was updated, but if that's
+> really not an option, another field could be a workaround.
 
-Signed-off-by: Omar Sandoval <osandov@fb.com>
----
- debuginfod/debuginfod.cxx | 76 +++++++++++++++++++++++++++++++++++----
- 1 file changed, 70 insertions(+), 6 deletions(-)
+We have different approaches in how to get it done, which are
+being investigated.
 
-diff --git a/debuginfod/debuginfod.cxx b/debuginfod/debuginfod.cxx
-index f120dc90..6fb4627c 100644
---- a/debuginfod/debuginfod.cxx
-+++ b/debuginfod/debuginfod.cxx
-@@ -2737,6 +2737,7 @@ handle_buildid_r_match (bool internal_req_p,
-     }
- 
-   // no match ... look for a seekable entry
-+  bool populate_seekable = true;
-   unique_ptr<sqlite_ps> pp (new sqlite_ps (db, "rpm-seekable-query",
-                                            "select type, size, offset, mtime from " BUILDIDS "_r_seekable "
-                                            "where file = ? and content = ?"));
-@@ -2745,6 +2746,9 @@ handle_buildid_r_match (bool internal_req_p,
-     {
-       if (rc != SQLITE_ROW)
-         throw sqlite_exception(rc, "step");
-+      // if we found a match in _r_seekable but we fail to extract it, don't
-+      // bother populating it again
-+      populate_seekable = false;
-       const char* seekable_type = (const char*) sqlite3_column_text (*pp, 0);
-       if (seekable_type != NULL && strcmp (seekable_type, "xz") == 0)
-         {
-@@ -2836,16 +2840,39 @@ handle_buildid_r_match (bool internal_req_p,
-       throw archive_exception(a, "cannot open archive from pipe");
-     }
- 
--  // archive traversal is in three stages, no, four stages:
--  // 1) skip entries whose names do not match the requested one
--  // 2) extract the matching entry name (set r = result)
--  // 3) extract some number of prefetched entries (just into fdcache)
--  // 4) abort any further processing
-+  // If the archive was scanned in a version without _r_seekable, then we may
-+  // need to populate _r_seekable now.  This can be removed the next time
-+  // BUILDIDS is updated.
-+  if (populate_seekable)
-+    {
-+      populate_seekable = is_seekable_archive (b_source0, a);
-+      if (populate_seekable)
-+        {
-+          // NB: the names are already interned
-+          pp.reset(new sqlite_ps (db, "rpm-seekable-insert2",
-+                                  "insert or ignore into " BUILDIDS "_r_seekable (file, content, type, size, offset, mtime) "
-+                                  "values (?, "
-+                                  "(select id from " BUILDIDS "_files "
-+                                  "where dirname = (select id from " BUILDIDS "_fileparts where name = ?) "
-+                                  "and basename = (select id from " BUILDIDS "_fileparts where name = ?) "
-+                                  "), 'xz', ?, ?, ?)"));
-+        }
-+    }
-+
-+  // archive traversal is in five stages:
-+  // 1) before we find a matching entry, insert it into _r_seekable if needed or
-+  //    skip it otherwise
-+  // 2) extract the matching entry (set r = result).  Also insert it into
-+  //    _r_seekable if needed
-+  // 3) extract some number of prefetched entries (just into fdcache).  Also
-+  //    insert them into _r_seekable if needed
-+  // 4) if needed, insert all of the remaining entries into _r_seekable
-+  // 5) abort any further processing
-   struct MHD_Response* r = 0;                 // will set in stage 2
-   unsigned prefetch_count =
-     internal_req_p ? 0 : fdcache_prefetch;    // will decrement in stage 3
- 
--  while(r == 0 || prefetch_count > 0) // stage 1, 2, or 3
-+  while(r == 0 || prefetch_count > 0 || populate_seekable) // stage 1-4
-     {
-       if (interrupted)
-         break;
-@@ -2859,6 +2886,43 @@ handle_buildid_r_match (bool internal_req_p,
-         continue;
- 
-       string fn = canonicalized_archive_entry_pathname (e);
-+
-+      if (populate_seekable)
-+        {
-+          string dn, bn;
-+          size_t slash = fn.rfind('/');
-+          if (slash == std::string::npos) {
-+            dn = "";
-+            bn = fn;
-+          } else {
-+            dn = fn.substr(0, slash);
-+            bn = fn.substr(slash + 1);
-+          }
-+
-+          int64_t seekable_size = archive_entry_size (e);
-+          int64_t seekable_offset = archive_filter_bytes (a, 0);
-+          time_t seekable_mtime = archive_entry_mtime (e);
-+
-+          pp->reset();
-+          pp->bind(1, b_id0);
-+          pp->bind(2, dn);
-+          pp->bind(3, bn);
-+          pp->bind(4, seekable_size);
-+          pp->bind(5, seekable_offset);
-+          pp->bind(6, seekable_mtime);
-+          rc = pp->step();
-+          if (rc != SQLITE_DONE)
-+            obatched(clog) << "recording seekable file=" << fn
-+                           << " sqlite3 error: " << (sqlite3_errstr(rc) ?: "?") << endl;
-+          else if (verbose > 2)
-+            obatched(clog) << "recorded seekable file=" << fn
-+                           << " size=" << seekable_size
-+                           << " offset=" << seekable_offset
-+                           << " mtime=" << seekable_mtime << endl;
-+          if (r != 0 && prefetch_count == 0) // stage 4
-+            continue;
-+        }
-+
-       if ((r == 0) && (fn != b_source1)) // stage 1
-         continue;
- 
--- 
-2.45.2
+> Thanks,
+> Omar
 
+Thanks!

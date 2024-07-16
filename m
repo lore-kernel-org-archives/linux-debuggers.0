@@ -1,63 +1,56 @@
-Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E8578289
-	for <linux-debuggers@vger.kernel.org>; Tue, 16 Jul 2024 21:15:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E812F25779
+	for <linux-debuggers@vger.kernel.org>; Tue, 16 Jul 2024 22:15:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721164543; cv=none; b=LgWbOXbQQU/dPNzhknBfFT6tlzL0Tpm+IOixlsZhzlxlvF6t6pzLGEYMngIJDmpsi3OT4igBBS2E5aJlskT7vlbSeXWxC0rKUj86eZ0ydowdIVheemZh4pnAOSp2AMySE0GFI6pKKiZXz/oj7f5EN1gZH4xjHiK+K87G1W4a3DU=
+	t=1721168126; cv=none; b=gIfcSvl22QIU4YbiKIGjPkTPot1zSfFBJAyxa2WgY9s7Qo5MBeJUY8vAJ49E9mPd0MKJW8xHWMQOcUjzOBGf0/713yXoUMXeweTmpR4NrxcDUlz46SZvT0VdklsekbPKN8Y4PmW7Ps8V3VTP7yza7BLXyezaTAfvrlpRUGZyrgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721164543; c=relaxed/simple;
-	bh=WM2tmKpAwuCwfSqKhY8GgzqbU0Ml4Y8pDh9pjAfZSb4=;
+	s=arc-20240116; t=1721168126; c=relaxed/simple;
+	bh=mqlXma9dZEcqonGQZwf3dnj9zgaaOR8sCVatl9BPcjQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bfGXHM7GwdhdQVXY6eE21KdlMzlZ6+IGrzaDbhvVogV+qSfdK+rjKEU5UZK1XFydP+0Rd44eCt1E3v638EcYCHe36lsjOwJTY1z88qqL2MUQdYrdkR4GAFZ2pzNPdhqY0NqXRF478Mtw4htM9DLmVzXMFyw4iX0Tk5T5abG+ug8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com; spf=none smtp.mailfrom=osandov.com; dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b=bEXhkBl5; arc=none smtp.client-ip=209.85.167.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=osandov.com
+	 In-Reply-To:Content-Type:Content-Disposition; b=Jr4GOpP0g1RtLN+tPSO4ODPvV0M6IDatNbphw6mgIOOEjR7FAV3nd7KZCC4YR45j5JPcRCRzGbtEfSJtCx7dbTwJp+pqIqGirOfvW+SQDlOB+c3rOIXzQYPt3a5s3bH4On+bmvBjGDr75kMOa9cZLtiq9KhQJEfKiTdHMHSrz1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HF0HzfQj; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b="bEXhkBl5"
-Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-3d92d1a5222so3629530b6e.1
-        for <linux-debuggers@vger.kernel.org>; Tue, 16 Jul 2024 14:15:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1721164540; x=1721769340; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bGJ+s9culCWiguBknsjjGY0NMAhz/KM84VB2zuBzHrM=;
-        b=bEXhkBl5Y3i2Hzdesh5ac83lEeJy5lT+sDRdo3M/Ap2wYcJggiqfDvzQ+gbiSxAnTH
-         AISBzVq7vZGoWT0FrOBQmPEiiQL3cawfE3vcwRPwAmv/GXI+TilHmNS7jO/2hik0X5fk
-         Be3g4TLKLEhRrCq3omc7g8fAUWEZiiKhiFrI5q0mBv9NsXFryUvolmGevpukMOtccOut
-         Z/Va7x5yywI7P8IsAdOLK7a9/Q59ltvWYQNJ5F9jtUavf7pVfbBuzlRBP72jgrZkWXln
-         MVsmskcQeVHn1504sd46b3B4xXgOBVSXIlGK60/rjykQ7XacbRXd3lObFhR1Aa7KBroW
-         xZwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721164540; x=1721769340;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bGJ+s9culCWiguBknsjjGY0NMAhz/KM84VB2zuBzHrM=;
-        b=MkLf2jbYYxg+N89j9gk1HRsLAsREovNbQDvdsdZ88THGQ+Rmu9I6nqz2zQEmsM+95H
-         d4NVFIPlgcNTiyap1gNzCHcBlCnSwTcCZJrLcylR24I+cmmFG/AM/+kWZU1NF/bN4zwP
-         LfUIFOulni9YQ/wFpVRjUWBb2sJW3Wf/lu9I8eK/ns5FYs03irKCaV01rZIMPblx+1qx
-         /WI6xfX4KUyPcj0gwnkm5CBgui3YXeLxjMOS5lU4BDLbKG20Uy/a3SzWTklbolqMPaUD
-         5cigFZml/u4Q76T9cXJPjaZ44pqvXvwNXVsXJrkOn9AREt/GjYKdInRdlzD3dOpetHOW
-         3IFw==
-X-Forwarded-Encrypted: i=1; AJvYcCVNYh2Xx94zin8Gy4xrgl9WvmB5rdZ/NGrCrYeetyKKEekX8CwazxsusmBVaQYYnyrTsI4d26A2hO3LKJxguSwikqVE/MSXDiH93iUNKp6Q
-X-Gm-Message-State: AOJu0YyOYPMnjfjqYrIxnGKIDmlvqtnSHHw/Jr79O3TBMk65ysBquphE
-	+qsN8nC+/1467gZgakG2gaToRwh/rfd72BjcE1vNzHXaFpR5LRYxFh2XMDYe57s=
-X-Google-Smtp-Source: AGHT+IHgea5/K71MovKCGWj9v5uzs/J50LHRaScpjRuIgH+JRwoNFeK6QM7usAk2yfpHjHYpVvcr/Q==
-X-Received: by 2002:a05:6871:331f:b0:24f:d9bd:2754 with SMTP id 586e51a60fabf-260bdf9ae88mr2557076fac.40.1721164540209;
-        Tue, 16 Jul 2024 14:15:40 -0700 (PDT)
-Received: from telecaster.dhcp.thefacebook.com ([2620:10d:c090:400::5:7866])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70b7eca8303sm7030677b3a.173.2024.07.16.14.15.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jul 2024 14:15:39 -0700 (PDT)
-Date: Tue, 16 Jul 2024 14:15:37 -0700
-From: Omar Sandoval <osandov@osandov.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HF0HzfQj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1721168123;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5Kfa3g98Ja8UT//UUNuvfae44SlpBtxp9frwBgfiqeo=;
+	b=HF0HzfQjOoXu2Z1CGjzsFU8A3LBQriNnnVLoip97ULNMWml9CG8NpIihgrydD0u+ugAj1+
+	XzRGUdPzAZ4ca2AD2wSQ5XC8eBJK7EL0HzBSdRSj7G1bo9CAYQ8jFW0nDD7jFtbGKq9zDp
+	1wOpZHqG2Y+TiQ8ALEFpJSjOn36kU2w=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-470-6Y5-dR2LOOiXd75gfUoIcA-1; Tue,
+ 16 Jul 2024 18:15:20 -0400
+X-MC-Unique: 6Y5-dR2LOOiXd75gfUoIcA-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B66421955F42;
+	Tue, 16 Jul 2024 22:15:19 +0000 (UTC)
+Received: from redhat.com (unknown [10.22.32.20])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4D7E21955F40;
+	Tue, 16 Jul 2024 22:15:19 +0000 (UTC)
+Received: from fche by redhat.com with local (Exim 4.94.2)
+	(envelope-from <fche@redhat.com>)
+	id 1sTqS5-0002Eq-32; Tue, 16 Jul 2024 18:15:17 -0400
+Date: Tue, 16 Jul 2024 18:15:16 -0400
+From: "Frank Ch. Eigler" <fche@redhat.com>
 To: "Frank Ch. Eigler" <fche@redhat.com>
-Cc: elfutils-devel@sourceware.org, linux-debuggers@vger.kernel.org
+Cc: Omar Sandoval <osandov@osandov.com>, elfutils-devel@sourceware.org,
+	linux-debuggers@vger.kernel.org
 Subject: Re: [PATCH v2 0/5] debuginfod: speed up extraction from kernel
  debuginfo packages by 200x
-Message-ID: <Zpbi-VXYv7dmP_8H@telecaster.dhcp.thefacebook.com>
+Message-ID: <20240716221516.GD7214@redhat.com>
 References: <cover.1721037200.git.osandov@fb.com>
  <20240716201601.GB7214@redhat.com>
 Precedence: bulk
@@ -66,42 +59,32 @@ List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <20240716201601.GB7214@redhat.com>
+User-Agent: Mutt/1.12.0 (2019-05-25)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240716201601.GB7214@redhat.com>
 
-On Tue, Jul 16, 2024 at 04:16:01PM -0400, Frank Ch. Eigler wrote:
-> Hi -
-> 
-> > This is v2 of my patch series optimizing debuginfod for kernel
-> > debuginfo.  v1 is here [7].
-> 
-> This generally looks great to me.  I'll send it through the testsuite
-> trybots here.
+Hi -
 
-Great, thank you!
+> [...] I'll send it through the testsuite
+> trybots here.  [...]
 
-> But there isn't an xz-y test case yet.  Is there a
-> smallish seekable-xz rpm file that you have or could make that we
-> could jam into the elfutils testsuite?
+There was some success and there was some failure. :-)
 
-Good point, I'll add one.
+all 11 runs:
 
-> (A prometheus metric counting
-> seeked-xz attempts/successes would be cool to assist testing and to
-> monitor it on deployed servers.)
+https://builder.sourceware.org/testruns/?commitishes=&has_expfile_glob=&has_trsfile_glob=&has_keyvalue_k=testrun.git_describe&has_keyvalue_op=glob&has_keyvalue_v=*&has_keyvalue2_k=source.gitbranch&has_keyvalue2_op=glob&has_keyvalue2_v=*users%2Ffche%2Ftry-xz*&order_by=testrun.authored.time&order=desc
 
-I do have:
+in a grid view:
 
-  inc_metric("error_count","lzma",to_string(rc));
+https://builder.sourceware.org/r_grid_testcase/?trid=9b0340db2a771c5b6483132afd75139699c4f8e5&toplevel=True&vertical=source.gitdescribe&v_limit=5&horizontal=uname-m&h_limit=10&opt_keyword_key=source.gitbranch&opt_keyword_value=*fche%2Ftry-xz*
 
-in lzma_exception and:
+e.g. failure:
 
-  inc_metric ("http_responses_total","result",metric);
+https://builder.sourceware.org/testrun/2550ae9a06868d7e7f4c62176960c04f4534d8d0?filename=tests%2Frun-debuginfod-extraction-passive.sh.log#line657
 
-in create_buildid_r_response, which gets called with
-metric = "seekable archive".  But I'll add another metric for attempts,
-and name the existing one "seekable xz archive" to be more explicit.
+- FChE
 
-Thanks,
-Omar

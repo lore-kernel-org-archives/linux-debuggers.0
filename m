@@ -1,117 +1,81 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879DF23BF;
-	Mon, 15 Jul 2024 10:06:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382071A01D7
+	for <linux-debuggers@vger.kernel.org>; Tue, 16 Jul 2024 20:16:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721037991; cv=none; b=vB5azNsfTVqKeYH1z6x+z8Y01tY7kL4NG9r4gKZ3k95c6jtPDUWmhUO866HWel6h9yXGUDbwF+M9jHhMjsctGjHuFyEJUZjtYHgyVPKdweynabKVeZVwqzL3V9u2b82UvAq16H0QG6ICSnfQ4w4dIu8OIpYZTNeAKraZLb049wk=
+	t=1721160972; cv=none; b=XNOV/iDvd51fLq6qeCnGJMTLkAV32xCeHPf6JJ5zv2nIARP8l4V2afJFuI+kSJoXoSjGgumQ9OYQ4d70x0XqPBhqNF4zJGFLCMBq6QDdPcMsZtjLceWritRzt2tWfdvdH65go9aES8Cl8FpAwBplMkAChswFYpTQFhz8Adb1s8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721037991; c=relaxed/simple;
-	bh=6K5SbV3udFSz28nS9nUxd9RGHDx8eKjPW/0+TZMeGjA=;
+	s=arc-20240116; t=1721160972; c=relaxed/simple;
+	bh=oDCJmvqwT+I+DlgR9mz0ODVkHjPONEqrxtX4lgMKQ8s=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D4dlHB0xkknhfnJYCOwQgyQssIlKLF3u84jGK1BZ5iJrZ9PDS4/QMu5Vrf2kBuoyCxht4M+W843YytjXc3TxbYpwUdgPQeUyW8xkPs1WHsJaxBtR36BSl0wCsu0s0aKIlYQeTUtyxwHCqg8nqaZawp1gHU2qZIt0wUMS4ijl/ZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=DqksaoAw; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	 In-Reply-To:Content-Type:Content-Disposition; b=GV0cz4QcqPa2ImAP+ZR5f2oKhZfJuhNzrgmTRAvTri7rk3k619qReuxFxFPPSqgv7oFYg3TLEAyUfXEeteLtiQ4A5Erw5Xvcc93FDLqqY9ClK+RH64wTqe6BiXEKNM63YehVA0XvhyT0Cp200u8eWR5Vyy4RIUPjmjwftvpa8i8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ClVsEAFL; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="DqksaoAw"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46F8ReWX016639;
-	Mon, 15 Jul 2024 10:06:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date
-	:from:to:cc:subject:message-id:references:mime-version
-	:content-type:in-reply-to; s=pp1; bh=taO/oRZRjXPCGjersHndsBJ0Srw
-	wSFCbNZXcZLUK9pQ=; b=DqksaoAwUZ18/Gywda3GQyu1w8BzTxTcG3E31mPtPbZ
-	v1IaBQq5ykFXX9/KPjTm9k2di2J3dgYzf7cs8lSQNVA+U/75cbxUk8rx9TJ80AYY
-	TGpqjtibK4aK7gEY4Tbv501Kct+F/Rz857uSuexvTT8pYOiUBoAGIx5Fa4TJ1ew9
-	2L1RIH6rDltVvonQ6x1JEB8t33LAvK4X56rrCZ9h5x15t3llrrsOWQ2jvzG30pSz
-	FzaEIvoFT/ZeNOJze4Kx0B07rBZWb+J9hF2JjauqepUUU7jDsiwdwI8U5ENi7OZH
-	tAxGd1Hz4pzEu+xsyYaqTi06JDr6w7C16btdSPv0jnA==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40cxyr8eqn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Jul 2024 10:06:21 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 46F710k2028721;
-	Mon, 15 Jul 2024 10:06:21 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 40c6m2wxch-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Jul 2024 10:06:20 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 46FA6HZL28639780
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 15 Jul 2024 10:06:19 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 34A122006C;
-	Mon, 15 Jul 2024 10:06:17 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 814E620074;
-	Mon, 15 Jul 2024 10:06:16 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.171.68.13])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 15 Jul 2024 10:06:16 +0000 (GMT)
-Date: Mon, 15 Jul 2024 12:06:14 +0200
-From: Alexander Gordeev <agordeev@linux.ibm.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ClVsEAFL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1721160968;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=t1hwHmbGFOTY4dqwG6pUPbto//tEiY42hvdusK+JNsU=;
+	b=ClVsEAFLtZjkIHHDPLs8sH37akGYELQ6A7pIbiPA9hTQRYGc3eWHBI7KHfqML4z0E1rQZz
+	iVoD4hHu5W2DUluo2iUFhLm1gNgyAS3ivwttP1YrgUtKnykjjhwNmcJKBjzxNYVnV66fRG
+	WWmQ6kQV84w4n1IbBADXfmlFFKhET5E=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-512-MJhMcd91Oi6KXHmDqPWkSg-1; Tue,
+ 16 Jul 2024 16:16:05 -0400
+X-MC-Unique: MJhMcd91Oi6KXHmDqPWkSg-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5F0FD1955D4F;
+	Tue, 16 Jul 2024 20:16:04 +0000 (UTC)
+Received: from redhat.com (unknown [10.22.32.20])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E3E823000183;
+	Tue, 16 Jul 2024 20:16:03 +0000 (UTC)
+Received: from fche by redhat.com with local (Exim 4.94.2)
+	(envelope-from <fche@redhat.com>)
+	id 1sToaf-00026i-NU; Tue, 16 Jul 2024 16:16:01 -0400
+Date: Tue, 16 Jul 2024 16:16:01 -0400
+From: "Frank Ch. Eigler" <fche@redhat.com>
 To: Omar Sandoval <osandov@osandov.com>
-Cc: Petr =?utf-8?B?VGVzYcWZw61r?= <petr@tesarici.cz>,
-        linux-s390@vger.kernel.org, Ilya Leoshkevich <iii@linux.ibm.com>,
-        linux-debuggers@vger.kernel.org
-Subject: Re: Incorrect vmcoreinfo KERNELOFFSET after "s390/boot: Rework
- deployment of the kernel image"
-Message-ID: <ZpT0loUJ4KdabiCF@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
-References: <ZnS8dycxhtXBZVky@telecaster.dhcp.thefacebook.com>
- <Zn1uTZdlYNaRFUqK@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
- <20240709212141.31160508@meshulam.tesarici.cz>
- <Zo5L9xZtIs4dCf0E@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
- <ZpBrDvUpn4SzaqND@telecaster>
- <ZpEyucQA1rctAts6@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
- <ZpE7AsR-nD2tNuTn@telecaster>
+Cc: elfutils-devel@sourceware.org, linux-debuggers@vger.kernel.org
+Subject: Re: [PATCH v2 0/5] debuginfod: speed up extraction from kernel
+ debuginfo packages by 200x
+Message-ID: <20240716201601.GB7214@redhat.com>
+References: <cover.1721037200.git.osandov@fb.com>
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <cover.1721037200.git.osandov@fb.com>
+User-Agent: Mutt/1.12.0 (2019-05-25)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZpE7AsR-nD2tNuTn@telecaster>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: szJ0jmdYemPWCqIjfZgD4o7D5tyatRLh
-X-Proofpoint-ORIG-GUID: szJ0jmdYemPWCqIjfZgD4o7D5tyatRLh
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-15_06,2024-07-11_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 spamscore=0
- lowpriorityscore=0 impostorscore=0 priorityscore=1501 mlxscore=0
- suspectscore=0 mlxlogscore=388 phishscore=0 clxscore=1015 bulkscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2407150078
 
-On Fri, Jul 12, 2024 at 07:17:38AM -0700, Omar Sandoval wrote:
+Hi -
 
-Hi Omar,
+> This is v2 of my patch series optimizing debuginfod for kernel
+> debuginfo.  v1 is here [7].
 
-> On Fri, Jul 12, 2024 at 03:42:17PM +0200, Alexander Gordeev wrote:
-> > On Thu, Jul 11, 2024 at 04:30:22PM -0700, Omar Sandoval wrote:
-> > Hi Omar,
-> > ...
-> > > I'd be really grateful if KERNELOFFSET was always the difference between
-> > > addresses in the kernel image and in memory like it is on other
-> > > architectures, or even if there was another, s390x-specific field in
-> > > vmcoreinfo for that.
-> > 
-> > Do you mean another s390x-specific field that would be the same
-> > as KERNELOFFSET on other architectures?
-> 
-> Yeah. I'd still prefer if KERNELOFFSET itself was updated, but if that's
-> really not an option, another field could be a workaround.
+This generally looks great to me.  I'll send it through the testsuite
+trybots here.  But there isn't an xz-y test case yet.  Is there a
+smallish seekable-xz rpm file that you have or could make that we
+could jam into the elfutils testsuite?  (A prometheus metric counting
+seeked-xz attempts/successes would be cool to assist testing and to
+monitor it on deployed servers.)
 
-We have different approaches in how to get it done, which are
-being investigated.
+- FChE
 
-> Thanks,
-> Omar
-
-Thanks!

@@ -1,65 +1,64 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0901474B3
-	for <linux-debuggers@vger.kernel.org>; Fri, 19 Jul 2024 18:24:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 195471474AD
+	for <linux-debuggers@vger.kernel.org>; Fri, 19 Jul 2024 18:24:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721413491; cv=none; b=gvPbs46deJ6ZvXUzyeMNfPyloSeFkcSAN0DzcHGs6wR5gUjfK+iGCjROX3qJNIcTklAJ2sBCbb793RamoYzapagzOesuRw2LDAHTZHiqIQJOo0bwqHQ9sW3lIcAm0a4I8KX1/taotPn7Cv+T1wKH06MIIm04GBusbIKA0+ZPxDY=
+	t=1721413492; cv=none; b=Njidm0G6lEfzEzZ22DFElEzxuK+pF3FDk23qZrf4cYv2nwFpJlYMHSyNXKMkYs1e64DAhGVkHDpEoihXKiYS+7xVypSSkc5i7pa4wFyRz3lUkIBDRDkdOR/b70IDd6r/PVGXeGH4PTYKwyL7M4fU3IZOSSOfd8NWS/P92BGi3e4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721413491; c=relaxed/simple;
-	bh=7po6iuMq0yOzagehOqCkbkdF4/fDRh9HsclVqFQrYas=;
+	s=arc-20240116; t=1721413492; c=relaxed/simple;
+	bh=HOfAHJo///BN1FVi73kIPNB998r4isI11ggmhEvmArI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bs+jGC/58toCO7jyTnB1z+01h8yDYkypwb9hxkREQvhHWIp/AiuQMfpVsd8ZqelyhvPhGhfz/FbmG3NBvaXn4eZyNJF38hOzc6x1GASkUiqYU5IKQnKZDWbHkLk9qKv1uaV+K4v/bQQNC/ToTd3X3rHtpv+ch0NOTNCP7+XPB4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com; spf=none smtp.mailfrom=osandov.com; dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b=czjuL/LU; arc=none smtp.client-ip=209.85.215.179
+	 MIME-Version; b=KR+2DkKEFuMGRwmBCUqbPkGGDWRSayyJbh7/wojaSm1jSZxz7zfzBUO3Qz3g4KMhAnKBzKvJZobGEBCjNw3SsJo9vnH+OxDCGWIRW4KMD43V++PNvTOaVwP7qjstR20VdiP52IFEY9bp1ojlE0qcHzLWwo0MjMBoUg8ZmoOqj8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com; spf=none smtp.mailfrom=osandov.com; dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b=Z0I+gizm; arc=none smtp.client-ip=209.85.210.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=osandov.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b="czjuL/LU"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-71871d5e087so1639282a12.1
-        for <linux-debuggers@vger.kernel.org>; Fri, 19 Jul 2024 11:24:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b="Z0I+gizm"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-70b4a8a5587so773753b3a.2
+        for <linux-debuggers@vger.kernel.org>; Fri, 19 Jul 2024 11:24:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1721413489; x=1722018289; darn=vger.kernel.org;
+        d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1721413490; x=1722018290; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4paaUY15mWOyU0kjCYqRC9axHcB+L/opfNmc+xF9ups=;
-        b=czjuL/LUdW1J+fgSY6c2bFUzGLu3hoZ56TxRlOURlbXwCqrFNA386LSRdQp/FfcG7d
-         mTPdxJakH0x3eG9nVziBlJk768WiVi9eYUm3s8nnuLDaKTUs7hWW0ncumgC5HEXYLxVG
-         te3dAv3qdSP4nfZyUmtzrTB+h44529eG0nA8hTlV/yOi9hiZ+CrRv93ppbUgqJWWsoU6
-         0UQWbDIETLCR4GrvK0lERFsoCo7HQ8VN2MRZNCq+Fav2UsZZdDjMpGiqFwcSPDixZMXL
-         wqOE7LbL4iotZIMnuTrDF41tqh3ZNC/CrhNkVlEqTkJvMfwIGOdrLi9MjcDg2plsO3v3
-         iFIA==
+        bh=u4Rj/ZnOVSL02OnzUupYCg3NbyqN5BwrWVZX7PHvJeg=;
+        b=Z0I+gizmv5xM2mHdZOWa3q1Pi+VVXpg33X4MaHDvBa34Cl/ZxI8uiP3YHwM4RMr/h9
+         EYoiBHbo99nxrQQQitnE7VmPilSbm3uq1q3oZmSfgsPIH1hn/nQY2Q3jUbdv9XsdR0OB
+         KquBXoTFtpS/68bENrRlMCbx8ud2u7grguJGreqw1/VlMdIBZGbJh/Y8/rkozwCIK3ZL
+         1kHJVzCxbxStKjoDRjB0qAkv+BTmxLwW7mPL1cyfeFpt5hjsbH7guQ1gcbygYgHFbsc4
+         mBQkQ6EKsygod8ynrrxnJUbtK53frBJMxxv2BEv8D/iVczetp/0jd4EwBsvqqqoNKtbr
+         CrNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721413489; x=1722018289;
+        d=1e100.net; s=20230601; t=1721413490; x=1722018290;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=4paaUY15mWOyU0kjCYqRC9axHcB+L/opfNmc+xF9ups=;
-        b=srNMrcITM53Avz3y69kYDNFyOTcX8BZFF2HslgCaR8hj2BnSlnaNDqOGaHYHiJd8Ph
-         NP9LNYH1ivnXWBZJ8d0kTjlqK/hRJXOYcNtyzrEtTcul4PjJX1WxWQrJO4yFjSHYus54
-         6/oFCvn5gBBLBAenAuGuYrBqRhulo0tefV3P+9Wgkty6fTYi9B0WhMrb0noV6fODpI2P
-         Lpn2NQYzyFLtXJ4h8kAKsGF4JPebMqFw2zEdDBsrewb0TGPL3tytxlSxXOTicfk5k903
-         DNEzetHo/PxTRReuvk0cnPP2dC3quc1OoGk3pf2Q2aI96dpzwx6/SK600x7VUm2py57c
-         Zljw==
-X-Forwarded-Encrypted: i=1; AJvYcCXFt2orsulWIlWTNBs6NhT8dACZhEIGWJQHwySi7qfzNP45uljXmdPBOUu5jfEk5WcO8sIu2aeI7NHY+6YIzAaqwLRtWCy8tImvh43ghSpv
-X-Gm-Message-State: AOJu0Ywa3Sav6WIcJzZe2F4bRoO4I/QtVsyOiVq/W/du58yWS0uJQ7Z+
-	RR6MvUMbGvaoBOgRD4FH/iL4XybewJ03KL+AO3paccKfMI+mctI6JrH3gWFsan9Z8fJhXWX/RC4
-	A
-X-Google-Smtp-Source: AGHT+IElTZK2ehSmBW29wpvbQNdQ6UjRIWkYIkn50lzI/Cpld9iNsmo1wtXBhHQDkoUKUKPCtuoVJg==
-X-Received: by 2002:a05:6a21:99a9:b0:1c0:bce5:c19c with SMTP id adf61e73a8af0-1c42288a818mr1221323637.12.1721413489098;
-        Fri, 19 Jul 2024 11:24:49 -0700 (PDT)
+        bh=u4Rj/ZnOVSL02OnzUupYCg3NbyqN5BwrWVZX7PHvJeg=;
+        b=cGPioDEZZZnnuy2FQ+dh1XV2OpX8kCH/zvTwreou7YcxzyKSbtcPsMs+/+4+unSB/4
+         qub1XVklGzVURUdj2saeWFDDjaDuhzOUau2qe/HarpWoDIV1SRXyMjTH8hdSTcaXm0hX
+         76GDL9f528vSetbOwiOJky1Pv5//pdi+vzirv8qjGqKBz9HVfnkQm4T3kkE5yHxo+YtT
+         bdGMHhNCQhVn46wmxQvPS36xXzdWImrsp7FlL0d0myK4q0/DsJ4DJnxEkjOaluDKY0oN
+         /L5MPJRtMrhODdqdGrOd45QRHcp8rMWt8+yJhLwAxXfhKDi3nyVDzb06+Iu2V4uzMkbK
+         hMSw==
+X-Forwarded-Encrypted: i=1; AJvYcCVK7ZHCWj8YiyKKcLpZdO4vRTiG8ATiKdt3ZLd1juiFTKmhVPKTv48qc0FyrWmewQj1t0igR2rZlUNnf5w5ZDsNIJaH9Uf3P2bKbKY5KxuY
+X-Gm-Message-State: AOJu0YymetooyJwEFY6ANddqHFugIViNthUXCZ1Bkf/RulncoWZZ31Ir
+	VLgAR2bBtJHZ4Ajn7b62xdTuJQfk+RPqWHH+BxHKA0caoHu0rSm22KLJU7RNsCU=
+X-Google-Smtp-Source: AGHT+IEt+E4bwRLRzr0ecVo/0xqnOq5NOesHSN2zgSfrnheLa82O6DmEHXBMRZypL09r1f7Ec4x8Rw==
+X-Received: by 2002:a05:6a00:244b:b0:70b:1b51:b8af with SMTP id d2e1a72fcca58-70d0877f17cmr848846b3a.19.1721413490275;
+        Fri, 19 Jul 2024 11:24:50 -0700 (PDT)
 Received: from telecaster.thefacebook.com ([2620:10d:c090:500::7:5d79])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70cff4b2f40sm1476344b3a.63.2024.07.19.11.24.48
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70cff4b2f40sm1476344b3a.63.2024.07.19.11.24.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Jul 2024 11:24:48 -0700 (PDT)
+        Fri, 19 Jul 2024 11:24:49 -0700 (PDT)
 From: Omar Sandoval <osandov@osandov.com>
 To: elfutils-devel@sourceware.org
 Cc: "Frank Ch . Eigler" <fche@redhat.com>,
 	linux-debuggers@vger.kernel.org
-Subject: [PATCH v4 3/7] debuginfod: factor out common code for responding from an archive
-Date: Fri, 19 Jul 2024 11:24:34 -0700
-Message-ID: <94609d1b0f35e48f6bfead7be7ab40709a36eee5.1721413308.git.osandov@fb.com>
+Subject: [PATCH v4 4/7] debugifod: add new table and views for seekable archives
+Date: Fri, 19 Jul 2024 11:24:35 -0700
+Message-ID: <8354294593abfcd9cfc1f83d259921a5da0d55c3.1721413308.git.osandov@fb.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <cover.1721413308.git.osandov@fb.com>
 References: <cover.1721413308.git.osandov@fb.com>
@@ -73,264 +72,112 @@ Content-Transfer-Encoding: 8bit
 
 From: Omar Sandoval <osandov@fb.com>
 
-handle_buildid_r_match has two very similar branches where it optionally
-extracts a section and then creates a microhttpd response.  In
-preparation for adding a third one, factor it out into a function.
+In order to extract a file from a seekable archive, we need to know
+where in the uncompressed archive the file data starts and its size.
+Additionally, in order to populate the response headers, we need the
+file modification time (since we won't be able to get it from the
+archive metadata).  Add a new table, _r_seekable, keyed on the archive
+file id and entry file id and containing the size, offset, and mtime.
+It also contains the compression type just in case new seekable formats
+are supported in the future.
+
+In order to search this table when we get a request, we need the file
+ids available.  Add the ids to the _query_d and _query_e views, and
+rename them to _query_d2 and _query_e2.
+
+This schema change is backward compatible and doesn't require
+reindexing.  _query_d2 and _query_e2 can be renamed back the next time
+BUILDIDS needs to be bumped.
+
+Before this change, the database for a single kernel debuginfo RPM
+(kernel-debuginfo-6.9.6-200.fc40.x86_64.rpm) was about 15MB.  This
+change increases that by about 70kB, only a 0.5% increase.
 
 Signed-off-by: Omar Sandoval <osandov@fb.com>
 ---
- debuginfod/debuginfod.cxx | 213 +++++++++++++++++---------------------
- 1 file changed, 96 insertions(+), 117 deletions(-)
+ debuginfod/debuginfod.cxx | 34 ++++++++++++++++++++++++----------
+ 1 file changed, 24 insertions(+), 10 deletions(-)
 
 diff --git a/debuginfod/debuginfod.cxx b/debuginfod/debuginfod.cxx
-index 92022f3d..24702c23 100644
+index 24702c23..b3d80090 100644
 --- a/debuginfod/debuginfod.cxx
 +++ b/debuginfod/debuginfod.cxx
-@@ -1965,6 +1965,81 @@ string canonicalized_archive_entry_pathname(struct archive_entry *e)
- }
- 
- 
-+// NB: takes ownership of, and may reassign, fd.
-+static struct MHD_Response*
-+create_buildid_r_response (int64_t b_mtime0,
-+                           const string& b_source0,
-+                           const string& b_source1,
-+                           const string& section,
-+                           const string& ima_sig,
-+                           const char* tmppath,
-+                           int& fd,
-+                           off_t size,
-+                           time_t mtime,
-+                           const string& metric,
-+                           const struct timespec& extract_begin)
-+{
-+  if (tmppath != NULL)
-+    {
-+      struct timespec extract_end;
-+      clock_gettime (CLOCK_MONOTONIC, &extract_end);
-+      double extract_time = (extract_end.tv_sec - extract_begin.tv_sec)
-+        + (extract_end.tv_nsec - extract_begin.tv_nsec)/1.e9;
-+      fdcache.intern(b_source0, b_source1, tmppath, size, true, extract_time);
-+    }
-+
-+  if (!section.empty ())
-+    {
-+      int scn_fd = extract_section (fd, b_mtime0,
-+                                    b_source0 + ":" + b_source1,
-+                                    section, extract_begin);
-+      close (fd);
-+      if (scn_fd >= 0)
-+        fd = scn_fd;
-+      else
-+        {
-+          if (verbose)
-+            obatched (clog) << "cannot find section " << section
-+                            << " for archive " << b_source0
-+                            << " file " << b_source1 << endl;
-+          return 0;
-+        }
-+
-+      struct stat fs;
-+      if (fstat (fd, &fs) < 0)
-+        {
-+          close (fd);
-+          throw libc_exception (errno,
-+            string ("fstat ") + b_source0 + string (" ") + section);
-+        }
-+      size = fs.st_size;
-+    }
-+
-+  struct MHD_Response* r = MHD_create_response_from_fd (size, fd);
-+  if (r == 0)
-+    {
-+      if (verbose)
-+        obatched(clog) << "cannot create fd-response for " << b_source0 << endl;
-+      close(fd);
-+    }
-+  else
-+    {
-+      inc_metric ("http_responses_total","result",metric);
-+      add_mhd_response_header (r, "Content-Type", "application/octet-stream");
-+      add_mhd_response_header (r, "X-DEBUGINFOD-SIZE", to_string(size).c_str());
-+      add_mhd_response_header (r, "X-DEBUGINFOD-ARCHIVE", b_source0.c_str());
-+      add_mhd_response_header (r, "X-DEBUGINFOD-FILE", b_source1.c_str());
-+      if(!ima_sig.empty()) add_mhd_response_header(r, "X-DEBUGINFOD-IMASIGNATURE", ima_sig.c_str());
-+      add_mhd_last_modified (r, mtime);
-+      if (verbose > 1)
-+        obatched(clog) << "serving " << metric << " " << b_source0
-+                       << " file " << b_source1
-+                       << " section=" << section
-+                       << " IMA signature=" << ima_sig << endl;
-+      /* libmicrohttpd will close fd. */
-+    }
-+  return r;
-+}
- 
- static struct MHD_Response*
- handle_buildid_r_match (bool internal_req_p,
-@@ -2142,57 +2217,15 @@ handle_buildid_r_match (bool internal_req_p,
-           break; // branch out of if "loop", to try new libarchive fetch attempt
-         }
- 
--      if (!section.empty ())
--	{
--	  int scn_fd = extract_section (fd, fs.st_mtime,
--					b_source0 + ":" + b_source1,
--					section, extract_begin);
--	  close (fd);
--	  if (scn_fd >= 0)
--	    fd = scn_fd;
--	  else
--	    {
--	      if (verbose)
--	        obatched (clog) << "cannot find section " << section
--				<< " for archive " << b_source0
--				<< " file " << b_source1 << endl;
--	      return 0;
--	    }
--
--	  rc = fstat(fd, &fs);
--	  if (rc < 0)
--	    {
--	      close (fd);
--	      throw libc_exception (errno,
--		string ("fstat archive ") + b_source0 + string (" file ") + b_source1
--		+ string (" section ") + section);
--	    }
--	}
--
--      struct MHD_Response* r = MHD_create_response_from_fd (fs.st_size, fd);
-+      struct MHD_Response* r = create_buildid_r_response (b_mtime, b_source0,
-+                                                          b_source1, section,
-+                                                          ima_sig, NULL, fd,
-+                                                          fs.st_size,
-+                                                          fs.st_mtime,
-+                                                          "archive fdcache",
-+                                                          extract_begin);
-       if (r == 0)
--        {
--          if (verbose)
--            obatched(clog) << "cannot create fd-response for " << b_source0 << endl;
--          close(fd);
--          break; // branch out of if "loop", to try new libarchive fetch attempt
--        }
--
--      inc_metric ("http_responses_total","result","archive fdcache");
--
--      add_mhd_response_header (r, "Content-Type", "application/octet-stream");
--      add_mhd_response_header (r, "X-DEBUGINFOD-SIZE",
--			       to_string(fs.st_size).c_str());
--      add_mhd_response_header (r, "X-DEBUGINFOD-ARCHIVE", b_source0.c_str());
--      add_mhd_response_header (r, "X-DEBUGINFOD-FILE", b_source1.c_str());
--      if(!ima_sig.empty()) add_mhd_response_header(r, "X-DEBUGINFOD-IMASIGNATURE", ima_sig.c_str());
--      add_mhd_last_modified (r, fs.st_mtime);
--      if (verbose > 1)
--	obatched(clog) << "serving fdcache archive " << b_source0
--		       << " file " << b_source1
--		       << " section=" << section
--		       << " IMA signature=" << ima_sig << endl;
--      /* libmicrohttpd will close it. */
-+        break; // branch out of if "loop", to try new libarchive fetch attempt
-       if (result_fd)
-         *result_fd = fd;
-       return r;
-@@ -2307,13 +2340,12 @@ handle_buildid_r_match (bool internal_req_p,
-       tvs[1].tv_nsec = archive_entry_mtime_nsec(e);
-       (void) futimens (fd, tvs);  /* best effort */
- 
--      struct timespec extract_end;
--      clock_gettime (CLOCK_MONOTONIC, &extract_end);
--      double extract_time = (extract_end.tv_sec - extract_begin.tv_sec)
--        + (extract_end.tv_nsec - extract_begin.tv_nsec)/1.e9;
--      
-       if (r != 0) // stage 3
-         {
-+          struct timespec extract_end;
-+          clock_gettime (CLOCK_MONOTONIC, &extract_end);
-+          double extract_time = (extract_end.tv_sec - extract_begin.tv_sec)
-+            + (extract_end.tv_nsec - extract_begin.tv_nsec)/1.e9;
-           // NB: now we know we have a complete reusable file; make fdcache
-           // responsible for unlinking it later.
-           fdcache.intern(b_source0, fn,
-@@ -2324,69 +2356,16 @@ handle_buildid_r_match (bool internal_req_p,
-           continue;
-         }
- 
--      // NB: now we know we have a complete reusable file; make fdcache
--      // responsible for unlinking it later.
--      fdcache.intern(b_source0, b_source1,
--                     tmppath, archive_entry_size(e),
--                     true, extract_time); // requested ones go to the front of the line
--
--      if (!section.empty ())
--	{
--	  int scn_fd = extract_section (fd, b_mtime,
--					b_source0 + ":" + b_source1,
--					section, extract_begin);
--	  close (fd);
--	  if (scn_fd >= 0)
--	    fd = scn_fd;
--	  else
--	    {
--	      if (verbose)
--	        obatched (clog) << "cannot find section " << section
--				<< " for archive " << b_source0
--				<< " file " << b_source1 << endl;
--	      return 0;
--	    }
--
--	  rc = fstat(fd, &fs);
--	  if (rc < 0)
--	    {
--	      close (fd);
--	      throw libc_exception (errno,
--		string ("fstat ") + b_source0 + string (" ") + section);
--	    }
--	  r = MHD_create_response_from_fd (fs.st_size, fd);
--	}
--      else
--	r = MHD_create_response_from_fd (archive_entry_size(e), fd);
--
--      inc_metric ("http_responses_total","result",archive_extension + " archive");
-+      r = create_buildid_r_response (b_mtime, b_source0, b_source1, section,
-+                                     ima_sig, tmppath, fd,
-+                                     archive_entry_size(e),
-+                                     archive_entry_mtime(e),
-+                                     archive_extension + " archive",
-+                                     extract_begin);
-       if (r == 0)
--        {
--          if (verbose)
--            obatched(clog) << "cannot create fd-response for " << b_source0 << endl;
--          close(fd);
--          break; // assume no chance of better luck around another iteration; no other copies of same file
--        }
--      else
--        {
--          add_mhd_response_header (r, "Content-Type",
--                                   "application/octet-stream");
--          add_mhd_response_header (r, "X-DEBUGINFOD-SIZE",
--                                   to_string(archive_entry_size(e)).c_str());
--          add_mhd_response_header (r, "X-DEBUGINFOD-ARCHIVE", b_source0.c_str());
--          add_mhd_response_header (r, "X-DEBUGINFOD-FILE", b_source1.c_str());
--          if(!ima_sig.empty()) add_mhd_response_header(r, "X-DEBUGINFOD-IMASIGNATURE", ima_sig.c_str());
--          add_mhd_last_modified (r, archive_entry_mtime(e));
--          if (verbose > 1)
--	    obatched(clog) << "serving archive " << b_source0
--			   << " file " << b_source1
--			   << " section=" << section
--			   << " IMA signature=" << ima_sig << endl;
--          /* libmicrohttpd will close it. */
--          if (result_fd)
--            *result_fd = fd;
--          continue;
--        }
-+        break; // assume no chance of better luck around another iteration; no other copies of same file
-+      if (result_fd)
-+        *result_fd = fd;
-     }
- 
-   // XXX: rpm/file not found: delete this R entry?
+@@ -265,25 +265,39 @@ static const char DEBUGINFOD_SQLITE_DDL[] =
+   "        foreign key (content) references " BUILDIDS "_files(id) on update cascade on delete cascade,\n"
+   "        primary key (content, file, mtime)\n"
+   "        ) " WITHOUT_ROWID ";\n"
++  "create table if not exists " BUILDIDS "_r_seekable (\n" // seekable rpm contents
++  "        file integer not null,\n"
++  "        content integer not null,\n"
++  "        type text not null,\n"
++  "        size integer not null,\n"
++  "        offset integer not null,\n"
++  "        mtime integer not null,\n"
++  "        foreign key (file) references " BUILDIDS "_files(id) on update cascade on delete cascade,\n"
++  "        foreign key (content) references " BUILDIDS "_files(id) on update cascade on delete cascade,\n"
++  "        primary key (file, content)\n"
++  "        ) " WITHOUT_ROWID ";\n"
+   // create views to glue together some of the above tables, for webapi D queries
+-  "create view if not exists " BUILDIDS "_query_d as \n"
++  // NB: _query_d2 and _query_e2 were added to replace _query_d and _query_e
++  // without updating BUILDIDS.  They can be renamed back the next time BUILDIDS
++  // is updated.
++  "create view if not exists " BUILDIDS "_query_d2 as \n"
+   "select\n"
+-  "        b.hex as buildid, n.mtime, 'F' as sourcetype, f0.name as source0, n.mtime as mtime, null as source1\n"
++  "        b.hex as buildid, 'F' as sourcetype, n.file as id0, f0.name as source0, n.mtime as mtime, null as id1, null as source1\n"
+   "        from " BUILDIDS "_buildids b, " BUILDIDS "_files_v f0, " BUILDIDS "_f_de n\n"
+   "        where b.id = n.buildid and f0.id = n.file and n.debuginfo_p = 1\n"
+   "union all select\n"
+-  "        b.hex as buildid, n.mtime, 'R' as sourcetype, f0.name as source0, n.mtime as mtime, f1.name as source1\n"
++  "        b.hex as buildid, 'R' as sourcetype, n.file as id0, f0.name as source0, n.mtime as mtime, n.content as id1, f1.name as source1\n"
+   "        from " BUILDIDS "_buildids b, " BUILDIDS "_files_v f0, " BUILDIDS "_files_v f1, " BUILDIDS "_r_de n\n"
+   "        where b.id = n.buildid and f0.id = n.file and f1.id = n.content and n.debuginfo_p = 1\n"
+   ";"
+   // ... and for E queries
+-  "create view if not exists " BUILDIDS "_query_e as \n"
++  "create view if not exists " BUILDIDS "_query_e2 as \n"
+   "select\n"
+-  "        b.hex as buildid, n.mtime, 'F' as sourcetype, f0.name as source0, n.mtime as mtime, null as source1\n"
++  "        b.hex as buildid, 'F' as sourcetype, n.file as id0, f0.name as source0, n.mtime as mtime, null as id1, null as source1\n"
+   "        from " BUILDIDS "_buildids b, " BUILDIDS "_files_v f0, " BUILDIDS "_f_de n\n"
+   "        where b.id = n.buildid and f0.id = n.file and n.executable_p = 1\n"
+   "union all select\n"
+-  "        b.hex as buildid, n.mtime, 'R' as sourcetype, f0.name as source0, n.mtime as mtime, f1.name as source1\n"
++  "        b.hex as buildid, 'R' as sourcetype, n.file as id0, f0.name as source0, n.mtime as mtime, n.content as id1, f1.name as source1\n"
+   "        from " BUILDIDS "_buildids b, " BUILDIDS "_files_v f0, " BUILDIDS "_files_v f1, " BUILDIDS "_r_de n\n"
+   "        where b.id = n.buildid and f0.id = n.file and f1.id = n.content and n.executable_p = 1\n"
+   ";"
+@@ -2557,7 +2571,7 @@ handle_buildid (MHD_Connection* conn,
+   if (atype_code == "D")
+     {
+       pp = new sqlite_ps (thisdb, "mhd-query-d",
+-                          "select mtime, sourcetype, source0, source1 from " BUILDIDS "_query_d where buildid = ? "
++                          "select mtime, sourcetype, source0, source1 from " BUILDIDS "_query_d2 where buildid = ? "
+                           "order by mtime desc");
+       pp->reset();
+       pp->bind(1, buildid);
+@@ -2565,7 +2579,7 @@ handle_buildid (MHD_Connection* conn,
+   else if (atype_code == "E")
+     {
+       pp = new sqlite_ps (thisdb, "mhd-query-e",
+-                          "select mtime, sourcetype, source0, source1 from " BUILDIDS "_query_e where buildid = ? "
++                          "select mtime, sourcetype, source0, source1 from " BUILDIDS "_query_e2 where buildid = ? "
+                           "order by mtime desc");
+       pp->reset();
+       pp->bind(1, buildid);
+@@ -2589,9 +2603,9 @@ handle_buildid (MHD_Connection* conn,
+   else if (atype_code == "I")
+     {
+       pp = new sqlite_ps (thisdb, "mhd-query-i",
+-	"select mtime, sourcetype, source0, source1, 1 as debug_p from " BUILDIDS "_query_d where buildid = ? "
++	"select mtime, sourcetype, source0, source1, 1 as debug_p from " BUILDIDS "_query_d2 where buildid = ? "
+ 	"union all "
+-	"select mtime, sourcetype, source0, source1, 0 as debug_p from " BUILDIDS "_query_e where buildid = ? "
++	"select mtime, sourcetype, source0, source1, 0 as debug_p from " BUILDIDS "_query_e2 where buildid = ? "
+ 	"order by debug_p desc, mtime desc");
+       pp->reset();
+       pp->bind(1, buildid);
 -- 
 2.45.2
 

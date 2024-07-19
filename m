@@ -1,88 +1,125 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D6E2746B
-	for <linux-debuggers@vger.kernel.org>; Fri, 19 Jul 2024 18:04:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F3F146D7C
+	for <linux-debuggers@vger.kernel.org>; Fri, 19 Jul 2024 18:24:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721412260; cv=none; b=r20naAO2fYnHs22jTn8FnlOaUk9/WTU40yPG0e7LPSxbbcPD2berTWDY8U7gHnMmOBh2WOYLhOSt+tj0NIOmwlF7Qx3AP9FLfDzygphi6dXFLca1/7wLIPbOFazI09Ql28Ss61hy33REnA+F1oxrBSqxD0bFTo5CuscjYUVKPls=
+	t=1721413488; cv=none; b=GvZlgzN/xv8EEVzRvcemFfgRf384YAxKv4uoZ9eu9SbVy6ERVphDv23gyFu7V5S4mPPh3BCqIQUlDvuaoNKl1fRLSTiZW2+mK4Mrmzs+6gMRo++qwNpNUfSkF9s8scO+l7ep6lXfjBUu9ZYrHqb2GwW1lVcuCaNKWvCJ4OMHIbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721412260; c=relaxed/simple;
-	bh=Su/IbI006fHwPiLuMREMA7fj3aKWP9/FS7+13+weZxM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M7Bk96FEKoN48i24cjL7r7+Ufsih4TRZobCEdC6xLVmQtfv988qGhledrEIL0gR4mDuGNFdCQmFQe3mQ3Z1NZQYqRxpiya722kNtP21Zln3+drdI8En/+cz7b+n9vonubfXPlQ1tsxgitW+dtj3Boa+d0A80vm34ZVHs1/Kmq2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com; spf=none smtp.mailfrom=osandov.com; dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b=lBakQwzh; arc=none smtp.client-ip=209.85.214.179
+	s=arc-20240116; t=1721413488; c=relaxed/simple;
+	bh=st7h4VWEp3WnC2FkRJB6Jv7b94xK/EqLBhZRLpyuOtg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=S2g34N0HSSNsU1jzoass5nsU7hPi/GAyF9aX1QFxzhhxGZ8I5ae6SlRi+alTBlklO+5lxlSk1KQyKlfLgpYw+IcQwD7WA+x1EI2zkkZPZzClwPTg4aUqpaANHXMSRUjQWHTjWMsuPagin6uB2fbWLhSMOUVVHoeL72/0yr9LoRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com; spf=none smtp.mailfrom=osandov.com; dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b=WDxB+sMF; arc=none smtp.client-ip=209.85.215.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=osandov.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b="lBakQwzh"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-1fd65aaac27so5601785ad.1
-        for <linux-debuggers@vger.kernel.org>; Fri, 19 Jul 2024 11:04:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b="WDxB+sMF"
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-71871d5e087so1639258a12.1
+        for <linux-debuggers@vger.kernel.org>; Fri, 19 Jul 2024 11:24:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1721412258; x=1722017058; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=XUJ9YnvAzO6RrS5j0TM7mrmBUrdjvkGL51lyymIOF6s=;
-        b=lBakQwzhjoCOnppoJzAAL9/3hXHqhfMvnp53X2Rsu9+ygZHrVZqrxeWDLEIFdJcsQE
-         b84ROjRZSYh165KyCYkMpyamdjcR3f94IhCy6pa4RLf9JY8G9toi2T+23QUtnnxQrU/C
-         u8YcYl2HU6/oE7LIr6wPmBbTYIx893jhRLykMWjl7wZjmuhRS+vhqCyJ1zqhT4pic6nx
-         brqH9zQBnHOKGVwokUoyJskEerudRXZCH8e6Gf6bzm18TvHuJNDODdL0CZCuabYTbuXN
-         1D/9l7wqIgsIBFl6qRoO1ftqGiltBeaEtvXDKA/7cSXqZJNarAhZwXRL/ECsZjy82Cuk
-         a0fw==
+        d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1721413486; x=1722018286; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=d6LVgQ/2dV7xqdWXeBwu3U0jzidyYiBG6cXMai2lFpw=;
+        b=WDxB+sMFQeGIOKj/p611o1WtDzLDrqoFdEsWSoL2fU1igajYyBOg8aOm1hLaJaGIOd
+         sTECvub7D7MKe9drS9J+tlsRgOdomMUbRwR1p3qPLN2eBBKERT/lXVTzxYVT89HPRbqc
+         24L/0iYlhVXDYJHg8uTZKwh6OgoHJxjvv7y5Bn0aK5bNfmuJoYN1D1pkLyQgjtdJKWZT
+         aAX3GD+VvxvSabMtG9h0j+tQuDOe2mBJOP5bhmPHBLC7uiuxjF3NbZ1JzK5M1yQ1Zpkc
+         NAQcSZ0RuQvSZDjebxfgqddSgLdMTuQ3WgvpCC4wCpJAe5aIWkyphu/1UepfpGrDZ+I6
+         XmJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721412258; x=1722017058;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XUJ9YnvAzO6RrS5j0TM7mrmBUrdjvkGL51lyymIOF6s=;
-        b=QEapxE710Ani22kY6/sJUk3X3yjH6cfdXOE5YzfZuGZMtJBqXwvmfwAEd3DSjbqdGP
-         QErAFyrUBcIKNWbcGP43J3LAP9ie49uqu6T+b+RzM4LDBZn+wTJWE0Vg4NVQFo0sVo79
-         q31jlzpnyj/D60y/ArEzyl6g8jGdmmsyJYmv5i+WH85+Nv/NjA6aZIH2jg8zbqqNhBej
-         qZpspTodZpFpkrLg2I5ypumrO3gLB5wX+dxAHB9EwJ2s3xINq+7TsreyoZFC+jCGb71u
-         I5VpYnOWso8qAT0GenPT72n2BPQj0fpvQs9dwfoOcGqpGS3ugMjXduY1WbSv3p5a8ZaR
-         6YHw==
-X-Forwarded-Encrypted: i=1; AJvYcCWfSdFFGbnbeA4TIRBh4DBhv8sOZDiF2yirJ2M0WazdtDQqA8W3f1xDtVTj8lmVCsyKJBZic2Jq62j5sutDoDOXjJHUySnKsV1ET+OWGtS4
-X-Gm-Message-State: AOJu0YyKd3aszlltmy0r1EVBbc74rX3PXDp5pQLdIdbFwCab8Czx7Xe2
-	3VlEs6N/Xr3TgFZ+tJc7zvFwOZWxIHYUDEZPKHMKXx2o/wpGDGdAqDaE538mhfU=
-X-Google-Smtp-Source: AGHT+IENAIWuwBfYF3xe41a5JQUjb3TrN5Fe+yEttjen+ePDRv8UAinaPq9zHqaVINr3d67daV6eUw==
-X-Received: by 2002:a17:902:d4c7:b0:1f9:a242:c3a9 with SMTP id d9443c01a7336-1fc5b60a901mr87487775ad.24.1721412257687;
-        Fri, 19 Jul 2024 11:04:17 -0700 (PDT)
-Received: from telecaster.dhcp.thefacebook.com ([2620:10d:c090:500::7:5d79])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fd6f46a516sm7585895ad.253.2024.07.19.11.04.16
+        d=1e100.net; s=20230601; t=1721413486; x=1722018286;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=d6LVgQ/2dV7xqdWXeBwu3U0jzidyYiBG6cXMai2lFpw=;
+        b=Yfufo0Whtk1CQa8qMHMGKdZLCsx1rjrcAjIH1Oc2VW8Tr5LgSyzJlHihl709VF+eYo
+         jnn9+5ZFZD+uxMTBGHN6/6YLxHMp1Su4yMYGZuRwKuxvWVkMUEO6+FkwhSTeAvfk+oxJ
+         ZBW0ct5w/BLzV6/6bz9wGcsugf74Ugv9EProsaFPomjegZA73w2vLm5+oPYtFBZKcnnE
+         guv3lZbJPv/YX50gV0IcHkMCkPMew99OdaSmH1AxhCxaAf/SjRXQN3CbUdMkc3saB8VM
+         A+on1siPb7ox9qf5KPwkMagBOu7uXz5Cd1utCvhmaBSAJZjLz9cRIs+7YxcH8fZMwBu0
+         WUag==
+X-Forwarded-Encrypted: i=1; AJvYcCV/T0+VOWKx5+lp54MN6h3/E+ibgE2Of6C3CE1XpG3TQ9tOD8AjI1eC2wQenK/jGyfelowDXcaCdoBuuv+Vmr5f1LuGlmP1yva7e8+cdfOZ
+X-Gm-Message-State: AOJu0Yy+5hhajdXwf5T51INVFY7h7OtKQ7SP8y9+BDVNeVMjfieIPBKD
+	WLrcyU2El6cxJAz+4cewqt9L0Oz6a8+sizReejp+AgQPVH8hr9z9AgwdXQoEz4g=
+X-Google-Smtp-Source: AGHT+IHiul1DLOfEGVIvO3Hv0zPrqnMOZx5g3u2hKaRKyU2aQxWeLFyquosrkRQ6iXLJMkrV7JRZaw==
+X-Received: by 2002:a05:6a20:728d:b0:1c0:eabc:86a8 with SMTP id adf61e73a8af0-1c422855829mr1189578637.5.1721413485810;
+        Fri, 19 Jul 2024 11:24:45 -0700 (PDT)
+Received: from telecaster.thefacebook.com ([2620:10d:c090:500::7:5d79])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70cff4b2f40sm1476344b3a.63.2024.07.19.11.24.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Jul 2024 11:04:17 -0700 (PDT)
-Date: Fri, 19 Jul 2024 11:04:16 -0700
+        Fri, 19 Jul 2024 11:24:45 -0700 (PDT)
 From: Omar Sandoval <osandov@osandov.com>
-To: "Frank Ch. Eigler" <fche@redhat.com>
-Cc: elfutils-devel@sourceware.org, linux-debuggers@vger.kernel.org
-Subject: Re: [PATCH v3 0/7] debuginfod: speed up extraction from kernel
- debuginfo packages by 200x
-Message-ID: <ZpqqoB3bNbVTx9DZ@telecaster.dhcp.thefacebook.com>
-References: <cover.1721377314.git.osandov@fb.com>
- <20240719173448.GB27443@redhat.com>
+To: elfutils-devel@sourceware.org
+Cc: "Frank Ch . Eigler" <fche@redhat.com>,
+	linux-debuggers@vger.kernel.org
+Subject: [PATCH v4 0/7] debuginfod: speed up extraction from kernel debuginfo packages by 200x
+Date: Fri, 19 Jul 2024 11:24:31 -0700
+Message-ID: <cover.1721413308.git.osandov@fb.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240719173448.GB27443@redhat.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jul 19, 2024 at 01:34:48PM -0400, Frank Ch. Eigler wrote:
-> Hi -
-> 
-> > This is v3 of my patch series optimizing debuginfod for kernel
-> > debuginfo.  v1 is here [7], v2 is here [8].  This version fixes a couple
-> > of minor bugs and adds test cases. [...]
-> 
-> Thanks, LGTM, running through try-buildbots to make sure.
+From: Omar Sandoval <osandov@fb.com>
 
-Sorry about the distcheck failures, looks like I forgot to add the new
-test files to EXTRA_DIST.  I'll be sure to run distcheck next time.
-
-I'll send v4 shortly.
+This is v4 of my patch series optimizing debuginfod for kernel
+debuginfo.  v1 is here [1], v2 is here [2], v3 is here [3].  The only
+changes from v3 in this version are fixing a bogus maybe-uninitialized
+error on the Debian build and adding the new test files to EXTRA_DIST so
+that make distcheck passes.
 
 Thanks,
 Omar
+
+1: https://sourceware.org/pipermail/elfutils-devel/2024q3/007191.html
+2: https://sourceware.org/pipermail/elfutils-devel/2024q3/007208.html
+3: https://sourceware.org/pipermail/elfutils-devel/2024q3/007243.html
+
+Omar Sandoval (7):
+  debuginfod: fix skipping <built-in> source file
+  tests/run-debuginfod-fd-prefetch-caches.sh: disable fdcache limit
+    check
+  debuginfod: factor out common code for responding from an archive
+  debugifod: add new table and views for seekable archives
+  debuginfod: optimize extraction from seekable xz archives
+  debuginfod: populate _r_seekable on scan
+  debuginfod: populate _r_seekable on request
+
+ configure.ac                                  |   5 +
+ debuginfod/Makefile.am                        |   2 +-
+ debuginfod/debuginfod.cxx                     | 923 +++++++++++++++---
+ tests/Makefile.am                             |  13 +-
+ ...pressme-seekable-xz-dbgsym_1.0-1_amd64.deb | Bin 0 -> 6288 bytes
+ ...compressme-seekable-xz_1.0-1.debian.tar.xz | Bin 0 -> 1440 bytes
+ .../compressme-seekable-xz_1.0-1.dsc          |  19 +
+ .../compressme-seekable-xz_1.0-1_amd64.deb    | Bin 0 -> 6208 bytes
+ .../compressme-seekable-xz_1.0.orig.tar.xz    | Bin 0 -> 7160 bytes
+ .../compressme-seekable-xz-1.0-1.src.rpm      | Bin 0 -> 15880 bytes
+ .../compressme-seekable-xz-1.0-1.x86_64.rpm   | Bin 0 -> 31873 bytes
+ ...sme-seekable-xz-debuginfo-1.0-1.x86_64.rpm | Bin 0 -> 21917 bytes
+ ...e-seekable-xz-debugsource-1.0-1.x86_64.rpm | Bin 0 -> 7961 bytes
+ tests/run-debuginfod-archive-groom.sh         |   2 +-
+ tests/run-debuginfod-extraction.sh            |   2 +-
+ tests/run-debuginfod-fd-prefetch-caches.sh    |   4 +
+ tests/run-debuginfod-seekable.sh              | 186 ++++
+ 17 files changed, 1011 insertions(+), 145 deletions(-)
+ create mode 100644 tests/debuginfod-debs/seekable-xz/compressme-seekable-xz-dbgsym_1.0-1_amd64.deb
+ create mode 100644 tests/debuginfod-debs/seekable-xz/compressme-seekable-xz_1.0-1.debian.tar.xz
+ create mode 100644 tests/debuginfod-debs/seekable-xz/compressme-seekable-xz_1.0-1.dsc
+ create mode 100644 tests/debuginfod-debs/seekable-xz/compressme-seekable-xz_1.0-1_amd64.deb
+ create mode 100644 tests/debuginfod-debs/seekable-xz/compressme-seekable-xz_1.0.orig.tar.xz
+ create mode 100644 tests/debuginfod-rpms/seekable-xz/compressme-seekable-xz-1.0-1.src.rpm
+ create mode 100644 tests/debuginfod-rpms/seekable-xz/compressme-seekable-xz-1.0-1.x86_64.rpm
+ create mode 100644 tests/debuginfod-rpms/seekable-xz/compressme-seekable-xz-debuginfo-1.0-1.x86_64.rpm
+ create mode 100644 tests/debuginfod-rpms/seekable-xz/compressme-seekable-xz-debugsource-1.0-1.x86_64.rpm
+ create mode 100755 tests/run-debuginfod-seekable.sh
+
+-- 
+2.45.2
+

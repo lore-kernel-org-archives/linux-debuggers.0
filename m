@@ -1,88 +1,96 @@
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F61F23B1
-	for <linux-debuggers@vger.kernel.org>; Fri, 30 Aug 2024 00:27:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C631B2509;
+	Fri, 30 Aug 2024 14:04:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724977633; cv=none; b=tEH0+cMEbazh0of6+LUNmh1wvjVpdU8OGOaR6Xi+SbLJpQfPfnmYc9CquAjXvfjEX/CDARLsOdz+Q4slO9/4hjhiFd1GHLPGkDyefiGzw6Usn/ZLu8IyF6UUXa83g9AaWHcgrGwwVOJdUNStxj/xXHd3YmLhmqId4wlUfDyZ7NQ=
+	t=1725026672; cv=none; b=MbPeAyQxuvkroFHoIn5yDErtuyPu0iwXaHpZytnjSa+qbPlYkffxjW+/3MOn2zJOW4eH9qJumFLfWKmPcDU2EY/M03RMCK0TD5PwM68IGvvOhU+eyAO78pthlto4ilspos1Y4hdEGWnlTQZXn6irIOhAXbYO7e765s5bx8hHbCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724977633; c=relaxed/simple;
-	bh=bJd9I32v7Otg4KdUboUZFduUF4MCAqDOB8cOCWhBtsU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WO0h/DGr3QMxq+8n14xqlCL/hO3dlfTlBfUJ6sJWkLSsAVEX1n5l67iRQ6cKdnI0jZHM1N3C1AB6xbxZpJ6t+Q/jtg8+NnU71lNy3kx3yOs3b9lS8UbFXfoStyfIjS80MFncnagQewKFvndMCCTG1DMz2EwaN1oMs3raa7Ghbgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=W9rPqE/Z; arc=none smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	s=arc-20240116; t=1725026672; c=relaxed/simple;
+	bh=ordtzeKGfZ9tzbNzAMjuXb1IZc/l+GZwq+W62hzwnn4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FJVmP0+phHmPcxAJpS6R/1QBJfPG/Z57XeM0RC/jHnRRfK4gpm8g/sHiahIdvZfxGtCfGFLypS7+GIKbnennwzVxGgLV3KA8ROoyW+kTcKmAKPTO6X8iHosqWTjhxDPSXmsMP7wUTXP903sYCNtXt03cbWPF7xP9dS5kT+DISWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=oV0O0fTB; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="W9rPqE/Z"
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2f3f25a1713so14537511fa.2
-        for <linux-debuggers@vger.kernel.org>; Thu, 29 Aug 2024 17:27:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1724977628; x=1725582428; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=0U2GctD6QRgRftcHbwdJFZ3yjPiOgv4RiUO/asYgyGY=;
-        b=W9rPqE/Zr5zlfmXkb42q8EjBvSCNp0os45rzNaiq5I97nExyat1eXbe3tOFMT1n/WR
-         AG4xveJ8nSrIRbfyGeLqdE9fJjwHg8oDQma1kHU5z7lU7EXct8qaehGS3rKlj3YGFU0b
-         44SrLEmm1tz7M8/eUOSpez279rxyTEqMEJWCc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724977628; x=1725582428;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0U2GctD6QRgRftcHbwdJFZ3yjPiOgv4RiUO/asYgyGY=;
-        b=gtFXqmtjEt824Xzd0J5vYqzUpF3eAXV9sqlYoQ6+XdrnLOVtMSnJLs9vRpjkJanpGg
-         8L5OmBSxNzsjO3QedSUgNuECwmqOvGlgVOg6hdmxOfiwqLO6aiip6bYsu0bvzp5g/+GI
-         5zSSyT4njaukroOrWTUbQWTAuw6lBsm/nfiJu3hCM1stt+Y1jcyRyj52xwvrJOHGRItd
-         Wa/qxRI4Az1dGeyFnoEWI/hIVvnN34DMBBQHJHKi9K3E775lFtIsstp5U+ZPehuHEptc
-         /bTCD3JdoVu8D1Z4LmLKBDHofAHXINJMjqvaVwaKWY84eq1JqTwevfBAp4ns5woZIkyn
-         SDTg==
-X-Forwarded-Encrypted: i=1; AJvYcCX1UA5TIdp13NqgurqE6yDrEzEvOq3lNpvDVtLuUXze/MOkkAZux7EK6AhPsWGNpFMWkOTsu2oFffY7DWjc2xs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwlXDzZY8WE1N8wvGMUuwzvcAh+FNI6XE7jL3i0qLVvdUXxbJyD
-	cjdy1sUqICdazz/9ioPeCGE0FvU8qp/zE94Fe7woBD+8XL7t/qzhJUGmNzXNf+/1gkS164jfJPg
-	IEQofWA==
-X-Google-Smtp-Source: AGHT+IHyRLfq+YHSerLCKpIXueBjFzPgaxlgLpv9l4Xj3trIRDX7Sy/5GoOt4K4EFvnBuBZHFVjnvA==
-X-Received: by 2002:a05:6512:3987:b0:52e:6d71:e8f1 with SMTP id 2adb3069b0e04-53546bb5f59mr173140e87.53.1724977627652;
-        Thu, 29 Aug 2024 17:27:07 -0700 (PDT)
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com. [209.85.221.50])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a89891d6d88sm142147466b.151.2024.08.29.17.27.06
-        for <linux-debuggers@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Aug 2024 17:27:06 -0700 (PDT)
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-371ba7e46easo836431f8f.0
-        for <linux-debuggers@vger.kernel.org>; Thu, 29 Aug 2024 17:27:06 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVeg9KuuI+a4DZlGjIlD8ZI6iMRnEROPp9El20znExmCf1jSZ7sH2ZhvOKJL68VnlwSFj433tooaZGd45IXTV8=@vger.kernel.org
-X-Received: by 2002:adf:b647:0:b0:368:526d:41d8 with SMTP id
- ffacd0b85a97d-3749b548673mr2714437f8f.23.1724977626257; Thu, 29 Aug 2024
- 17:27:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="oV0O0fTB"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=g7u3JY1dUMc3W4JVQxtJZrZEzcHPVuAghUUeOne4iAY=; b=oV0O0fTBZZfPvlMEar3HxRPa0R
+	60yLSGtHnZeL//MGhGu2vHwUSUo5HxT8qquoOyBGnBJNR7LJE1NUbQ05R0hqFX+0Fi/e1l1wa/ctr
+	G8fnCLEOVdVU2mg3Dnc3k7sAP1m2w0+tnKWn+lFobslVpqkPbK2uPvDm3wmQgxMBnbntetzGHLqiD
+	+oiuRhbx7V/x2BisNbLierYpDp154lb/OHLrlQgI46cSo8M9hj/zPAiXTCmZz4bZVOhI8CeNi7b3l
+	XcKv2NoG3gg0a2k/b1ezD4vA3ZLg6YmD7aRuiBwc4eZ5ixf21Q4aNuCakkxZDC6BvpILj+qISMj/v
+	gK6Dsy4Q==;
+Received: from [177.76.152.96] (helo=localhost)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1sk2Ea-007AjX-Ae; Fri, 30 Aug 2024 16:04:16 +0200
+From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+To: kexec@lists.infradead.org,
+	linux-doc@vger.kernel.org
+Cc: bhe@redhat.com,
+	vgoyal@redhat.com,
+	dyoung@redhat.com,
+	corbet@lwn.net,
+	linux-kernel@vger.kernel.org,
+	linux-debuggers@vger.kernel.org,
+	stephen.s.brennan@oracle.com,
+	kernel@gpiccoli.net,
+	kernel-dev@igalia.com,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Subject: [PATCH] Documentation: Improve crash_kexec_post_notifiers description
+Date: Fri, 30 Aug 2024 11:03:22 -0300
+Message-ID: <20240830140401.458542-1-gpiccoli@igalia.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240829182049.287086-1-stephen.s.brennan@oracle.com>
-In-Reply-To: <20240829182049.287086-1-stephen.s.brennan@oracle.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Fri, 30 Aug 2024 12:26:49 +1200
-X-Gmail-Original-Message-ID: <CAHk-=wjKbgRY+Jvu2GNaDXaAhyydOOW-R=0qCzM3mTLrZZg+iQ@mail.gmail.com>
-Message-ID: <CAHk-=wjKbgRY+Jvu2GNaDXaAhyydOOW-R=0qCzM3mTLrZZg+iQ@mail.gmail.com>
-Subject: Re: [PATCH] dcache: don't discard dentry_hashtable or d_hash_shift
-To: Stephen Brennan <stephen.s.brennan@oracle.com>
-Cc: Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-debuggers@vger.kernel.org, Jan Kara <jack@suse.cz>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Fri, 30 Aug 2024 at 06:21, Stephen Brennan
-<stephen.s.brennan@oracle.com> wrote:
->
-> I know this "fix" may seem a bit silly, but reading out the dentry
-> hashtable contents from a core dump or live system has been a real life
-> saver when debugging dentry cache bloat issues. Could we do something
-> like this (even making it opt-in would be great) for v6.11?
+Be more clear about the downsides, the upsides (yes, there are some!)
+and about code that unconditionally sets that.
 
-Sure, applied with fixes to the comment (you seem to have dropped a word).
+Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+---
+ Documentation/admin-guide/kernel-parameters.txt | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-             Linus
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index efc52ddc6864..cb25dc5cbe9a 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -913,12 +913,16 @@
+ 			the parameter has no effect.
+ 
+ 	crash_kexec_post_notifiers
+-			Run kdump after running panic-notifiers and dumping
+-			kmsg. This only for the users who doubt kdump always
+-			succeeds in any situation.
+-			Note that this also increases risks of kdump failure,
+-			because some panic notifiers can make the crashed
+-			kernel more unstable.
++			Only jump to kdump kernel after running the panic
++			notifiers and dumping kmsg. This option increases the
++			risks of a kdump failure, since some panic notifiers
++			can make the crashed kernel more unstable. As a bright
++			side, it might allow to collect more data on dmesg like
++			stack traces from other CPUs or extra data dumped by
++			panic_print. This is usually only for users who doubt
++			kdump will succeed every time. Notice that some code
++			enables this option unconditionally, like Hyper-V,
++			PowerPC (fadump) and AMD SEV.
+ 
+ 	crashkernel=size[KMG][@offset[KMG]]
+ 			[KNL,EARLY] Using kexec, Linux can switch to a 'crash kernel'
+-- 
+2.46.0
+

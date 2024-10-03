@@ -1,88 +1,87 @@
 Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C329D149E13;
-	Thu,  3 Oct 2024 14:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554861A256F;
+	Thu,  3 Oct 2024 15:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727967196; cv=fail; b=nJjTw1eCqPUOPCYAVHjGy580O2yHDvBR6PAw62HVfVmVdgqzWFFRQa+ZsJ6yzf49AphP1AuQnex7f4FCxNTJHSPPN9DJjeYCJ9jA9P/nCZlU8WpSeTTHE8yQqxFPK30cme1YC397+IIZ/fXpPbfmiDsZ/qG8zxNZ/2UWlR06Jkg=
+	t=1727968882; cv=fail; b=hVZXiagQbHiLIdu2k9DFR2+a8f+Vs90cZDJk+6dw07DHh/1LjlZcwsMeXvtdGUNO02iv8rixsxrzElrx+JxKpsfFSbNARvhOR55Vs7TSRa+NfkDuzo8f9AIrwZyWBrDJOL5Op2wsYMQfQK7AR/lOG+Moqvm/s/WkkMdJzr8JgCQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727967196; c=relaxed/simple;
-	bh=9lLZhFuYttRz34GRpz/eTSwU5Z6acZmgi0oZFXdZx/g=;
+	s=arc-20240116; t=1727968882; c=relaxed/simple;
+	bh=WtmJg2PEp3vPzn4fwx76a0qiDppM9hWjfzjRq8Nnyr8=;
 	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=O+M2N8fku/lLxtjrMd0Rbhg/fRxN8JG88/y+g/5Ut125wcUjkSnPYOVTruNE/w9De8QTU5a8RP/zryNpw8b9aGhw9zEfxMb1nOXJ7zNp84tGqETAT2AqqAw3LqEdQEAKOvOp9t6AhhJQtEGxGATEIX5Ru9UmIJjmYHLLVKbzLKI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=e8e8ZbkR; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=PmB2OAuD; arc=fail smtp.client-ip=205.220.165.32
+	 Content-Type:MIME-Version; b=dgp+5sWX7Hvo2b+g6GMXimEH9efsexpULkpeTjdTpTqGacIFS0EgrVAGYyfTVBBX4l8wLfXXOX4locxJYpkqatj+vt7sqT8VI/zMl1GgUQ+nD5CxNPwMTmFlDl76HqPOCZVD14TyCAlOL0YimODvodWObq14HxSCQMBAMemIDwo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=oFNlm74+; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=eU1IQdmI; arc=fail smtp.client-ip=205.220.165.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="e8e8ZbkR";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="PmB2OAuD"
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 493EfaK9032749;
-	Thu, 3 Oct 2024 14:53:11 GMT
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="oFNlm74+";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="eU1IQdmI"
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 493EfdjB030451;
+	Thu, 3 Oct 2024 15:21:16 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
 	message-id:date:subject:to:cc:references:from:in-reply-to
 	:content-type:content-transfer-encoding:mime-version; s=
-	corp-2023-11-20; bh=6OZWVyIawSgolP0lzRk+MZiBd8n8QJ8Zks7sxqQQEp0=; b=
-	e8e8ZbkRw1sEB5RVvfjrVnNo4pOub4j0Q0p5HFw6bz1PL+whbTRfACLHemwwia40
-	zkKwpHpPbSU9AbEgxtP1zUksWY+lYChwMkeEA9QKNoNysQYRUC7uqtwd/9E4N7dg
-	nzAI/hWzuqKIXrUFK3jx3PaB8M5Al9/qoHHafDmcaEg9YMaxd7XF9JdHVtJP4YM6
-	M3GR16gyOwMFizo8Z6vVSzulq17m6XTdfB2a94vv2M5Xt7+WeNqyVF7DI6ZRH+Gg
-	HKxgA6UtE8T5NCyE2YKBqefXOKODzVReReTV0fQLvafmaYpIFsZUcY+SMeeps9n0
-	bJ3U0A01jojrm4jJ824Ohg==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41xabtva3b-1
+	corp-2023-11-20; bh=NJO1l0wGmtQZqTcXXvUWpAX3Rv9yFmXV92J7GdEA3bU=; b=
+	oFNlm74+fR+NmpGUExEQGd9la399pmyCXr3iuMPQBT0bwGs6VvVkPRpRa0lWoNJO
+	BnDib6uDIAcOAOIJMVyRtlqRxwd3G6qunAFS38Furyse84RrXtm3zUS/73wTTwko
+	tHHVjcMaGVbWfqBY8cR4Csh/2YUGI3+3Pg4zOj5Eqv/fKdIVTcUQir4hzNn59/fv
+	46jV1b56tZtc0t/WIi23ps2G9SLCwKzw7b2j5I2sCRUSRnF7V5U51TBO+BaBu+mc
+	UeCzxbOCXNCZi8q4VRttaVlPaDygMYPMBLOuDYtLNlWNCMpuXpP6TodIO5E2bA+G
+	wMkWfvw0dx1PQSZSlirMjQ==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41x8qbce7k-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 03 Oct 2024 14:53:11 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 493EE4Qq017330;
-	Thu, 3 Oct 2024 14:53:11 GMT
-Received: from nam02-sn1-obe.outbound.protection.outlook.com (mail-sn1nam02lp2040.outbound.protection.outlook.com [104.47.57.40])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 41x88a9kkg-1
+	Thu, 03 Oct 2024 15:21:16 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 493EDWHl038670;
+	Thu, 3 Oct 2024 15:21:15 GMT
+Received: from nam04-bn8-obe.outbound.protection.outlook.com (mail-bn8nam04lp2049.outbound.protection.outlook.com [104.47.74.49])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 41x88adrs5-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 03 Oct 2024 14:53:10 +0000
+	Thu, 03 Oct 2024 15:21:14 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=F2MBdR+NJHH806g/PIa72xwIyGEwcjWvY27tuyp0rB32TKtmpGvojuTZK/+aeXcskh2PuD+SJV18tdnZxD75rVHdcU2PNK6UQX0hHy369rcNn3DtFdHNxQe0q8LnYnr+QiHIp3kwUSwwddExgApJiETZXIEXK3Lq6j/VdmEwXlDntIUOpS9YtwvcyHJ2kLUOUbbVUeH7TidVJcadJ/BnaMRAYXWLD3BmKBfEs8WEbeYoBbLHvlsTcdCPp+8KbyQBVndnClN0kEKeh8S2yPdWLcHmvt3QUtxpgnLwHi8CqpNxU5supn6y1T9F3Rj3KCuvHdV79s06vgUaHBtgumEq1w==
+ b=YJcQRQ/WSHPyOXt8P1pkyWYeEMII1JOdn3mJCyyLsJs8Rkl666h0J4JmTTKZsgEvOt1L2pkx46Swkqi1z28T6CvuitV3E+KSUT5snL4wLs7RpssrEhBHBGN9kL+onyDqea4YIHy/WX6bxz9Lq8MKhQ4uLtO5tNwz+ypZi0Ojao3Mr4i0sYxilejIq6Mc3I3nCo/78Qm5lnsqFV4nwS4EtjGjFhu/FmXZxhD/3wS9Etor+4hfS/ggHlxj11jG+qYuLNRDiBvHEYX9TUbMI6TVDStWqVz+IkTLvvIIKQbgvPpA0OSh0ivHcpIXnk9twV9JAh/zPOAeRmI+OdkJWCXyfw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6OZWVyIawSgolP0lzRk+MZiBd8n8QJ8Zks7sxqQQEp0=;
- b=j8Phj+LIzo4deIcNApQzlzIWaPnZadfQ1zkgKMBvm+ZFA5jG1G5gCGjOqnVzbAZaTkriwyWO3ocgOolB9O6IxVC33TOTyHzCS9jPw1XHrMUvPDIU4A8ZappkKTdYVxVFGGHzI8FkKgFto+0P4zTMUgc8s40aSBElyljY64Fo6Vnvx+JuXc/zVC7WDL7jfcT5Q9iHvXkQXwGG2KEUxy4v+6FZf0QaG9cXffUQbbDMQ5GMhu+ihGLCu5K05+lig6jC0VeSZiJ01SH97HP71Zqf2GAPMl+EduoBMwz19y3cD7H5WLZdm7KSk1jB4sPCalfSMN8Ep9hUBTVK49esntVLSQ==
+ bh=NJO1l0wGmtQZqTcXXvUWpAX3Rv9yFmXV92J7GdEA3bU=;
+ b=t3wJz240VM1GZrDEF0wgSbEzXISyYyRNOYUHhN0GnRBgvdH3GDoviyKqbMlc1Aa1QvWrKwdD5/ZxhsmOdLB5jF2Yb5NQ59VXqax6dIMbwZyIdojOgpYz2JC+xTxLBUYeWEWkfqc6c20JjHDDA5Nxc4vlfIjBhUu/MQSoS4KDn5Goxm8QjT3Cpp13TkD+LJ7XOO/b/iHsV4QViI6Ih/inxbENAdqiEwYKQlmBAN/Ppvt3YQ2FURnTLq6+qKUhcDSrP38Fv+hLAh8ClDF0VHscC/zsdBO8xiDiOOEQ+U7rqUHwLsvWINCtY/1HigXu/qGu4KNH4iaxfQNeHo9twIz5pQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6OZWVyIawSgolP0lzRk+MZiBd8n8QJ8Zks7sxqQQEp0=;
- b=PmB2OAuDZ6QV0uPxjCgDLbUiHWqz7erDSVjK7yJRzg9XmUiC8kkoRuY/1pj2pOylLPQZHLIayeN5AQykwKJqQxpsE79sDh345kx2JRqXelqmgeQuMYowlRAYFajbGfxDiSzPG0kahyilgFz2gzXu8IBraoOGZt2ooVQ6C6J5beo=
+ bh=NJO1l0wGmtQZqTcXXvUWpAX3Rv9yFmXV92J7GdEA3bU=;
+ b=eU1IQdmIvt5OMX2o1XyC+oK1uvqAnw9vfDtdkmVCzTJOqIUXfg5DoK8aXaIVqokYhhHmMalUpD9CL817X9UM5yFp0RlDPnFarWgNRdHULF0UjPuhUvvRfTfodyGuf/KM/Q/GB2a0hUyp0yzjh1l9FO2YMiit6v/ap9U6fJ5pa6M=
 Received: from BLAPR10MB5267.namprd10.prod.outlook.com (2603:10b6:208:30e::22)
- by BLAPR10MB4994.namprd10.prod.outlook.com (2603:10b6:208:30d::7) with
+ by IA0PR10MB7644.namprd10.prod.outlook.com (2603:10b6:208:492::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.18; Thu, 3 Oct
- 2024 14:53:08 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.16; Thu, 3 Oct
+ 2024 15:21:12 +0000
 Received: from BLAPR10MB5267.namprd10.prod.outlook.com
  ([fe80::682b:c879:9f97:a34f]) by BLAPR10MB5267.namprd10.prod.outlook.com
  ([fe80::682b:c879:9f97:a34f%7]) with mapi id 15.20.8026.017; Thu, 3 Oct 2024
- 14:53:08 +0000
-Message-ID: <ab2eb05d-9108-447d-8720-f511263b40b2@oracle.com>
-Date: Thu, 3 Oct 2024 15:52:57 +0100
+ 15:21:12 +0000
+Message-ID: <9cda0821-4b25-498e-acf3-cd8055d82ca5@oracle.com>
+Date: Thu, 3 Oct 2024 16:21:07 +0100
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH dwarves v3 4/5] btf_encoder: allow encoding VARs from many
- sections
-To: Stephen Brennan <stephen.s.brennan@oracle.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc: bpf@vger.kernel.org, dwarves@vger.kernel.org,
-        linux-debuggers@vger.kernel.org
+Subject: Re: [PATCH dwarves v3 5/5] pahole: add global_var BTF feature
+To: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Stephen Brennan <stephen.s.brennan@oracle.com>, bpf@vger.kernel.org,
+        dwarves@vger.kernel.org, linux-debuggers@vger.kernel.org
 References: <20241002235253.487251-1-stephen.s.brennan@oracle.com>
- <20241002235253.487251-5-stephen.s.brennan@oracle.com>
+ <20241002235253.487251-6-stephen.s.brennan@oracle.com>
+ <22da229b-86d0-4a0c-b5d6-4883b64669f2@oracle.com> <Zv6v0WdEBg4dEJAP@x1>
 Content-Language: en-GB
 From: Alan Maguire <alan.maguire@oracle.com>
-In-Reply-To: <20241002235253.487251-5-stephen.s.brennan@oracle.com>
+In-Reply-To: <Zv6v0WdEBg4dEJAP@x1>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P265CA0200.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:318::15) To BLAPR10MB5267.namprd10.prod.outlook.com
+X-ClientProxiedBy: LO2P265CA0183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:a::27) To BLAPR10MB5267.namprd10.prod.outlook.com
  (2603:10b6:208:30e::22)
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
@@ -91,357 +90,178 @@ List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BLAPR10MB5267:EE_|BLAPR10MB4994:EE_
-X-MS-Office365-Filtering-Correlation-Id: 90597dbc-7edd-4fce-18b4-08dce3bb142b
+X-MS-TrafficTypeDiagnostic: BLAPR10MB5267:EE_|IA0PR10MB7644:EE_
+X-MS-Office365-Filtering-Correlation-Id: 146e7b87-3a34-4701-84b9-08dce3bf03b4
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|10070799003|1800799024;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|10070799003|366016|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ci80bTRpbVBnYWZRMG5QQytkSHZUTThLMTJlWnhaMzUzWG1aM1pCYlZKc01l?=
- =?utf-8?B?VVRBYjlmTGpTZ2gzZWwyT2VDSVdWQ1lhdmpvVDgxQUdhTlVMNlJuQkVUZ25C?=
- =?utf-8?B?UGJDS29BV0U1VHpEa2VJRUtCZlBlYjNDeVJISmhrWjU4bXNia0xIRTVldldN?=
- =?utf-8?B?SFlCcGJ1U0tZM3hCd0YxcVg3SlhRQ3lqU3g1ZldQai82TTgwaGdzTXd1TG5v?=
- =?utf-8?B?Mit3OEV2QVBXTjlrV2tuZ0FKcWJBclBUeUdsM1prc1BEVW5NS2RaNXZJTTkx?=
- =?utf-8?B?VmN1V2hCY3F0K292d3YzbnBrL1cyUXI1RFZYK3B0ajJ5eTh6NG9QbVIyQk0x?=
- =?utf-8?B?WEtrUXZQN1Y5TmFyMks1bmxFZFhCYW1hMjdTSG5GYk92TSt3aHk3Sk9IZ29m?=
- =?utf-8?B?bjV0dmp1SWJNcTE2eldYeTJUNTF5aXBxS0dlWHozbjMydkZnajJYN2FlMXd0?=
- =?utf-8?B?YkVNOTRieUlvNE41TE9YUDBwU1orbnhROHA5Z3FnK0puSnhNTGhRQ2xTb1VZ?=
- =?utf-8?B?em1JTHdtdGhUbmlXRnBubWJBUkJ4bDZSZklhUzh5QWNYVTBIZFdFbkEwYmlS?=
- =?utf-8?B?V0ZUbjBuNnYzVHdWb3V4eUhoZzI2Ni9aYWZMN055d3Z5amp1bmhHL2dZNDg1?=
- =?utf-8?B?bXpkc3ozN3VTbU53VEllV0U4WHVwR3EzZXVRWE80NHJaQmVWTGxxK05nSkJI?=
- =?utf-8?B?ZkM5WHlaQ1BDazNJZlpaUHV4cUUzRHoxTEVYNmt1YUUwSEFXUzZjY1hhWlUx?=
- =?utf-8?B?OUozV0VXY05oNHl0WWxkWllFNmlGb3ozRU9QekdSL1RTaUszaHN0WmFmWm53?=
- =?utf-8?B?K2tOb0h0ekxiMlBSYmJoU0JLeWk2T29GbDhJRUl5Vk5ULzlSd1loZ0wzcSs1?=
- =?utf-8?B?RHBqRjNxeWFSNUpTcnI4NjNVZm1vWmdZM2QzdEZyVWhTajdGdDd6aGNnbGRL?=
- =?utf-8?B?RjdiZTFHQjVSSTlRODhRRXpIVUlTMVAzR1kvZFVxT2RrZ2ZCQjVJY2tsYnp3?=
- =?utf-8?B?N1BERXFYZTRsbEozY1hCeFFVSVVrWENRZlB6d0diT2c0U3YvV3JRVjMxZmly?=
- =?utf-8?B?a2NKcVpiVlVCamRtUUFXS2hCUEpVdTV1OFdPV1MyekZKR3Z3Mk9RYU0wZ3RV?=
- =?utf-8?B?R1piSzU1WXN0ZThLMUM0b09TbFU1YXRXbGd6czZKdkZJWUVrNU5OVHZXMElM?=
- =?utf-8?B?SThxemNmelJKMmZCc2l3aHA0K0FZcnBBaldtUzRTTU5WQ3dVTzlZamtDOTBU?=
- =?utf-8?B?L1FFVldtVyswLzVJUUk4OTZlVm8xempad2pJcGlQRVRTa3d1OG9QRWxSdUZa?=
- =?utf-8?B?SklDZXpmbG02NCs0SllXcmdMM2VPRDVtZytMUFRpbm9GeURBblU1WldCN1N4?=
- =?utf-8?B?dDJ5dE1DU1FxMmQzTTFEL0tUU1FmY1cvdVNKQ0FYSWlmK0k1OHZoRnhmSy9t?=
- =?utf-8?B?ZTBVRk12N2lVb3dhT3ZRcklmOTF5L3BwRkl4WGt3UElVM0VHVWpEM1poZk5C?=
- =?utf-8?B?K1haZ2NHU0RTSVBsa0diaVZFTk1LY1FTSXRiQUFVaExWWHpGMkl3d2NPZUVS?=
- =?utf-8?B?aXhVV3VxVGxQVURzQWNpVGFEUFJ3WVhrRzhvSnJ4QktkZGthS1JjQTB6UUZ6?=
- =?utf-8?B?K2lzV3daaHNCWUd6SWNrYVkrRStBZFY4aFVOazROYnhLRnFSTHZiTTdIeXJw?=
- =?utf-8?B?ZklMeThDMThaVm5NNnJXMzVmVDc2K3RLMGpDTHc4RmJHSE1zeVl2eWpnPT0=?=
+	=?utf-8?B?aS9lUHpTQURSdlU4bUZrRXNkVkpUMU15b2YzaU5SK1FVWjM0WnlOZ1dqcFhW?=
+ =?utf-8?B?OFJGUjlFZXE1cnQrSWREWDFab01ZS0h2cXBZOVl4WnMvTXdlYXRJSjVIUjZn?=
+ =?utf-8?B?dEpQb1dPTEF0elBWcU1ib1BwTDdjUmtFcmZnRkJBcGhJbzBZOWtKa1hRMEJN?=
+ =?utf-8?B?eXZWVDJXelRPazdPV3ZjckRPWXRxRmswMTRwZDRvNU9yRCtNYVdPZzErT0ow?=
+ =?utf-8?B?VzdlTVBnSGtmY2ZiMTZOWkx6b2lSWXNiQmZYaFlJcXQ0RDI4ZElpZUg1TzN5?=
+ =?utf-8?B?THBRYjhtOGZ0RDRiekoxNHErS3JNM3dyWEx0SVQ0MGV2UVpQSGVGSWk2TDl4?=
+ =?utf-8?B?K1k1bWtlZVFuSWtaN1J2dnZtb2J2d2drQnpWcGRIMUU4MlZUQ2hHSG1WMmll?=
+ =?utf-8?B?RjFoa1IyNzUxUFR0V2g3ZEQ0MWhVZUtWTVJBVjBUTjZXdWhvMUJuUlZUT1VP?=
+ =?utf-8?B?SUZ1ZlZKL0Q1UE9NTkRGRndma0lUd25oZERRM3BDRkU0RFl6RjE3UzBUZXNv?=
+ =?utf-8?B?Ujluc01oeHlXRWg4WG1tUk92VitQK0JFbnJlL1pBYU93eVdoRE92UkFUK2x3?=
+ =?utf-8?B?c2YyZU05b09zWTJUbkdXdFBMZW1mYnVmUGtoK0xEbFRlKzZTcHkxZ2hUMy84?=
+ =?utf-8?B?cGNGSGNSekQvTnd2b2cxZUZPSGVhYUR4VXVPczBZMWt6ZDRoM2pBZnp6M3FR?=
+ =?utf-8?B?VWovckMrM1p3UXk0bW1RVHpxU1FYYzNSRmtXTlI1YW0rNWs1S3gwL0E2YkIx?=
+ =?utf-8?B?dGk5T2pLNG5XS1hxSkl1a09xQlU2b2tRTjFLLzVKNnNUU0F5bkZLMjdwR0Nr?=
+ =?utf-8?B?SnpPMk5yOFZOaXdseldNb1grM3FPaDJaUzMxYlh6VmJnZEF2cmZzY3dHalE4?=
+ =?utf-8?B?RkY3NWVybjNNN3lTSzJBYldLUjI4WXA4QW90Z1ppcUMzaXlGRm1HakU1UFF0?=
+ =?utf-8?B?ZzRZSThrVWpkV0dYcWd6R25zcEt6RUtmUk04alFBbDZDL1dtdXdlUWU4VmdU?=
+ =?utf-8?B?L2VYY1dMQ3c3NW8vTngyV2x6cjNqQ1JMMjFQMjREa2crR1hGWkEyeUQrZXhy?=
+ =?utf-8?B?dXhDNnJnRDFYNnpxOHo3bTJjUTVtSHdKMnJXUmRDeDN2RU9WN01Pb1dGSnY0?=
+ =?utf-8?B?dUExNnlyL3k0UlNiUUhLWGQ3ekV4WENGQW9kU0V5NnRoQXNSK05QZ0ljcXRu?=
+ =?utf-8?B?MDZoNHUwdGpEYmZKcjBZdUtLVENKZGhyV05ITTM2bTAxbTFnZGJnY0cxaGZm?=
+ =?utf-8?B?dE5YTzVoVG96SDZqYTlpbFVtYk9Ib3RldlFNNXplSW9YRWVTS1UydE9oL1o2?=
+ =?utf-8?B?UXFoNTlvSXJyUkNTNVFZTndWcVlMVTk4YWVMVHdkY0hNTVFmbERXcFMzUFVP?=
+ =?utf-8?B?MThXK09wTzFnRTlreGx3VFFmalArVkJzS2R3aUlLbjZiZ1VpNDVBQlVQTlR6?=
+ =?utf-8?B?MzRPN1dzUk1UWG1wUTl0RzBGVDk1cXBCSXVacXNITjJ1VjY0bUFrU25Wd3RZ?=
+ =?utf-8?B?NjNXWUNpcWpERUVYaGFWVlFGNG1Oa1l3OWRJSEtnKzFkRmNod0hXaHlVNWhB?=
+ =?utf-8?B?UU5Wc1d1Y1YzUkJZY3VQZXFaUHFYNGRDbUkvSHRFTE5xRnpvV2RlRFhSY1dk?=
+ =?utf-8?B?ZEc5SUIvWkNRcWtYdDFsTEhFdkVWVklVbG00S2c1dW9zbU41c3RkVzRmVHJO?=
+ =?utf-8?B?YldKSk5BSkROVTJtSWNHUi9mdUs3djNYTkF5VW9hMlczSWNMUlhqeElBPT0=?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BLAPR10MB5267.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(10070799003)(1800799024);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BLAPR10MB5267.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(10070799003)(366016)(1800799024);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NkM5QlNEbGtJL0gyeERDWTIyTkpLbGU2S3FTNjZHT3ozZisxQ25aZ3ZxOTg4?=
- =?utf-8?B?WU5FZzFVZktBc2lPdVVCanNiSEtZYlNXZTM0WS9KM05VeVF0ZnBCMGZITXhC?=
- =?utf-8?B?Y0pSK1pvTjcyT2FHck0xelJrM2VGUzU0NHl2UWRMKzI2V3pWdU4ySlI2cCt1?=
- =?utf-8?B?S0pPMmZTeUlRSGo3NndyNXd1SWYwcXl4RnNCVDFJTXdreUd4RlU3RHZyZ2VK?=
- =?utf-8?B?M3B4YVZkWW1UWHRxZEpGSE5WcmZ6TUZJTDJ1RGtXeWRaMkorRnZUWWhUbXpk?=
- =?utf-8?B?R051RGpFM3Z4eXlhaDlUaFhyaVNNYmVOam5wVDYzckFwU1ZtMEdVT05oeGpv?=
- =?utf-8?B?Q0ptaHgxQU04U2laK0JNOFUyYW52NWJ3dkxzZEF1TXVHNGkwalhMM0dOazdr?=
- =?utf-8?B?ajF3a2JPVnpFT09zaVFFeFB3cnFpUXlta09rcmV5eUZteDRUZ0h5bmpGa2lI?=
- =?utf-8?B?dnowbmRHdjk5dXFib3NLclgwT3l0aTErNkIvRmZ0VkxvekpsaUlabUZNM0ls?=
- =?utf-8?B?dW9Qb0FhTHF0bmJadmFZRVZVaWJhSVpZcG85clk4VklZMzZUajZrUEROaXFU?=
- =?utf-8?B?ajRYdWlzRndXOExLRHJtMGh3aHN5VEFYaHBpalhxTm9GSlY0SzJJK1lqaWdB?=
- =?utf-8?B?WDJqVW5vUHJOOFl2RlB0Y1gwZGdTZkdway9kR0hkZkhnYmh4bTY1ZkxTVTh5?=
- =?utf-8?B?SUxQUXFSSkdJZ2pEa1ZxL0hOUlNzVXQ3SHRUZU9rZ2kzRDh0dlRobVNTdUJw?=
- =?utf-8?B?TklkWElhck1ZN1o2OFdiL0l0TmtLUzJGZll4Rkc5NmRIQWVPZ1ZsS0Y3UWg3?=
- =?utf-8?B?dHVReEZjWFc3N2tiUmx6NFFIV1E1aU5iZXBPSXFtcTBrVUZFSm9GbGVPdlBT?=
- =?utf-8?B?ay9qN08zV01aRi9LY05FbFgycEhaNGxNU3loZ29adzRxZDFYWnJ2QVpBM2kr?=
- =?utf-8?B?NXBQTHpaSUlNb1JySVE1M1N0OGc4L1NCRWhHSkNwK0NtYzAxYTFrQVVmazZG?=
- =?utf-8?B?SGY2KzdGc1lPdysyYzhrL0ZOaUVJVElhK1ptYkk1SGxJby9VbGNKN1dSNFIy?=
- =?utf-8?B?alZaajluQURrRTVBT0tIWmRRWkcwTUhhdnl5V1d1YTJTeEluc2E4dFdqbDly?=
- =?utf-8?B?TjdneWlVYXBGOEVxUWRsY2xOSXpQTWx0MEEvMUZZZ3FnNGpEQk1rWHBjMUVN?=
- =?utf-8?B?Z3ZVYmh0TE90YzhtODNSaXFBT2dGb3lEN2ZTR3ptU0czSVFRUm5aVHJ2QTdu?=
- =?utf-8?B?ekoybTFQVS9lLyt5Mm4wVGpjS2lqRzE5b25FSVd6SGE4UXNoa0RoRnZSWjRi?=
- =?utf-8?B?NzFvTzBZR1FQOTg4WlU4VFExWElDR2Fod0lmUW1uZm9LTXB1REh4UVNzMFlt?=
- =?utf-8?B?dGtMYUNHQUhhQStNZ2lqRlZtRklpcVZtZXJIQkk0UjNhMFhaak5uN1R0bkdI?=
- =?utf-8?B?SjlYemJZNUhxN0lLQVVqNGIrRnAyb1owNTdmNFUvTlZHTzd6OFpmU0o3UmRV?=
- =?utf-8?B?NGRmTnZxYTlCc0N6VGNmMFVveWtyZEQvWStrK1ZhOG1WY1FNdnJqNlJrVEFq?=
- =?utf-8?B?Z0tFcXVwSVRNY2lpektFYUFFTW5IQzFuVjd0TWJLUE5KdEdRMzd2a2NwNVJ0?=
- =?utf-8?B?ejJjaUZtMXpORUt4UEpSZ3RSNTc5c1lReVFCNkZqcVFjWDlrMXQrZWZmQTBh?=
- =?utf-8?B?eElIVWtydlBvS1lHZVhXZjZRUmJIcG9kWU9CTE9xVjVvTEZpK2VGTE1ybUta?=
- =?utf-8?B?b3llMWZVRzhlaEZNTXBpZTBPVkVRdmNlSUlKVHNVL0ZkN2tkWk5NeEFXM3hu?=
- =?utf-8?B?MEtzY0xpM0JmTXkyUzA4WmNhcDFNVCs0WTdnRUVhbzRZR2JjaUEwV2s5c0pS?=
- =?utf-8?B?eU11N3hKZUc4dHFnRk9JVzV6VkE2OExoOERGL3RtY2JsWWpFQkJmMGZIVk1k?=
- =?utf-8?B?cmh0SnRXYk55bHBhaFlHWkdNWkg4V3dmb0VLWVJYdk9EUmx5cU9uOEYrVFRL?=
- =?utf-8?B?Ujl3b1ZrbkVYdlRWVi9wZGtYb0VncXN1ZWQwYTRhUWVaWXRYczN2WnFHUHRO?=
- =?utf-8?B?VWpaNHl3eVFGT0FVTDY0ai9RS21rNGpTams1UmR1QmF2L0ZjL1hJY202S2xi?=
- =?utf-8?B?d2Q0Z1B5T0ppZmZTcEZrc3FXWlZJd2NtUnJhazFvWHp2bzB0cXFJNnpRVUNw?=
- =?utf-8?Q?vUWHbqerZAnazOVJXDEZA+A=3D?=
+	=?utf-8?B?MkRrRmN5a0tZdGJ1b2JQcXEvK0hieGp0NnBjOStrWkhJWkdLRUVRcUtFRU0w?=
+ =?utf-8?B?bThEK3E4TVhDKzJkWkpqSi9qVDJMdytWRDM3RTBoRDFISTFhWTRmdzI0aGtT?=
+ =?utf-8?B?NDJBUWdLY1Mxb3hwRUdHcldQaExxSElrbkdTVElkNDJIdnlZczNhSUVXN1Ro?=
+ =?utf-8?B?NFpwV2wxeWFseXFUeUhCWTlSSUxCNnFjK3E5NmRQYjNGcDVKb3pMSTJQVHRU?=
+ =?utf-8?B?S2VpcEZVUmVUSHF1YStLWVR2MnYvQ0E2OUpqQUwzY0k2SlJMdFZkV3prN01s?=
+ =?utf-8?B?eTF6Rk92N1dXQUZYemluVlR4VnhjR1lJRWh2SGVaOE8vQm1takhlQTRoNE5I?=
+ =?utf-8?B?eXRGUDBKZmJ2NEt4UTlla2dRN3FNZzdjMWhFaW5taWZKZ05Ba2xYQ3FrcVdY?=
+ =?utf-8?B?bTl3NXRwdnZPenoxR0lDMVlMQ3VxYlV4UGhPYitQUldxZ2lsTjRQVGQ0RHEz?=
+ =?utf-8?B?UkNVQWR3alVDRjJkZUxBdnlpT2M3OFZBRWV1cFQyVGVtSUhLZHJNVEZac3RR?=
+ =?utf-8?B?QVN6NGNuVEU5ZGJ5R2RsUWlGRUxZRkQ5YUZaY3FlSHB2d01NZXF3cEtrK08z?=
+ =?utf-8?B?RUEvUGVQYXRqK0lLRFVPcVI2ZkdwMXdkSnM5Y01tSjVFN1B5a1BsZ0hLYlIz?=
+ =?utf-8?B?MzhyUGV1RXF3UUl2aWNLSjg4bzF5RXlOeWZLaWhqUHorMjVDa1VkVGQrTFc1?=
+ =?utf-8?B?SS8ybEVzbkx1ejJ3WkRJT1Q1UmhXbDFvUDNrV3FvMndjMWYreEZSaFo0OWFQ?=
+ =?utf-8?B?UDNyQXArSWpnVWtQbUhTaXI3YnpSOTFHcGdseEdSd2xsTDlWbmtyTHRHcTdH?=
+ =?utf-8?B?UnkybUhkSmpmNERXTjhwa1lJUk9DWTUyN0psOUJUWDRGQjROTUhXcVJrVjUy?=
+ =?utf-8?B?czRVNDFTc04vSThiUE43dHgwRDdidldOd21nSlRZeWI0RWw5MjdKbHZIZmp1?=
+ =?utf-8?B?ZFE0WFBiZmd4RVhwUWtmU1dRSXdCL3l1Wkk1SUhCd01Wc2NhMGVLVStlWHUr?=
+ =?utf-8?B?NnluNXlvNTRWa0VWU3c4N3JSYVYwamtPeDF5ZUxubnRtcUl6V2pianlqbTcz?=
+ =?utf-8?B?N0FXUDVFQzgvSEJma2piM1JNdm9UUXFFMXhIdEJDaUw4MCtIb3l3enNEVjQ2?=
+ =?utf-8?B?R3lIVmNvUFBPeDUxSHJ0djZOVkx2bkhuTVZ0QXIrSy80YnM3YUtRTzVOQkE2?=
+ =?utf-8?B?MFlvSEc5cHdIZmpRT05nN1pjSjRLTFJVa2FYbEllY3NRN0kwcnhBMm82b29I?=
+ =?utf-8?B?bnNVWDZGNVlZMy93bDFsVnBCVjdPSVVBRTFNYkNwcE5tOXZ0aytCbysycVRh?=
+ =?utf-8?B?V2huQzZ1VmFGR3BhMllLTFM0ZjM5TGQ1bTBsdStXRCt2M3ZKc01NVDhldDJh?=
+ =?utf-8?B?OFkzM2Q2RXR0eWpoQm1yTFl3aWhkcjQycUpOQWt4VHVPcjdMdXQ3UTh2K0o4?=
+ =?utf-8?B?WENBNFNqa3NjaVRQZFFPd1FyOThXSmQzNTJsVHFNTVdxemtjQXRpUktRRWxx?=
+ =?utf-8?B?d2NVcEw0cGxVUVdGbnpmUGp0WGprWmZuSEJQdWhObjdKY1JSVnRoSzIyK2xo?=
+ =?utf-8?B?emVzVDlKUTA5c0pyVFc5cTR4VXFwVzZscCtRUytyRElVY09IS0ZVOEdLNHVM?=
+ =?utf-8?B?SWtpOWphNzFZQU5DcUc0Vm9GVW5xZWNDZnY5a010eGdNUDR6N3pMN3ZHeS93?=
+ =?utf-8?B?Yk04QlZWUDFQL2hWbHdIaWhXUnVwNVJkUUVnTEw2R0x0RlpPTXNpcExvU3pS?=
+ =?utf-8?B?ZENQbXZTZHVhajRPSEVUV01HbnNCLzBnR2U1ZGFwN1YyY3FReU12RUR3a01R?=
+ =?utf-8?B?R00zVUVZaTV0RlF4NkthWHQwY1pibDlIK1poU2R2R1p4NUdjbVBJdS8raEpM?=
+ =?utf-8?B?UHkyVVloQzhHdHJRbTladGlzaStQOWcxaXVJa1pIRTk5RGZpSzZBWGgrSk5l?=
+ =?utf-8?B?M2sxYWhsR0tNN0JPZEswWU1oOGtMYk1uRlBSSmdZV1ZxRVdqcmhlYklFSE5W?=
+ =?utf-8?B?bWd5cEwwSy9SbktESEk3bG1KdENtMS9SbGtpaUF0YzNoTHNXc1U5Y29XT3NU?=
+ =?utf-8?B?MW1yM3ZMNlFlNURxUjRCa2Y0TmdkTThmSzgyOEhxamRJKzhVTStzRnpncXpi?=
+ =?utf-8?B?VnNyVGF6WXBNNFBnWkV5WlZzZjR3dVZacDJsNUlMQUVINFpHUGUrWUd6Z2Rp?=
+ =?utf-8?Q?Cfo+eJGQoFd0ArpXuIBgGBE=3D?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	pnEX2CNmHOgb+g7+IQ/FByW/6lfkgrhJsoEKxaQKxVlJtWML3GglrGfw97Q8XCm1lfEkKcXVhi3rNlCFIFJ5+XUuc1PcNa5DE/nI4gBZ/94PFZke4aPP/KbTInIrTx3oalOvi4uG0h7FyThDs0mZ1TBMn+57dg9Nyy2qc8vjK3owz+PeFdXcVTRSLEan0MDJDwi6UZwScQLBARHDmJi7iEKHeZ2KzVsMrGBcxwo4UHfwACPUrVhYdsgyw7BGeCUbmCMEi8jOyxooUKELm6f4BeM/Kq72TlV21n6fXn1eXOtC+ti1D7Rkevy5CfkzpKt8GdttLfsxHlPX5r+M9x+5TDI5LEM11dNzO1/YN6+9cPlL0pevKI16y2cRonBpudjkQaqOxhKCmalJmOrzfczXh3qPSsoVjAVqiHDFgzy7V+3UrzKaL7g4rvlvpuJBJQqRbxCi5K9J+8Et6DIIIyotzFLgvwsHjSXmRAuBWQfvg2V73orCkvzk/twm4J29MvKCB5XM33VMjTLjrSXxDGMMH12T+0FzglINR/IA2guPvtrGagTp0vWHaUHuOMFP0KuUYV8xbETy/gmkJmunWdYShuq/3BtWD3cvZ37d1PI6TmU=
+	Eg9nXKJsg7frTEeqhD3T9OK5WNHkpzL/002/txihjQJGGHcvjEVbhdShb+0jUFBTZfK2rNVNUAiU9hPCF7dA3DDct/AmkrNlpsGFAdwp84hZ7ky0phA6CXRDvyVlrKnXdnPf5UZ4Rl2kNKRVUa4u4FYUoldnR7/RucrPZEkdPfgD8om+AQqBjn9F+r9GzsB/JAQmTcxDDGd1Y4kpmgPbmV+5ROmhi1w/6grGhB3khmnt+PbwwudNlPZ58qMVihkgryfdLmPR1+n509yLCNiwpAJg/Db4i0/eZPj/r/MUp/oY91uLR/cNg/PYc5rfEDesJD4PZe1KHNjVR3f0Z4O7R3zk9c/PwaVQmOqIuM84RSWJPm+e7DkyZ6hSdx27RwKufTD/iPXbJzDGiiZmP3sSFeMexqKknJx+sSMYcipQ1pR5aezKx7GgWy7L0ujjBWwHKricATmSXq7ynuSx+6KGEE0NaMcTO6sMoJUAFHxIxIllZchr58H3PeLDZfhF5ao7seU4msSKMp2uYEccZx6IFMa3V8j957/JNuIljx7A2PQTSGQChN9+dDw0UoEvinu1fjw8ijqiDWxjonjbLIqL5kjt2ioUeYXy1gS1Rr/0DwE=
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 90597dbc-7edd-4fce-18b4-08dce3bb142b
+X-MS-Exchange-CrossTenant-Network-Message-Id: 146e7b87-3a34-4701-84b9-08dce3bf03b4
 X-MS-Exchange-CrossTenant-AuthSource: BLAPR10MB5267.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Oct 2024 14:53:01.7948
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Oct 2024 15:21:12.2020
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CibZOr20+tOK9mF4nZn8RJXao+6w2xIu3Tl1wS1FWzB0IgsZUKuk2mbrfxi76pO6s4lA2/bdLFLu+zQ3zvlvSg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BLAPR10MB4994
+X-MS-Exchange-CrossTenant-UserPrincipalName: oGKUlPrRVGLNG3eVsWUzlDi+RWR3xOzKNIYpy+6f5EjyWtP0fZMKAeRUdDizbGIIOOi7XdojRD/yXy9ukJq7tQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR10MB7644
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-03_06,2024-10-03_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 spamscore=0 suspectscore=0
- bulkscore=0 malwarescore=0 mlxscore=0 mlxlogscore=999 adultscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0 malwarescore=0
+ adultscore=0 bulkscore=0 mlxscore=0 suspectscore=0 mlxlogscore=999
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2408220000
- definitions=main-2410030107
-X-Proofpoint-ORIG-GUID: z4553j1Hnhr2_9n0oao9_hmnavjUmknM
-X-Proofpoint-GUID: z4553j1Hnhr2_9n0oao9_hmnavjUmknM
+ definitions=main-2410030111
+X-Proofpoint-GUID: D5sLAiR2pOZ9kRdSQeNEKdSR6efABJ5c
+X-Proofpoint-ORIG-GUID: D5sLAiR2pOZ9kRdSQeNEKdSR6efABJ5c
 
-On 03/10/2024 00:52, Stephen Brennan wrote:
-> Currently we maintain one buffer of DATASEC entries that describe the
-> offsets for variables in the percpu ELF section. In order to make it
-> possible to output all global variables, we'll need to output a DATASEC
-> for each ELF section containing variables, and we'll need to control
-> whether or not to encode variables on a per-section basis.
+On 03/10/2024 15:53, Arnaldo Carvalho de Melo wrote:
+> On Thu, Oct 03, 2024 at 03:40:35PM +0100, Alan Maguire wrote:
+>> On 03/10/2024 00:52, Stephen Brennan wrote:
+>>> So far, pahole has only encoded type information for percpu variables.
+>>> However, there are several reasons why type information for all global
+>>> variables would be useful in the kernel:
 > 
-> With this change, the ability to emit VARs from multiple sections is
-> technically present, but not enabled, so pahole still only emits percpu
-> variables. A subsequent change will enable emitting all global
-> variables.
+>>> 1. Runtime kernel debuggers like drgn could use the BTF to introspect
+>>> kernel data structures without needing to install heavyweight DWARF.
 > 
-> Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
-
-Some questions about shndx handling, but
-
-Reviewed-by: Alan Maguire <alan.maguire@oracle.com>
-
-> ---
->  btf_encoder.c | 90 ++++++++++++++++++++++++++++++++-------------------
->  1 file changed, 56 insertions(+), 34 deletions(-)
+>>> 2. BPF programs using the "__ksym" annotation could declare the
+>>> variables using the correct type, rather than "void".
 > 
-> diff --git a/btf_encoder.c b/btf_encoder.c
-> index 1872e00..2fd1648 100644
-> --- a/btf_encoder.c
-> +++ b/btf_encoder.c
-> @@ -98,6 +98,8 @@ struct elf_secinfo {
->  	const char *name;
->  	uint64_t    sz;
->  	uint32_t    type;
-> +	bool        include;
-> +	struct gobuffer secinfo;
->  };
+>>> It makes sense to introduce a feature for this in pahole so that these
+>>> capabilities can be explored in the kernel. The feature is non-default:
+>>> when using "--btf-features=default", it is disabled. It must be
+>>> explicitly requested, e.g. with "--btf-features=+global_var".
 >  
->  /*
-> @@ -107,7 +109,6 @@ struct btf_encoder {
->  	struct list_head  node;
->  	struct btf        *btf;
->  	struct cu         *cu;
-> -	struct gobuffer   percpu_secinfo;
->  	const char	  *source_filename;
->  	const char	  *filename;
->  	struct elf_symtab *symtab;
-> @@ -124,7 +125,6 @@ struct btf_encoder {
->  	uint32_t	  array_index_id;
->  	struct elf_secinfo *secinfo;
->  	size_t             seccnt;
-> -	size_t             percpu_shndx;
+>> I'm not totally sure switching global_var to a non-default feature is
+>> the right answer here.
+>  
+>> The --btf_features "default" set of options are meant to closely mirror
+>> the upstream kernel options we enable when doing BTF encoding. However,
+>> in scripts/Makefile.btf we don't use "default"; we explicitly call out
+>> the set of features we want. We can't just use "default" in that context
+>> since the meaning of "default" varies based upon whatever version of
+>> pahole you have.
+>  
+>> So "default" is simply a convenient shorthand for pahole testing which
+>> corresponds to "give me the set of features that upstream kernels use".
+>> It could have a better name that reflects that more clearly I suppose.
+>  
+>> When we do switch this on in-kernel, we'll add the explicit "global_var"
+>> to the list of features in scripts/Makefile.btf.
+>  
+>> So with all this said, do we make global_vars a default or non-default
+>> feature? It would seem to make sense to specify non-default, since it is
+>> not switched on for the kernel yet, but looking ahead, what if the 1.28
+>> pahole release is used to build vmlinux BTF and we add global_var to the
+>> list of features? In such a case, our "default" set of values would be
+>> out of step with the kernel. So it's not a huge deal, but I would
+>> consider keeping this a default feature to facilitate testing; this
+>> won't change what the kernel does, but it makes testing with full
+>> variable generation easier (I can just do "--btf_features=default").
+> 
+> This "default" really is confusing, as you spelled out above :-\ When to
+> add something to it so that it reflects what the kernel has is tricky,
+> perhaps we should instead have a ~/.config/pahole file where developers
+> can add BTF features to add to --btf_features=default in the period
+> where something new was _really_ added to the kernel and before the next
+> version when it _have been added to the kernel set of BTF features_ thus
+> should be set into stone in the pahole sources?
+> 
 
-heh, ignore my earlier gripes about the type here since it's being
-removed now!
+it's a nice idea; I suppose once we have more automated tests, this will
+be less of an issue too. I'm looking at adding a BTF variable test
+shortly, would be good to have coverage there too, especially since
+we're growing the amount of info we encode in this area.
 
->  	int                encode_vars;
->  	struct {
->  		struct elf_function *entries;
-> @@ -784,46 +784,56 @@ static int32_t btf_encoder__add_var(struct btf_encoder *encoder, uint32_t type,
->  	return id;
->  }
->  
-> -static int32_t btf_encoder__add_var_secinfo(struct btf_encoder *encoder, uint32_t type,
-> -				     uint32_t offset, uint32_t size)
-> +static int32_t btf_encoder__add_var_secinfo(struct btf_encoder *encoder, size_t shndx,
-> +					    uint32_t type, uint32_t offset, uint32_t size)
->  {
->  	struct btf_var_secinfo si = {
->  		.type = type,
->  		.offset = offset,
->  		.size = size,
->  	};
-> -	return gobuffer__add(&encoder->percpu_secinfo, &si, sizeof(si));
-> +	return gobuffer__add(&encoder->secinfo[shndx].secinfo, &si, sizeof(si));
->  }
->  
->  int32_t btf_encoder__add_encoder(struct btf_encoder *encoder, struct btf_encoder *other)
->  {
-> -	struct gobuffer *var_secinfo_buf = &other->percpu_secinfo;
-> -	size_t sz = gobuffer__size(var_secinfo_buf);
-> -	uint16_t nr_var_secinfo = sz / sizeof(struct btf_var_secinfo);
-> -	uint32_t type_id;
-> -	uint32_t next_type_id = btf__type_cnt(encoder->btf);
-> -	int32_t i, id;
-> -	struct btf_var_secinfo *vsi;
-> -
-> +	size_t shndx;
->  	if (encoder == other)
->  		return 0;
->  
->  	btf_encoder__add_saved_funcs(other);
->  
-> -	for (i = 0; i < nr_var_secinfo; i++) {
-> -		vsi = (struct btf_var_secinfo *)var_secinfo_buf->entries + i;
-> -		type_id = next_type_id + vsi->type - 1; /* Type ID starts from 1 */
-> -		id = btf_encoder__add_var_secinfo(encoder, type_id, vsi->offset, vsi->size);
-> -		if (id < 0)
-> -			return id;
-> +	for (shndx = 0; shndx < other->seccnt; shndx++) {
+> So I think we should do as Stephen did, keep it out of
+> --btf_features=default, as it is not yet in the kernel set of options,
+> and have the config file, starting with being able to set those
+> features, i.e. we would have:
+> 
+> $ cat ~/.config/pahole
+> [btf_encoder]
+> 	btf_features=+global_var
+> 
+> wdyt?
+> 
 
-can't we start from 1 here since the first section is SHT_NULL?
+I think that makes perfect sense, great idea!
 
-> +		struct gobuffer *var_secinfo_buf = &other->secinfo[shndx].secinfo;
-> +		size_t sz = gobuffer__size(var_secinfo_buf);
-> +		uint16_t nr_var_secinfo = sz / sizeof(struct btf_var_secinfo);
-> +		uint32_t type_id;
-> +		uint32_t next_type_id = btf__type_cnt(encoder->btf);
-> +		int32_t i, id;
-> +		struct btf_var_secinfo *vsi;
-> +
-> +		if (strcmp(encoder->secinfo[shndx].name, other->secinfo[shndx].name)) {
-> +			fprintf(stderr, "mismatched ELF sections at index %zu: \"%s\", \"%s\"\n",
-> +				shndx, encoder->secinfo[shndx].name, other->secinfo[shndx].name);
-> +			return -1;
-> +		}
-> +
-> +		for (i = 0; i < nr_var_secinfo; i++) {
-> +			vsi = (struct btf_var_secinfo *)var_secinfo_buf->entries + i;
-> +			type_id = next_type_id + vsi->type - 1; /* Type ID starts from 1 */
-> +			id = btf_encoder__add_var_secinfo(encoder, shndx, type_id, vsi->offset, vsi->size);
-> +			if (id < 0)
-> +				return id;
-> +		}
->  	}
->  
->  	return btf__add_btf(encoder->btf, other->btf);
->  }
->  
-> -static int32_t btf_encoder__add_datasec(struct btf_encoder *encoder, const char *section_name)
-> +static int32_t btf_encoder__add_datasec(struct btf_encoder *encoder, size_t shndx)
->  {
-> -	struct gobuffer *var_secinfo_buf = &encoder->percpu_secinfo;
-> +	struct gobuffer *var_secinfo_buf = &encoder->secinfo[shndx].secinfo;
-> +	const char *section_name = encoder->secinfo[shndx].name;
->  	struct btf *btf = encoder->btf;
->  	size_t sz = gobuffer__size(var_secinfo_buf);
->  	uint16_t nr_var_secinfo = sz / sizeof(struct btf_var_secinfo);
-> @@ -2032,12 +2042,14 @@ int btf_encoder__encode(struct btf_encoder *encoder)
->  {
->  	bool should_tag_kfuncs;
->  	int err;
-> +	size_t shndx;
->  
->  	/* for single-threaded case, saved funcs are added here */
->  	btf_encoder__add_saved_funcs(encoder);
->  
-> -	if (gobuffer__size(&encoder->percpu_secinfo) != 0)
-> -		btf_encoder__add_datasec(encoder, PERCPU_SECTION);
-> +	for (shndx = 0; shndx < encoder->seccnt; shndx++)
-
-same question here for 0 shndx
-
-
-> +		if (gobuffer__size(&encoder->secinfo[shndx].secinfo))
-> +			btf_encoder__add_datasec(encoder, shndx);
->  
->  	/* Empty file, nothing to do, so... done! */
->  	if (btf__type_cnt(encoder->btf) == 1)
-> @@ -2167,7 +2179,7 @@ static int btf_encoder__encode_cu_variables(struct btf_encoder *encoder)
->  	struct tag *pos;
->  	int err = -1;
->  
-> -	if (encoder->percpu_shndx == 0 || !encoder->symtab)
-> +	if (!encoder->symtab)
->  		return 0;
->  
->  	if (encoder->verbose)
-> @@ -2180,6 +2192,7 @@ static int btf_encoder__encode_cu_variables(struct btf_encoder *encoder)
->  		struct llvm_annotation *annot;
->  		const struct tag *tag;
->  		size_t shndx, size;
-> +		struct elf_secinfo *sec = NULL;
->  		uint64_t addr;
->  		int id;
->  
-> @@ -2211,7 +2224,9 @@ static int btf_encoder__encode_cu_variables(struct btf_encoder *encoder)
->  
->  		/* Get the ELF section info for the variable */
->  		shndx = get_elf_section(encoder, addr);
-> -		if (shndx != encoder->percpu_shndx)
-> +		if (shndx >= 0 && shndx < encoder->seccnt)
-> +			sec = &encoder->secinfo[shndx];
-> +		if (!sec || !sec->include)
->  			continue;
->  
->  		/* Convert addr to section relative */
-> @@ -2252,7 +2267,7 @@ static int btf_encoder__encode_cu_variables(struct btf_encoder *encoder)
->  		size = tag__size(tag, cu);
->  		if (size == 0 || size > UINT32_MAX) {
->  			if (encoder->verbose)
-> -				fprintf(stderr, "Ignoring %s-sized per-CPU variable '%s'...\n",
-> +				fprintf(stderr, "Ignoring %s-sized variable '%s'...\n",
->  					size == 0 ? "zero" : "over", name);
->  			continue;
->  		}
-> @@ -2289,13 +2304,14 @@ static int btf_encoder__encode_cu_variables(struct btf_encoder *encoder)
->  		}
->  
->  		/*
-> -		 * add a BTF_VAR_SECINFO in encoder->percpu_secinfo, which will be added into
-> -		 * encoder->types later when we add BTF_VAR_DATASEC.
-> +		 * Add the variable to the secinfo for the section it appears in.
-> +		 * Later we will generate a BTF_VAR_DATASEC for all any section with
-> +		 * an encoded variable.
->  		 */
-> -		id = btf_encoder__add_var_secinfo(encoder, id, (uint32_t)addr, (uint32_t)size);
-> +		id = btf_encoder__add_var_secinfo(encoder, shndx, id, (uint32_t)addr, (uint32_t)size);
->  		if (id < 0) {
->  			fprintf(stderr, "error: failed to encode section info for variable '%s' at addr 0x%" PRIx64 "\n",
-> -			        name, addr);
-> +				name, addr);
->  			goto out;
->  		}
->  	}
-> @@ -2373,6 +2389,7 @@ struct btf_encoder *btf_encoder__new(struct cu *cu, const char *detached_filenam
->  			goto out_delete;
->  		}
->  
-> +		bool found_percpu = false;
->  		for (shndx = 0; shndx < encoder->seccnt; shndx++) {
->  			const char *secname = NULL;
->  			Elf_Scn *sec = elf_section_by_idx(cu->elf, &shdr, shndx, &secname);
-> @@ -2383,11 +2400,14 @@ struct btf_encoder *btf_encoder__new(struct cu *cu, const char *detached_filenam
->  			encoder->secinfo[shndx].name = secname;
->  			encoder->secinfo[shndx].type = shdr.sh_type;
->  
-> -			if (strcmp(secname, PERCPU_SECTION) == 0)
-> -				encoder->percpu_shndx = shndx;
-> +			if (strcmp(secname, PERCPU_SECTION) == 0) {
-> +				found_percpu = true;
-> +				if (encoder->encode_vars & BTF_VAR_PERCPU)
-> +					encoder->secinfo[shndx].include = true;
-> +			}
->  		}
->  
-> -		if (!encoder->percpu_shndx && encoder->verbose)
-> +		if (!found_percpu && encoder->verbose)
->  			printf("%s: '%s' doesn't have '%s' section\n", __func__, cu->filename, PERCPU_SECTION);
->  
->  		if (btf_encoder__collect_symbols(encoder))
-> @@ -2415,12 +2435,14 @@ void btf_encoder__delete_func(struct elf_function *func)
->  void btf_encoder__delete(struct btf_encoder *encoder)
->  {
->  	int i;
-> +	size_t shndx;
->  
->  	if (encoder == NULL)
->  		return;
->  
->  	btf_encoders__delete(encoder);
-> -	__gobuffer__delete(&encoder->percpu_secinfo);
-> +	for (shndx = 0; shndx < encoder->seccnt; shndx++)
-> +		__gobuffer__delete(&encoder->secinfo[shndx].secinfo);
->  	zfree(&encoder->filename);
->  	zfree(&encoder->source_filename);
->  	btf__free(encoder->btf);
+Alan
 

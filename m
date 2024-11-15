@@ -1,187 +1,215 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE52233D9A
-	for <linux-debuggers@vger.kernel.org>; Fri,  8 Nov 2024 17:37:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4891B1CD210
+	for <linux-debuggers@vger.kernel.org>; Fri, 15 Nov 2024 14:49:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731087474; cv=none; b=HMKOrBX9/dFqA5Y2hZyf41SsbVU6YtgBQ5VPaNaB8tF6lxpqejiB/oo7oUrcusvi4Aj0zuh+ARr8qVTlN1LcHzvkQsN7APkrzRYvTcO0bKr0FB0DOtp63LOC3oPv1vtaVjzuS8Z5P/prpr7Q/Q8qzt+qDg7ypeXEFXUbrflo8vM=
+	t=1731682179; cv=none; b=PMHJTLj0IPSuxQf3oQx265m3N1FxCRfNnFu3KhL76Uux9j+8LODA8trRc6mcV2yClIu+XWFG1h2fcpBrJ6+LQCBYoED4OGwoDTMBPR0tGiVsfOdJDPJJOS18oTs1c95gmkGXwDiIjRlCJt1d9qR6FhNzf8szcTJaGZTFBJIdDn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731087474; c=relaxed/simple;
-	bh=tPmkC98W7OTKqBtV49IwWiImDhxD8gmPOBXk3WDMLJ0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Csoq/P0ViazhpB0hxRLfnoiEu/jN/7iGWj+DL7sUauqS0yb9ZTIKl+yc0/O974aECgnnPNi5wW4LdVfUTS0zhzmndWYitv/FCWzWlRmz6LEvIrThtGA+IDi1gBEPNkHBw9l7c31pxTtHXTuc7ddkQ0UMXr9s9nmvqxWmSybh5sU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Ge3N4LqW; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	s=arc-20240116; t=1731682179; c=relaxed/simple;
+	bh=cEvUtqNSSUAF6Hc6fJCx0AVQzJ2NwRNXKucjOZuQ1AA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=J/dAyEUo4TsxMA0t3J33tKgaZFuqkcZtwl/W/WwjvTkVt0tAwjihRrtQRsIbI6IvG53vMtU1sNA04xX7t3s2Uc0ujXzdgJviyaqxwt5vFJQbFm6QKNZCeWxww3sPPAhOcfX76JJFt0ccHbPmTWc8g4aRg1RggLTuenSux9vuF4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=g0xjHdAf; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Ge3N4LqW"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-539fe76e802so2897389e87.1
-        for <linux-debuggers@vger.kernel.org>; Fri, 08 Nov 2024 09:37:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="g0xjHdAf"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-43155abaf0bso16995515e9.0
+        for <linux-debuggers@vger.kernel.org>; Fri, 15 Nov 2024 06:49:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1731087468; x=1731692268; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tPmkC98W7OTKqBtV49IwWiImDhxD8gmPOBXk3WDMLJ0=;
-        b=Ge3N4LqWxSWk7/mttIDYp70O5LCADqjVXGNA7L87Zk6AB5tiWwOO3nCSV4AlxTm78F
-         O0xWUuwt6dxoEMDfcBO2i7VfgoNZJz2KoNwEELjeBUVnpYg1Hxq8qXfytJOBHfbG7/c5
-         1FAia6RQ+51m/VNHX23ft/YyNPZSIWSVmll6k=
+        d=linaro.org; s=google; t=1731682175; x=1732286975; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=1CQ3VJsQiO7mOfIPbHAPwesm3SB/ITY8Xq3kn4cE8Tw=;
+        b=g0xjHdAfTIxG5qDSSfC4nyzS8BMvEhWdO31bw86HMlL6NcoioYinTMJ25huKjAgqVY
+         z3aSZAWsDphP+zp+JkzmPIOHG62k3q3OSEPprZFOpvI8w5YE8pi+RXN0zmFW5OWDZzpQ
+         xZMIzGD5jJlu0W5d40yC/afVX8iBeYptd/xkYC7vY18XayL6ttg+w0ITMwbpNkS7pVoT
+         y2MxXwFpO8hqlNGpAlsw76HkM+oFOH07SJ+YZLvTfOAutIZ3FkGG955x/aY49V52QBU6
+         pb9RfjQdjCstpDYhpnC5paIkXazTAVyw4RP2pY+wTrHqEfoUvDdLaGQrnsQJqs7N0Ns8
+         fFfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731087468; x=1731692268;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tPmkC98W7OTKqBtV49IwWiImDhxD8gmPOBXk3WDMLJ0=;
-        b=pExDzqEitTnZYcniYTYKr69Mgv0pSHrNwskmVm6FkEDGfLxVn3r1nwTSOh68P7/U8C
-         k6J5xHHpd3z4RwOq+oh/gUK+s6zLVLD9Oc5zaNSn7661bPU8G1A8oFgaoCs+ID4d4Khq
-         /HTSp1sTOvHK5+lCN9jTPkK6+w+oDD8Hldd6FQj4z0VbNLK3GuUEcgoFi3NFb724ibt0
-         alSXBzxLxQecxHIaSydY3je4xUtfJpTopQaTf+PWqVbrpJEaPmd7MpWu+QayXztN4WUh
-         ur/n7OUK+aksXfjdxgB3LYJhamCOctdy0W5DCcpHwxDOKNZxSVeV3UshPCufksQ5aXn7
-         BM1g==
-X-Forwarded-Encrypted: i=1; AJvYcCWnAF42Y6WC5CUIWRW52KVMrNuLBtumUHgFCOe2lr+3lEuGIHpY8sNw9qR5MtVWux3pRMPHTtZAqRy3zyH+9mk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAdDIADdrq/6r6bKDT2r3JHAPistm81rl6U1MSLS9q4tHyXoQg
-	If/hfoULUL5FXLyL0vNwaLYoibZvRZ57eRH10pEQtigntZ2kJteFO1OzeXIN2aygnrh+N7IO+H6
-	LnQ==
-X-Google-Smtp-Source: AGHT+IHQM4tVUHjW4E+OsrWJj9s6pP7/REpi5Uq47MLEmv4CyzjwwdvDCz3TL2xhJfFsubzBow6AhA==
-X-Received: by 2002:a05:6512:1395:b0:539:959e:f0e8 with SMTP id 2adb3069b0e04-53d862d3f7dmr2315508e87.21.1731087468418;
-        Fri, 08 Nov 2024 09:37:48 -0800 (PST)
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com. [209.85.167.42])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53d826a9d7bsm685942e87.185.2024.11.08.09.37.47
-        for <linux-debuggers@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 08 Nov 2024 09:37:47 -0800 (PST)
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-539e63c8678so3037107e87.0
-        for <linux-debuggers@vger.kernel.org>; Fri, 08 Nov 2024 09:37:47 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUrpKL8yYBRUA5mh2OGYLRegbNAph6fGXrH4Hm3kdrSaGsvs/+b3OwR6EHPLdpbp0EQ45939pdLl0j6PR0JqI0=@vger.kernel.org
-X-Received: by 2002:a05:6512:3a90:b0:53b:1e70:6ad0 with SMTP id
- 2adb3069b0e04-53d862e2e89mr2144388e87.27.1731087466531; Fri, 08 Nov 2024
- 09:37:46 -0800 (PST)
+        d=1e100.net; s=20230601; t=1731682175; x=1732286975;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1CQ3VJsQiO7mOfIPbHAPwesm3SB/ITY8Xq3kn4cE8Tw=;
+        b=tJA+l0zRRIzMIMfsvzoPTCUXGhVKIAOIMtyM3Vj+/OEORpGgUOvonygaIx1rjHnuRy
+         kkSVEkpttwQyBvXv00w8BYWwEKTobT5BgO3UbeJwDCNecdUkKGqkb3N6w4USZcmmUHXE
+         eh9G7aJoY5LZ1C5b6jw4+vA+nPNYRIOdsmJ44fwCM2pgMiGR/26gO71wX16Kxwfa5PNx
+         ynH71XNV6kDih3I3gIzJbzWSDt148OK+YNcgZM/OCmt9Bdc4Y+mjtTiLdil3Se/l+I/C
+         BHCNcFmJVVt9Rc2AHTCvBZWk4DRAx9ZIdx3TULoKVk80XMqI/7qYWxZYVMBpxm+7wK3W
+         OUmw==
+X-Forwarded-Encrypted: i=1; AJvYcCV5uVfHNRILnZK2WGAmLOAGZR0N3w+HDFj3LSagAvRK8U/zf1wQ6oWdF83/6L1Mp2bbXxBulrvw24K1RN5WwpU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3gZxp6fItavShD+JS0i+eekn+ekWYaCzbWYNKY52l3R98Tx8D
+	C0zoc4OPMXkCgWZZYRFORL0gdZ5TWQfg8qx8AvOecLZqHK/tUaqUh7yvUbyNX/H64+X3zAr+/63
+	EDsI=
+X-Google-Smtp-Source: AGHT+IEZTRw0z2rsXoSRrmHzajz/Ttj2huRza2LtauItrrsM2B9+avISdV6Iv4/xXAH3qIK4xepK7w==
+X-Received: by 2002:a05:600c:5487:b0:431:44fe:fd9f with SMTP id 5b1f17b1804b1-432df78a529mr20763285e9.23.1731682175469;
+        Fri, 15 Nov 2024 06:49:35 -0800 (PST)
+Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3821ae1685csm4664066f8f.83.2024.11.15.06.49.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Nov 2024 06:49:35 -0800 (PST)
+Date: Fri, 15 Nov 2024 14:49:33 +0000
+From: Daniel Thompson <daniel.thompson@linaro.org>
+To: Doug Anderson <dianders@chromium.org>
+Cc: Omar Sandoval <osandov@osandov.com>,
+	Jason Wessel <jason.wessel@windriver.com>,
+	Amal Raj T <amalrajt@meta.com>,
+	Stephen Brennan <stephen.s.brennan@oracle.com>,
+	kgdb-bugreport@lists.sourceforge.net, linux-serial@vger.kernel.org,
+	linux-debuggers@vger.kernel.org
+Subject: Re: kgdb replacing newline with CRLF in custom query response
+Message-ID: <20241115144933.GB4408@aspen.lan>
+References: <Zy093jVKPs9gSVx2@telecaster>
+ <CAD=FV=UZKZ_RL73+JLjeW2FmAfifSyXqLV3M30XzmJSPE9Trzw@mail.gmail.com>
+ <Zy1lyACVnZK4xwuW@telecaster>
+ <CAD=FV=U2eiG1TuTq48VL+kNCxN6qp_ZcDk3o_6p3B_ENOspQ9Q@mail.gmail.com>
+ <Zy45mCCGZ9sHsXTT@telecaster>
+ <CAD=FV=WN5Nzjs2KowMbTij8CZ+T_eZxJ5rLdyyBDk-1H_Dj3cg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <Zy093jVKPs9gSVx2@telecaster> <CAD=FV=UZKZ_RL73+JLjeW2FmAfifSyXqLV3M30XzmJSPE9Trzw@mail.gmail.com>
- <Zy1lyACVnZK4xwuW@telecaster> <CAD=FV=U2eiG1TuTq48VL+kNCxN6qp_ZcDk3o_6p3B_ENOspQ9Q@mail.gmail.com>
- <Zy45mCCGZ9sHsXTT@telecaster>
-In-Reply-To: <Zy45mCCGZ9sHsXTT@telecaster>
-From: Doug Anderson <dianders@chromium.org>
-Date: Fri, 8 Nov 2024 09:37:32 -0800
-X-Gmail-Original-Message-ID: <CAD=FV=WN5Nzjs2KowMbTij8CZ+T_eZxJ5rLdyyBDk-1H_Dj3cg@mail.gmail.com>
-Message-ID: <CAD=FV=WN5Nzjs2KowMbTij8CZ+T_eZxJ5rLdyyBDk-1H_Dj3cg@mail.gmail.com>
-Subject: Re: kgdb replacing newline with CRLF in custom query response
-To: Omar Sandoval <osandov@osandov.com>
-Cc: Jason Wessel <jason.wessel@windriver.com>, 
-	Daniel Thompson <daniel.thompson@linaro.org>, Amal Raj T <amalrajt@meta.com>, 
-	Stephen Brennan <stephen.s.brennan@oracle.com>, kgdb-bugreport@lists.sourceforge.net, 
-	linux-serial@vger.kernel.org, linux-debuggers@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAD=FV=WN5Nzjs2KowMbTij8CZ+T_eZxJ5rLdyyBDk-1H_Dj3cg@mail.gmail.com>
 
-Hi,
-
-On Fri, Nov 8, 2024 at 8:17=E2=80=AFAM Omar Sandoval <osandov@osandov.com> =
-wrote:
+On Fri, Nov 08, 2024 at 09:37:32AM -0800, Doug Anderson wrote:
+> Hi,
 >
-> On Fri, Nov 08, 2024 at 07:31:19AM -0800, Doug Anderson wrote:
-> > Hi,
+> On Fri, Nov 8, 2024 at 8:17 AM Omar Sandoval <osandov@osandov.com> wrote:
 > >
-> > On Thu, Nov 7, 2024 at 5:13=E2=80=AFPM Omar Sandoval <osandov@osandov.c=
-om> wrote:
+> > On Fri, Nov 08, 2024 at 07:31:19AM -0800, Doug Anderson wrote:
+> > > Hi,
 > > >
-> > > On Thu, Nov 07, 2024 at 05:08:58PM -0800, Doug Anderson wrote:
-> > > > Hi,
+> > > On Thu, Nov 7, 2024 at 5:13 PM Omar Sandoval <osandov@osandov.com> wrote:
 > > > >
-> > > > On Thu, Nov 7, 2024 at 2:23=E2=80=AFPM Omar Sandoval <osandov@osand=
-ov.com> wrote:
+> > > > On Thu, Nov 07, 2024 at 05:08:58PM -0800, Doug Anderson wrote:
+> > > > > Hi,
 > > > > >
-> > > > > Hi everyone,
+> > > > > On Thu, Nov 7, 2024 at 2:23 PM Omar Sandoval <osandov@osandov.com> wrote:
+> > > > > >
+> > > > > > Hi everyone,
+> > > > > >
+> > > > > > Amal is working on adding a custom query packet to kgdb for getting the
+> > > > > > kernel's vmcoreinfo. The rationale and details are available here:
+> > > > > > https://github.com/osandov/drgn/wiki/GDB-Remote-Protocol-proposal:-linux.vmcoreinfo-query-packet
+> > > > > >
+> > > > > > vmcoreinfo is about 3kB, so we were hoping to avoid hex-encoding the
+> > > > > > response and doubling the time it takes to transmit over a slow serial
+> > > > > > connection. Instead, we were hoping to use the escaped binary format,
+> > > > > > which escapes the characters #$}* and leaves other bytes untouched.
+> > > > > >
+> > > > > > We ran into a problem, though: vmcoreinfo contains newline characters,
+> > > > > > which the serial core replaces with CRLF; see commit c7d44a02ac60
+> > > > > > ("serial_core: Commonalize crlf when working w/ a non open console
+> > > > > > port").
 > > > > >
-> > > > > Amal is working on adding a custom query packet to kgdb for getti=
-ng the
-> > > > > kernel's vmcoreinfo. The rationale and details are available here=
-:
-> > > > > https://github.com/osandov/drgn/wiki/GDB-Remote-Protocol-proposal=
-:-linux.vmcoreinfo-query-packet
+> > > > > FWIW, the problem predates that commit, but that commit at least moved
+> > > > > it to be someplace common. Before that some serial drivers were
+> > > > > hardcoding it... ;-)
 > > > > >
-> > > > > vmcoreinfo is about 3kB, so we were hoping to avoid hex-encoding =
-the
-> > > > > response and doubling the time it takes to transmit over a slow s=
-erial
-> > > > > connection. Instead, we were hoping to use the escaped binary for=
-mat,
-> > > > > which escapes the characters #$}* and leaves other bytes untouche=
-d.
 > > > > >
-> > > > > We ran into a problem, though: vmcoreinfo contains newline charac=
-ters,
-> > > > > which the serial core replaces with CRLF; see commit c7d44a02ac60
-> > > > > ("serial_core: Commonalize crlf when working w/ a non open consol=
-e
-> > > > > port").
-> > > >
-> > > > FWIW, the problem predates that commit, but that commit at least mo=
-ved
-> > > > it to be someplace common. Before that some serial drivers were
-> > > > hardcoding it... ;-)
-> > > >
-> > > >
-> > > > > This effectively corrupts the data and causes a checksum
-> > > > > mismatch.
+> > > > > > This effectively corrupts the data and causes a checksum
+> > > > > > mismatch.
+> > > > > >
+> > > > > > We'd love some input on how to work around this, especially from the
+> > > > > > kgdb maintainers. Here are a few options, in descending order of my
+> > > > > > preference:
+> > > > > >
+> > > > > > 1. Disable the LF -> CRLF replacement while sending binary data.
+> > > > > > 2. Escape the newlines using some other custom scheme.
+> > > > > > 3. Give up and hex-encode the response.
 > > > > >
-> > > > > We'd love some input on how to work around this, especially from =
-the
-> > > > > kgdb maintainers. Here are a few options, in descending order of =
-my
-> > > > > preference:
-> > > > >
-> > > > > 1. Disable the LF -> CRLF replacement while sending binary data.
-> > > > > 2. Escape the newlines using some other custom scheme.
-> > > > > 3. Give up and hex-encode the response.
-> > > >
-> > > > I haven't tried prototyping it, but what about moving the LR -> CRL=
-F
-> > > > code to kdb_msg_write(). It would be really easy to do this in the
-> > > > case where we're doing "dbg_io_ops->write_char()" since we're alrea=
-dy
-> > > > processing character at a time. It would be harder to do this when
-> > > > also sending the output to the various console, but may not _too_
-> > > > hard? You could loop searching for "\n" and send all the characters
-> > > > before the "\n", then send a "\r", then send the "\n" and all the
-> > > > characters up to the next "\n".
-
-Actually, looking at this again, I wonder if we even need to do any
-transformation before sending it to the various consoles. Probably
-not. I think it's _just_ the write_char() path that needed it?
-
-
-> > > > If you did this then you'd lose the "\n" to "\r\n" combination in t=
-he
-> > > > gdb stub, but _probably_ that doesn't matter?
-> > >
-> > > That sounds reasonable. I was concerned whether this would affect
-> > > anything else using the ->poll_put_char() tty operation, but kgdb see=
-ms
-> > > to be the only user, does that sound right?
-> >
-> > Right. As far as I can tell, kgdb is the only user of poll_put_char().
+> > > > > I haven't tried prototyping it, but what about moving the LR -> CRLF
+> > > > > code to kdb_msg_write(). It would be really easy to do this in the
+> > > > > case where we're doing "dbg_io_ops->write_char()" since we're already
+> > > > > processing character at a time. It would be harder to do this when
+> > > > > also sending the output to the various console, but may not _too_
+> > > > > hard? You could loop searching for "\n" and send all the characters
+> > > > > before the "\n", then send a "\r", then send the "\n" and all the
+> > > > > characters up to the next "\n".
 >
-> Ah, one other concern, though: only uart_poll_put_char() does the CRLF
-> replacement, but there are other tty_operations that don't, like
-> hvc_poll_put_char(). So if we move that to kdb_msg_write(), then we'll
-> be adding extra '\r' for other tty types. Would that be a problem?
+> Actually, looking at this again, I wonder if we even need to do any
+> transformation before sending it to the various consoles. Probably
+> not. I think it's _just_ the write_char() path that needed it?
+>
+>
+> > > > > If you did this then you'd lose the "\n" to "\r\n" combination in the
+> > > > > gdb stub, but _probably_ that doesn't matter?
+> > > >
+> > > > That sounds reasonable. I was concerned whether this would affect
+> > > > anything else using the ->poll_put_char() tty operation, but kgdb seems
+> > > > to be the only user, does that sound right?
+> > >
+> > > Right. As far as I can tell, kgdb is the only user of poll_put_char().
+> >
+> > Ah, one other concern, though: only uart_poll_put_char() does the CRLF
+> > replacement, but there are other tty_operations that don't, like
+> > hvc_poll_put_char(). So if we move that to kdb_msg_write(), then we'll
+> > be adding extra '\r' for other tty types. Would that be a problem?
+>
+> I honestly don't know. I guess also it can be noted that if we do it
+> in kdb_msg_write() then the write_char() path can even take us to
+> places that don't invoke uart_poll_put_char(). For instance
+> "ehci-dbgp.c" registers its own io_module...
+>
+> Bleh. It _probably_ wouldn't be a big deal to do the LF -> CRLF for
+> all these, but I don't know for sure. I guess worst case you could add
+> some flag in the "dbg_io_ops" and figure out how to set it just for
+> UARTs?
 
-I honestly don't know. I guess also it can be noted that if we do it
-in kdb_msg_write() then the write_char() path can even take us to
-places that don't invoke uart_poll_put_char(). For instance
-"ehci-dbgp.c" registers its own io_module...
+I find myself in a similar position to Doug.
 
-Bleh. It _probably_ wouldn't be a big deal to do the LF -> CRLF for
-all these, but I don't know for sure. I guess worst case you could add
-some flag in the "dbg_io_ops" and figure out how to set it just for
-UARTs?
+It sounds reasonable to move the CR synthesis into kdb_msg_write() but I
+also am not certain the other polling backends will handle this correctly.
+
+However I did apply the following patch and run a few tests and it all
+looks good. Specifically there are no regressions from the kgdb test
+suite although that's unsurprising since that suite exclusively tests
+the serial port. I also fired up the kdb,kms polling backends on x86
+and verified that I didn't get double line feeds in kdb (I did not).
+
+That means I'd certainly accept patches based on Doug's idea and if it
+proves later that we have to revert and add a new dbg_io_ops pointer to
+switch the handler between binary and ascii modes then so be it!
 
 
--Doug
+Daniel.
+
+
+diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
+index d94d73e45fb6d..fff1269c55498 100644
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -2738,8 +2738,10 @@ static void uart_poll_put_char(struct tty_driver *driver, int line, char ch)
+ 	if (!port)
+ 		return;
+
++#if 0
+ 	if (ch == '\n')
+ 		port->ops->poll_put_char(port, '\r');
++#endif
+ 	port->ops->poll_put_char(port, ch);
+ 	uart_port_deref(port);
+ }
+diff --git a/kernel/debug/kdb/kdb_io.c b/kernel/debug/kdb/kdb_io.c
+index 6a77f1c779c4c..43a7c8ad741ac 100644
+--- a/kernel/debug/kdb/kdb_io.c
++++ b/kernel/debug/kdb/kdb_io.c
+@@ -572,6 +572,8 @@ static void kdb_msg_write(const char *msg, int msg_len)
+ 	len = msg_len;
+
+ 	while (len--) {
++		if (*cp == '\n')
++			dbg_io_ops->write_char('\r');
+ 		dbg_io_ops->write_char(*cp);
+ 		cp++;
+ 	}

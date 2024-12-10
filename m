@@ -1,54 +1,78 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499BCA934;
-	Tue, 10 Dec 2024 00:00:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A296723DEB6;
+	Tue, 10 Dec 2024 13:34:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733788849; cv=none; b=uk5l/5jzFKxP0aAtCMXfgNhfj27mdchkg0x8qTKcjjCTYfNtj/3iykMEo+ChIzl4l36/fP0MoFutzWlkLcRzwN5S3rPVCE3q9VIAYWSQ14//3GwodcWAvGQHu1ZYSlk5omCj90likAMDBIkJHS2fTxNmAYKSZ+/yJNoINnohu5U=
+	t=1733837693; cv=none; b=jz5Ma0TLSzLbPPPq3sK9ku8CcPYdHqs+n6Ffu1HacywxTJdsu7YgdeH5AynxJc/Uz2q3fV8eTXc1ftE4MehNkNEiAn2OFVXDyyy5bDWzfFlhWhy2OaR50BAkojIDkEgDxOFw93dGJa0W3aTOm69mPW+DxQEDe1/2cX9nHNjDzp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733788849; c=relaxed/simple;
-	bh=h3uBjElatKr0hPl6/PqFIk1FIlumz86KPe43ygUTTV8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pkeMTeEUJvmiKwQolLDSq4oq7xZ3CTXb7OW21lz9cgNWEUh5B30lk/lzn9ph7My8gKtR7XOCpNTf8eMvpQFPmg+9ice4PN//V7vgPRicYiLTYkcwWAFxPlU5vln26FcG1B/RZQlIFSqxLor+MRZ+hR4k1vn4SsKav3zkmdTIVW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=jxd9eSFB; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1733837693; c=relaxed/simple;
+	bh=0S9jFH6L+gnHSK49ufKw8bSZpaWfMQjCqQKTZ3/L1Sc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Vou6UDiPHGT1Tnd1Vv5m5Z9qnDN6WR7SpnT1BCZqH87/ITcXaiPmdo7b0ZWACRtlscy2aI7T8xLtMtuxb0JttpFvYGsvZPR0Dyy2yb4p4yS+WUGAduqNrOG2PFwbP4BtloYbrlMrga7upKI43tLgy5Smj3YNYsVqlCFQ1JOY3rI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W+q4LjUN; arc=none smtp.client-ip=209.85.222.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="jxd9eSFB"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=PBXruUUq7CFnP5baKZ7oFYfGkNPXA/nLTilEYn4xNxQ=; b=jxd9eSFB8O7Bg0AfXpNa7MfiD1
-	kzUy8ZVQXBLehc9K2sr80w8/4pklxtkLIDpDj1KY3GawCwZ2Y884+0sM6YQL+v3qTUPimhdfEDGRk
-	DKlCu2csdL92kq85vCYOCb2doThNFQK1zG9zIcm69+Mq1z9iQdQl9DL2gbwM//zzuMPqWIkYjj9tH
-	1vNN97oq9QTOWzMiJ2MgDjM800Jzs5FZIrBaqGGd4zVRtZuB7eUuefjmCbi1myuqFban3TYhbRmq6
-	ggj1AmmlX5zw6qu/fQl1U5inxiW7eksB0PCeF8PaFeCVm/nGjY6SKa0BFUCJl01ZjeW6jUXrGLNi9
-	crp1Jcmw==;
-Received: from [50.53.2.24] (helo=bombadil.infradead.org)
-	by bombadil.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1tKngD-00000009dUD-10C1;
-	Tue, 10 Dec 2024 00:00:45 +0000
-From: Randy Dunlap <rdunlap@infradead.org>
-To: linux-doc@vger.kernel.org
-Cc: Randy Dunlap <rdunlap@infradead.org>,
-	Sebastian Fricke <sebastian.fricke@collabora.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	workflows@vger.kernel.org,
-	Jason Wessel <jason.wessel@windriver.com>,
-	Daniel Thompson <danielt@kernel.org>,
-	Douglas Anderson <dianders@chromium.org>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W+q4LjUN"
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-7b6e7f04c98so14311385a.2;
+        Tue, 10 Dec 2024 05:34:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733837690; x=1734442490; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4tm3kBZ09JwrPbjgXLy3qFEqmN9/4ag151iXQrlURUU=;
+        b=W+q4LjUNDXPO/+n6nPfDpCxX8t3hBtnC923GVq9otYQtO9FllNb+EaydtAs8Y8u+3V
+         Q9d8vvb40tS28RIptiflh1zNw46HwiNtE1OwDiocp20yjZws7Yp5GfZ9+C2jLupE3809
+         Y6VNvyKHv2R+JKg99n9a9sjt4POZsmLq9COOzH3qAOKFK+yrxmxO5vstqCktCtSeAF3a
+         4nBgz4D0eISU635yFwlkg66JKbijYuxUwIj980fo0k7sXzdBU8o+1sD2tV0y/TQL7AIH
+         db6uf92x3J9iUP80jNTH519YZMV8lb+tQCpMUwe30/85LTR8/SyGReMbg7lFe4A6zcBK
+         /+bw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733837690; x=1734442490;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4tm3kBZ09JwrPbjgXLy3qFEqmN9/4ag151iXQrlURUU=;
+        b=a7VkL/FZBp/W7eS1/ywqt9cb7oa0U4jh5NwqxePZPg73TuI3Yk3VlMee+tjPod/EL3
+         jKSOptOJHHnhB3uS6A0mFtuGuCeESAnM2MCBj9Y/m0Sg7GFUJxpWpajV3RlBOiQJM9A9
+         2s3cbMgPYKewrOqnwsGHbF0ap/iHWcOTjixRinLGWx2petH8DaSwKULZvLwBCloWg3Vi
+         D0JJ4nAWYWw8njy7+MdYciwkCLgBSQWdVFoeX7VmVhgXsTJU4k0pYHTx8MC+4a+kBAF1
+         htlArK1vWmJ/doN+UHErWqiKR5ukdyv2/cAhLwL6/XyD6wO12SqgJK8DEUpezAekrgFm
+         lLbQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWOLOxoHK/PJzQPRVyXv0gflrL5s4zhcnRDWKaD82jrrHcoEgnZ3WoNTyB03QAJqkLZQaZ9uCfs5hjypHXLPj8=@vger.kernel.org, AJvYcCXsUT/U3HLnpoV2JWnGtqPvyfpUr5AzaadDGgyVSJ4kEN7eVT/O1TIaO5sAOv7IzsCbbr6DuPYvdxjrPdXI@vger.kernel.org
+X-Gm-Message-State: AOJu0YwypN4Rk8Ad70eKsIl+icMM08Ctc9jEY9PzudXDktYN8bNODVO7
+	G4sj6W5s0moXD4EBum6Ok8CyqUCzlhUgGE9LC886WmqKnvMjRdrK
+X-Gm-Gg: ASbGncvFYAthZ6+RVxSJuWmfwSkUt5+zw0OgnwyrkMBbkJJafeaTXbcdbgBQYWPALgV
+	MNpTnBZZZKwuRNqqMXoKJF8TXKkJMyAfUaJgUT1bPDb22FiGD6GzHg8Odt2oMQaweSo637IJVlG
+	I2VfeXwiBkLxHGpPgZlRUqetufyMM7olUCARVRQur0QiMMfVVhH470+k7yakCVK5+8B9+dMKLDG
+	iq7DEzhUIuq99TvsbRBAhdz215hck45qGM5I/POjdS7zA==
+X-Google-Smtp-Source: AGHT+IEb78W/6xK9hjh+i1udDJ1MfbMqGecnW4cmrIebp5vNa9F6R1xagx2MRlF79GFTqHP8AZsz/A==
+X-Received: by 2002:a05:620a:19a6:b0:7b1:4579:80ea with SMTP id af79cd13be357-7b6bcb65738mr2835857885a.60.1733837690179;
+        Tue, 10 Dec 2024 05:34:50 -0800 (PST)
+Received: from localhost ([2a03:2880:20ff:9::])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-467664c915dsm20717201cf.4.2024.12.10.05.34.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Dec 2024 05:34:49 -0800 (PST)
+From: Amal Raj T <tjarlama@gmail.com>
+To: danielt@kernel.org,
+	dianders@chromium.org,
+	jason.wessel@windriver.com,
+	stephen.s.brennan@oracle.com
+Cc: tjarlama@gmail.com,
+	amalrajt@meta.com,
+	osandov@osandov.com,
 	linux-debuggers@vger.kernel.org,
-	kgdb-bugreport@lists.sourceforge.net,
-	Alex Shi <alexs@kernel.org>,
-	Hu Haowen <2023002089@link.tyut.edu.cn>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-serial@vger.kernel.org
-Subject: [PATCH v3] Documentation: move dev-tools debugging files to process/debugging/
-Date: Mon,  9 Dec 2024 16:00:41 -0800
-Message-ID: <20241210000041.305477-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.47.1
+	linux-serial@vger.kernel.org,
+	kgdb-bugreport@lists.sourceforge.net
+Subject: [PATCH 0/3] Add a new command in kgdb for vmcoreinfo
+Date: Tue, 10 Dec 2024 05:34:45 -0800
+Message-ID: <20241210133448.3684593-1-tjarlama@gmail.com>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <gmail>
+References: <gmail>
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
@@ -57,155 +81,38 @@ List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Move gdb and kgdb debugging documentation to the dedicated
-debugging directory (Documentation/process/debugging/).
-Adjust the index.rst files to follow the file movement.
-Adjust files that refer to these moved files to follow the file movement.
-Update location of kgdb.rst in MAINTAINERS file.
-Add a link from dev-tools/index to process/debugging/index.
+From: Amal Raj T <amalrajt@meta.com>
 
-Note: translations are not updated.
+This patch set introduces a new custom query packet,
+`qlinux.vmcoreinfo`, to kgdb. This packet retrieves kernel's
+vmcoreinfo text, which contains crucial debugging information
+such as the KASLR offset, kernel release, `phys_base` etc.
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Sebastian Fricke <sebastian.fricke@collabora.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: workflows@vger.kernel.org
-Cc: Jason Wessel <jason.wessel@windriver.com>
-Cc: Daniel Thompson <danielt@kernel.org>
-Cc: Douglas Anderson <dianders@chromium.org>
-Cc: linux-debuggers@vger.kernel.org
-Cc: kgdb-bugreport@lists.sourceforge.net
-Cc: Doug Anderson <dianders@chromium.org>
-Cc: Alex Shi <alexs@kernel.org>
-Cc: Hu Haowen <2023002089@link.tyut.edu.cn>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-serial@vger.kernel.org
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Acked-by: Daniel Thompson <danielt@kernel.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
----
-v3: add link to process/debugging/index from dev-tools/index.
+This implementation includes a new binary-encoder (`mem2ebin`)
+instead of the existing hex-encoder (`mem2hex`) to reduce the
+amount of data sent over the wire.
 
-@Andrew, please drop v2 of this patch.
+These changes also move the LF -> CRLF replacement logic from
+serial drivers to KDB, since KDB is the only user of this
+logic, and the existing replacement results in incorrect
+checksums generated by KGDB.
 
- Documentation/admin-guide/README.rst                                 | 4 ++--
- Documentation/dev-tools/index.rst                                    | 5 +++--
- .../{dev-tools => process/debugging}/gdb-kernel-debugging.rst        | 0
- Documentation/process/debugging/index.rst                            | 2 ++
- Documentation/{dev-tools => process/debugging}/kgdb.rst              | 0
- MAINTAINERS                                                          | 2 +-
- include/linux/tty_driver.h                                           | 2 +-
- lib/Kconfig.debug                                                    | 2 +-
- lib/Kconfig.kgdb                                                     | 2 +-
- 9 files changed, 11 insertions(+), 8 deletions(-)
+Link:
+- https://github.com/osandov/drgn/wiki/GDB-Remote-Protocol-proposal:-linux.vmcoreinfo-query-packet
 
+Amal Raj T (3):
+  kgdb: Add kgdb_mem2ebin function for converting memory to binary
+    format
+  serial: Move LF -> CRLF replacement from serial console to kdb
+  kgdb: Add command linux.vmcoreinfo to kgdb
 
-diff --git a/Documentation/admin-guide/README.rst b/Documentation/admin-guide/README.rst
-index f2bebff6a733..eb9452668909 100644
---- a/Documentation/admin-guide/README.rst
-+++ b/Documentation/admin-guide/README.rst
-@@ -356,5 +356,5 @@ instructions at 'Documentation/admin-guide/reporting-issues.rst'.
- 
- Hints on understanding kernel bug reports are in
- 'Documentation/admin-guide/bug-hunting.rst'. More on debugging the kernel
--with gdb is in 'Documentation/dev-tools/gdb-kernel-debugging.rst' and
--'Documentation/dev-tools/kgdb.rst'.
-+with gdb is in 'Documentation/process/debugging/gdb-kernel-debugging.rst' and
-+'Documentation/process/debugging/kgdb.rst'.
-diff --git a/Documentation/dev-tools/index.rst b/Documentation/dev-tools/index.rst
-index 3c0ac08b2709..65c54b27a60b 100644
---- a/Documentation/dev-tools/index.rst
-+++ b/Documentation/dev-tools/index.rst
-@@ -10,6 +10,9 @@ whole; patches welcome!
- A brief overview of testing-specific tools can be found in
- Documentation/dev-tools/testing-overview.rst
- 
-+Tools that are specific to debugging can be found in
-+Documentation/process/debugging/index.rst
-+
- .. toctree::
-    :caption: Table of contents
-    :maxdepth: 2
-@@ -27,8 +30,6 @@ Documentation/dev-tools/testing-overview.rst
-    kmemleak
-    kcsan
-    kfence
--   gdb-kernel-debugging
--   kgdb
-    kselftest
-    kunit/index
-    ktap
-diff --git a/Documentation/dev-tools/gdb-kernel-debugging.rst b/Documentation/process/debugging/gdb-kernel-debugging.rst
-similarity index 100%
-rename from Documentation/dev-tools/gdb-kernel-debugging.rst
-rename to Documentation/process/debugging/gdb-kernel-debugging.rst
-diff --git a/Documentation/process/debugging/index.rst b/Documentation/process/debugging/index.rst
-index f6e4a00dfee3..387d33d16f5e 100644
---- a/Documentation/process/debugging/index.rst
-+++ b/Documentation/process/debugging/index.rst
-@@ -11,6 +11,8 @@ general guides
-    :maxdepth: 1
- 
-    driver_development_debugging_guide
-+   gdb-kernel-debugging
-+   kgdb
-    userspace_debugging_guide
- 
- .. only::  subproject and html
-diff --git a/Documentation/dev-tools/kgdb.rst b/Documentation/process/debugging/kgdb.rst
-similarity index 100%
-rename from Documentation/dev-tools/kgdb.rst
-rename to Documentation/process/debugging/kgdb.rst
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 1e930c7a58b1..1753fe792d04 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -12809,7 +12809,7 @@ L:	kgdb-bugreport@lists.sourceforge.net
- S:	Maintained
- W:	http://kgdb.wiki.kernel.org/
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/jwessel/kgdb.git
--F:	Documentation/dev-tools/kgdb.rst
-+F:	Documentation/process/debugging/kgdb.rst
- F:	drivers/misc/kgdbts.c
- F:	drivers/tty/serial/kgdboc.c
- F:	include/linux/kdb.h
-diff --git a/include/linux/tty_driver.h b/include/linux/tty_driver.h
-index dd4b31ce6d5d..d4cdc089f6c3 100644
---- a/include/linux/tty_driver.h
-+++ b/include/linux/tty_driver.h
-@@ -320,7 +320,7 @@ struct serial_struct;
-  *
-  * @poll_init: ``int ()(struct tty_driver *driver, int line, char *options)``
-  *
-- *	kgdboc support (Documentation/dev-tools/kgdb.rst). This routine is
-+ *	kgdboc support (Documentation/process/debugging/kgdb.rst). This routine is
-  *	called to initialize the HW for later use by calling @poll_get_char or
-  *	@poll_put_char.
-  *
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index f3d723705879..d2cf74cbbe70 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -433,7 +433,7 @@ config GDB_SCRIPTS
- 	  build directory. If you load vmlinux into gdb, the helper
- 	  scripts will be automatically imported by gdb as well, and
- 	  additional functions are available to analyze a Linux kernel
--	  instance. See Documentation/dev-tools/gdb-kernel-debugging.rst
-+	  instance. See Documentation/process/debugging/gdb-kernel-debugging.rst
- 	  for further details.
- 
- endif # DEBUG_INFO
-diff --git a/lib/Kconfig.kgdb b/lib/Kconfig.kgdb
-index 537e1b3f5734..8336b1a489a3 100644
---- a/lib/Kconfig.kgdb
-+++ b/lib/Kconfig.kgdb
-@@ -19,7 +19,7 @@ menuconfig KGDB
- 	  CONFIG_FRAME_POINTER to aid in producing more reliable stack
- 	  backtraces in the external debugger.  Documentation of
- 	  kernel debugger is available at http://kgdb.sourceforge.net
--	  as well as in Documentation/dev-tools/kgdb.rst.  If
-+	  as well as in Documentation/process/debugging/kgdb.rst.  If
- 	  unsure, say N.
- 
- if KGDB
+ drivers/tty/serial/serial_core.c |  4 ----
+ include/linux/kgdb.h             |  1 +
+ kernel/debug/gdbstub.c           | 41 +++++++++++++++++++++++++++++++-
+ kernel/debug/kdb/kdb_io.c        |  2 ++
+ lib/Kconfig.kgdb                 |  1 +
+ 5 files changed, 44 insertions(+), 5 deletions(-)
+
+-- 
+2.43.5
+

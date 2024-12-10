@@ -1,148 +1,120 @@
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9137F19DF4B;
-	Tue, 10 Dec 2024 13:34:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F70A23DEBD
+	for <linux-debuggers@vger.kernel.org>; Tue, 10 Dec 2024 15:16:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733837696; cv=none; b=Bn/C4DkJcG+nGeKPIbtcGZsgDPBeuMGObP58U3V1mRW/ji+6kvAIWM4a/IK1sVzM0987FhQjq6N7YGg04jhxWXLZUtfolw2d3on8+skrW+YrsD3S0iS2T5j4KwgmIvqB5wvLNS9rdlQ0/AOX500fBj9wHoSkF8UtigETiGze4LY=
+	t=1733843797; cv=none; b=ZwoDsLzfkZuv1Oes+/bRwOM0pGG/dk4KxSA1FCl9aHkoPPqjXmhJEHCDugJlY5kEZsx4Qbh/LNb5RuCcFhWWJ8LYAWj51Tu/6wV8Dw102VWQPuOL+VXPoBTJEJfKkwN2YndSgQ+CyaN5aRMOQmO7+ADHj15uyjpSdLW9UN6fznQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733837696; c=relaxed/simple;
-	bh=xCNtIGvZnNIu5/QbFT3pZymo7sFLzI6Gj4+mZZnRzu4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R5Y4CD0/YAWch74P7T2XGvsGLrD6PuBSYFv4QCJSyUeRwIgqnyIJDThD9tJCiG+F/703GRhAgow7ZXepVcV6y5J8sEPAL9Ot3iSHuo9L78G4joKVW3ydXMqP+s9lD5/rCRZXLdemRcBNk/zS6EtzTaqxtVmFd8+WkIhPwQmldhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AYTJLaRU; arc=none smtp.client-ip=209.85.222.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1733843797; c=relaxed/simple;
+	bh=cMEx2gf52bAp6BVsDAEzu6IQF+0HBT6Ws0MACSlPHkA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ejH+7u9cYAyHq0lGSjPJLJVZvRec8gAyZc7sPNjJ6H/TgWFGH8Wbj6B/vxcBjyR3ZE8V8S705qivgCwJ/LTCNIlzMESnytL142dhc8JTU1znOUA1FajoVKtHd8H0OumK2QEB57MITZYx3KJTfUiPRpE8bx6nODK3FZoOPwf34TY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20230601.gappssmtp.com header.i=@riscstar-com.20230601.gappssmtp.com header.b=qqldTwGz; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=riscstar.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AYTJLaRU"
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-7b6c8b11407so148994985a.0;
-        Tue, 10 Dec 2024 05:34:54 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=riscstar-com.20230601.gappssmtp.com header.i=@riscstar-com.20230601.gappssmtp.com header.b="qqldTwGz"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3862b364538so2436084f8f.1
+        for <linux-debuggers@vger.kernel.org>; Tue, 10 Dec 2024 07:16:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733837693; x=1734442493; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bKV6ykmIkdoQNyGHHuYy+sKRiD2AqpahzC1WLoezEII=;
-        b=AYTJLaRUCcq6YYLFx4X+2zu74GLUsZi3k9g3LG5OWT3iCF/58K3v6y/axjWM/60lmh
-         TsUsDbSk3J5kKVIt624p+c53xcDLWFC/bYn7Vuk6hdNKLaxo7vofvVhAKRkYbbKUrYCi
-         3fTBf/GNrw5YeY4XDZXtPKaqJhVTFa/g87yVGYcT1OIVHFykYkP2CpHhoAIHTy4licPw
-         94wV3VmNVgm2nf4mp9wL1/xUuqnCukflav8ZQ9SN1VuirXDIYpCVW1xFSBcul9FDKOsL
-         uXn235dSuG7lwerqi28A671k2EjtEHFu6LOOHd1JKeQEGqbdjq8diVSTKZYZjxOlNfQV
-         pYAg==
+        d=riscstar-com.20230601.gappssmtp.com; s=20230601; t=1733843794; x=1734448594; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3/Hk6Ku9xV4vYVPZ0mEkrD1qjVxMUjhQA0xZ6o+cH5w=;
+        b=qqldTwGzXRHHpqXhnM9hHbNAaFWAL1WTB9KYrDkBO5pTXRZmwjeFI3ydxj5kEGXyOz
+         jutBtLKMiKrBm893DEsz9/5dOW0pKR6vVX6N61ov6B67JTxLJKZz3nLytH1WpAF/MTqO
+         gvSEy/0mldWkb/WNfDCsxP9RPiW7UlojdivkPqIAGjSXdqlUch/TWRvLA7cVtTMfdKbH
+         1jbJ5ZLZdxPHaSx4Japbfe6MHsgGnGMB7CpNuvSuNNoFjWQiWB8J+LL3n3zqCgHyluOn
+         mBPbQjUEAHdo+Fz42CbNPM2dZNcJF22SNV/ekbhI8CkoFrsh7ImCa5ZY9WWjfZh6I4i1
+         tMtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733837693; x=1734442493;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bKV6ykmIkdoQNyGHHuYy+sKRiD2AqpahzC1WLoezEII=;
-        b=j9CQyN7Xc4xDRP7rtI+yAazLajOwiUo4/aRLrhrLt22kJM1HPdpnMOva692jtbm+KR
-         OY500o831Oi8/SdwpLPWGgRtYVt4juopj/LVI0fGgphFKMXD0UbGbFpQbTljcX+zEa1y
-         kBdM22XZlty8exD2iX0EepGVMrP7Wx4T2KAwzaRrK928tb0tWoV6n2zdZ8Xlw+HrMJrA
-         T3Zh/BFmgTJ1tYjSFKu6wPCWGJoAm+muatH8jWyxzT0LbD9L2KKQhWioJ2SDESmOWJaH
-         2NA+5E8u8ShqEODqIuh96wTqHMolZjnBL3nwQzbYj7sbMXqYyHRkR7niLRFmRBv9IPsZ
-         2K0A==
-X-Forwarded-Encrypted: i=1; AJvYcCU0lxRt1ZgoMGkcwfPjwSJQBSqDELTzvi4fPNDiHtwrDLC1NSVGBjcGM19iU3nIyYSI2/XiXZAV34dqNrsf@vger.kernel.org, AJvYcCXJxr0eN/5Ob2i+gkdM4OTZ8rYongTqgyrNUNGAwxOwSUhvxY2EB+59srHfR/C60fIQkpg9suhH3kThHqRUqfA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx3YfrrGof53v0yfZ13Ks9H3AkBgtBV5rXI4FGMfsdNoMnIO++z
-	kfm649fPo5wRRl8Zk3wKaKMtv8nYRINv8yx3rdffgLabipE6980j
-X-Gm-Gg: ASbGncuaL7KY0WUaxUtoOezRgVx2gz2+bxuBxHySfCyPpif/wqWta6Otu8J6EtmIFFn
-	t8bw69UOye3+asagApFdL5nphe/tyS51jdct5shqEChczRTEE78gH1AubJ3clAE2w34Y/0alTW7
-	dDKYPMv98lbFvfxONaunhXAGyw8gqylGhqwVvyoOJT3OHw9P0EdxmTxVHVlzt3FMMex7sv2VeZq
-	rFYcmd6i1Q9u1omzB24GwAgcxXARlcwWMh14u6deLgJa+I=
-X-Google-Smtp-Source: AGHT+IEO5V91IXkAUxJIMMTguBq9T2vS6FkhMCRazvler4aaNFZ5+3hngvqMaFkv2Gl//Wyc6mFSXQ==
-X-Received: by 2002:a05:620a:1a94:b0:7b6:7aab:418f with SMTP id af79cd13be357-7b6bcb64d24mr2550058685a.55.1733837693414;
-        Tue, 10 Dec 2024 05:34:53 -0800 (PST)
-Received: from localhost ([2a03:2880:20ff:13::])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b6d8aea6dcsm162677285a.107.2024.12.10.05.34.52
+        d=1e100.net; s=20230601; t=1733843794; x=1734448594;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3/Hk6Ku9xV4vYVPZ0mEkrD1qjVxMUjhQA0xZ6o+cH5w=;
+        b=fVwE00X3Aaui6lSP6VK6t3BwgBbk/vtakWY66nwSfIlJZPFo3ClCY5IZlrAt/V5D+P
+         i73fge96vp0Uh2yjzdDw6d0qr4Z61DgAEQ7T64COkwwXKhtQBos590ZUpEJqszGs/Hjb
+         SbAtbTh9/AehrDXqmQPCaSSXVFVUKd1qjHytv5nn9yHWGAt+oakQmKP1bTBV+HEAOqXb
+         Y2Q0XMc1bbjAY28TFMnoRtpJmEUMV6maAUOpJ2JqKnIg9X6X+Az0Rqfd99R/VmGBQwR9
+         rxQP+RobblJg+1eAlA+hmfH1OHJueP0WkFW/zhi3OTrkQpvN5/goQlZD6CpomT68tqnH
+         e5bA==
+X-Forwarded-Encrypted: i=1; AJvYcCUQGDrd7llPGqODzB70jI/ydiicBqRXpalcD9pUFb9qtLa81UeZEfW3RoGgoA87nLzont71xKFvjV5rOqpDb68=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQK1xlbt0GYh/TN3o5EvsPrT3vHhfwRYs1I9T3iKwMZfibWyxo
+	g7FbYVptol1bnBDJNKCh3rD1jD0t335ho2YM1FKe8LIK0JGaQPnwSE1pWcI6qnE=
+X-Gm-Gg: ASbGncupPKLCzVgrEp7Yjaj+pTPGV1dsVcAwbxXYPrOsh6a8BH08HfEftQevbBVvFnq
+	1WZtTd5XCqDbZAnamlCXmnGbOHLmSgr5tnPXd8RgEZ19fY3ollybediQlAgyUJSu6Wjy40WA9vr
+	xH/43pUm6JCx4+e4CU1dmgbnvmCBIDenHawJqLyYSB0J90rAcz0QLP2Uu0OyhPFqhhOghBDeXD+
+	iTTH3tAckhbT+vgtu+JyQe/WvjS5I++Tewy5rb2/2vST04gQX2wqYIDniTWopUAX7XZeN+sUPw6
+	9fcDjsxNxbbj28+Fbq15/XRIrfQMQYBn/TbH
+X-Google-Smtp-Source: AGHT+IEZYgzuNEX0Ja8JZykHzolp0rxxgNyso24X5bGyQrupgg8bLOxUA1VlNVk3vdf2QdgJ1/xovw==
+X-Received: by 2002:a05:6000:20c4:b0:386:2ea9:800 with SMTP id ffacd0b85a97d-386469d5155mr2165720f8f.18.1733843793561;
+        Tue, 10 Dec 2024 07:16:33 -0800 (PST)
+Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3862de365f0sm13005754f8f.3.2024.12.10.07.16.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Dec 2024 05:34:52 -0800 (PST)
-From: Amal Raj T <tjarlama@gmail.com>
-To: danielt@kernel.org,
-	dianders@chromium.org,
-	jason.wessel@windriver.com,
-	stephen.s.brennan@oracle.com
-Cc: tjarlama@gmail.com,
-	amalrajt@meta.com,
-	osandov@osandov.com,
-	linux-debuggers@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	kgdb-bugreport@lists.sourceforge.net
-Subject: [PATCH 3/3] kgdb: Add command linux.vmcoreinfo to kgdb
-Date: Tue, 10 Dec 2024 05:34:48 -0800
-Message-ID: <20241210133448.3684593-4-tjarlama@gmail.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20241210133448.3684593-1-tjarlama@gmail.com>
+        Tue, 10 Dec 2024 07:16:33 -0800 (PST)
+Date: Tue, 10 Dec 2024 15:16:31 +0000
+From: Daniel Thompson <daniel@riscstar.com>
+To: Amal Raj T <tjarlama@gmail.com>
+Cc: danielt@kernel.org, dianders@chromium.org, jason.wessel@windriver.com,
+	stephen.s.brennan@oracle.com, amalrajt@meta.com,
+	osandov@osandov.com, linux-debuggers@vger.kernel.org,
+	linux-serial@vger.kernel.org, kgdb-bugreport@lists.sourceforge.net
+Subject: Re: [PATCH 2/3] serial: Move LF -> CRLF replacement from serial
+ console to kdb
+Message-ID: <Z1hbT4OtEO9gz5Dg@aspen.lan>
 References: <gmail>
  <20241210133448.3684593-1-tjarlama@gmail.com>
+ <20241210133448.3684593-3-tjarlama@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241210133448.3684593-3-tjarlama@gmail.com>
 
-From: Amal Raj T <amalrajt@meta.com>
+On Tue, Dec 10, 2024 at 05:34:47AM -0800, Amal Raj T wrote:
+> From: Amal Raj T <amalrajt@meta.com>
+>
+> The current implementation of `poll_put_char` in the serial console driver
+> performs LF -> CRLF replacement, which can corrupt binary data. Since kdb
+> is the only user of `poll_put_char`, this patch moves the LF -> CRLF
+> replacement logic to kdb.
 
-Add a new query `linux.vmcoreinfo` to kgdb that returns
-vmcoreinfo to the client using the mem2ebin encoding.
-Maximum size of output buffer is set to 3X the maximum
-size of VMCOREINFO_BYTES (kgdb_mem2ebin() requires 1x
-for the temporary copy plus up to 2x for the escaped
-data).
+This description only explains why it is safe to change
+uart_poll_put_char() but...
 
-Signed-off-by: Amal Raj T <amalrajt@meta.com>
----
- kernel/debug/gdbstub.c | 10 +++++++++-
- lib/Kconfig.kgdb       |  1 +
- 2 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/debug/gdbstub.c b/kernel/debug/gdbstub.c
-index 6198d2eb49c4..5bec444fc6d3 100644
---- a/kernel/debug/gdbstub.c
-+++ b/kernel/debug/gdbstub.c
-@@ -34,13 +34,14 @@
- #include <linux/uaccess.h>
- #include <asm/cacheflush.h>
- #include <linux/unaligned.h>
-+#include <linux/vmcore_info.h>
- #include "debug_core.h"
- 
- #define KGDB_MAX_THREAD_QUERY 17
- 
- /* Our I/O buffers. */
- static char			remcom_in_buffer[BUFMAX];
--static char			remcom_out_buffer[BUFMAX];
-+static char			remcom_out_buffer[MAX(VMCOREINFO_BYTES*3, BUFMAX)];
- static int			gdbstub_use_prev_in_buf;
- static int			gdbstub_prev_in_buf_pos;
- 
-@@ -768,6 +769,13 @@ static void gdb_cmd_query(struct kgdb_state *ks)
- 		*(--ptr) = '\0';
- 		break;
- 
-+	case 'l':
-+		if (memcmp(remcom_in_buffer + 1, "linux.vmcoreinfo", 16) == 0) {
-+			remcom_out_buffer[0] = 'Q';
-+			kgdb_mem2ebin(vmcoreinfo_data, remcom_out_buffer + 1, vmcoreinfo_size);
-+		}
-+		break;
-+
- 	case 'C':
- 		/* Current thread id */
- 		strcpy(remcom_out_buffer, "QC");
-diff --git a/lib/Kconfig.kgdb b/lib/Kconfig.kgdb
-index 537e1b3f5734..012529eee79e 100644
---- a/lib/Kconfig.kgdb
-+++ b/lib/Kconfig.kgdb
-@@ -12,6 +12,7 @@ menuconfig KGDB
- 	bool "KGDB: kernel debugger"
- 	depends on HAVE_ARCH_KGDB
- 	depends on DEBUG_KERNEL
-+	select VMCORE_INFO
- 	help
- 	  If you say Y here, it will be possible to remotely debug the
- 	  kernel using gdb.  It is recommended but not required, that
--- 
-2.43.5
 
+> Link: https://lore.kernel.org/linux-debuggers/Zy093jVKPs9gSVx2@telecaster/
+>
+> Signed-off-by: Amal Raj T <amalrajt@meta.com>
+> ---
+>  drivers/tty/serial/serial_core.c | 4 ----
+>  kernel/debug/kdb/kdb_io.c        | 2 ++
+>  2 files changed, 2 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
+> index 74fa02b23772..ed18492b7f8f 100644
+> --- a/drivers/tty/serial/serial_core.c
+> +++ b/drivers/tty/serial/serial_core.c
+> @@ -2142,8 +2142,6 @@ void uart_console_write(struct uart_port *port, const char *s,
+>  	unsigned int i;
+>
+>  	for (i = 0; i < count; i++, s++) {
+> -		if (*s == '\n')
+> -			putchar(port, '\r');
+>  		putchar(port, *s);
+>  	}
+>  }
+
+... kgdb isn't the only user of uart_console_write() though, right?
+
+
+Daniel.

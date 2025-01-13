@@ -1,112 +1,87 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B64C1632D9;
-	Wed,  8 Jan 2025 11:40:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736336434; cv=none; b=sfjLzHO18G9tNq0El20x7DDLY3hqAvLGKgKcUza93p7cWmkBxf6gExk8YOgIy/TG+3CUW+4uJgkGyzxLZNa7G4wocGnwLtu4OtmD8iJ4Hd20vHbWC4BsQZu9VhiJ+0uBzp9JuBULoB/RSAbDNgYGH0DBvVzq+1zy2JUwKajrs7I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736336434; c=relaxed/simple;
-	bh=bH3Bm7ha58wqkbTHymeisNRVdWPK2PVvkSpKMNIx60g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m4BqgkTrPuiH4+t1/h/xeEyMs9dhwaNUT0kRj1jKFyp2nOU58XBX5coN5rSa//Plqbp/RUX04eWN0kGH1hdR/y+QTkzW+5D2EEdSqMR1VjYjwN9HL/mGhtP7zOSWVQ+PDkq8TbBzC9vgyy8UWCt+vws48UVnnBplpcN2GY4XAPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=doDE+CFb; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65FA5237A38;
+	Mon, 13 Jan 2025 13:42:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736775767; cv=pass; b=Ajmz2+Z9BFpizpS1hETF9cRjgJSm8QVKhl4EHaTZcoONUJYVZzPqCjnNDCzbnetHEC3ewE6gh4l8q2uDHUApVnphYejyR62Gqer0HdUvwInFyeo9kn4QE3LaF9O4JyED3D1q9+vJ+6j2l/7yIekZlVWpgna2/inkTZ1YaMvrt3A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736775767; c=relaxed/simple;
+	bh=yJZLztpcvZRwJPasIUbRVL9hobOTqVHE9FThozuqw+U=;
+	h=Message-ID:Date:MIME-Version:Cc:To:From:Subject:Content-Type; b=X14GxuCIlnuvAL/J+TPivlZQhCR7Tu1crdiqEqWY/lvJy3Z7ufncm2+zviwU+aVngWVbz/nizKwwRkl39PGo6EGbDxTrBJrWAcshAx90AUPitivE18hSewFgKC5i4nFE3klEpPLdufBGTmu/K4T+K2sCmrK2qDPC/GRXtBJo3/c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.b=cw2GC91h; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="doDE+CFb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E13C2C4CEDF;
-	Wed,  8 Jan 2025 11:40:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736336433;
-	bh=bH3Bm7ha58wqkbTHymeisNRVdWPK2PVvkSpKMNIx60g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=doDE+CFbl0lAX2CPYhSzwYMYr00QNFaz968v7sVrY+tH64y7d1idqfxNnC9r50+yM
-	 l55VGzjCXWFlRTV3EJykDrfYme0c2UmrfFJFnPLjlrJUbnHsBlhQEipwp/hXZizuDD
-	 2cXFdcYeEZGakZhsjPmv+0CoaYudgUGVikLTn0EHmAy1WzYHyLWgnqeBtK91AdVYHn
-	 HP8XDQx8p8ui/hxZO7oXcYzfa+zIHAna/d8AwKmUQjxwAhQUgXwQ89n34/tW8h2ZuW
-	 OiqdltFimik7oUjlfqD3EAipP+taPByTKQAVAPHTRrZZUTAfVA1JhqUwjGmAdtPV20
-	 vT1NcBIAPj2/w==
-Date: Wed, 8 Jan 2025 11:40:28 +0000
-From: Daniel Thompson <danielt@kernel.org>
-To: Amal Raj T <tjarlama@gmail.com>
-Cc: dianders@chromium.org, jason.wessel@windriver.com,
-	stephen.s.brennan@oracle.com, amalrajt@meta.com,
-	osandov@osandov.com, linux-debuggers@vger.kernel.org,
-	linux-serial@vger.kernel.org, kgdb-bugreport@lists.sourceforge.net
-Subject: Re: [PATCH v2 1/3] kgdb: Add kgdb_mem2ebin function for converting
- memory to binary format
-Message-ID: <Z35kLN5mkekkfgql@aspen.lan>
-References: <gmail>
- <20241211153955.33518-1-tjarlama@gmail.com>
- <20241211153955.33518-2-tjarlama@gmail.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.b="cw2GC91h"
+ARC-Seal: i=1; a=rsa-sha256; t=1736775751; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=KwBnDVoDCxViRUdvtlOV5/kQVXZclKdqPzTb25tYh2ckFoLoC4yQHqll+M35gmScs2xKwyww2DVGVxpCW/5hMJCiKANgRWALlsibZCNcm3GECqIc6sDrqHVKqYrpVnfzFbA+Ov0OLzZeRX4WlUuwnlS1YmJR3t7sT6CzJhWd1QQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1736775751; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=/YPpR/aDr4AiUnIfUw8D/cQx38dc7GnQBiitLa2av1g=; 
+	b=Bg0nPqLxzZ3wCIev69riMKEpylECZhx9Jj+2lKSILtDzJDh/ZGJuy/xLf+lEJouZkeN6LpoDJrppmQWc3vIfQV1U+S3D8hWerupJW5kcz/AHWmJqlyjzJGNfqJ1Ay317Kk2zgTNCU5eYrFj7Zb5EENHK/UVKUhCtgfqB2hpdEN4=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=Usama.Anjum@collabora.com;
+	dmarc=pass header.from=<Usama.Anjum@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1736775751;
+	s=zohomail; d=collabora.com; i=Usama.Anjum@collabora.com;
+	h=Message-ID:Date:Date:MIME-Version:Cc:Cc:To:To:From:From:Subject:Subject:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=/YPpR/aDr4AiUnIfUw8D/cQx38dc7GnQBiitLa2av1g=;
+	b=cw2GC91hUBF59hb7yBsNKAm0v5G4ycw4oP4k2ALJ5JnioOAQH+fsEzXTdatMNN3d
+	VdpzdYltflHR6Up9VnIVAoUaa0hCQYVrj4m5G+E/q8UtW0WDLZ6r1BpsYzS5XmrReJD
+	gGvU4ha5SKuKlJSplsKPYDIcGenmAtm1WAezXpkM=
+Received: by mx.zohomail.com with SMTPS id 1736775749560835.4250143330927;
+	Mon, 13 Jan 2025 05:42:29 -0800 (PST)
+Message-ID: <8b118e93-c159-40f0-b89a-817752d11627@collabora.com>
+Date: Mon, 13 Jan 2025 18:42:55 +0500
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241211153955.33518-2-tjarlama@gmail.com>
+User-Agent: Mozilla Thunderbird
+Cc: Usama.Anjum@collabora.com
+Content-Language: en-US
+To: linux-debuggers@vger.kernel.org, linux-serial@vger.kernel.org,
+ kgdb-bugreport@lists.sourceforge.net, LKML <linux-kernel@vger.kernel.org>
+From: Muhammad Usama Anjum <Usama.Anjum@collabora.com>
+Subject: KGDB/KDB running over internet as serial connection isn't possible
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 
-On Wed, Dec 11, 2024 at 07:39:53AM -0800, Amal Raj T wrote:
-> From: Amal Raj T <amalrajt@meta.com>
->
-> Add a new function kgdb_mem2ebin that converts memory
-> to binary format, escaping special characters
-> ('$', '#', and '}').
+Hi,
 
-What about the '*' character?
+I'm new to trying KGDB/KDB. My test machine doesn't have serial port.
+I've been trying to run it over internet. I get following dmesg log:
+KGDB: Registered I/O driver kgdboc
 
-The gdb docs say "Responses sent by the stub must also escape 0x2a
-(ASCII ‘*’), so that it is not interpreted as the start of a run-length
-encoded sequence".
+On test machine command line:
+kgdboc=kbd
+sudo sh -c "echo g > /proc/sysrq-trigger" # Launch KGDB
 
+System freezes at this point meaning the debugger got activated
+correctly. But I'm unable to connect from host side:
+gdb vmlinux
+set debug remote 1
+target remote <test_machine_ip>:2012
 
-> kgdb_mem2ebin function ensures
-> that memory data is properly formatted and escaped
-> before being sent over the wire. Additionally, this
-> function reduces the amount of data exchanged between
-> debugger compared to hex.
->
-> Signed-off-by: Amal Raj T <amalrajt@meta.com>
-> ---
->  include/linux/kgdb.h   |  1 +
->  kernel/debug/gdbstub.c | 31 +++++++++++++++++++++++++++++++
->  2 files changed, 32 insertions(+)
->
-> diff --git a/include/linux/kgdb.h b/include/linux/kgdb.h
-> index 76e891ee9e37..fa3cf38a14de 100644
-> --- a/include/linux/kgdb.h
-> +++ b/include/linux/kgdb.h
-> @@ -322,6 +322,7 @@ extern struct kgdb_io *dbg_io_ops;
->
->  extern int kgdb_hex2long(char **ptr, unsigned long *long_val);
->  extern char *kgdb_mem2hex(char *mem, char *buf, int count);
-> +extern char *kgdb_mem2ebin(char *mem, char *buf, int count);
->  extern int kgdb_hex2mem(char *buf, char *mem, int count);
->
->  extern int kgdb_isremovedbreak(unsigned long addr);
-> diff --git a/kernel/debug/gdbstub.c b/kernel/debug/gdbstub.c
-> index f625172d4b67..6198d2eb49c4 100644
-> --- a/kernel/debug/gdbstub.c
-> +++ b/kernel/debug/gdbstub.c
-> @@ -257,6 +257,37 @@ char *kgdb_mem2hex(char *mem, char *buf, int count)
->  	return buf;
->  }
->
-> +/*
-> + * Convert memory to binary format for GDB remote protocol
-> + * transmission, escaping special characters ($, #, and }).
-> + */
+I may be missing something trivial. Please can someone point/correct
+me how to connect correctly?
 
-It would be good to include a link to the following in this comment:
-https://sourceware.org/gdb/current/onlinedocs/gdb.html/Overview.html#Binary-Data
+PS: kgdboe [2] seems like a out of tree module for help. But it doesn't
+seem to be supported anymore.
 
-Doug already mentioned putting buffer size expectations in this comment.
-Maybe also mention that the worst case packing is identical to
-kgdb_mem2hex() (e.g. 2*count + 1).
+Is it possible to connect from another machine over internet and debug
+the target?
 
+[1] https://docs.kernel.org/dev-tools/kgdb.html
+[2] https://github.com/sysprogs/kgdboe
+-- 
+BR,
+Muhammad Usama Anjum
 
-Daniel.

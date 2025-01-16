@@ -1,219 +1,225 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2065.outbound.protection.outlook.com [40.107.22.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6CD19539F
-	for <linux-debuggers@vger.kernel.org>; Thu, 16 Jan 2025 10:37:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737023852; cv=none; b=lRIIijqiwIxoceLcN3c9jGia6fLubIGwoQhpxZ3xaLWLIPVjaj+3knv/OJGUOomVLVmqPsoaowTZnlCbl2KaqTm9QXNnTZyV3Pwxd4ctuuHaS8sSyQdciXcI1xu7dWvDI0+QEg4iFKX7CKE2eG8uc7gtL1EiRg97h9xQXYtq5nE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737023852; c=relaxed/simple;
-	bh=qK8XQfN1Gk5nwFHGzeJNW/hu7t6k2hFTZHLZPJUrwUE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=jBhW88DAgR9JpYYdvbacXz3yF/7U7nw5hWOJfKKh4ZlJIkbrn1Qq0I4t0mcw1xHPX0dVu7hM4YfbnsTY57rfJs5+pXE9+kN0rWx5++kSduoLQ13o15vYlQV5XTvu2E4YhnJQ177kZYgONavN7EoIgARsPzm9WqerhyKev6K7jfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KeXrfGuT; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9C331DE3C7
+	for <linux-debuggers@vger.kernel.org>; Thu, 16 Jan 2025 10:49:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.65
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737024553; cv=fail; b=MwwMd4IV6UfvUMBH83wo+xJGdxCvQ5QBafXmRr8Ll5QAMUuW49ifEvB+N34Cy374XJndKsBsG9inTk6Xv+T5Kl/skMLxhlfGwvFnLNEFkTw6DV+JtxkvSewMU9XyHzPpq9NgoRDWBnWhXP0q7s5Q9uZy0sVl9Z/Ny5sIDZSQAF8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737024553; c=relaxed/simple;
+	bh=EIzzuZgV9nVr3PBZ1Q9ZZ1XHlB/0pSVEvJLvGekBHLI=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=UKazLP9Pndk/KWoiwnBjAMEhdfEG3IrkmTkvtCK8gCRDL6rgUQLvJgbcz71s/EvZkipKNnUBDnWlcPsMd+YB1vy8q2gd1NxfhiF9K9CFGMBCbe6skvEfIhaleq9G5kIdFBObQ1rc4Cr8NA6H0Ls41fsOTBy7DOTlpfVb4Cd+WKQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=iyC50Of5; arc=fail smtp.client-ip=40.107.22.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KeXrfGuT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1737023849;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=afz+4OE353qB0XJ9A5iXAn0NbAmdnjPqioq2MmMR2Zk=;
-	b=KeXrfGuTzwQF+ULRiEOMkgoe/QYXGBL6z2K9YsO33SaqhgWanRljRIETf39P5UGgAwaR7P
-	WgnrdShv2C4HvB+llYI51bj7Iy44ICz2JcDlUogtrhO9Jtv3S0wnYHdlTOrVzAX12wHixV
-	ArPhAYvBNEGtSQDZ1x7aLZ/idy7Htvk=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-625-gVAIQOr4NvOygU9Q33cMQQ-1; Thu, 16 Jan 2025 05:37:28 -0500
-X-MC-Unique: gVAIQOr4NvOygU9Q33cMQQ-1
-X-Mimecast-MFC-AGG-ID: gVAIQOr4NvOygU9Q33cMQQ
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-43623bf2a83so5173475e9.0
-        for <linux-debuggers@vger.kernel.org>; Thu, 16 Jan 2025 02:37:27 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737023847; x=1737628647;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=afz+4OE353qB0XJ9A5iXAn0NbAmdnjPqioq2MmMR2Zk=;
-        b=hL152byrxQfIbH2JvxWsw8dDhvrrEaXGdMN+lgMAWg9dN25kwJTa6iqeI8rwPZVC0z
-         ZRkuUhuGG94tF3VzhgMZOR6mr8ea/+IJawnUWArSvGgHYQcLBtccbK9QxGXE9C7GU+md
-         H8iYBY+uyafRzAUbs+T2ZhSgDUyFSA2aNX3ngUX9VRRUJUIfAqQurK/lr3kLB5Insygy
-         xEe54Roow6Tq8TgMoLG2+V8n42Dk7/quScGWuebWClKXQuDq9p0mFjLbh63Uh70QlO6b
-         YHpNwPVFoWhgUM7/jeOqQ+s37T9SNYJ8wmKiMqsMIea2eZOlF8U7UGAGPsRZTjQcaadD
-         KySQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWs/XQd14T3xBqHSXqRcf4g+Ri0dHHBn3Fe8MqMcdYOoSSAg9FKoiglzUd00wtXe+uG1qalKJMBOCFbXCtX1SA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxta0c4Y16wLwgLaLYNJUBD6YJotTHHofaGLQ73hx/PHFThI8Za
-	5uCemBzTQrd6Lca2XY/tqdy1GgSjdqpyTLgv6Pp2NnwK3lDtGDww2KiMabT91nRdViR9d96nD5U
-	ngz2Yd+bKQiOaGdYstMaOrafMSjBHU1BxrycaNbnvTTLH2my4cNxOjzOpL+bW022uEw==
-X-Gm-Gg: ASbGncuqx44fpJPCkd3+xYJjd8RmrVsImuWmm2zm3nWecslKSLFd/KIW9O9tM06wWUS
-	3JNVljqVm1+zwgfA2nJWc9Lp9qq1SuWtgoTYhAZKV9GsoZlFHwgZsVETbMvB1BZxmnzScPpqVOm
-	dEkdmbGmRFlqUKsF7poFoJAD9Wvnxew22k7qSNrqrUeqnJw6Jxf7oLd1LlY4vnVckUkyAcce5zQ
-	KFhUYByK99kRigC5Z+vcc3wQ9kpYeKfszb/8aMDo5jtbTCcjXr34GbHYtrk3+HfffhuQ6mBcB0d
-	ekhvtg==
-X-Received: by 2002:a7b:c315:0:b0:434:ffb2:f9df with SMTP id 5b1f17b1804b1-436e26adf94mr318507825e9.17.1737023846889;
-        Thu, 16 Jan 2025 02:37:26 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEBidBGhIPwJqxDq13P32Iam9aSzh2FtZ725kNmxULef90vbPBbLPIKwp3AeJW+9asUJ+lSnQ==
-X-Received: by 2002:a7b:c315:0:b0:434:ffb2:f9df with SMTP id 5b1f17b1804b1-436e26adf94mr318507565e9.17.1737023846514;
-        Thu, 16 Jan 2025 02:37:26 -0800 (PST)
-Received: from localhost (44.226.159.143.dyn.plus.net. [143.159.226.44])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-437c74c475csm55593135e9.20.2025.01.16.02.37.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jan 2025 02:37:26 -0800 (PST)
-From: Andrew Burgess <aburgess@redhat.com>
-To: Stephen Brennan <stephen.s.brennan@oracle.com>, Tom Tromey
- <tom@tromey.com>, Luis Machado via Gdb <gdb@sourceware.org>
-Cc: Luis Machado <luis.machado@arm.com>, linux-debuggers@vger.kernel.org,
- Omar Sandoval <osandov@osandov.com>, Amal Raj T <tjarlama@gmail.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="iyC50Of5"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LjoVPgb8VwYNtXQ8Gy/yggIi7/89Mfsk0n+nf75szOduZqdQuCCc43PyMPOK9t/xX3C2zwIpyk3dU9I3Mj4pNi5oLS3J+yXVtdwQIkH7XEoW409lXURc77MWY+X88KVx92ALMZv/ZdckUKRwRORxRE8y8klEYgHh6Jdl12e0uSrEzGmIjYU/B1+kx3JuL/Ly0TdqAYyHYnUyUjq7/50ejDC1E5ecCrA/Xj+OYqVj5ZupAvU73ssA09mKs4XTZ2UL7zYXi3r2Wh7vxH1vv3uUEf4JkqSROx3XRRNoEaEIMy+yU7j/rkMTegW2gO2DlLZNJb2j97EbmOMIF2swUDhvIg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gsGC/c1DDfZQ3RyBdv6tidIIZa0kltRPi4mSWa2RrEo=;
+ b=juONVJXXUkjP/U3H58XG+t8/+PmjEMuJ3wJdxbfwv/GJEO8NQBM9XXQmcJah+TtZplyYOfD/BhttVQ8ARw2dKbx2+da3z30ElzxX7uHacV7G8I1ZAhIM49EmIkdiPCdrDTMDrCwB0/XFRiyrXSGO4R6qX6SiMfc6kRMj0/ZRq8wxMZCx/hOQTkwz3Zghc7XrAucEBh91IGQuhKXiWJIsWlnOoK6DEsoiHm/dNL/tWvY27wsewcFouoZw98NOEN2SzZh4FvMEkNbIxv3yOUAoe0LewkgUd8ZRAv3wmIePW/jbvC7VcUFPd7vqa0YZ37cWRZNxFB6x2hCSG/SuWEzRzA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gsGC/c1DDfZQ3RyBdv6tidIIZa0kltRPi4mSWa2RrEo=;
+ b=iyC50Of5UpsPz5zc6suUtaySuOTIfhSGF2AsJt0KC/XILR0hgKDghcyr/2Ub6atw0lWqlrgHwrxiI0wQ1VnV8M7ZvEr7dMVnRVNOPNK3jxlrjiG5z0bowRm3/zQvWAWcg2cMzgET+NxxzOK0vcNw4fC6+ZHbyHCbgrs01v6pkfI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+Received: from PR3PR08MB5852.eurprd08.prod.outlook.com (2603:10a6:102:8e::21)
+ by PAVPR08MB9186.eurprd08.prod.outlook.com (2603:10a6:102:30c::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.14; Thu, 16 Jan
+ 2025 10:49:04 +0000
+Received: from PR3PR08MB5852.eurprd08.prod.outlook.com
+ ([fe80::f44:d113:1c29:825d]) by PR3PR08MB5852.eurprd08.prod.outlook.com
+ ([fe80::f44:d113:1c29:825d%4]) with mapi id 15.20.8356.010; Thu, 16 Jan 2025
+ 10:49:04 +0000
+Message-ID: <a119598d-51ce-44ae-a315-aa07c8fdb987@arm.com>
+Date: Thu, 16 Jan 2025 10:49:03 +0000
+User-Agent: Mozilla Thunderbird
 Subject: Re: GDB Remote Protocol Extension - Linux VMCOREINFO - Request for
  Feedback
-In-Reply-To: <87y0zds39y.fsf@oracle.com>
+Content-Language: en-US
+To: Andrew Burgess <aburgess@redhat.com>,
+ Stephen Brennan <stephen.s.brennan@oracle.com>, Tom Tromey <tom@tromey.com>,
+ Luis Machado via Gdb <gdb@sourceware.org>
+Cc: linux-debuggers@vger.kernel.org, Omar Sandoval <osandov@osandov.com>,
+ Amal Raj T <tjarlama@gmail.com>
 References: <8734hmtfbr.fsf@oracle.com>
  <5e1c692b-b103-4c47-8cc3-d8ce487d98e1@arm.com> <87plkpqpuj.fsf@tromey.com>
- <87y0zds39y.fsf@oracle.com>
-Date: Thu, 16 Jan 2025 10:37:25 +0000
-Message-ID: <87cygnoxi2.fsf@redhat.com>
+ <87y0zds39y.fsf@oracle.com> <87cygnoxi2.fsf@redhat.com>
+From: Luis Machado <luis.machado@arm.com>
+In-Reply-To: <87cygnoxi2.fsf@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P302CA0018.GBRP302.PROD.OUTLOOK.COM
+ (2603:10a6:600:2c1::14) To PR3PR08MB5852.eurprd08.prod.outlook.com
+ (2603:10a6:102:8e::21)
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: XcpkTD_LMiBiGQjlQdsgs9692DxEARPoIJ77jNHjWug_1737023847
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PR3PR08MB5852:EE_|PAVPR08MB9186:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6948f25e-0e5e-42af-593b-08dd361b6505
+x-checkrecipientrouted: true
+NoDisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?bnl6Zkt2Y1U2YzRhbmVFeXpwRVF5Z2dVbEU3SFVGZzBybS9MUDJWT1FQTHlh?=
+ =?utf-8?B?VFlTOU9YTzg0Yk5TNWZlVld2ZHBicHh2d0gvK2JtT3dYcDlIOWdwcnZjV2du?=
+ =?utf-8?B?dzFrNlpkaCs3V0syQi9hWG1sdlR1djRXNVlickozQTJ4d3BmM2VuaExyc3Jx?=
+ =?utf-8?B?R1NwMXZHeHhFZVl3cXU2TktUQjlVTjlMQ2Z4M2Z0WDh6YzhLbmJEcE9rSjc0?=
+ =?utf-8?B?Yk9mZUxic3JLaTVrRi9tdTB5TlBleEdWRHdrQSthMm1OcEs5RmxjZTFVTTlt?=
+ =?utf-8?B?NVAyaWlxUW1DNDc5Zm9PRGZ2Vk1UeEdKMjRrNHRJYVVUYmM1VkQ2ZkhBV1VS?=
+ =?utf-8?B?TWk2dzloT1JKYkd3emdoUzhRcWcwNTBZWW5RbXVMMTNrTzdhN0gwSDJSbjRJ?=
+ =?utf-8?B?bThwVzhqVnlib1dHWWowNG40ZTJnU1RzNDdQTitFSlc4WEIveVp4TkZPSFMy?=
+ =?utf-8?B?NGVtUndxVUFDRzJGaS9OdHdCQlpyV2xVUDNBQlRnVGg4OXVvSm92TzJUYUhj?=
+ =?utf-8?B?ZUd1Nnhqc01IMTRGYU5RQ25UenVkbnZxb1RYUEFyMnlxaW5HMnJRUjMwVUpM?=
+ =?utf-8?B?TWpWWnNLM1VSTXRhYTdPS2UxbzJrR0FZaGMxNXlldTV2Q1lPTUQySGdxWWlt?=
+ =?utf-8?B?RFpvSTBTaUZqMS9GN0hxeXg0dGU0RDRROThzVkFyejIwd2ZDUU5zamd6VEFv?=
+ =?utf-8?B?ak8wRUU0dmR5bytvdk1IR1EwRzY1T1dZZ2d1c0dKb2RCNW9JTFlZMG1sS0pW?=
+ =?utf-8?B?OHRKdit2RlVNVHgxUm15UENYc3doNzhveE9JdTBFWDhZUTBaa1lZS0ZCWk1j?=
+ =?utf-8?B?YW9lMEVsV2h4dzVLblUwOHNLWUowaEZJeXpZemluY2JPVmUvcmZ4UkUrK21k?=
+ =?utf-8?B?V0hoV050SzFlWmw1U2FiakplMzRZbUlKbE1nZC9PVzRsRTZIN2pBMTd1WkM3?=
+ =?utf-8?B?ajBBQnNOdld6ZTh2WVBoRmN2ZGVDTlloTWZzQnp6MFhMOGRhNUNUYXhXVVdC?=
+ =?utf-8?B?aGM4V1Rkems2NFRLS3JUSFZXR1R1UEJhQ0dtRVNPWnBQd1Y4STROSEpNOUp5?=
+ =?utf-8?B?Z0o4SHlSQk9uTmxwM3RMekNUOXJIeEhTemZ0QldLUjkxV1BYeWJZQWNoekxD?=
+ =?utf-8?B?Z3ZzTlQrUStTZ2loUmNWM1A5U3QwV0tRM1RQakhqUHpwVW5lVkE0c2RuYzcw?=
+ =?utf-8?B?cVFocy9Bb2REZk1SY2gzd0NyVDFJeXZ2azd0R3Ftc0hmRGxPTVhNN3pTOXF1?=
+ =?utf-8?B?bFZ2dStSN3E3bGJGWE9BNEdkVVBLdlpWN05IR3Z0cWJzN1dGYnRwMkFEVmNi?=
+ =?utf-8?B?KzJvU0dycngweThyd1ZHN2Q1ZlFnbkZ5K21KVk94YzVmdVBscjhoSXNNK1NV?=
+ =?utf-8?B?cFlDTkdreVFSYkVVaCtIM1dVRnQ1V0s2VTlqbEc2NWlkWXBaVmVSSC92MUVw?=
+ =?utf-8?B?eENDWnUvRzFHdDZSUWpycTltRFNGTWJESzNSNzVpK3pVcXd1SXl5NVphK1NC?=
+ =?utf-8?B?WVRBeWhsS2N2YkpPbDgvY0F5WUZNQjBscmVHNWw1MFdQYy9UMFpHSVV4NWUv?=
+ =?utf-8?B?QzNvamhUa09YS1o4TVNSOHN1QkozM3V2Zk50MC83TTV5N2lJN3BhcFZhWmk0?=
+ =?utf-8?B?a0xrRXAyaVV4N0dpSDRyWk5BYlJBLy9TdzdvZlZieTMwd0FhaGFlRE5EeDVz?=
+ =?utf-8?B?eU9IZFkrdXhDSEJvKzdNckZhUHRUWjN3RFdja0R0MVM1Wm1neFBGYURzYytU?=
+ =?utf-8?B?QnZMOVJDU1EwZXdOV0NIcHdzeTBRSEZwNjJrYXRVdENFOU9nUXdsNlJLMFZn?=
+ =?utf-8?B?djV6NmF4NTA5eFg5RzRHWU1uaDg1ek0rOTJLK0UwSEt5MWJlNE9rN3IwR2h0?=
+ =?utf-8?Q?39syKRRrBh9KU?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PR3PR08MB5852.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?T1NNbzdrYVBOQm5UWXZKRHlVN1lmeWljZmZ4M0duTG8zZVp6VXNVZFJyWTE0?=
+ =?utf-8?B?b3VyTWV5L1hzVUE5eEV6ODVtMTNUWjRWS2FpamF1VE1RMEwxbDl6T0M4b3VS?=
+ =?utf-8?B?S0Y0ZUFRaTkzeGFxbDZNMjFTeUxaSk5NTk9nL05pRmpYY3ZKY2ZKeDZKYkZj?=
+ =?utf-8?B?M0lkVTh1Y0laOWFvZDFuRUY0aW5vV3FLdmZNTWVnZ2VNeWpZOVd5aG1Nemo0?=
+ =?utf-8?B?SEM3aVkwNEVDeWxrRVBybWo2RU01V3QzK093azVhM0cxMFUvbEsyTXJkcTdG?=
+ =?utf-8?B?UGlRMnNnbzJIL3A4eVZFN1FKcWhJMWVsUmd5S3JKMW55SjNiSHBuN3d0dEQv?=
+ =?utf-8?B?Zk4ybnp0NUhVOG1zb0dxOWFTcXlzUFRTZVV0RkVZVmx1U2luSU5Bb0FmWGxI?=
+ =?utf-8?B?Z0ptaWNHb3UrRTlHME13MnluWjR5Wkt3V2lEUm52TGFTNzQrOW9yR09ZcE15?=
+ =?utf-8?B?YWdpVHhvZHE4eHFkNHRJcHB5aklRRXhxYkNjWVBFQTRaNUpvK3dUdUIxNmc4?=
+ =?utf-8?B?ZEUzT2ZKRW5WamplQ1JITUk4enFoU0ViY2ZReDJwd1F3WFJaRjZYRzA4QjJ1?=
+ =?utf-8?B?NGpieXBKUUlhb1JiNTd5V1JRVUQvM1NsWitIRmpieDJ4aHIxQjJuSDBlT0p6?=
+ =?utf-8?B?dFV1bno1SHNWQzQ1c3hiNVFxN0FMZ0JLcEExLzBFWUhMYUJ0VzZnMFRxM1Uz?=
+ =?utf-8?B?ZWUyekMxOHAxaVV2cmdFRkZkTG9UQ2Q5MDBwMkZHalJwVXlIRkxVWGpzNGZ4?=
+ =?utf-8?B?bHEwN1NzWlovZStyMXB1Z3gvL0d0RXhEZDVYQkU5WkI5VllUS2Zja0hjR1VU?=
+ =?utf-8?B?Nmxmb212a3doSWx3T013dzF0V3h3Nk9CNFhTVDhBR0VPVGNPVHBSTWkwTWhW?=
+ =?utf-8?B?N0FLSXNtNUNRREFqUjhpOFRDMHR4Y3I1Q1lFa1dqRGVRUWJYMG1Dazdxa1ln?=
+ =?utf-8?B?SWdnQ1NaUWEzTnhCUW1Eay9ibzhkT3BBSEJHclcvbGZ2TWd0ejQ3d283M2Zk?=
+ =?utf-8?B?THc4R05PTjFZL1MvNTNLbThhVWpQTTliRVFqbkt3NGZ1bFJNTFdxQXRpOVYy?=
+ =?utf-8?B?bzY2Sy8xeWQrVXNUT0U2akw4Qm84OXFKaDdYUUlFZGJmVHZBTGJCdllUQjNU?=
+ =?utf-8?B?aHpOUFVablhpZ1N3U3pWMW9tTnB2S2VWc1RPWXFXM3ZiYk44ZEVMN290Mmpp?=
+ =?utf-8?B?dm1zMllUQnRhUXNQd3FGbTdTZGxrM1FJS2tCNTVTcHcwdWxDU0J3ZWlEeDVv?=
+ =?utf-8?B?d3FFSUs2b3l4ZTMxcFRGM0VGV2R6OERWVDhJYndTQVdyMmZuUkExNWFwTGFh?=
+ =?utf-8?B?b1NyMTBheHhETE9MS1pPUlVwUXBmbi82U0EyMHZTb3lGeVRFMExDR3haS3B3?=
+ =?utf-8?B?MFNFRUJtUTlDUEJKbU1QOGo5azFBdjg3cFliT2dqbVk5Z0hQcDZYRGg2M1lo?=
+ =?utf-8?B?TE1DTmhZRjJ6T3lWWUZiSTQrWk5ia29xOXIwMHljWHBRL05HSFVaYkNrTkVS?=
+ =?utf-8?B?aWlGVEcrSmJvQlljTGM3WTZLaFhSdWxSM2Q1SU5HRTQzNTBaZWdGRktlWWZa?=
+ =?utf-8?B?WjFuVkV2dFdlODMwS053T3huZ3VXVE1HOXhhdUlwdi9zeUZoYWxmMDgxWHZF?=
+ =?utf-8?B?Ny9pQVh4RXBmVkFWM2NuV1dsSmkxVndwQ0tDaGJEY25GVWVyMEZGOG9lWFFK?=
+ =?utf-8?B?Ni81NVhHSjF6NVQwYmpiK3grZm0xR1ZVZDdxYzU1blB0M0tSaktXZkR5bnp5?=
+ =?utf-8?B?NW50WWg0UzJlRjR5SVdZcWx6KzY2b01lWXNMZ2Fka2l2QnRRdU9YOVp0RDVz?=
+ =?utf-8?B?QjVIWFA0c2hIeXB2SUpQT256N0gya05KSnZwb0ZiRmVKcURjVFJ5MGQzOTZW?=
+ =?utf-8?B?eDdBa05ubmVJeEFZTitjck1TMktVYmwwdGVBa2RHZHJOTGhtRWFOVm9tV3Rp?=
+ =?utf-8?B?aWgyMnNva2tlZXpCQVEvZ1g0TXBQZk1JN05QSjUzZVhvMkpiN0dFSnZSZVRt?=
+ =?utf-8?B?ZWZZWHA3bzlxc2dpRFcyRkJpTEh4NW5wYUdNcTJLcTZ5cHFSNWxGUTVlbWVQ?=
+ =?utf-8?B?RDRXaktldFBXSFdMME1MOEY5UEtvcHNWeEdKUTRjazJ6Unlqc0NrcmNnN1lY?=
+ =?utf-8?Q?bXcgljQVfnazNIlk9aymPv3SB?=
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6948f25e-0e5e-42af-593b-08dd361b6505
+X-MS-Exchange-CrossTenant-AuthSource: PR3PR08MB5852.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2025 10:49:04.4374
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RC0ngPjXVnI9OgM5WqWwzCVLsFXPrICNy+T7ogDTOPU3oyn710H0TqfweG3tTNu41VSlb0jLXxnHpqL9NhCFrw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAVPR08MB9186
 
-Stephen Brennan via Gdb <gdb@sourceware.org> writes:
-
-> Tom Tromey <tom@tromey.com> writes:
->>>>>>> Luis Machado via Gdb <gdb@sourceware.org> writes:
+On 1/16/25 10:37, Andrew Burgess wrote:
+> Stephen Brennan via Gdb <gdb@sourceware.org> writes:
+> 
+>> Tom Tromey <tom@tromey.com> writes:
+>>>>>>>> Luis Machado via Gdb <gdb@sourceware.org> writes:
+>>>
+>>>>> To sum up, my specific questions are:
+>>>>>
+>>>>> 1. What is the maximum protocol packet size, if any?
+>>>
+>>>> It is hardcoded by gdb, but the remote can also specify that, but...
+>>>
+>>>>> 2. Would this functionality be better implemented in a single "q
+>>>>> linux.vmcoreinfo" packet, or as a "qXfer" packet?
+>>>
+>>>> ... we have packets like qXfer that can handle multi-part transfers. So the
+>>>> packet size is not a critical concern anymore, and it is best to use this
+>>>> newer mechanism, if the usage fits the packet structure.
+>>>
+>>> Agreed, qXfer is the way to go.
 >>
->>>> To sum up, my specific questions are:
->>>> 
->>>> 1. What is the maximum protocol packet size, if any?
+>> Thank you Tom & Luis for confirmation, qXfer seems appropriate. With
+>> that approach the buffer size is not really a concern: we can simply use
+>> the minimum of the requested read size, and the stub's buffer size. So
+>> long as clients use multiple requests until the data is fully read.
 >>
->>> It is hardcoded by gdb, but the remote can also specify that, but...
+>> While the "os" object also sounds like a good place to put this (e.g.
+>> within a new annex), it seems like that contains XML-formatted data with
+>> well-understood schema and semantics. The vmcoreinfo is free-form text
+>> (generally of a "key=value" format), so it probably should be a separate
+>> object.
 >>
->>>> 2. Would this functionality be better implemented in a single "q
->>>> linux.vmcoreinfo" packet, or as a "qXfer" packet?
+>> So I think we would prefer to add an object type, e.g. named "vmcoreinfo".
+>> (But please do speak up if this sounds like a mistake)
 >>
->>> ... we have packets like qXfer that can handle multi-part transfers. So the
->>> packet size is not a critical concern anymore, and it is best to use this
->>> newer mechanism, if the usage fits the packet structure.
+>>> If you're adding a new object type, a patch to the manual would be good.
 >>
->> Agreed, qXfer is the way to go.
->
-> Thank you Tom & Luis for confirmation, qXfer seems appropriate. With
-> that approach the buffer size is not really a concern: we can simply use
-> the minimum of the requested read size, and the stub's buffer size. So
-> long as clients use multiple requests until the data is fully read.
->
-> While the "os" object also sounds like a good place to put this (e.g.
-> within a new annex), it seems like that contains XML-formatted data with
-> well-understood schema and semantics. The vmcoreinfo is free-form text
-> (generally of a "key=value" format), so it probably should be a separate
-> object.
->
-> So I think we would prefer to add an object type, e.g. named "vmcoreinfo".
-> (But please do speak up if this sounds like a mistake)
->
->> If you're adding a new object type, a patch to the manual would be good.
->
-> I'll definitely include a patch for the manual in the plan for this.
-> Another patch I'd like to write is to allow GDB's server to expose this
-> object type when the target is an ELF core dump with a VMCOREINFO note.
-> We're hoping for this to useful for all debuggers, not just drgn.
+>> I'll definitely include a patch for the manual in the plan for this.
+>> Another patch I'd like to write is to allow GDB's server to expose this
+>> object type when the target is an ELF core dump with a VMCOREINFO note.
+>> We're hoping for this to useful for all debuggers, not just drgn.
+> 
+> Hi Stephen,
+> 
+> I took a look at the wiki page and it seems like initially at least,
+> your plan is to make the information from vmcoreinfo available via a new
+> 'info' command.
+> 
+> It is possible to send remote packets through GDB's Python API[1].  And
+> of course, the Python API allows for new commands to be created[2].
+> There is a test in GDB's test suite that makes use of the packet sending
+> API, and it happens to send a qXfer packet[3].
+> 
+> I say all this not to put you off contributing a patch to core GDB, but
+> if what you want is a new user command which will send a packet to a
+> remote target and process the results, then it should be possible to
+> implement this as a Python extension.
 
-Hi Stephen,
-
-I took a look at the wiki page and it seems like initially at least,
-your plan is to make the information from vmcoreinfo available via a new
-'info' command.
-
-It is possible to send remote packets through GDB's Python API[1].  And
-of course, the Python API allows for new commands to be created[2].
-There is a test in GDB's test suite that makes use of the packet sending
-API, and it happens to send a qXfer packet[3].
-
-I say all this not to put you off contributing a patch to core GDB, but
-if what you want is a new user command which will send a packet to a
-remote target and process the results, then it should be possible to
-implement this as a Python extension.
-
-The benefits of using a Python API are that you can ship the extension
-with the kernel, so if/when the vmcoreinfo changes you can easily update
-the extension.  At the very least, it allows you to prototype your
-commands before having to submit patches to GDB core.
-
-I have included below a very simple example that implements 'info stuff'
-which just displays the 'threads' information from a remote target.
-Place the code into 'cmd.py', then from GDB 'source cmd.py', after which
-you can 'info stuff' and 'help info stuff'.
-
-If this is an approach that might be of interest then I'm happy to help
-in any way I can, just drop questions on the mailing list.
-
-Thanks,
-Andrew
-
-
-[1] https://sourceware.org/gdb/current/onlinedocs/gdb.html/Connections-In-Python.html
-[2] https://sourceware.org/gdb/current/onlinedocs/gdb.html/CLI-Commands-In-Python.html
-[3] https://sourceware.org/git/?p=binutils-gdb.git;a=blob;f=gdb/testsuite/gdb.python/py-send-packet.py;hb=HEAD#l100
-
---
-
-def bytes_to_string(byte_array):
-    res = ""
-    for b in byte_array:
-        b = int(b)
-        if (b >= 32 and b <= 126) or (b == 10) :
-            res = res + ("%c" % b)
-        else:
-            res = res + ("\\x%02x" % b)
-    return res
-
-
-def get_stuff(conn, obj):
-    assert isinstance(conn, gdb.RemoteTargetConnection)
-    start_pos = 0
-    len = 10
-    output = ""
-    while True:
-        str = conn.send_packet("qXfer:%s:read::%d,%d" % (obj, start_pos, len))
-        str = bytes_to_string(str)
-        start_pos += len
-        c = str[0]
-        str = str[1:]
-        output += str
-        if c == "l":
-            break
-    return output
-
-
-class InfoStuffCommand (gdb.Command):
-    """
-    Usage:
-      info stuff
-
-    Shows the remote targets thread information.
-    """
-
-    def __init__ (self):
-        gdb.Command.__init__ (self, "info stuff", gdb.COMMAND_DATA)
-
-    def invoke(self, args, from_tty):
-        inf = gdb.selected_inferior()
-        conn = inf.connection
-        if not isinstance(conn, gdb.RemoteTargetConnection):
-            raise gdb.GdbError("not on a remote connection")
-        string = get_stuff(conn, "threads")
-        print("Target thread information:")
-        for line in string.splitlines():
-            print("  %s" % line)
-
-InfoStuffCommand ()
-
+A bit off-topic, but wouldn't that have the potential to proliferate
+remote packets gdb/debugging stubs have no control over or no documentation
+to point at/refer to? Possibly contributing to greater confusion as to what
+should be minimally supported in terms of remote packets?

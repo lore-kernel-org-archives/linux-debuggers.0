@@ -1,280 +1,90 @@
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C71A41D4339
-	for <linux-debuggers@vger.kernel.org>; Fri, 24 Jan 2025 23:17:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0FFF2AF0E
+	for <linux-debuggers@vger.kernel.org>; Sun, 26 Jan 2025 18:07:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737760676; cv=none; b=RsUTsBizwaOxM8S75w+cOXTMnnm5UEodvfto3xKnU2VxES/4lQ42LiyUpRZ2N+gn016vMn9S30KW/S1In695Gb/Sey4Qs77Nm28zNfTdh7mH79UHystxNRf699otBY2ijwx/fr7Paq2XduEYrykyl4ccVJRKocrSkNfgNdseeOQ=
+	t=1737914872; cv=none; b=eWt85oNkzOADVWLKKzHNGwcCxQKuErrIWYryrxLCI7tJiwwZ7+KGB+CaYpG+VQ8kGQAJ1AnRFJSWu4zra2xnSf8NY/da0k64+DMwWlz+LWDX0pdUbP5sk7+o30svS+JUE6jPAYDhi5fidsZp6qVpx6KHcc9INx5A3PIYEBIoGqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737760676; c=relaxed/simple;
-	bh=Gs+mQPXGzcil0DwrzkENLHclp7k55yBKVwwVYjg+evA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LsI2TX1HFcvfeHF26Roqls25SyFiV3v5ymDNpiL0aRL1XLfoED+gUeZda38WuqJA8z/8mKpAuw7nQx0nPOGPdDWALf1SopZ1NtIx7uD5kZ3JWfAxlu9CKn8hTI/1js6FZXi1wn7BWSabxDaGb7b33js0RNQToE3ud3lmWwS51G4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=TlTD7Qka; arc=none smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	s=arc-20240116; t=1737914872; c=relaxed/simple;
+	bh=rufpAubkhVdWLtYkBli46xMbmsqpcQdctDvsH7/NeUw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l2t7/gVjihSRmtBAta429diTc1ILhPexp1UjLkSsPxSBFpyrlKmcEEaZYk5a4UCFOtfXMU0fx8334aXKXF64R4tb4/AtWlxeHmaoG161kROdGEsseYow3YDtcB3zH+rV32XLScpesoBnB+EA1Wi7pp39n/1kCd4ik4n5nxU3/yM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=t-8ch.de; spf=pass smtp.mailfrom=t-8ch.de; dkim=pass (1024-bit key) header.d=t-8ch.de header.i=@t-8ch.de header.b=dHXmVJWa; arc=none smtp.client-ip=159.69.126.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=t-8ch.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=t-8ch.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="TlTD7Qka"
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5401bd6cdb7so2775474e87.2
-        for <linux-debuggers@vger.kernel.org>; Fri, 24 Jan 2025 15:17:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1737760670; x=1738365470; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hSjQCxfURjm/N120rDPiEtMw0TSoItdzlmo/GpKazxQ=;
-        b=TlTD7QkaQdCcumD/xjuJUiuhRxvUBUNjF7/5lxsy+gH0Zhh95rD+OSKbfm957TueI8
-         kly+pEdcxQiQnHp7SnbE85VtPHQQgBgLA+8DtYW5CQRzYTELuqijmWB7vPGHmx3WGNiX
-         iJfm+7KjEG0BiYVrtJCuYPoFKczOgTPY0lDyU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737760670; x=1738365470;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hSjQCxfURjm/N120rDPiEtMw0TSoItdzlmo/GpKazxQ=;
-        b=Gr4ozXpPEY698w2Px8G4u4Jp7TClTZ0VoQgn2mCv/IZXKVhXVZulxXhgEMb6ZErDVY
-         ixR5SLVDG2+8PUmtASNVJ5nXSUPNazGdslelBtKg9ROHJw5TEdh2iKLSPNjDNeqyJivr
-         APEvfpDI07pTo+GfCWaJ4xoueq1TW9pLfR6a30hgS5lh2Hx/46aYzvQFxviaUlb6TDWK
-         OTIbz83pOk6QVl+gi/WveWRI2tKF4o7Qbwj6Bnl/WYKa1TN7W65WCJGIq+4D38m8EIBi
-         VpLW7WSM8G5k5KI3LWV9YjJluyQhAvgivfz3F7HBJ/atJelyNZ7yjPciZboYSdzEA4k4
-         tCog==
-X-Forwarded-Encrypted: i=1; AJvYcCX6qbjj52ppoIcs9Yru6GprDGr4oaT93F2zQkiMlZRUcfiKEqiHQ1yTmrSFXwRpJ/H8tHStSKux8Dh/BdKgVsQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLzqMaHitBGw7bXYYjuB8cfXCcamKdoG6W4FzC1sOJp7TK+vQ4
-	3F4dO8+nQrsVyNHgefcql4zs/OChNpe3p1rc+SmtuUymUinRJQNGo8GqRjWZKSFgaLP/1wXzI84
-	i7Q==
-X-Gm-Gg: ASbGncsiEclYVDyH9Nw8Xx+JgkgiNxu20O7g7ANEAmAdawCOF3gvY4O80761DBLDMX0
-	PO+ybPKBXmZRlTISQMh0woJv2RXs23J1C8B1Athc3JK7V0LJ69EVDTkxxvxczA/c6yR8St/lzvl
-	XHXnKmQBX3jezAO+BR2C/yY2rSk2fysQ83dNCl57iKrZUV6pqxbBDfq4X0+pCiWymh7yzVw5FyJ
-	83lnbK+45vfQzIMoW8zwJyLRWpa0XtjGVzpnl5h6yg7fUUf/vLI5Mw4DqBQn1JiuC4TZ02HSAK7
-	qt1LO3er4RU7EmSgzX2xEmDrrSNidcOpcejXmE7FiUPQ
-X-Google-Smtp-Source: AGHT+IHoS7G1IBazIAGXS2j52G09DuRWolcNCJPHXei7EqE2LDZ7ekTJ5PmLwyAynwyEKyDA3eOcNA==
-X-Received: by 2002:a05:6512:932:b0:53e:3a7c:c0b5 with SMTP id 2adb3069b0e04-5439c218da1mr7593698e87.10.1737760669727;
-        Fri, 24 Jan 2025 15:17:49 -0800 (PST)
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com. [209.85.167.47])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-543c82289c7sm440743e87.42.2025.01.24.15.17.44
-        for <linux-debuggers@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Jan 2025 15:17:46 -0800 (PST)
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-53e399e3310so2829192e87.1
-        for <linux-debuggers@vger.kernel.org>; Fri, 24 Jan 2025 15:17:44 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVW9v/h2mX8s0Hl7rlSD9VFtXv//F3Prh1o+OWpz7st8/DLsD73H4QEM8NI/7HkaET0tjLwplb3SD0XGie4ueo=@vger.kernel.org
-X-Received: by 2002:a05:6512:6c3:b0:542:28a9:dca2 with SMTP id
- 2adb3069b0e04-5439c269841mr12558697e87.39.1737760664298; Fri, 24 Jan 2025
- 15:17:44 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=t-8ch.de header.i=@t-8ch.de header.b="dHXmVJWa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=t-8ch.de; s=mail;
+	t=1737914867; bh=rufpAubkhVdWLtYkBli46xMbmsqpcQdctDvsH7/NeUw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dHXmVJWapGmL6gAoSJnRKellsIMNbgNwtHTvfyEuRWGNvDKBLASdYZJaLHCfr9dxU
+	 9kdhPiykjggdwLTceZkDPGGw2zW6Mc1bVie9cWvWfy6ohMO2q4F6hXo8FRpJar8BYh
+	 huC08q+UW54/mqwgoe4p9tj+6dGbYP2ciLWpwI2Y=
+Date: Sun, 26 Jan 2025 19:07:47 +0100
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas@t-8ch.de>
+To: Stephen Brennan <stephen.s.brennan@oracle.com>
+Cc: gdb@sourceware.org, linux-debuggers@vger.kernel.org, 
+	Omar Sandoval <osandov@osandov.com>, Amal Raj T <tjarlama@gmail.com>
+Subject: Re: GDB Remote Protocol Extension - Linux VMCOREINFO - Request for
+ Feedback
+Message-ID: <766010fa-49a5-4e86-a730-bf79bb73e928@t-8ch.de>
+References: <8734hmtfbr.fsf@oracle.com>
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241211153955.33518-1-tjarlama@gmail.com> <20241211153955.33518-2-tjarlama@gmail.com>
- <CAD=FV=Xz2QqqTT+1Rmqq8hVEqQeF5-X=vgXKOjFe=y9FQVuDAQ@mail.gmail.com> <CAOfKSRMBYp6dSbhRqQXm09QUoJTaLjQr0XFqzqGVGeJ-KKoMuQ@mail.gmail.com>
-In-Reply-To: <CAOfKSRMBYp6dSbhRqQXm09QUoJTaLjQr0XFqzqGVGeJ-KKoMuQ@mail.gmail.com>
-From: Doug Anderson <dianders@chromium.org>
-Date: Fri, 24 Jan 2025 15:17:32 -0800
-X-Gmail-Original-Message-ID: <CAD=FV=VVHNNE3jK+_Vh5ydxysqMnHdZujG7y9=Gxrms8D_msBw@mail.gmail.com>
-X-Gm-Features: AWEUYZn5qEtP1U9GOHM2S8c3LHoKvZnC1WnJRVkmjviAh_Ztkivn_ls9Oth-ddg
-Message-ID: <CAD=FV=VVHNNE3jK+_Vh5ydxysqMnHdZujG7y9=Gxrms8D_msBw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] kgdb: Add kgdb_mem2ebin function for converting
- memory to binary format
-To: Amal <tjarlama@gmail.com>
-Cc: Jason Wessel <jason.wessel@windriver.com>, 
-	Stephen Brennan <stephen.s.brennan@oracle.com>, Amal Raj T <amalrajt@meta.com>, 
-	Omar Sandoval <osandov@osandov.com>, linux-debuggers@vger.kernel.org, 
-	linux-serial <linux-serial@vger.kernel.org>, kgdb-bugreport@lists.sourceforge.net, 
-	Daniel Thompson <danielt@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8734hmtfbr.fsf@oracle.com>
 
-Hi,
+Hi Stephen,
 
-On Mon, Jan 13, 2025 at 8:09=E2=80=AFAM Amal <tjarlama@gmail.com> wrote:
->
-> On Fri, Dec 13, 2024 at 12:55=E2=80=AFAM Doug Anderson <dianders@chromium=
-.org> wrote:
-> >
-> > Hi,
-> >
-> > On Wed, Dec 11, 2024 at 7:40=E2=80=AFAM Amal Raj T <tjarlama@gmail.com>=
- wrote:
-> > >
-> > > From: Amal Raj T <amalrajt@meta.com>
-> > >
-> > > Add a new function kgdb_mem2ebin that converts memory
-> > > to binary format, escaping special characters
-> > > ('$', '#', and '}'). kgdb_mem2ebin function ensures
-> > > that memory data is properly formatted and escaped
-> > > before being sent over the wire. Additionally, this
-> > > function reduces the amount of data exchanged between
-> > > debugger compared to hex.
-> > >
-> > > Signed-off-by: Amal Raj T <amalrajt@meta.com>
-> > > ---
-> > >  include/linux/kgdb.h   |  1 +
-> > >  kernel/debug/gdbstub.c | 31 +++++++++++++++++++++++++++++++
-> > >  2 files changed, 32 insertions(+)
+On 2025-01-13 16:22:00-0800, Stephen Brennan wrote:
+> I contribute to the drgn debugger [1], and work on debugging the Linux
+> kernel a fair bit. Drgn is particularly well-suited to the Linux kernel
+> and contains a lot of support for it. It currently supports attaching to
+> live targets via Linux's /proc/kcore, and core dumps. We are looking
+> into supporting remote targets via GDB's remote protocol.
+> 
+> One piece of information that is very useful when debugging the Linux
+> kernel is the VMCOREINFO note[2]. This is a free-form piece of text
+> data, typically around 3k bytes, which contains information that
+> debuggers would find useful in interpreting a Linux kernel memory image.
+> In particular, it contains the KASLR offset, the build ID of the kernel,
+> and the OS release. With this information, a debugger could attach to
+> a live GDB stub (e.g. kgdb, or QEMU) without needing to specify
+> debuginfo file names or memory KASLR memory offsets.
+> 
+> To that end, we hope to extend the GDB remote protocol with a facility
+> that would allow the debugger to request this information. We've written
+> up an idea for this proposal at [3]. The summary is:
+> 
+>   'q linux.vmcoreinfo'
+>      Retrieves the Linux vmcoreinfo data.
+>      Reply:
+>      'Q [DATA]' data is encoded as described in the Binary Data doc [4]
+>      'E.<text>' with an informative message if the data is not available
+> 
+> However, with the candidate kgdb implementation taking shape [5], we're
+> becoming concerned regarding this design. It seems that there is an
+> implicit maximum packet size which is not described in the protocol
+> documentation. Many stubs have small(ish) shared output buffers. It
+> seems to me that data which would be 3k bytes before escaping is too
+> large. We've noticed that there is a 'qXfer' query packet which allows
+> specifying an offset and a number of bytes. Maybe it would be better for
+> us to add a new 'special data area' for the 'qXfer' message, and reuse
+> that command?
 
-FWIW, it looks like Stephen has already responded to your V3 and the
-protocol might change a bunch. I'm not going to do a detailed review
-on it at this time. I'll comment on a few of the things below, though.
-
-One other note is that you should have done a "reply to all" when
-responding to my review feedback, not just a reply to me. The
-responses should be archived on the lists unless there was a specific
-reason to exclude them. Adding the lists back here since I don't see
-anything sensitive in your reply.
+Do you need to transfer the full vmcoreinfo data?
+Wouldn't it be sufficient to only include the address/size of the
+vmcoreinfo note in memory and the debugger can read the data from there
+with regular memory access commands?
+That information is enough for QEMUs vmcoreinfo device.
+It would simplify the design and implementation(s) significantly.
 
 
-> > > diff --git a/include/linux/kgdb.h b/include/linux/kgdb.h
-> > > index 76e891ee9e37..fa3cf38a14de 100644
-> > > --- a/include/linux/kgdb.h
-> > > +++ b/include/linux/kgdb.h
-> > > @@ -322,6 +322,7 @@ extern struct kgdb_io *dbg_io_ops;
-> > >
-> > >  extern int kgdb_hex2long(char **ptr, unsigned long *long_val);
-> > >  extern char *kgdb_mem2hex(char *mem, char *buf, int count);
-> > > +extern char *kgdb_mem2ebin(char *mem, char *buf, int count);
-> > >  extern int kgdb_hex2mem(char *buf, char *mem, int count);
-> > >
-> > >  extern int kgdb_isremovedbreak(unsigned long addr);
-> > > diff --git a/kernel/debug/gdbstub.c b/kernel/debug/gdbstub.c
-> > > index f625172d4b67..6198d2eb49c4 100644
-> > > --- a/kernel/debug/gdbstub.c
-> > > +++ b/kernel/debug/gdbstub.c
-> > > @@ -257,6 +257,37 @@ char *kgdb_mem2hex(char *mem, char *buf, int cou=
-nt)
-> > >         return buf;
-> > >  }
-> > >
-> > > +/*
-> > > + * Convert memory to binary format for GDB remote protocol
-> > > + * transmission, escaping special characters ($, #, and }).
-> >
-> > Why exactly are those characters special? What considers them special
-> > and so why do you need to escape them? I guess you really just care
-> > about avoiding # and $ and you're using '}' as your escape character
-> > so you need to escape that too?
-> >
-> > Your function comment should describe the escaping method and ideally
-> > provide a few examples.
-> >
-> >
-> Added relevant links in the commit message and commented two examples
-> in code
-> > > + */
-> > > +char *kgdb_mem2ebin(char *mem, char *buf, int count)
-> >
-> > One of the two buffers seems like it should be "const", right? That
-> > would help document which was input and which was output. I guess
-> > "mem" is the input?
-> >
-> > "count" should be "size_t"
-> >
-> This was copied from `kgdb_mem2hex` which uses a similar template.
-> Should we continue using `int` or just this function need to be migrated =
-to
-> `size_t`
-
-In general the existing kdb/kgdb functions are not always the best
-examples. I think size_t is correct here. Indeed, if you look at what
-"kgdb_mem2hex" does with "count" it passes it to
-copy_from_kernel_nofault() which takes a size_t.
-
-Feel free to post a (separate) patch fixing kgdb_mem2hex().
-
-
-> > Presumably there should be two counts talking about the sizes of each
-> > buffer, or at least some documentation should be in the function
-> > comment talking about the fact that "buf" needs to be twice the size?
-> >
-> >
-> > > +{
-> > > +       char *tmp;
-> > > +       int err;
-> > > +
-> > > +       tmp =3D buf + count;
-> >
-> > Could use a comment that the buffer needs to be 2x long to handle
-> > escaping and that you'll use the 2nd half as a temp buffer.
-> >
-> >
-> Done, commented in v3
-> > > +
-> > > +       err =3D copy_from_kernel_nofault(tmp, mem, count);
-> > > +       if (err)
-> > > +               return NULL;
-> > > +       while (count > 0) {
-> >
-> > If you change `count` to `size_t` the above test won't work because
-> > it'll be unsigned. Still probably better to use `size_t`, but just a
-> > warning that you'll have to change the condition.
-> >
-> >
-> > > +               unsigned char c =3D *tmp;
-> > > +
-> > > +               if (c =3D=3D 0x7d || c =3D=3D 0x23 || c =3D=3D 0x24) =
-{
-> > > +                       *buf++ =3D 0x7d;
-> >
-> > Don't hardcode. Much better to use '}', '#', '$'
-> >
-> Fixed in v3
-> >
-> > > +                       *buf++ =3D c ^ 0x20;
-> > > +               } else {
-> > > +                       *buf++ =3D c;
-> > > +               }
-> > > +               count -=3D 1;
-> > > +               tmp +=3D 1;
-> >
-> > count--;
-> > tmp++;
-> >
-> Fixed in v3
-> > > +       }
-> > > +       *buf =3D 0;
-> >
-> > Why is the resulting buffer '\0' terminated when the source buffer
-> > isn't? Adding this termination means that the destination buffer needs
-> > to be 1 byte bigger, right?
-> >
-> > ...or maybe the source buffer doesn't actually have any embedded '\0'
-> > characters and you're using this for termination to the other side? It
-> > would be good to clarify.
-> >
-> > In other words, if the input is 2 bytes big:
-> > '}}'
-> >
-> > The output buffer will be 5 bytes big:
-> > '}]}]\0'
-> >
-> Don't think null termination is required in this case.
-> In this case, the `gdb_serial_stub` already initializes the buffer with `=
-\0`,
-> and `put_packet` iterates over the buffer until the first occurrence of \=
-0.
-> This works for `vmcoreinfo` query. But for input buffers with additional
-> `\0` characters need to be escaped, to make sure `put_packet` parsed the
-> entire buffer.
-> > > +
-> > > +       return buf;
-> >
-> > What exactly is this return value? It points right past the end of the =
-buffer?
-> >
-> > You seem to just use it as an error value (NULL means error, non-NULL
-> > means no error). Why not return an error code then?
-> >
-> Other encoders also return a `char *`. However there is no error handling
-> anywhere, the return value is discarded at the caller side.
-
-As per above, existing kdb/kgdb code isn't always the best example to
-follow. Personally I'd rather see an error code returned unless
-there's a good reason not to.
-
-If you really want to return a pointer like this, a bare minimum would
-be to document it. The kgdb_mem2hex() function you pointed to _does_
-at least document what is returned.
-
--Doug
+Thomas

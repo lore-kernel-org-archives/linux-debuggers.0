@@ -1,262 +1,255 @@
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA7619CC33
-	for <linux-debuggers@vger.kernel.org>; Wed, 29 Jan 2025 21:16:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738185385; cv=none; b=QJBcTgBsD48iayMkMtUiWcL/MDfpkg9vCVZgWfT8l+K3pFz0otlOkWIQ2l/cIYeXlj5liBiEGoTUukx7AwqmqQMhnFjJ9HR+wzOBwRRe439JnwBY/ifXq8NpvOPExuhMYdRP+PrRkLuS6DWEM3qPX6sjhNp86FxkfjbSSgIJMr8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738185385; c=relaxed/simple;
-	bh=28mp5kYfnQHDAJM3nXsyyL9WdnACOg5tsZwBxKljiMk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=asnowlsDk4W+OV8QjqhMrcWy21K+9AuCynGKCBxVl2ZrQ6/iRGcx/Ifecyv1Gts34A8GycpnmxRCHmMn3R4kQCzl+P9jniUOM4jIELr+Aw0JHGscANcyYRvO+wqNWWtKHfeaI/iymp/WtKGcKKjltFiuiA/MLrau1VwAqZ8FEXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=t-8ch.de; spf=pass smtp.mailfrom=t-8ch.de; dkim=pass (1024-bit key) header.d=t-8ch.de header.i=@t-8ch.de header.b=KrleGvvN; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=t-8ch.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=t-8ch.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 242E62417EF;
+	Fri,  7 Feb 2025 01:21:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738891284; cv=fail; b=bCVQvS6MHZjIi5668mrqGw+RjgESaWZxdH+a3PWtzuC641N6dxEtXzyWfvP3KWqBvMZwR5uPA7ie6s3IdXdmAWMn8ca26+LiuftbDKGpHKj0CNs8pdJey5Nj+obwH7aEJznnmAXkdgqzWYoFXUKhYaK4rBU3hlIGsH1DpvJcBRg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738891284; c=relaxed/simple;
+	bh=QUYfgGRhi0TwTGaKy5Al6N+Nv7sVotDNO65l4atUT14=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=JBzioL4OFXivGoABWEuFfi/BhmACZxqBp7aAuQ0XYrF1vpSEoeYrHlJznl5AG0z2TP9OcJrufqju84ENtya/6x7aqMQ27xdT9sg/H2jiAUwCHaEXhi91ZGPR3FpoXzAv19riKazGiuI67DOzLjwm6RN29Yl4v2BBpYpQj/OxWXs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=euX4Um3p; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=oreDiCHr; arc=fail smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=t-8ch.de header.i=@t-8ch.de header.b="KrleGvvN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=t-8ch.de; s=mail;
-	t=1738185372; bh=28mp5kYfnQHDAJM3nXsyyL9WdnACOg5tsZwBxKljiMk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KrleGvvNvmhy2KYxrycWWLczPVVOY97oq+z3FjwN51v2vHVQOBImrHO5VKN9WaD2s
-	 BOUZVIgK9PVQviJfv6N5dti3SY8d1V0UphLaTCmSFaRoyGd1b3Bf3MxxGNUJ4mPKb8
-	 0vOnxzeKZX9kVVaPpMALqNGkIhhu+YUs5edIh69k=
-Date: Wed, 29 Jan 2025 22:16:11 +0100
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas@t-8ch.de>
-To: Stephen Brennan <stephen.s.brennan@oracle.com>
-Cc: Omar Sandoval <osandov@osandov.com>, gdb@sourceware.org, 
-	linux-debuggers@vger.kernel.org, Amal Raj T <tjarlama@gmail.com>
-Subject: Re: GDB Remote Protocol Extension - Linux VMCOREINFO - Request for
- Feedback
-Message-ID: <cf9b0a60-8437-4cbf-9ff8-2aa3ba45a9d0@t-8ch.de>
-References: <8734hmtfbr.fsf@oracle.com>
- <766010fa-49a5-4e86-a730-bf79bb73e928@t-8ch.de>
- <Z5fMtZOoYaV6aXwf@telecaster>
- <87y0ywgkss.fsf@oracle.com>
- <3a0f50f6-3d03-4109-b0a8-0b743559356c@t-8ch.de>
- <87v7tzhjs2.fsf@oracle.com>
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="euX4Um3p";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="oreDiCHr"
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5170MrUg029083;
+	Fri, 7 Feb 2025 01:20:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2023-11-20; bh=GAleTSn3aKbMSnrtGtVDgfhp/Kp68OP4sIdwgjJzvf8=; b=
+	euX4Um3puM733thMGUL1RIsefm0DjQgkhU6F6zGDi2yKhlegZOztKmcihGII0w+p
+	qKCS0UBSH6Abu+VDkjzwcSpyUPOEOuoc/MQgArb2urREhhx41ylHE8E6vkCxDWzD
+	vyhG8tRXiWPOnnOXJVU9Kjvs4qPxft+F10paijb0Uh0I+/TbpWJcykI3xTsSXuqf
+	+tcya0PXtRlDwA5PbQ5t8tWzRfCw3Bky8M3SsydZcABHtgo6Z1PiUr/+z8AQLDjB
+	+vV1JFKJ81SPAKH2pVf+UITIieJLD//9DZPkdYWY3wJxy4YsDYQg3KAob2ekr6XD
+	o4ivII+XjKb8Y0ru6LXCEQ==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 44n0nb0ukj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 07 Feb 2025 01:20:57 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5170p70T028002;
+	Fri, 7 Feb 2025 01:20:56 GMT
+Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2048.outbound.protection.outlook.com [104.47.66.48])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 44j8dqx72n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 07 Feb 2025 01:20:56 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QevvI01JgpbiSkrpfBDlBTKSkg7cBauNoLLS8hAGiSag8eTejhSerXY+D7rWBzNPxyYGkwNhjeMiXicd04PQJTOk67XIRxwV1OS3XA9CKUIE4IJGpGnt9tgfHkyaIVIFMseuGRecDebsYB9SyrEld/4XxVzEt9Jw0sv2mBzdqWTJ9Rb8vD76Eb06dApWbyGcQPk+/BGmxXiOR/TpHq5+PiWYp424LccDqSZNeIeO1NHdqprlbuTVeBMiwXBUxC2URCd8RsDCmuy7Mjo5ezeY8ZnykSc69t2ezTxM26DGKUWLvQwclI+SPlhyuwcbXEcI8RP70MLR5bZ8NpHbe/rOQQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GAleTSn3aKbMSnrtGtVDgfhp/Kp68OP4sIdwgjJzvf8=;
+ b=EDE9Ka//drlBnPwep4Gfnrg/6VWVAkyP2PgBt1mHGzPL5I4ccOt+E9xyM4A2s/sLeZhp2DNs4F6a8Y2G21kJd9chkDwkbqcDmB1LlhAcouBoeHe7q1h5zwDkE9tck4QcPIQz6plhn79yLyeclZPeWMxMdqWGl0z3YaK66XTqwR0DwrYmjHQ08b4MQVfl1EKYQB2R0Y9Z8rKfspOTSjUzrMTPhlr7V9UfbJrqhW5Wf32HPBPyojF4eBSHJydJ10ZOgLvWd8yx1aDt7YDGUYHO/ZmBS5IJqUzhyRCRtxBY3+JRyNzcBf0Gmx3kQkZVXnb7N9nBulYNZc2DOOjSSxV0VA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GAleTSn3aKbMSnrtGtVDgfhp/Kp68OP4sIdwgjJzvf8=;
+ b=oreDiCHrYLgcv56Ruq7chhlvyw6B9o8NnbX3xE8I665IY0jgyAfxR/xgYktnlnHaQFwhhwHJy1wZ/5wqiTMRaZKmi0QZmvq0nkt16BX6v+XIB76fN9f2mwIDbxp4K0ieR3jQ30tP1Q9k1hYse/4TsAZqfKvg/K0goj1RzrkiOdg=
+Received: from PH8PR10MB6597.namprd10.prod.outlook.com (2603:10b6:510:226::20)
+ by MN2PR10MB4319.namprd10.prod.outlook.com (2603:10b6:208:1d0::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.10; Fri, 7 Feb
+ 2025 01:20:54 +0000
+Received: from PH8PR10MB6597.namprd10.prod.outlook.com
+ ([fe80::6874:4af6:bf0a:6ca]) by PH8PR10MB6597.namprd10.prod.outlook.com
+ ([fe80::6874:4af6:bf0a:6ca%4]) with mapi id 15.20.8422.010; Fri, 7 Feb 2025
+ 01:20:52 +0000
+From: Stephen Brennan <stephen.s.brennan@oracle.com>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Masahiro Yamada <masahiroy@kernel.org>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Nicolas Schier <nicolas@fjasle.eu>, Kees Cook <kees@kernel.org>,
+        KP Singh <kpsingh@kernel.org>,
+        Stephen Brennan <stephen.s.brennan@oracle.com>,
+        Martin KaFai Lau <martin.lau@linux.dev>,
+        Sami Tolvanen <samitolvanen@google.com>,
+        Eduard Zingerman <eddyz87@gmail.com>, linux-arch@vger.kernel.org,
+        Stanislav Fomichev <sdf@fomichev.me>,
+        Kent Overstreet <kent.overstreet@linux.dev>,
+        Pasha Tatashin <pasha.tatashin@soleen.com>,
+        Jiri Olsa <jolsa@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Jann Horn <jannh@google.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Yonghong Song <yonghong.song@linux.dev>, Hao Luo <haoluo@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kbuild@vger.kernel.org, Daniel Borkmann <daniel@iogearbox.net>,
+        Nathan Chancellor <nathan@kernel.org>, linux-debuggers@vger.kernel.org,
+        Alexei Starovoitov <ast@kernel.org>, Song Liu <song@kernel.org>,
+        linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+Subject: [PATCH 1/2] kallsyms: output rodata to ".kallsyms_rodata"
+Date: Thu,  6 Feb 2025 17:20:43 -0800
+Message-ID: <20250207012045.2129841-2-stephen.s.brennan@oracle.com>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20250207012045.2129841-1-stephen.s.brennan@oracle.com>
+References: <20250207012045.2129841-1-stephen.s.brennan@oracle.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BY5PR17CA0017.namprd17.prod.outlook.com
+ (2603:10b6:a03:1b8::30) To PH8PR10MB6597.namprd10.prod.outlook.com
+ (2603:10b6:510:226::20)
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87v7tzhjs2.fsf@oracle.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR10MB6597:EE_|MN2PR10MB4319:EE_
+X-MS-Office365-Filtering-Correlation-Id: 48fdc792-7f05-4f7f-4dc0-08dd4715a9f1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?f7l82P8RuQKfoOnSF0DCr1TJgNLdHzi84aDUchOkphPUP5nc+s4sYit4EtQ1?=
+ =?us-ascii?Q?asQSRBKw0t22BrrHvbu7ux7KdhYpNKw0lV4hS628bjfmnS8CsYMqYY443zci?=
+ =?us-ascii?Q?yYBApHDl3nG1ynSX8NKr3gB5gn7HURYl0KTTnqPweXJujJg5IA6bFmlZb8Jz?=
+ =?us-ascii?Q?yYcu/z+A9sdsrbaldaz0LC49+EERmSt6PtAL4wcelJhWayrOVzdxGG6izUeJ?=
+ =?us-ascii?Q?d1eqI3gs5pOhciODi8OlD6fh64qko5BeCUPn7lrNgDIOYODAfGwCt5HJwMCL?=
+ =?us-ascii?Q?rT1rWnoVBIiwKXJwgd5VsK+luxxwlJQcrbOS+Q4d41smcJpk7h7GZvlvtapX?=
+ =?us-ascii?Q?7+x8sm6gte/wdSF+aB7w17OfcX/rxlo+G8lacmBqXMJa3A8VEZLAzMjVRQZC?=
+ =?us-ascii?Q?Ga00yFiyV8pe5Rqz9Wf3HrzDvxXzduM6afJd2YoJv5LVKNcMa71ugWiDFpK1?=
+ =?us-ascii?Q?WaGmdgQxpcwc9FsbP2tWjh2fzTnWTncNUyin7k5YpA9QeMF/j+GHHky2QOBM?=
+ =?us-ascii?Q?FR4WhbdxmJE5yv7rVO5K0Rwel5NvRsbb+CgdN2Gm4meEry9lElls5y7yGih+?=
+ =?us-ascii?Q?XAEr2CXlkTAw8TZQekNHPcjrHIKGBlhKMfXlPECTzctKp2M4JlXLE5F7xJdB?=
+ =?us-ascii?Q?3MCjvo2GsUtdVVa88OQ7OD2qQLlHyL7WZhzHCaReQBbDstzW7uiMYLqIcCpQ?=
+ =?us-ascii?Q?rEEoBN84bcYwcXF/20iYiNSQ6/U8WN/auGDvWYpqxXrDqG2clbHBUePaunoP?=
+ =?us-ascii?Q?1Lhm5Z2zffeNkiRweiT7QHRvQ5k4jQJ6+KRn2B+KxmdiLBYIRzYZwnu4/vwx?=
+ =?us-ascii?Q?+SLdWyw9kvHfG/XaHfF6fM0qdoL/0mZMhnhbuAa5ouu5TY9ifjRviYzDnmcf?=
+ =?us-ascii?Q?3PpnJ5XKGJ/7OkWU0BSsJYjYDCJU/BU7IB5C+lKzLJL72444y/SZZZkTT7Gt?=
+ =?us-ascii?Q?GaXLbc86XYFXYkHA1FahusWP3oNwtdGZF6vPkXBSp/+iH9g+80pw/eE3q3fj?=
+ =?us-ascii?Q?ixWecFUMcbvUpiTvlpWvYm1p4GJskxlnYHEdY8JF/okS8wN+KtM+fBoMYeDB?=
+ =?us-ascii?Q?GmnuHO2C/8ui8Zy6xGPILiQGLcaFuti5Tqn5bIQuDD76qF/zmr/N0hlWgtQU?=
+ =?us-ascii?Q?+xrarX7EfZFBPsmvHoS5aa5Q9XBlo8GlK6bkBm25dZ6zQOVhal+FQPIWrcim?=
+ =?us-ascii?Q?fylg90MT5aMWXYCHDTc+AhBjbxMBbi33wVKW+JXL+As/tlAWhrAICpHIc2nT?=
+ =?us-ascii?Q?EZTcBt6/qw9hM1n4FiVrZ/cOjh/Y7Xxjqwd+fgAt9joGuTCU5wonA00p6OkS?=
+ =?us-ascii?Q?2vtN+aA3/PJLjxH2OXgIr5/Xr0I0S5o8qj8lrD6ivvLxISPmivJPnQasA/fr?=
+ =?us-ascii?Q?WL9iRmJvMUgtnBkMJMufwwrMIoZl?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR10MB6597.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?AFBMhxM4mlUFqAgenheiP8WQ3djy1sX6R4ffmhfDyEMNi/0fxf7nEV5rwEmL?=
+ =?us-ascii?Q?vrQaar6JkfQXmG//b6kv2s5U8bApJYVVunWC+BTnXYvHttT+tCxAjYAmydhf?=
+ =?us-ascii?Q?OQSNow89IhbCsi9+x1sCsTStbJogT+4vRGI5SL+C+Tk9BHQLojRWqGtYjfkf?=
+ =?us-ascii?Q?wnxVVG3n+XQaQxj5aysAC3T3seLrC6R4xEKCuwqyYFvt984QFvJ62DkftMSB?=
+ =?us-ascii?Q?8/pUXMjTRckpSOOrn0bylm4Th5H75ni2rxtkYy8UPzn1paRRSLnyIId9UDPM?=
+ =?us-ascii?Q?Jp2Dinw0ER/zTOJGyAorzugorsFahPn5YrgHrWqGemwdti3wPJO1CKoqhBR4?=
+ =?us-ascii?Q?8WXAKnj3WNCydZzF0DKVs1w3SbnASc5NJNSe1V11KpJ68cFzGVk3s8Qdofu3?=
+ =?us-ascii?Q?BOkEiAZojAiWmgGgOYVkGrme9qsFC5IGubb0lk5c0dV/0t67qcIX2Q3cGhUy?=
+ =?us-ascii?Q?mzkmzpr+txjpYmQW57HgIU4d6UI5gr2dJo4NgkwjWDHvDqC6h+NZTYVYI+Jr?=
+ =?us-ascii?Q?Sw7xqTSUSEpSGSyRVTncd/v4W5+qNigq3KvHUqQdjWDQVYJhgYeGCA4eOU3d?=
+ =?us-ascii?Q?E80BuWnUWVk+1jp0PW2B1nh3VnYskgZWfDG6+LZuCrZC1OmmkMigTOsS8MlO?=
+ =?us-ascii?Q?KfB0P/veHvOeR7jj7FcFyMWxVco97ahePFp3YIPW7MHEBpVCtaMMsnTh32Na?=
+ =?us-ascii?Q?5300dd0bZnbtbgHTV4IQLXdo05x7aoSVYjtBRncVS80L0CjrWiXhpd0yNgNt?=
+ =?us-ascii?Q?7N60+TF9lPYugz1q1uc6hoGuxJMDqJQvDJNlKPhhMNP6nHjWcyWS4vXHR2oB?=
+ =?us-ascii?Q?cXa9WsseNotRnM+oa88a7tF21qEI9F+b7JnZoX8gj+PBBYLWb7tFo3sEI2my?=
+ =?us-ascii?Q?QIbnX1xn4ogcDWwXGONNlCedGeDf3PhS8++GYe0fJyHuKdt5G7m+vEuVOuR7?=
+ =?us-ascii?Q?O9Iu8f7lu67wE9yGwvY4Q++sBiXdEB2m65mO0CkmuK4WUqvxJOH7xUfMp8Es?=
+ =?us-ascii?Q?T8sFOhdo/fNvNNDFd4Fypp56WUxqT6/9ZPNRYC8lXD3jgMqFOpyh7eyn41zf?=
+ =?us-ascii?Q?/+6KE+KydpAgazfFNyD44r2BuI7TY8xLd92IqepCtxEQCFZna2sNX0OaESM4?=
+ =?us-ascii?Q?uc+Ff6Fo10no6OjevzGn9++isxXG/6gb5j4vxw+77h2cM4v6ztRDjT2vxx/W?=
+ =?us-ascii?Q?D+cAGTlxy+wu/aQXuJsYCIQCgJQ+A2/i1Bt8qufS1ZwCsHHhaD8ToLeyuKDz?=
+ =?us-ascii?Q?gTk6PEH26IrL9pInYX9XF/CrRwL5y0n6jAvIHyNNNR9DZ/KlHPITVPxvSTdC?=
+ =?us-ascii?Q?n189Ny98rW+cuNsmUTFI+LPmABC/I49gY5m6TW36cEdKF4AV+t54JQVMRFbP?=
+ =?us-ascii?Q?AewKC3+Gv8sRGqjBGZp4CQe7//Kxcn9d7V94F+xE4aFJBG59FKHgLmrRKHx6?=
+ =?us-ascii?Q?c1QwCOsAMsn3e8OwUQ/8AgnrqDRRdIb0sGcjCKcCobkizoYc6RC4VUiEkDXb?=
+ =?us-ascii?Q?S0OhgSJhVjWOj2XVg14JSLuTGoooYaYbo1Z4i+er6LmTEvkjJNNG2QHHTOiU?=
+ =?us-ascii?Q?i/K5U+wEI1dmjCMrnTOlcIamoU5Oaq71fhVDTMI+KL5tAcIbVZXWtrK/r2uq?=
+ =?us-ascii?Q?mQ=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	zdBQcZJfVF3ETO8q7jnIaFSFmrTh5c6E9E1lNM4mFiYdQXOIoUvPxLC2gR7dIwnHKXAdKG/aYSs5BXc0FSMcIEpEKjKkfxxCvwOoCi/cXKJOUevdPFOBAS7/SKHD8kdHEw7h0Ui3zUUhu0SklZFtnDPePEcz17oK8FofE7AzBebc7SxUYV/bpw0bPMS308YrfJD6tssyWqGYBAGawBSTa26x0CcPPXgkQoMKt7QMKbY/mkAX9LzV/qZKi02YIyLXN69Jkty8FXmy2xBQ6zL5CdzAQXi/qa6itFnRZLcfRaDoQFPxk17SHnLHCrHjZioPKHEnEFS+v0lUmtl3N5eOO0kRqqwlLwKzr4KUV/ai60EgY1A2ZzVL7uBig1LBl9Ou9gwRcjJ4xzD9fYfuibPNJix6gdn2NPocb+kDVQuQos5XxBEkFoFWQFvpS9zwL06nDzi96XsKLjZZdXdcJTWuy2I5M0flNDBzSffhGZT1G/2QzFNME2BgTMvTRmetUv3K/03ob7t0bXVbuTnGzrWbT9qQGdZ0uYIg24QF5pFfAogr5e0A9BBjN1kuycIEq0jNJEbyF53PVy//d+qRcwSX4tuLd6tN8tFMmzQnKn3osDA=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 48fdc792-7f05-4f7f-4dc0-08dd4715a9f1
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR10MB6597.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Feb 2025 01:20:52.9252
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jvzsLgNPlLYVH07OKREUr+l0SMYRo2L/af1sB76Shzyt4HNn6vOWPGeGeX6X2yb2ANLxJySE9ewA2uJv6M7xkzwfQQY4pQ7A/8IQwux0edw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR10MB4319
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-07_01,2025-02-05_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 phishscore=0 bulkscore=0
+ mlxlogscore=999 adultscore=0 suspectscore=0 mlxscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2501170000
+ definitions=main-2502070008
+X-Proofpoint-ORIG-GUID: ErVYL6PWoVJstQGf2dcMD_LFEPzO5hyl
+X-Proofpoint-GUID: ErVYL6PWoVJstQGf2dcMD_LFEPzO5hyl
 
-On 2025-01-27 16:19:41-0800, Stephen Brennan wrote:
-> Thomas Weißschuh <thomas@t-8ch.de> writes:
-> > On 2025-01-27 10:42:59-0800, Stephen Brennan wrote:
-> >> Omar Sandoval <osandov@osandov.com> writes:
-> >> > On Sun, Jan 26, 2025 at 07:07:47PM +0100, Thomas Weißschuh wrote:
-> >> >> On 2025-01-13 16:22:00-0800, Stephen Brennan wrote:
-> >
-> > <snip>
-> >
-> >> >> Do you need to transfer the full vmcoreinfo data?
-> >> >> Wouldn't it be sufficient to only include the address/size of the
-> >> >> vmcoreinfo note in memory and the debugger can read the data from there
-> >> >> with regular memory access commands?
-> >> >> That information is enough for QEMUs vmcoreinfo device.
-> >> >> It would simplify the design and implementation(s) significantly.
-> >> 
-> >> I do agree that this would simplify the protocol design, and it's a good
-> >> idea I hadn't considered. Thank you!
-> >> 
-> >> > Oh, that's a good idea. I guess the downside is an extra command round
-> >> > trip.
-> >> >
-> >> > QEMU and KGDB also only implement the `m` command for reading
-> >> > hex-encoded memory. We'd probably want to implement the `x` command for
-> >> > both since it doesn't (usually) double the transfer size.
-> >> >
-> >> > One more caveat is that KGDB doesn't check the length passed to the `m`
-> >> > command and will happily clobber memory... QEMU's gdbstub does seem to
-> >> > check, and also advertises its packet size, so we probably want that in
-> >> > KGDB, too.
-> >> >
-> >> > Stephen, what do you think?
-> >> 
-> >> One of our core constraints is that the vmcoreinfo is quite a bit of
-> >> text data, around 3k bytes right now. Doubling that to 6k would be a
-> >> real problem, so it would be really helpful to keep this to using the
-> >> 'x' encoding. However, I think there's a couple good reasons that
-> >> neither QEMU nor KGDB support the 'x' packet:
-> >
-> > Could you elaborate why it "would be a real problem"?
-> > If it is a problem with static buffer sizes, wouldn't this be avoided by
-> > configuring a max packet size?
-> 
-> > The debugger would have to request the
-> > data in chunks.
-> >
-> > This is also what the drgn pull request currently does for all memory reads.
-> > Without knowing much about drgn, I would have expected the regular
-> > memory accesses to be much more data then the 3KB vmcore notes.
-> 
-> I'm sorry, I should have said what the problem was!
-> The problem is more to do with transmission time than buffer size. For
-> the worst case 9600 baud (960 bytes/second), the vmcoreinfo alone takes
-> ~3.2s to transmit. Then you need to add in any overhead for the several
-> packets used reading chunk-wise.  Doubling that transmission time by
-> encoding it with hex is something we really wanted to avoid.
+When vmlinux is linked, the rodata from kallsyms is placed arbitrarily
+within the .rodata section. The linking process is repeated several
+times, since the kallsyms data size changes, which shifts symbols,
+requiring re-generating the data and re-linking.
 
-Agreed.
+BTF is generated during the first link only. For variables, BTF includes
+a BTF_K_DATASEC for each data section that may contain a variable, which
+includes the variable's name, type, and offset within the data section.
+Because the size of kallsyms data changes during later links, the
+offsets of variables placed after it in .rodata will change. This means
+that BTF_K_DATASEC information for those variables becomes inaccurate.
 
-How many of the vmcoreinfo fields are needed on the normal fastpath?
-There is also 'qSearch' which could be used to directly find the string
-KERNELOFFSET= and only read that location.
+This is not currently a problem, because BTF currently only generates
+variable data for percpu variables. However, the next commit will add
+support for generating BTF for all global variables, including for the
+.rodata section.
 
-Note: qSearch is currently unimplemented in qemu/kgdb/gdbstub, but
-implementing it may be easier than the custom encoding scheme.
-Also it could be used by a wider range of users.
-Or for now it could be left out, letting users fall back to full reads.
-Then at some point it can be backfilled as a performance optimization;
-without breaking the protocol.
+We could re-generate BTF each time vmlinux is linked, but this is quite
+expensive, and should be avoided at all costs. Further as each chunk of
+data (BTF and kallsyms) are re-generated, there's no guarantee that
+their sizes will converge anyway.
 
-> But it is fair to say that drgn may request other large blocks of
-> memory, and without 'x' support in the stubs, we will be suffering with
-> that same large transmission time as well. So implementing the "x"
-> command in our targets would probably be helpful, regardless.
+Instead, we can take advantage of the fact that BTF only cares to store
+the offset of variables from the start of their section. Therefore, so
+long as the kallsyms data is stored last in the .rodata section, no
+offsets will be affected. Adjust kallsyms to output to .rodata.kallsyms,
+and update the linker script to include this at the end of .rodata.
 
-I am curious if the current drgn PR would be usable with 9600 baud.
+Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
+---
+ include/asm-generic/vmlinux.lds.h | 1 +
+ scripts/kallsyms.c                | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-> >> 1. You cannot know the required buffer size easily, so you cannot know
-> >> whether you will be able to satisfy an 'x' request in your static buffer
-> >> size. This is most relevant to kgdb. The 'x' packet documentation says:
-> >> 
-> >>   The reply may contain fewer addressable memory units than requested if
-> >>   the server was reading from a trace frame memory and was able to read
-> >>   only part of the region of memory. 
-> >> 
-> >> I'm not certain what trace frame memory is, but the vmcoreinfo is not
-> >> that. I'm not confident whether this means the protocol allows fewer
-> >> bytes to be returned for other cases? Certainly, the 'qXfer' packets
-> >> explicitly allow for fewer bytes to be returned, as the documentation
-> >> states:
-> >> 
-> >>   It is possible for data to have fewer bytes than the length in the
-> >>   request. 
-> >
-> > If I understand correctly "trace frame" refers to same sort of cache.
-> > It's not a property of the target memory but how it is managed by gdb.
-> >
-> > For m reads, gdb itself explictly seems to allow short reads, also
-> > referring (not exclusively) to trace frames.
-> >
-> > Server:
-> >
-> > /* Read trace frame or inferior memory.  Returns the number of bytes
-> >    actually read, zero when no further transfer is possible, and -1 on
-> >    error.  Return of a positive value smaller than LEN does not
-> >    indicate there's no more to be read, only the end of the transfer.
-> >    E.g., when GDB reads memory from a traceframe, a first request may
-> >    be served from a memory block that does not cover the whole request
-> >    length.  A following request gets the rest served from either
-> >    another block (of the same traceframe) or from the read-only
-> >    regions.  */
-> >
-> > static int
-> > gdb_read_memory (CORE_ADDR memaddr, unsigned char *myaddr, int len)
-> > ...
-> >
-> > Client:
-> >
-> > target_xfer_status
-> > remote_target::remote_read_bytes_1 (CORE_ADDR memaddr, gdb_byte *myaddr,
-> > 				    ULONGEST len_units,
-> > 				    int unit_size, ULONGEST *xfered_len_units)
-> > {
-> >   ...
-> >
-> >   decoded_bytes = hex2bin (p, myaddr, todo_units * unit_size);
-> >   /* Return what we have.  Let higher layers handle partial reads.  */
-> >   *xfered_len_units = (ULONGEST) (decoded_bytes / unit_size);
-> >   return (*xfered_len_units != 0) ? TARGET_XFER_OK : TARGET_XFER_EOF;
-> 
-> Ok, I suppose I'm putting too much stock in the wording of the docs.
-> 
-> Maybe I can update it to indicate more clearly that the number of bytes
-> returned may be smaller than the requested amount. The way I read it, it
-> sounded like it was *only* legal to return less than the requested
-> number of bytes in certain circumstances.
-> 
-> Something that confuses/bothers me about remote_read_bytes_1, is that it
-> uses the configured PacketSize, divided by 2, as the maximum amount it
-> requests from the stub - even if it will use the 'x' type packet. That
-> means that for 'x' packets, the buffer size would likely be
-> under-utilized, since most bytes are probably not escaped.
-> 
-> If using the 'x' type packet, and partial reads are allowed, then why
-> not request as much as possible, and let the stub return however much it
-> can fit into its buffer?
-> 
-> I'm also slightly confused at this use of PacketSize. From the
-> documentation:
-> 
->   ‘PacketSize=bytes’
-> 
->     The remote stub can accept packets up to at least bytes in length.
->     GDB will send packets up to this size for bulk transfers, and will
->     never send larger packets. This is a limit on the data characters in
->     the packet, not including the frame and checksum. There is no
->     trailing NUL byte in a remote protocol packet; if the stub stores
->     packets in a NUL-terminated format, it should allow an extra byte in
->     its buffer for the NUL. If this stub feature is not supported, GDB
->     guesses based on the size of the ‘g’ packet response.
-> 
-> It reads like something that advertises the buffer size for the stub's
-> *input buffer*, so that GDB will never send a packet too big for the
-> stub.
+diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+index 54504013c7491..9284f0e502e27 100644
+--- a/include/asm-generic/vmlinux.lds.h
++++ b/include/asm-generic/vmlinux.lds.h
+@@ -463,6 +463,7 @@ defined(CONFIG_AUTOFDO_CLANG) || defined(CONFIG_PROPELLER_CLANG)
+ 		. = ALIGN(8);						\
+ 		BOUNDED_SECTION_BY(__tracepoints_ptrs, ___tracepoints_ptrs) \
+ 		*(__tracepoints_strings)/* Tracepoints: strings */	\
++		*(.kallsyms_rodata)					\
+ 	}								\
+ 									\
+ 	.rodata1          : AT(ADDR(.rodata1) - LOAD_OFFSET) {		\
+diff --git a/scripts/kallsyms.c b/scripts/kallsyms.c
+index 03852da3d2490..743d3dd453599 100644
+--- a/scripts/kallsyms.c
++++ b/scripts/kallsyms.c
+@@ -365,7 +365,7 @@ static void write_src(void)
+ 	printf("#define ALGN .balign 4\n");
+ 	printf("#endif\n");
+ 
+-	printf("\t.section .rodata, \"a\"\n");
++	printf("\t.section .kallsyms_rodata, \"a\"\n");
+ 
+ 	output_label("kallsyms_num_syms");
+ 	printf("\t.long\t%u\n", table_cnt);
+-- 
+2.43.5
 
-I agree with your confusion but can't give any insights.
-Some clearer docs do sound nice.
-
-> But here GDB is using it to limit the number of bytes it requests from
-> the stub. I understand that many stubs may share an input & output
-> buffer, so that makes a certain sense. But if partial reads are allowed,
-> again, I would expect GDB to request whatever it wants, and let the stub
-> limit its output by what fits into its output buffer, and that could
-> control the chunking rather than the negotiation process here. That way
-> we could reduce round-trips. Would that approach be legal in the
-> protocol?
-
-Sounds like valid reasoning. I can't give advise on the legal parts,
-though :-)
-
-> ----
-> 
-> I've now realized what may be the most important reason to use the qXfer
-> command rather than simply returning the memory address of the note.
-> 
-> QEMU only knows the phyical address of the note. It offers a
-> non-standard extension to the protocol which allows switching from
-> virtual addresses into physical address mode.
-> 
-> KGDB knows the physical and virtual address of the note, obviously.
-> However, it has no support for reading physical addresses.
-> 
-> We can't have QEMU transmit the virtual address, since it does not know
-> it.
-
-flatview_translate()/address_space_map() could do this I think.
-This is also what cpu_physical_memory_read() uses under the hood.
-
-> And it's pointless for KGDB to transmit the physical address, since
-> it offers no way to read it. I suppose we could have them transmit
-> whichever they support, with some sort of flag to differentiate, and
-> then rely on the debugger to use the QEMU extensions to enter physical
-> memory mode to get it. But that seems like the most complex option of
-> all.
-
-GDB core protocol does not know about different kinds of addresses.
-So the query should return whatever kind of address that can be passed to
-'m'/'x'/'qSearch' again.
-
-But again, I'm just a bystander, thinking out loud.
-
-
-Thomas

@@ -1,279 +1,147 @@
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C60E20E02A;
-	Wed, 12 Feb 2025 18:21:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739384519; cv=fail; b=QUQA+8j0ur7TOxmLS0cpbPX/OTyOrYIB9YRhAg6qrwv57Nz6GC7qORUVe+wcEtIRMqBVc2epSm+JUUvf0RtBTi5Ug3q0ujr/F9yHxjrBaOi2Mn14y0kWSrFxnVWJL/VwpqW4MFekRiws1Po+dq3FjeGcRRT8NUbjnNn9z/RhtVY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739384519; c=relaxed/simple;
-	bh=IvCT7SvRb+6g4mUaPxMByDgF5Lt4qDdA/AdAilJvqwg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 Content-Type:MIME-Version; b=QoE55Dz4Wxt5ZNxXYyMSyE5g3Cq7mz9Ai2h4CfSLhVsw4TPSzebq6ut6r0eXpmXUEoZMLpxhiNNX4TGFJJK1kIQHeYMFAjzMprJjqgTyTbnr0YH8XjEb8+FxfaZkUWsQqhMO4bDjj1i/6V4eO5kdBkCgjKGF6l8F9LHiYR/NVBY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=TSj1yVL1; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=j23EX5ng; arc=fail smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 340793C17;
+	Fri, 14 Feb 2025 01:18:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739495897; cv=none; b=UxF6JKagtyBAouxSqhVLD/0UICn4DZL11jtFYo8ODOO2kYlEk0MgosxsBSeFUjJu1pXifBZwCV4UHpv37gqRw7MiOgnubtYwF654++BMKS2MfztmunOuRNpCnPxfRzOXb5Sea6M0P2SXP3PYXS0A9qfEW0pCLGGZYbyddz3Ow54=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739495897; c=relaxed/simple;
+	bh=7KmvRdNkOB8Mr3YZotzrxWe4W/LaMjQF7NLNIhjtF3o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bJlJNQkODJOS5M45SewxB58lbGSQzyNo50P0rg6RqoaQBItMkcXjgV2NEsm/dSEjMYl98R/4DmbIGc5wEeoFzLtZjIoUKxdVgQnojzfs+cjB1ucUzoeBLt4ybQD911p6Gng3w9PN+KdBBx06S8wtlUq7jWSVOC0j8g2Q6gEEAS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LxK4asBA; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="TSj1yVL1";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="j23EX5ng"
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51CEto1s009384;
-	Wed, 12 Feb 2025 18:21:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2023-11-20; bh=hVfvRGpmQN/yrC63fF
-	P0mRIE4NFNBpjjF8BoOCpS0g8=; b=TSj1yVL1Yx+qWhWndpEVX6Yy14kuaUbwOm
-	CRr4NntsFS0YqALUcoRBP13QTui1cgoMbyhj8snFG7Z1QQyGnZSOiTE4BrkaDwG5
-	ZmSBgyQhbAH1FmU7fCQeAgiuSYV0bC78h3o+z447I1n83bw0alOwaKRmGDjX41hH
-	qmFiHQhlG/akWZPJawTJiqIRkNizKhZZHVW0WetMVzS5XfUjkfhXTd3DzV7xYGaK
-	qFVjw3g5RiH5KX0fGrdk7Ll0dp1ivpEXbl5NSKl7apWV8+0xkPWTu9DnzzhiXA0b
-	xGAj9h9cx8TFBG3w9bTg3bA4L9kvo5HaS2CzkeQfn7DsQ/Ufl2yQ==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 44p0qafyk8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 12 Feb 2025 18:21:46 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 51CIBr4i009747;
-	Wed, 12 Feb 2025 18:21:45 GMT
-Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10lp2043.outbound.protection.outlook.com [104.47.70.43])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 44nwqgy6bn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 12 Feb 2025 18:21:45 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=j+sB7uIq5LzDmuq3YlEgi3t+gdGu37cKK6mYiuJw65iEy8yLydbrLZumYMuBPt4n+Qm0sE1Y6ED5xJc3oFxaaZXMglIUb8n4S0dr+KYRJFIKmS9Lyfp43R5p5/AwpyG+JVpAtr6PMNTc8kRAa1gzEvg0YqTQdhvMAxW6/Hf/tQqxu1j9k89X3Z2OLuuaEJEFWxDMdYqCWOfD3qcs47w1HAKjDD6Klzq8ToGb6RXJCrZmrP4LgnnkrhlViDCK04A2h9kwq4NAxPl7UG/uYJy6qkC/qEqrOzcd9Yf+cFAVoXB4vujXayjeSEDzP+ZwnvPuAmWENUON8T8ttsj3subGbw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hVfvRGpmQN/yrC63fFP0mRIE4NFNBpjjF8BoOCpS0g8=;
- b=XvaXfMNQuWy/vpsJeYLovRzsw+ct4edUGheKOn1Ppz9yTGtc6aVPK4kSzFXPiyInLiEYUuftyC5bdbvvtDeYEdaqNmupXf6fs85PyRYhanw7I0tVCMWX72m3jecYyIJx/KmcL5C7gbn0WBxo3ZiFTkY/mGrj6R73LK9KK5bRwo7yanqDRIvEH5xitUGhKx2lfDQbbod8hiDo5jhnXtKV811Wl2Tj5UtnvsqFwyHHNnkQCQb2skunOW9gX8xMuU07xb9dOohT7DY9xp60Bo6JyxLaEdTdKQ/41+xRkajzww5EHFIzEYzSVS3HDxLDn4YToD96zA0PpS6LPPu3SG25TA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LxK4asBA"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-38dc5764fc0so1298582f8f.3;
+        Thu, 13 Feb 2025 17:18:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hVfvRGpmQN/yrC63fFP0mRIE4NFNBpjjF8BoOCpS0g8=;
- b=j23EX5ngXIkHIX2pqJlVsOTW1VG+rxIZDX9aD8vKHSGnQ4tN0Ekdxz240uZSCYZIbTNS6vsj8UtdwyXVD3AYBKgI5khCF4yE7Fdad4FHnbDaSkARX4gSCza4LcpIFFZFaEV0mu7k3svog/H8XV0vLhK5rA0Ba28KNdVFhL/3sSU=
-Received: from PH8PR10MB6597.namprd10.prod.outlook.com (2603:10b6:510:226::20)
- by LV3PR10MB8203.namprd10.prod.outlook.com (2603:10b6:408:284::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.13; Wed, 12 Feb
- 2025 18:21:44 +0000
-Received: from PH8PR10MB6597.namprd10.prod.outlook.com
- ([fe80::6874:4af6:bf0a:6ca]) by PH8PR10MB6597.namprd10.prod.outlook.com
- ([fe80::6874:4af6:bf0a:6ca%4]) with mapi id 15.20.8422.015; Wed, 12 Feb 2025
- 18:21:43 +0000
-From: Stephen Brennan <stephen.s.brennan@oracle.com>
-To: Alan Maguire <alan.maguire@oracle.com>,
-        Arnaldo Carvalho de Melo
- <acme@kernel.org>
-Cc: dwarves@vger.kernel.org, linux-debuggers@vger.kernel.org
-Subject: Re: [PATCH 3/3] btf_encoder: don't encode duplicate variables
-In-Reply-To: <dd0c1d4f-73ff-4da0-9b5c-43b0aa982729@oracle.com>
-References: <20250212005003.1413091-1-stephen.s.brennan@oracle.com>
- <20250212005003.1413091-4-stephen.s.brennan@oracle.com>
- <dd0c1d4f-73ff-4da0-9b5c-43b0aa982729@oracle.com>
-Date: Wed, 12 Feb 2025 10:21:42 -0800
-Message-ID: <874j0zgh1l.fsf@oracle.com>
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR13CA0155.namprd13.prod.outlook.com
- (2603:10b6:a03:2c7::10) To PH8PR10MB6597.namprd10.prod.outlook.com
- (2603:10b6:510:226::20)
+        d=gmail.com; s=20230601; t=1739495893; x=1740100693; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iZNgfoJpdQnnYrxgyLyaeefs7r2kSe1cqjB7lzYuaOY=;
+        b=LxK4asBATP1MeRU6Tug/wM5pDWexWygZDRfTC/vbdHU3zlvgXNcHgoKtsv/N7i/QUi
+         yHStzkJ9EXSAWeLe35ysovgUPeLF0lMz8BiU8Ei8q8NUF6CoRsoXbwZjD2CJGe1Jehep
+         /YphwX+NCcwrkQc9M+tUL1orVmCND1wwWjN8dEsFw3+PrmnJS6PNxUzoQ7yPqtcn2Ys2
+         noBbHtyL8GMwygxk/k5jiVcUDBi+oQ1ZUtR5qSpzis1AgBjt6vlXOZ7SUmcCySnsNSWD
+         nOLKldd9c8X7fdnygej1AWYDwZoKHee5p6EGmreiir7QXwCsGysJuesfJ4cQpijobsyg
+         BYpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739495893; x=1740100693;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iZNgfoJpdQnnYrxgyLyaeefs7r2kSe1cqjB7lzYuaOY=;
+        b=K9sz0Ifzh0KhZlYa/s2qoGXTbK1FnvCwvcIYJy3oVE9tUF98o6M4G/Ews2E/g/AS8T
+         uFnaKe/IlooekVw4fR5MlQGgIdIJNLFccitP+/PLTqody4Ja6sFOlqNJiLQINsETeXZv
+         RuR4alLglorvqnpUgpTefbtngDnp638g21a2+WrSH4ZnE/NW3R0AkKuPloje9pNWSVnA
+         HG2As89iXIpEDnI1w17j5VWJNnQ/cfALT9Ozm5wM6t4+vcqy61O7CL2IukEf8geeBbnb
+         8ypJcah44wWBP/Af9FVXMSJ10bxOWlDv20uD4RBOUvKISx+i07BZzHa8kfEp+5x9chOJ
+         z2jg==
+X-Forwarded-Encrypted: i=1; AJvYcCUIpVd5AYtEBCT0qaPbKvkpNNo6y2wDNR2Degx/QbYsLqjsLeIt7zidDeqVOG6RYVQeEvg=@vger.kernel.org, AJvYcCUMKQNpgipCLbMF7bAhixEJtcfPA+8jMD0V/TkMFS/Kn8GgZVBIu7jktE0bY+LTtzx/nb9hpWdeFrAhlQna@vger.kernel.org, AJvYcCUsHeDl7o90oPtinSl3Jsnk9mIZUqnwOpDzJS29GzOe05vOIx1m8IVDZgXdrbMrY7Xb5Sbr5+Y4pUFU4A==@vger.kernel.org, AJvYcCVXkEp4S1oFJ9zTiEVpV0l0EAoB1w8909YK9AoP3/Bel/goHAOzdNfhwsoD7qySO9ve+wl9cnHge3FIDlPA6boy@vger.kernel.org, AJvYcCXg7blZmWnYhHKW73CD0ZBnEDFdt6uBmDkKUKZc7FtzNBcAsTEL5eh6bbfn7lxIEzPXdhUo+RFnniCbKh6x@vger.kernel.org
+X-Gm-Message-State: AOJu0YwbNqWKlSD3k+48L4bgacxvB5kK0HBa3VAeMGK41yAJQI80/kVK
+	8YObXNpHJVK7k9H9t4AidUuJMCmwGaRJ+61tB5n0fCFlxV+G19LcoRsMeF1Th1TpM+Wii3PVWdp
+	y+mOI7xBgxoMrIrhu3ye4Btjf5q+k6T/F
+X-Gm-Gg: ASbGnctEuk7Q3/s571M2HWEEyj3kOZogI6Xaio0Us2yfa/wwO/xVXBsJwgMjwVARHzf
+	03jwEodQFksPjZK2cmt7D2uU/B3yzvWuQIchF3TkiFr1fwKARAsbaOZCODbxBA/YFtStmn2lCCL
+	Xr8lCWQRJZvPgAHkjpva6l6Fj4H4wM
+X-Google-Smtp-Source: AGHT+IHjH3HbrV6sFGnOweivEcys63M8NcPKfcX22oOSM82lFAdrwn46q5GI7CB4DnW7A34GOs2t+/KwcM7+WXRkatg=
+X-Received: by 2002:a05:6000:1f88:b0:38d:dd8c:51db with SMTP id
+ ffacd0b85a97d-38dea2f982dmr10477713f8f.53.1739495893060; Thu, 13 Feb 2025
+ 17:18:13 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR10MB6597:EE_|LV3PR10MB8203:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9e46a234-df4c-437e-17c1-08dd4b921a38
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?FVHZzrGO7W4TcFMff8YXRPAWqq3J82mzQ6HhlWyqhRqMwmYaTVNJUb+VYVdJ?=
- =?us-ascii?Q?7+6nHoo4IX/9ctQlACAx439YRfOmXCic6GOwJ0w/YH4bOs86fkhnk5VdyIXE?=
- =?us-ascii?Q?hZ2U5Jsi+vXSbA8pDS1q1Z4xKMGhNFVjjCffcMdQDkmVGEotaYtdf6CKgF8U?=
- =?us-ascii?Q?mRFCy3g8TpjEjf2y1MT11ChndWmB76efCwKWyKaZl4a7sBzMhqymXkZ4D0eR?=
- =?us-ascii?Q?ltsvI+3biVoGSaSQFB/S0WJRMPoZ8vtxcym+lNsLZu0y4fC+59GrEPTXXMuU?=
- =?us-ascii?Q?KXqefYvUVcjnxOBGIg9VcMtuJ0mPcbiXPXam/f/nWWrzx1dx6HiY8dndQsd+?=
- =?us-ascii?Q?DLZpPYRx3iFHfvvUhCvwnk1X8Cr4Dl/Z+8GOlQ/I/EjBaD4lydy+vyKQf61q?=
- =?us-ascii?Q?S7A9aV0gCAK8+CmVwmSA1anfeKD88XI79pfLNw6qFF3+upgVwmdnrjxGYeb+?=
- =?us-ascii?Q?ex6Vuu+cNx98fGAWLvpAb9j5bNcB80PiATY7LWMiTlc0a3nrm6CK0kxt+/sV?=
- =?us-ascii?Q?ilXLLNMEXs5gDFLT5/TjQ6OrAvEyhgIkz9bD85ZDE6U0I3k0hyRPjZBM5T3b?=
- =?us-ascii?Q?ODEiz7+t/dogru70EP78Vq8ZpCy3xalD8LG5OprlX1vdiI7QsEZfxZjoVlRx?=
- =?us-ascii?Q?Xndm5mJbYsDFzAJP99nna68RTifxXG4iCxcuCGfMb8ILcXqnT+TWJkXTKxVN?=
- =?us-ascii?Q?PpebFfT9xuu86uSybFd+I+uaMmnk6B+/B9ykZraRmrmyeabIWa8JkORqteDy?=
- =?us-ascii?Q?fFR0b/mqlih/9NZfAbGB7a8jzMn4NX83xxzbg40dBDKLZXnF1Z9P8/6X9/cU?=
- =?us-ascii?Q?ct6Ti+CVAGbQcb19H7FZv6xgM3FIHjl6HBc6lTSjrVTKgSJGsuJWDg2sx4qi?=
- =?us-ascii?Q?Q9NfdfEy7OAG6Td5fEXMVYfemc8E9ASKIFF99n8bo0CFRVFR2bpOzPB1MGu4?=
- =?us-ascii?Q?jleq6YEkxgWkvbtuHXpCtVRWn2cbR3gNC1mwkAx/3y0p7dcFwUfc6HpXVH2I?=
- =?us-ascii?Q?awwr9qjenbiT9aVi9sN9sOJCaaeIIWcwUtIZuJ6KmIaxjUaoFjhvNUOZtegv?=
- =?us-ascii?Q?FfMdeCc8NSFZmNiOOUvr8powCPFze/PqroerYeGL2cWTb0LaPJYb86ds81en?=
- =?us-ascii?Q?SXG3apEh0VqqbHepnw5lXihyuthf7OwHq6j9tRXkKin+l5IQZMjfhPCjsk7Z?=
- =?us-ascii?Q?b58Ph6BwlnHLJcLdoV2r2AUgrujE4NF1TxpSopO9fgG0d/MGSX66sesqAjoV?=
- =?us-ascii?Q?ADprYicEjLSAECoqgoa+8how7f/SrBaEeFlSZEO6Dkjo9zjsWYsAxd+dusd9?=
- =?us-ascii?Q?T5HVkbmzdoICh6FULdurpwSE4xHZ7cNQoTZ3q4vXcf96oIflUiNERdgH2wL6?=
- =?us-ascii?Q?bCPZ2mjJEJP3KOhOfawwhZA8lm33?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR10MB6597.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?nkQq6nDwzCfxb2aKVY6jzS7fhdqcfiPPn3l0rHwq7WztTHTAsavYH0KNMom2?=
- =?us-ascii?Q?IK8kI8nOmmKxQEy7i8xwBMZrounZm8S0Zj8AbRQbDRxc8SnmidsLnzsoeIJF?=
- =?us-ascii?Q?kAeJqn5HJcc2nQQe43pyn+4PMgVVOUeT/84nss0WXg8o1F5TbKK2XKgddIa1?=
- =?us-ascii?Q?i1rNctqHRcu68geWENO3raqvnkIlMXBlJQZVFCBX3OWskKu4Zausq6AlZtZC?=
- =?us-ascii?Q?LJOfpSNnQCZXPlUjlolFIxQrLdh1TnLXxu6tK3SN1/w02Q9hauBhvpBeeoDp?=
- =?us-ascii?Q?a9E4CsPN8GlGpUxH29SzpxmlwuPR6JEA28V61Pg/jSwlsz/fNg62w9a8jdQc?=
- =?us-ascii?Q?Hal8FAq03fNeKj+LOmQc4ERLuY+t8wP/rz4aTp5ywNjb5+/1vgC/IHkVwLbe?=
- =?us-ascii?Q?ZnfVCn3sQcu5d6pNejWm9hF6ujsj7+KS2m7ut/xz9uUWkggd8blGQj7iwb9v?=
- =?us-ascii?Q?pG0um+MT1DUESYjSlu1UhZPETzw3k9gh/cqmYCGRzp9F3ZWNbEWKZDS7Xxqk?=
- =?us-ascii?Q?H61mcpN/dC/QToDdPP0aIiaoIgnObiEGV1FlfptGK9GEoPon4CtD95OkNqBz?=
- =?us-ascii?Q?VtZGF34V6NCn4TfF2V2YJXzhMVjkuTdT7bczmmd3BxMa+MDZj/mmAfSD5JcF?=
- =?us-ascii?Q?in4TJT22uWpJv6lhqKETu0paaqvLBfMGwmqYs7aDEXdgQ1rMDJ6plEtsNYa0?=
- =?us-ascii?Q?tbya9cmN4OvSIC2ftwSI1o8Ay6ZohI8M2obI6CQEjTWbhLQ2Oyv2iJLzLGHW?=
- =?us-ascii?Q?Epb0fIZ+W2ymGX3TzOFckXfwRTh22GQTZWyYa7B1eef8SBUHF1ohDoS17z9O?=
- =?us-ascii?Q?OWEHjbFEnfYxJ3d1gYeeuMUjgFOQriUnO1cwS6tYY6iuN4v53zAJDXoosMiM?=
- =?us-ascii?Q?EhqpotvBm0Uy+XFr1YToBZm3Ol4muKtp+wsJifsameSzQwhYABWLQnA5M9YH?=
- =?us-ascii?Q?ThKaGY9lCR72WLlCrotlnWVO9BbWoQvg2dMgpRPqlDERN4qebYz2g5WpjnnQ?=
- =?us-ascii?Q?n5+5CnApCJYSAePRN56hASnQINPignHoENvYGWO3gs1EnrN1iej+GtihJxhY?=
- =?us-ascii?Q?qf+YTUUf1XKUYi1CsXOy4iCV8LlRdWm4lyu5BT1gGgJEDrfHO7PKPHQZvkCH?=
- =?us-ascii?Q?sG5ukSv0CtZFb60i4MxiJwF8/YZVf13srFpx2Y9+MgbnVhH06itQyfUcnnnM?=
- =?us-ascii?Q?yfr+YuUXUxb0BPzGg48wKryiB5NHG0vVDLDiT57av8pgEZczYnqoy1/oy8UM?=
- =?us-ascii?Q?jaNYjprvRg3L4AoSNJlwG0F8uQiuvZJ5tGf+kIQ60/tY+anK752jX4+PCV8L?=
- =?us-ascii?Q?RdPan4uuvzlLGRqo1jpw0q58PO9AS193gGK074w62UatRDhITiIWNZjFzmru?=
- =?us-ascii?Q?A+aB4ts0O5kz9UeuRY6En5GSlAhER3mNJbmtkB+QXwNndAGzuPRVwULt3nGz?=
- =?us-ascii?Q?z7OX775BS4DRRXSYcVXMyJ/DyIslEc4e6NmWkat7cC2Xzz/Pqjs8MH+iHlOC?=
- =?us-ascii?Q?A243DGiQwusldVbuTM+eqkN5m/fZVr5jXnIRhOpddoJPY0BEDfKK7MnP8avX?=
- =?us-ascii?Q?vgsnPKwPApwaGvQj0nrqo0BawBtlbzDaCfx0YviWFwdptSI85EFBvUA4/nAP?=
- =?us-ascii?Q?Sw=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	+1oBcRtvlF7frhl8WGgj5F/2KoVtP+aL4+caIkbUSP2WHzP0wbjnAsPVntT2cBq8SFMgzSweTSnR10Avo2gAnpzHgfc4Is7f5CS697HgqQI1dUXUTXbsTqLWN5ok1EOTs/G04VM+XBV/jZCMYVaB32bUIODHCguwfIztG2goLkB7De0zpCyWqx1voZzEefayhAVlX4o00da8bhADqPF8oj9PLoz15BxHReQl1RJgcAGFpaJS6UsxTrfzav9DGTQMre9YuD7UE3kZ9Immu97A88kDDcPiTGtSHKlbQ9d5hFOE34CIeWVH9Z42N8xPlSXI+LGycp5U74sPw2GlojIU27DE2IrgB4h4Z+o7wSCi2qW52B8larhVJUZEboUOVOqnYHyXpPtE1m5erwR++gHxTBFJLYin2RKV3xroKwvTmUlOVSTFc1f8KfQT/8jMa6UmK1mYNaGsQwUyHuDT0PTgT107wYF00Jn2Y4/qmHcBEg+No1ZLWKeWPbdWPSJwYNGan5BpS0A+qWEF58SQ76UF6cap8ZNpBHPztqlHIO91GVbbrgXZDUNPrLhMLpZ1BYmqheE5zRRBPx78QSkakLFQifjwrgT6wunIKBtL6E+yS0E=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9e46a234-df4c-437e-17c1-08dd4b921a38
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR10MB6597.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Feb 2025 18:21:43.5810
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FOXlkMJB4iw9DbvAR/gijO4iVS9nS/fCpAoEbbiRiAW2Iq0etMj/s88G4LZcPCHDm/pjMSz/xnli0cWCC5Q4XpLXhRZdyZeC7ZVO0TEr++w=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR10MB8203
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-12_05,2025-02-11_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 spamscore=0
- suspectscore=0 malwarescore=0 adultscore=0 bulkscore=0 mlxscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2501170000 definitions=main-2502120132
-X-Proofpoint-GUID: lhues-9SP_vwber6RyaYLS_JprTakopz
-X-Proofpoint-ORIG-GUID: lhues-9SP_vwber6RyaYLS_JprTakopz
+References: <20250207012045.2129841-1-stephen.s.brennan@oracle.com>
+ <20250207012045.2129841-3-stephen.s.brennan@oracle.com> <CAADnVQLiyezBW34dhkwZw+mWmkFAYMZUdHbOa4uYCdPbgS10SQ@mail.gmail.com>
+ <87a5asghj2.fsf@oracle.com>
+In-Reply-To: <87a5asghj2.fsf@oracle.com>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Thu, 13 Feb 2025 17:18:02 -0800
+X-Gm-Features: AWEUYZko1eBho3JB_JCiwey_VkI40uEQrrVuLZrlphS9FJjF_Fxjtl4z_U1OGOk
+Message-ID: <CAADnVQKLykG3akdPRTDgHDey9FW1LpixZHjLcj+eG2rhXo7V1w@mail.gmail.com>
+Subject: Re: [PATCH 2/2] btf: Add the option to include global variable types
+To: Stephen Brennan <stephen.s.brennan@oracle.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>, Kees Cook <kees@kernel.org>, KP Singh <kpsingh@kernel.org>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Sami Tolvanen <samitolvanen@google.com>, 
+	Eduard Zingerman <eddyz87@gmail.com>, linux-arch <linux-arch@vger.kernel.org>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Kent Overstreet <kent.overstreet@linux.dev>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Jiri Olsa <jolsa@kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>, Jann Horn <jannh@google.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, Hao Luo <haoluo@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, 
+	Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Arnd Bergmann <arnd@arndb.de>, Nathan Chancellor <nathan@kernel.org>, linux-debuggers@vger.kernel.org, 
+	Alexei Starovoitov <ast@kernel.org>, Song Liu <song@kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
+	bpf <bpf@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Alan Maguire <alan.maguire@oracle.com> writes:
-> On 12/02/2025 00:49, Stephen Brennan wrote:
->> btf__dedup() does not deduplicate variables, nor the contents of the
->> DATASEC. This is reasonable, because there could very well be multiple
->> variables of the same name & type from different CUs, but with different
->> tags or DATASEC offsets. So it is up to us to ensure we don't provide
->> duplicate variables to libbpf.
->> 
->> Unfortunately, there are some cases where variables are declared
->> "__weak" in the source code, resulting in the same variable, with the
->> same name & type, at the same offset, being encoded twice. The DWARF
->> information does not encode any difference between the "__weak" symbol
->> and the overriding symbol. And even if it did, we couldn't filter out
->> "__weak" symbols, because they aren't always overridden. So, we must
->> deduplicate them.
->> 
->> We can't guarantee that the types are identical prior to deduplication,
->> but we can at least verify the offsets & names are identical. If this
->> happens, simply skip the duplicate copy (or copies) of the variable.
->>
+On Tue, Feb 11, 2025 at 3:59=E2=80=AFPM Stephen Brennan
+<stephen.s.brennan@oracle.com> wrote:
 >
-> hi Stephen, quick question; could we do without patch 2, and if we get
-> an offset match, then just look up the names of the offset-matching
-> variables in the code directly to see if they refer to the same
-> variable? that way we would only incur costs for the rare cases where we
-> get an  offset match. You could use the names__match() function to help
-> with that I think too. Would that be simpler maybe?
+> Alexei Starovoitov <alexei.starovoitov@gmail.com> writes:
+> > On Thu, Feb 6, 2025 at 5:21=E2=80=AFPM Stephen Brennan
+> > <stephen.s.brennan@oracle.com> wrote:
+> >> When the feature was implemented in pahole, my measurements indicated
+> >> that vmlinux BTF size increased by about 25.8%, and module BTF size
+> >> increased by 53.2%. Due to these increases, the feature is implemented
+> >> behind a new config option, allowing users sensitive to increased memo=
+ry
+> >> usage to disable it.
+> >>
+> >
+> > ...
+> >> +config DEBUG_INFO_BTF_GLOBAL_VARS
+> >> +       bool "Generate BTF type information for all global variables"
+> >> +       default y
+> >> +       depends on DEBUG_INFO_BTF && PAHOLE_VERSION >=3D 128
+> >> +       help
+> >> +         Include type information for all global variables in the BTF=
+. This
+> >> +         increases the size of the BTF information, which increases m=
+emory
+> >> +         usage at runtime. With global variable types available, runt=
+ime
+> >> +         debugging and tracers may be able to provide more detail.
+> >
+> > This is not a solution.
+> > Even if it's changed to 'default n' distros will enable it
+> > like they enable everything and will suffer a regression.
+> >
+> > We need to add a new module like vmlinux_btf.ko that will contain
+> > this additional BTF data. For global vars and everything else we might =
+need.
+>
+> Fair enough. I believe I had shared Alan Maguire's proof-of-concept for
+> that idea a while back for an older version of this feature:
+>
+> https://lore.kernel.org/all/20221104231103.752040-10-stephen.s.brennan@or=
+acle.com/
 
-Without patch 2, we would have already emitted the VAR and DECL_TAG
-types. We can still skip emitting the var_secinfo which avoids the
-validation error, but it feels a bit messy to leave around the extra
-VARs that aren't covered by any var_secinfo. You could probably say with
-more confidence whether that's an actual problem.
+Right vmlinux_extra was discussed in various context, so let's make it happ=
+en.
 
-But as far as the costs incurred by this & patch 2, I _think_
-there's not really much extra: yes, we have to store a bit more data
-into the buffer for each ELF section, so there is that. (I can probably
-reduce some of that in v2, some of the stuff I did is a bit silly in
-hindsight.) Mostly we just rearrange the order of when we add the VAR
-and DATASEC, and we only check for name matches when we have an offset
-match anyway. I do concede that prior to patch 2, VARs may be created in
-parallel, and now, they are created in serial, so for parallel BTF that
-may be a small regression. Ultimately, I haven't benchmarked and can try
-that as well if you'd like.
+> We can dust that off and include it for a new version of this series.
+> I'd be curious of what you'd like to see for kernel modules? A
+> three-level tree would be too complex, in my opinion.
 
-Let me know how you feel about the extra VARs & the performance!
+What is the use case for vars in kernel modules?
 
-Thanks,
-Stephen
+> module BTF size increased by 53.2%.
 
->> Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
->> ---
->>  btf_encoder.c | 29 +++++++++++++++++++++++++++++
->>  1 file changed, 29 insertions(+)
->> 
->> diff --git a/btf_encoder.c b/btf_encoder.c
->> index d989fbd..29b2054 100644
->> --- a/btf_encoder.c
->> +++ b/btf_encoder.c
->> @@ -869,8 +869,36 @@ static int32_t btf_encoder__encode_stored_vars(struct btf_encoder *encoder,
->>  					       struct saved_var *var, uint16_t nr)
->>  {
->>  	int i, id, annot_idx;
->> +	int prev = 0;
->>  
->>  	for (i = 0; i < nr; i++) {
->> +		if (i && var[i].offset == var[prev].offset) {
->> +			/* The offset of this var is the same as the previous.
->> +			 * This can happen when a variable is declared in one CU
->> +			 * as "__weak", and then overridden in another CU. There
->> +			 * is no indication in the DWARF which symbol is weak,
->> +			 * so we need to deduplicate. If the duplicate is the
->> +			 * same name, this is expected, and we can just drop the
->> +			 * second instance. Otherwise, we need to raise an
->> +			 * error.
->> +			 *
->> +			 * Ideally, we would like to verify that the types of
->> +			 * the duplicated variables are the same type as well.
->> +			 * However, there's no way to do this without
->> +			 * deduplicating the BTF, but at that point, our type
->> +			 * IDs won't be valid.
->> +			 */
->> +			if (strcmp(var[i].name, var[prev].name) == 0) {
->> +				var[i].type = 0; /* Don't encode corresponding secinfo */
->> +				continue;
->> +			} else {
->> +				fprintf(stderr,
->> +					"error: encountered variable '%s' (type %x) at  offset 0x%x which duplicates variable '%s' at the same offset\n",
->> +					var[i].name, var[i].type, var[i].offset, var[prev].name);
->> +				return -1;
->> +			}
->> +		}
->> +
->>  		id = btf_encoder__add_var(encoder, var[i].type,
->>  					  var[i].name, var[i].linkage);
->>  		if (id < 0) {
->> @@ -894,6 +922,7 @@ static int32_t btf_encoder__encode_stored_vars(struct btf_encoder *encoder,
->>  		free(var->annots);
->>  		var->annots = NULL;
->>  
->> +		prev = i;
->>  		var[i].type = id;
->>  	}
->>  	return 0;
+This is the sum of all mods with vars divided by
+the sum of all mods without?
+Any outliers there?
+I would expect modules to have few global variables.
+
+So before we decide on what to do with vars in mods lets figure out
+the need.

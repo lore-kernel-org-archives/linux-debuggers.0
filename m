@@ -1,147 +1,109 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 340793C17;
-	Fri, 14 Feb 2025 01:18:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F1E19CC06;
+	Sat, 15 Feb 2025 14:21:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739495897; cv=none; b=UxF6JKagtyBAouxSqhVLD/0UICn4DZL11jtFYo8ODOO2kYlEk0MgosxsBSeFUjJu1pXifBZwCV4UHpv37gqRw7MiOgnubtYwF654++BMKS2MfztmunOuRNpCnPxfRzOXb5Sea6M0P2SXP3PYXS0A9qfEW0pCLGGZYbyddz3Ow54=
+	t=1739629311; cv=none; b=fyd5DuR67Sh0kVP5T9ortGu+tMpt4INs/qEKp+racsTtzp5U8A95C7u0HBf+3zC93l/TRqpoOwtkDmT+4jqVOxn4x4rki4Oa0z90XXJY6Sf4m239L/NZ58cqpUP5Fwu+lQHooAgCf2D5NOK3YMizRUzuQkiPzfzfdrpHqXn5yWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739495897; c=relaxed/simple;
-	bh=7KmvRdNkOB8Mr3YZotzrxWe4W/LaMjQF7NLNIhjtF3o=;
+	s=arc-20240116; t=1739629311; c=relaxed/simple;
+	bh=O3b2JU3w/ODuxO3MLy1UzoyGGGaXmBwx1eEl4Fz+mQw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bJlJNQkODJOS5M45SewxB58lbGSQzyNo50P0rg6RqoaQBItMkcXjgV2NEsm/dSEjMYl98R/4DmbIGc5wEeoFzLtZjIoUKxdVgQnojzfs+cjB1ucUzoeBLt4ybQD911p6Gng3w9PN+KdBBx06S8wtlUq7jWSVOC0j8g2Q6gEEAS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LxK4asBA; arc=none smtp.client-ip=209.85.221.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=RfEq7dqFwFUy/4Fwms5iZa4E4tzyYYcvH5OvKGKNaaYjJIu48she1vgxrtSnJ15VJxc5urCGh12XGz7dqF4lzx7RJtMO9miaRGNu8Wdhss1DFfF/Z0JYabyyy3ZLvTcyv6/m/vRHjuUuynxNqsT2Ct3g1e6cjSt9XEUkGHDoeVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hEGS9Kir; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LxK4asBA"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-38dc5764fc0so1298582f8f.3;
-        Thu, 13 Feb 2025 17:18:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739495893; x=1740100693; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iZNgfoJpdQnnYrxgyLyaeefs7r2kSe1cqjB7lzYuaOY=;
-        b=LxK4asBATP1MeRU6Tug/wM5pDWexWygZDRfTC/vbdHU3zlvgXNcHgoKtsv/N7i/QUi
-         yHStzkJ9EXSAWeLe35ysovgUPeLF0lMz8BiU8Ei8q8NUF6CoRsoXbwZjD2CJGe1Jehep
-         /YphwX+NCcwrkQc9M+tUL1orVmCND1wwWjN8dEsFw3+PrmnJS6PNxUzoQ7yPqtcn2Ys2
-         noBbHtyL8GMwygxk/k5jiVcUDBi+oQ1ZUtR5qSpzis1AgBjt6vlXOZ7SUmcCySnsNSWD
-         nOLKldd9c8X7fdnygej1AWYDwZoKHee5p6EGmreiir7QXwCsGysJuesfJ4cQpijobsyg
-         BYpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739495893; x=1740100693;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iZNgfoJpdQnnYrxgyLyaeefs7r2kSe1cqjB7lzYuaOY=;
-        b=K9sz0Ifzh0KhZlYa/s2qoGXTbK1FnvCwvcIYJy3oVE9tUF98o6M4G/Ews2E/g/AS8T
-         uFnaKe/IlooekVw4fR5MlQGgIdIJNLFccitP+/PLTqody4Ja6sFOlqNJiLQINsETeXZv
-         RuR4alLglorvqnpUgpTefbtngDnp638g21a2+WrSH4ZnE/NW3R0AkKuPloje9pNWSVnA
-         HG2As89iXIpEDnI1w17j5VWJNnQ/cfALT9Ozm5wM6t4+vcqy61O7CL2IukEf8geeBbnb
-         8ypJcah44wWBP/Af9FVXMSJ10bxOWlDv20uD4RBOUvKISx+i07BZzHa8kfEp+5x9chOJ
-         z2jg==
-X-Forwarded-Encrypted: i=1; AJvYcCUIpVd5AYtEBCT0qaPbKvkpNNo6y2wDNR2Degx/QbYsLqjsLeIt7zidDeqVOG6RYVQeEvg=@vger.kernel.org, AJvYcCUMKQNpgipCLbMF7bAhixEJtcfPA+8jMD0V/TkMFS/Kn8GgZVBIu7jktE0bY+LTtzx/nb9hpWdeFrAhlQna@vger.kernel.org, AJvYcCUsHeDl7o90oPtinSl3Jsnk9mIZUqnwOpDzJS29GzOe05vOIx1m8IVDZgXdrbMrY7Xb5Sbr5+Y4pUFU4A==@vger.kernel.org, AJvYcCVXkEp4S1oFJ9zTiEVpV0l0EAoB1w8909YK9AoP3/Bel/goHAOzdNfhwsoD7qySO9ve+wl9cnHge3FIDlPA6boy@vger.kernel.org, AJvYcCXg7blZmWnYhHKW73CD0ZBnEDFdt6uBmDkKUKZc7FtzNBcAsTEL5eh6bbfn7lxIEzPXdhUo+RFnniCbKh6x@vger.kernel.org
-X-Gm-Message-State: AOJu0YwbNqWKlSD3k+48L4bgacxvB5kK0HBa3VAeMGK41yAJQI80/kVK
-	8YObXNpHJVK7k9H9t4AidUuJMCmwGaRJ+61tB5n0fCFlxV+G19LcoRsMeF1Th1TpM+Wii3PVWdp
-	y+mOI7xBgxoMrIrhu3ye4Btjf5q+k6T/F
-X-Gm-Gg: ASbGnctEuk7Q3/s571M2HWEEyj3kOZogI6Xaio0Us2yfa/wwO/xVXBsJwgMjwVARHzf
-	03jwEodQFksPjZK2cmt7D2uU/B3yzvWuQIchF3TkiFr1fwKARAsbaOZCODbxBA/YFtStmn2lCCL
-	Xr8lCWQRJZvPgAHkjpva6l6Fj4H4wM
-X-Google-Smtp-Source: AGHT+IHjH3HbrV6sFGnOweivEcys63M8NcPKfcX22oOSM82lFAdrwn46q5GI7CB4DnW7A34GOs2t+/KwcM7+WXRkatg=
-X-Received: by 2002:a05:6000:1f88:b0:38d:dd8c:51db with SMTP id
- ffacd0b85a97d-38dea2f982dmr10477713f8f.53.1739495893060; Thu, 13 Feb 2025
- 17:18:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hEGS9Kir"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 862E6C4CEEB;
+	Sat, 15 Feb 2025 14:21:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739629310;
+	bh=O3b2JU3w/ODuxO3MLy1UzoyGGGaXmBwx1eEl4Fz+mQw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=hEGS9Kir7L5VKuSvVoS3WRtvXngeEsvB3GpV/9fjCOCrhy9sYWKacXw8hfRSBUh7K
+	 pQZuyRLi1IsaXGh5mqgZF5yxp82d1nSThvgFxU/3GtN0sZ0D+XmFoeMJGfKfeR0RHa
+	 7UPYmkg7WVu8yxQcGHqTxN7kaaADW1ft3LFhoi82R3muUtYgP4rFVGadux8Ws4CURt
+	 bzfGrVEMPNYAJd+uQmsYUqD6yKPcm8MFiy76nPuP+mdpOoXzwxCaBVLF+sOiJJvhqD
+	 nvgZ5j2uO2rYTsGSomJLxTGBORrHL/rXl9k5ceasmIC1swXfsCfsIAz0jRm5ZnQA7i
+	 ofKhDMDYRJOKA==
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-3072f8dc069so30378011fa.3;
+        Sat, 15 Feb 2025 06:21:50 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUEQa72l7iNrUozyP8ZgDz0DNRQ4PT6+Y1o4wlcQaZFWnCjeQ0MyOKfy8w/RnfMWAE1yDWB4Ed+59Fnk4Cu@vger.kernel.org, AJvYcCVWmcbJcwQJWYqHlSlyGGPSLsJvWTmxMqXfoUIkao1N0orAPWpkdGKYnsRILzTJ2iW/muM=@vger.kernel.org, AJvYcCVhPIneuuIiFaQDmaNRoa3IaGJ7a7xeHTweFxLuencKtPQN1TCi8E5S+lPZcqTNCT9VbDwWLYXFnLJIaUcR2ecn@vger.kernel.org, AJvYcCX3kQWokwX97aythkIvSL6Bj0GZgDOJxfWJKRWfAQTUN+B0dvhmzD1IlmKHxMwI43luUoj8wZ/YzWMYe5oj@vger.kernel.org, AJvYcCXuislqfI/BpS19OwxajBEHBci2Bl4m9TUAKntEqMxCohs3XcxsbiNdSsK5OElbKJJNSJdpKC4WFGv64g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwgdQAi1vqYReQ5xCYtJB2X/7ZBOGMldOxf3uuZe1H/uid81Mub
+	QNVqFZt+8gkgXoVTzZd1HL0gw11bAQ0IOOKwBT3RVivGcn9uwG0KtB4+79gkrvBTAPIMOSeBA2W
+	YCfWSYlJsMIHI5l6uD2KSfqphrhA=
+X-Google-Smtp-Source: AGHT+IHJAH2llTK/8FUeOa/uyjvPOa+oEZ4jzkPOcw5/nJJ+S7w8Kd3yArGdplvM1hiKKoy+jgbSokUCpMby5X/HYDE=
+X-Received: by 2002:a2e:99d6:0:b0:308:fa1d:1fed with SMTP id
+ 38308e7fff4ca-30927afee15mr9904211fa.34.1739629309211; Sat, 15 Feb 2025
+ 06:21:49 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250207012045.2129841-1-stephen.s.brennan@oracle.com>
- <20250207012045.2129841-3-stephen.s.brennan@oracle.com> <CAADnVQLiyezBW34dhkwZw+mWmkFAYMZUdHbOa4uYCdPbgS10SQ@mail.gmail.com>
- <87a5asghj2.fsf@oracle.com>
-In-Reply-To: <87a5asghj2.fsf@oracle.com>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Thu, 13 Feb 2025 17:18:02 -0800
-X-Gm-Features: AWEUYZko1eBho3JB_JCiwey_VkI40uEQrrVuLZrlphS9FJjF_Fxjtl4z_U1OGOk
-Message-ID: <CAADnVQKLykG3akdPRTDgHDey9FW1LpixZHjLcj+eG2rhXo7V1w@mail.gmail.com>
-Subject: Re: [PATCH 2/2] btf: Add the option to include global variable types
+References: <20250207012045.2129841-1-stephen.s.brennan@oracle.com> <20250207012045.2129841-2-stephen.s.brennan@oracle.com>
+In-Reply-To: <20250207012045.2129841-2-stephen.s.brennan@oracle.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Sat, 15 Feb 2025 23:21:12 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQokoST0FnByeWywaghTMP2aG7hQaV1T=TcQ=1v4ZLQrg@mail.gmail.com>
+X-Gm-Features: AWEUYZk8XrdR9lJozRpCY9QyaANy91FqaGQymPUxQ0WR6PL3n7MJiW1ZBtl7LX4
+Message-ID: <CAK7LNAQokoST0FnByeWywaghTMP2aG7hQaV1T=TcQ=1v4ZLQrg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] kallsyms: output rodata to ".kallsyms_rodata"
 To: Stephen Brennan <stephen.s.brennan@oracle.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, Kees Cook <kees@kernel.org>, KP Singh <kpsingh@kernel.org>, 
+Cc: Arnd Bergmann <arnd@arndb.de>, Andrii Nakryiko <andrii@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, 
+	Kees Cook <kees@kernel.org>, KP Singh <kpsingh@kernel.org>, 
 	Martin KaFai Lau <martin.lau@linux.dev>, Sami Tolvanen <samitolvanen@google.com>, 
-	Eduard Zingerman <eddyz87@gmail.com>, linux-arch <linux-arch@vger.kernel.org>, 
+	Eduard Zingerman <eddyz87@gmail.com>, linux-arch@vger.kernel.org, 
 	Stanislav Fomichev <sdf@fomichev.me>, Kent Overstreet <kent.overstreet@linux.dev>, 
 	Pasha Tatashin <pasha.tatashin@soleen.com>, Jiri Olsa <jolsa@kernel.org>, 
 	John Fastabend <john.fastabend@gmail.com>, Jann Horn <jannh@google.com>, 
 	Ard Biesheuvel <ardb@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, Hao Luo <haoluo@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, 
-	Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Arnd Bergmann <arnd@arndb.de>, Nathan Chancellor <nathan@kernel.org>, linux-debuggers@vger.kernel.org, 
-	Alexei Starovoitov <ast@kernel.org>, Song Liu <song@kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	bpf <bpf@vger.kernel.org>
+	Andrew Morton <akpm@linux-foundation.org>, linux-kbuild@vger.kernel.org, 
+	Daniel Borkmann <daniel@iogearbox.net>, Nathan Chancellor <nathan@kernel.org>, 
+	linux-debuggers@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>, 
+	Song Liu <song@kernel.org>, linux-kernel@vger.kernel.org, bpf@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 11, 2025 at 3:59=E2=80=AFPM Stephen Brennan
+On Fri, Feb 7, 2025 at 10:21=E2=80=AFAM Stephen Brennan
 <stephen.s.brennan@oracle.com> wrote:
 >
-> Alexei Starovoitov <alexei.starovoitov@gmail.com> writes:
-> > On Thu, Feb 6, 2025 at 5:21=E2=80=AFPM Stephen Brennan
-> > <stephen.s.brennan@oracle.com> wrote:
-> >> When the feature was implemented in pahole, my measurements indicated
-> >> that vmlinux BTF size increased by about 25.8%, and module BTF size
-> >> increased by 53.2%. Due to these increases, the feature is implemented
-> >> behind a new config option, allowing users sensitive to increased memo=
-ry
-> >> usage to disable it.
-> >>
-> >
-> > ...
-> >> +config DEBUG_INFO_BTF_GLOBAL_VARS
-> >> +       bool "Generate BTF type information for all global variables"
-> >> +       default y
-> >> +       depends on DEBUG_INFO_BTF && PAHOLE_VERSION >=3D 128
-> >> +       help
-> >> +         Include type information for all global variables in the BTF=
-. This
-> >> +         increases the size of the BTF information, which increases m=
-emory
-> >> +         usage at runtime. With global variable types available, runt=
-ime
-> >> +         debugging and tracers may be able to provide more detail.
-> >
-> > This is not a solution.
-> > Even if it's changed to 'default n' distros will enable it
-> > like they enable everything and will suffer a regression.
-> >
-> > We need to add a new module like vmlinux_btf.ko that will contain
-> > this additional BTF data. For global vars and everything else we might =
-need.
+> When vmlinux is linked, the rodata from kallsyms is placed arbitrarily
+> within the .rodata section. The linking process is repeated several
+> times, since the kallsyms data size changes, which shifts symbols,
+> requiring re-generating the data and re-linking.
 >
-> Fair enough. I believe I had shared Alan Maguire's proof-of-concept for
-> that idea a while back for an older version of this feature:
+> BTF is generated during the first link only. For variables, BTF includes
+> a BTF_K_DATASEC for each data section that may contain a variable, which
+> includes the variable's name, type, and offset within the data section.
+> Because the size of kallsyms data changes during later links, the
+> offsets of variables placed after it in .rodata will change. This means
+> that BTF_K_DATASEC information for those variables becomes inaccurate.
 >
-> https://lore.kernel.org/all/20221104231103.752040-10-stephen.s.brennan@or=
-acle.com/
+> This is not currently a problem, because BTF currently only generates
+> variable data for percpu variables. However, the next commit will add
+> support for generating BTF for all global variables, including for the
+> .rodata section.
+>
+> We could re-generate BTF each time vmlinux is linked, but this is quite
+> expensive, and should be avoided at all costs. Further as each chunk of
+> data (BTF and kallsyms) are re-generated, there's no guarantee that
+> their sizes will converge anyway.
+>
+> Instead, we can take advantage of the fact that BTF only cares to store
+> the offset of variables from the start of their section. Therefore, so
+> long as the kallsyms data is stored last in the .rodata section, no
+> offsets will be affected. Adjust kallsyms to output to .rodata.kallsyms,
+> and update the linker script to include this at the end of .rodata.
+>
+> Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
+> ---
 
-Right vmlinux_extra was discussed in various context, so let's make it happ=
-en.
+I am fine if this is helpful for BTF.
 
-> We can dust that off and include it for a new version of this series.
-> I'd be curious of what you'd like to see for kernel modules? A
-> three-level tree would be too complex, in my opinion.
 
-What is the use case for vars in kernel modules?
 
-> module BTF size increased by 53.2%.
-
-This is the sum of all mods with vars divided by
-the sum of all mods without?
-Any outliers there?
-I would expect modules to have few global variables.
-
-So before we decide on what to do with vars in mods lets figure out
-the need.
+--=20
+Best Regards
+Masahiro Yamada

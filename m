@@ -1,74 +1,73 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103271805A;
-	Wed, 19 Feb 2025 07:48:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6C11261371;
+	Wed, 19 Feb 2025 23:52:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739951303; cv=none; b=UpCGKydWOeU62wUVFpylmpuPVSF5IgNX4ekHKqJHgFxym0mDv/KV4pei7DY5x4iS+SZOupEfh3ao4HT7LvSQ2HmXtABbrw9OVat9eS4OiQ6hnEHZ/QqzXIaTf8deLo5HWAqKSmkz9eX3ZMr+lnbWg7fqVowT3Ya7z5Fv3nGrgAY=
+	t=1740009127; cv=none; b=EMOxIPFWUvjfCOgbFAQWTEk8UufpHPWUQVG94QgbIEKhzDhcsvq6qSqqfzeFrXFZ+iHn/iT1yivF4d9Tfw6h5dEZ+lVdS+fqVsxEuv322xUdMeRT143KlnAuPTAEjHQSoRhozqSKT9qqZRrJkinDLC34/MssKmbBqzGY8IbJFeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739951303; c=relaxed/simple;
-	bh=UPm48SNvkxK9A7sB6MyVbaxyiIPkXc5a7Lc5C9KCdR4=;
+	s=arc-20240116; t=1740009127; c=relaxed/simple;
+	bh=3WrERtGIJP7HuqDE7m/PhvhsILGXTiVnsd7meHy6oqY=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jEvQrcazpcKxlnIAXOrQFdaijSJFe1fF1MHKlUqiclFv6didd9SdLnSZD4ipkB5WNzg1pMsXrBs5JZQOllKxH3qGgTnusd+ENlI1F9Y/nLf5HODt0MK47y1p+635eKCEQqpjI5kQQ/ByP9I7EItv+F2vAJrTaNZSMBIXDpi/1/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OobVl1O8; arc=none smtp.client-ip=209.85.216.54
+	 Content-Type:MIME-Version; b=kIguw99bIS0EbfW6AlX/NsXrFh3GTfuqOP6jYwgTPkSr1D3gEtHp1xPTFljKIFE9y1ojwaQiLcTl8L1YjjpZags+S3C/x0vrv0fddwiJG5sLRtzHedUaWbiSRpld/5wBkuNd7F6cPMebPoCC9Iyf9fly8+rrz+FXkhYBiNBuRzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CHdb2M8N; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OobVl1O8"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2fbfa8c73a6so11860878a91.2;
-        Tue, 18 Feb 2025 23:48:21 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CHdb2M8N"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-220c8cf98bbso6265975ad.1;
+        Wed, 19 Feb 2025 15:52:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739951301; x=1740556101; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1740009125; x=1740613925; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=lsVKDsU0mv5Z/zrU+8jSbfSE2rbJ+sUT0SGVWNZEIzA=;
-        b=OobVl1O8yJDowVfP8JpTemohbMWnydR6n2xvCYoENSR8zF+qn2eOjdgT9dQM/OKeCl
-         DBFOUzINwnZCai/hryzaxzjkcWT8dNNXC2ta+XHCjwZEMtB5F7+PmLxphUqNvKXIgEDf
-         dgc1opWhGAbdcXUz3Q1195zRO6FUgCPKewiS87z/kob7S7YTg++zD72e8xwfQ4t6OLL+
-         Oh+W1ZqM/WNvHC9aO3Q1WKpvmML7soASs7pmZ0nmadSHT5uMPJW0i0X8KmcdDGKRkon2
-         LEWgMjqrI+LMlZU/kpj2VKIH6bF5DvqmacdfdElnVKOjNaTKHXtJmImp9URlyHUQtgf9
-         /Wmg==
+        bh=bd4fqW0Y9aovkQIqemtB+wexTdz5vJayZK3C44sxP34=;
+        b=CHdb2M8NsWpQvi3p9KAl7R/LpiKoLUIlkuPSbc+AZ184KpfWuTsaCj48CQIaEtmPd1
+         qnse7wN8le3akgPRg8/YubKYd374pt3AF+wTS81QcpaoDlyleXv7q6woQ0PDQyQakdFi
+         VCuYl5Z05N0oGCcmkaXI3z6XVPKl7qtXiDXV92kf0fi8ja31bX05gNltzc40vSBR0wgP
+         uoPBgUpKXxQdMP7wbHE6C4YP7IW2cV5mqwqQbYe7JosATQAl/5kq2XFBmZPAnHaC5yYL
+         gOno8ayA6r7953Yc50wbPVDJvZfZK3LDr5HeGZ6qqgzbo9gce7LYukQVqxIzM9meMR7B
+         TqiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739951301; x=1740556101;
+        d=1e100.net; s=20230601; t=1740009125; x=1740613925;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=lsVKDsU0mv5Z/zrU+8jSbfSE2rbJ+sUT0SGVWNZEIzA=;
-        b=gfzwjYXkMRBYr4mbkg10u82rkmrgf9R9HZ8OV1LYTcS7djgMTjUBJZF14i+Aj555cp
-         JrRlYShCGZU/YqPWGK4Y+n6pfksOfN6PmNTTTnZJGS8hIN69nvRH7OuWluEl8ezvEK8T
-         qRM1Pey1VsXD1lIk5gWDhbehTivH9WVTfklL2V5y2HnCWyhvqSLFb5cbR+zFTrly1rgz
-         DmYNABaWvWmuWYSu4d7SHo/lrix0n2pH++sC0G1jhsDx8cXkorOQkV2wzN0Ajs2DuavH
-         LnFQgap3S6qng7XLjkIAB0BdjDU2R6fVoZxJLQDglFeFYPnuS1CtyP3zo9wZZ8vmFAj4
-         PM3w==
-X-Forwarded-Encrypted: i=1; AJvYcCW0BXADsJ9wfmLmcnejBi2w5D1QPqVNQkBMIZ3SuC4X8v3ANllWE03q5azRe9KAgBmlvTSZMaYCPxd9t6YP8L4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwvVBAztODNYcJNAzrMR5nTc7/hhSNjtL40wKXI0m9/nxsrL/v6
-	uVq49y1H3o+YU/onOLqwjrFG7dgE3dPSAYHAfqCYfT4lrTJCU1Ay
-X-Gm-Gg: ASbGncuzx0k0ops4ZKY7CUHuQlj2QujYckm6JgX0LsY2onSyWSyNog0SaR2rdBC83Z6
-	xq/7akWwUA/TNBLo9lL05A0A9+PQKba7XMFye86Hif/sWlYne/PHQey0ndu+Mn11/wgmMf7r09j
-	6WlEiTY1j+cPiBKxGT8EOA0GM7RbxvYhPldRWTlP1fdgjhkj/oHhWhE0yCQSODVEdFFFb8+YLP0
-	oQJoAdCJy34LYYJugCDwuhzmqQPUySDAeXr94sb5WHbYmKZsNViRcCyAfM+pbOJ5vQIpDtqseBn
-	wVR+wGispRDK
-X-Google-Smtp-Source: AGHT+IETi0NYn4pmmZ57DgnwXV/4vSwokmTZThL5ChJ9QAiQtXAlPurI950LCe2j8RNsFta/lWoOqw==
-X-Received: by 2002:a05:6a00:6f05:b0:732:6217:8c69 with SMTP id d2e1a72fcca58-73262178e79mr26953397b3a.3.1739951301109;
-        Tue, 18 Feb 2025 23:48:21 -0800 (PST)
+        bh=bd4fqW0Y9aovkQIqemtB+wexTdz5vJayZK3C44sxP34=;
+        b=CjJZ5+pZipG5WwefUyK2U2vlTUllo4q+UzffXN0Gpv/NzbIfxgKM7hESN5PO8TPQo8
+         puLO1nN0qVRnF4UZOdnOe5uyYvOz4Qr1VJG97hO1xVCS1FXPF1W3X3/xh5oNrNHpAgdX
+         dVrDKjagL0AkszOT3Oz5sRp15Kh7wEy+A4w+vUG0eDHTO6kkX/xhgM0YxtLdPSSWmUOv
+         xf2Al0AU0oASRHl9dmosdsv3AFN7Zi+s/A5ZcNlLK6NMoGaiiPy4EkAYQsTS6i5h/MYb
+         ozEQsESg7sjdTXbRdlXUH0J2kn3fjNJRVc4MCjjMhRvrAGm+lx4y1/PEQplfc3IUKBn4
+         NQMg==
+X-Forwarded-Encrypted: i=1; AJvYcCUd31RUfUQp/K5fzdrmgXKzn77bchkHnGZuJufoABoysnIsKu+AEjYuGCTbJQdWfj2DaFmiZE8geKKdVjYEOQ5d@vger.kernel.org, AJvYcCVLtGNkFrMRZXLsOMf8Qv/xxz56iwvjIZK9PhVUnRfD7DLoJ406ReoAfuh502bff2Toz3Cd4eH9@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzh4B5Gw4TkEc6u6wGJN1/OovUPhLFLYEzhqGU50JAdXp7iFRak
+	ChFai6sQfRfQUOjnMv2nFgcgSyHLy/uH8YdFkxZeVjaA8usPe5Zd
+X-Gm-Gg: ASbGncujivdICiDc5bGUWXl+OSF5LViRE9ViyJ8BEB/P0ZSwKL90SyfYG7i6n2/vdR/
+	0g/cH6VY5I80L0Jx1sWn2Q+h/mCI07azItzgAfV/IDbkXqaB4k5C9JwP0BXmhx0G08ZcU2vFcYv
+	319ik+9wBVeM3zdxdANr2xECpRwvjYIfCw0SvCATg1qTDJNBI8C1M7bytJuXGlEo9f/SrUYFaBC
+	u7V7BbeyTlHJV3KYiYymJij4xo5Z1U0L1StZbz9KJm6aOXDwVpCtkVfKS1fk0sLkTsIjhydLJuh
+	V0ChF23WBYrQ
+X-Google-Smtp-Source: AGHT+IH0saCaS9DVJKGT8tidZgwKNQpiLkd1EK6or+7/HnzZe0EgZ8/ARDvqEz5/L5L4JwmCxHkCkw==
+X-Received: by 2002:a05:6a21:6d9c:b0:1ee:d6ff:5abd with SMTP id adf61e73a8af0-1eed6ff5f5emr6576503637.14.1740009124867;
+        Wed, 19 Feb 2025 15:52:04 -0800 (PST)
 Received: from [192.168.0.235] ([38.34.87.7])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73264729945sm7980588b3a.179.2025.02.18.23.48.20
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73242544c8asm12491668b3a.28.2025.02.19.15.52.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Feb 2025 23:48:20 -0800 (PST)
-Message-ID: <64482b97d2431957923a72242edd6e8de371ec13.camel@gmail.com>
-Subject: Re: [PATCH 0/3] Fix duplicated VAR and secinfo
+        Wed, 19 Feb 2025 15:52:04 -0800 (PST)
+Message-ID: <1386be66981c3ff2b6c4e177433056ceae40a181.camel@gmail.com>
+Subject: Re: [PATCH 2/3] btf_encoder: postpone VARs until encoding DATASEC
 From: Eduard Zingerman <eddyz87@gmail.com>
-To: Stephen Brennan <stephen.s.brennan@oracle.com>, Alan Maguire
-	 <alan.maguire@oracle.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, 
- Andrii Nakryiko <andrii@kernel.org>
-Cc: dwarves@vger.kernel.org, linux-debuggers@vger.kernel.org
-Date: Tue, 18 Feb 2025 23:48:16 -0800
-In-Reply-To: <87v7t7fb1v.fsf@oracle.com>
+To: Stephen Brennan <stephen.s.brennan@oracle.com>, Arnaldo Carvalho de Melo
+	 <acme@kernel.org>
+Cc: Alan Maguire <alan.maguire@oracle.com>, dwarves@vger.kernel.org, 
+	linux-debuggers@vger.kernel.org
+Date: Wed, 19 Feb 2025 15:51:59 -0800
+In-Reply-To: <20250212005003.1413091-3-stephen.s.brennan@oracle.com>
 References: <20250212005003.1413091-1-stephen.s.brennan@oracle.com>
-	 <377e9ec2-35fe-440d-923c-8918756fc635@oracle.com>
-	 <87v7t7fb1v.fsf@oracle.com>
+	 <20250212005003.1413091-3-stephen.s.brennan@oracle.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
@@ -79,63 +78,113 @@ List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Tue, 2025-02-18 at 08:54 -0800, Stephen Brennan wrote:
-> Alan Maguire <alan.maguire@oracle.com> writes:
-
-Hi Stephen, Alan,
-
-[...]
-
-> I wonder if there's a hidden catch here... DECL_TAGs can refer to VARs,
-> but as far as I can tell, the semantics are that the DECL_TAG actually
-> *modifies* the VAR - it says "this variable declaration had this
-> annotation / tag / whatever". This is fundamentally because the
-> var_secinfo doesn't point at a chain of DECL_TAGs, it points directly at
-> the VAR. (Compare that to, e.g. const/volatile/restrict qualifiers)
+On Tue, 2025-02-11 at 16:49 -0800, Stephen Brennan wrote:
+> In order to handle duplicate variables in a data section, we'll need to
+> compare variables against the others in their data section. To do this,
+> we'll need to postpone adding the variables until they have all been
+> identified and collected.  Store all the necessary data to encode the
+> VARs (and their DECL_TAGs) and then encode them just before the DATASEC
+> containing them. No meaningful change in the output is intended, though
+> the ordering of type IDs generated will likely differ.
 >=20
-> So, in a hypothetical situation where there are two variables of the
-> same name & type, but one of them has a DECL_TAG referring to it, would
-> the deduplication keep these separate?  It seems to me that would be the
-> correct behavior.
+> Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
+> ---
 
-This is something too look out for.
-E.g. this is certainly true for decl tags attached to structs.
+I think this patch looks good,
+but annotation index handling needs a small a fix,
+see below.
 
-[...]
-
-> > Anyway I'd be interested to hear what others think about whether solvin=
-g
-> > this in BTF dedup itself or pahole makes most sense. Thanks!
->=20
-> Thanks for taking a look into this! Hoping to hear from other
-> experienced voices on this question as well.
+Reviewed-by: Eduard Zingerman <eddyz87@gmail.com>
 
 [...]
 
-Deduplication for variables would be a bit of a weird one.
-As Alan notes in the previous email, for each data section there is a:
-- 'btf_type' entry of kind BTF_KIND_DATASEC where 'vlen' specifies
-  the number of variables in the section;
-- followed by a number of 'btf_var_secinfo' entries,
-  with 'type' referring to 'btf_type' entries of kind 'BTF_KIND_VAR,
-  and 'offset' specifying offset of the variable within section.
+> @@ -109,6 +109,20 @@ struct elf_functions {
+>  	int suffix_cnt; /* number of .isra, .part etc */
+>  };
+> =20
+> +struct saved_annot {
+> +	const char *value;
+> +	int component_idx;
+> +};
+> +
+> +struct saved_var {
+> +	const char *name;
+> +	uint32_t type;
 
-So, we are talking about deduplication of these 'btf_var_secinfo'
-entries. Nothing in existing dedup algorithm handles deduplication of
-"addendum" items like 'btf_var_secinfo', the subject of deduplication
-always has an ID.
+Nit: maybe name this 'id' or 'var_id'?
 
-A new step, walking each BTF_KIND_DATASEC and collapsing identical
-'btf_var_secinfo' entries can of-course be added.
-(Which also raises a question, whether this has to be done in a loop
- with an attempt to collapse duplicate BTF_KIND_DATASEC entries?).
+> +	struct saved_annot *annots;
+> +	uint32_t linkage;
+> +	uint32_t offset;
+> +	uint32_t size;
+> +};
+> +
 
-A case can be made both for and against this, but given the
-"weirdness" described above and the fact that Stephen already has the
-code, I think performing this deduplication at the pahole level is
-Ok at the moment.
+[...]
 
-Thanks,
-Eduard
+> @@ -2359,30 +2428,34 @@ static int btf_encoder__encode_cu_variables(struc=
+t btf_encoder *encoder)
+>  			       name, cu->name, addr);
+>  		}
+> =20
+> -		/* add a BTF_KIND_VAR in encoder->types */
+> -		id =3D btf_encoder__add_var(encoder, type, name, linkage);
+> -		if (id < 0) {
+> -			fprintf(stderr, "error: failed to encode variable '%s' at addr 0x%" P=
+RIx64 "\n",
+> -			        name, addr);
+> -			goto out;
+> +		/* Save the annotations */
+> +		annot_count =3D 0;
+> +		annots =3D NULL;
+> +		list_for_each_entry(annot, &var->annots, node) {
+> +			annot_count +=3D 1;
+>  		}
+> +		if (annot_count) {
+> +			int idx =3D 0;
+> =20
+> -		list_for_each_entry(annot, &var->annots, node) {
+> -			int tag_type_id =3D btf_encoder__add_decl_tag(encoder, annot->value, =
+id, annot->component_idx);
+> -			if (tag_type_id < 0) {
+> -				fprintf(stderr, "error: failed to encode tag '%s' to variable '%s' w=
+ith component_idx %d\n",
+> -					annot->value, name, annot->component_idx);
+> +			annots =3D calloc(annot_count + 1, sizeof(*annots));
+> +			if (!annots) {
+> +				fprintf(stderr, "error: allocation failure\n");
+> +				err =3D -ENOMEM;
+>  				goto out;
+>  			}
+> +			list_for_each_entry(annot, &var->annots, node) {
+> +				annots[idx].value =3D annot->value;
+> +				annots[idx].component_idx =3D annot->component_idx;
+> +			}
 
+I think 'idx++' is missing here.
+
+>  		}
+> =20
+>  		/*
+> -		 * Add the variable to the secinfo for the section it appears in.
+> -		 * Later we will generate a BTF_VAR_DATASEC for all any section with
+> -		 * an encoded variable.
+> +		 * Store all the collected information for the variable. Later,
+> +		 * we will deduplicate and output all.
+>  		 */
+> -		id =3D btf_encoder__add_var_secinfo(encoder, shndx, id, (uint32_t)addr=
+, (uint32_t)size);
+> -		if (id < 0) {
+> +		err =3D btf_encoder__store_var(encoder, shndx, name, type, linkage,
+> +					    (uint32_t)addr, (uint32_t)size, annots);
+> +		if (err < 0) {
+>  			fprintf(stderr, "error: failed to encode section info for variable '%=
+s' at addr 0x%" PRIx64 "\n",
+>  				name, addr);
+
+Free 'annots' in case of an error?
+
+>  			goto out;
+
+[...]
 

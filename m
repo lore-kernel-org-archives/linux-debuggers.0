@@ -1,65 +1,65 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3612F847B
-	for <linux-debuggers@vger.kernel.org>; Fri,  4 Apr 2025 06:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763C818CBFC
+	for <linux-debuggers@vger.kernel.org>; Fri,  4 Apr 2025 10:28:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743748959; cv=none; b=CtsNML35vxY0MNj4LfMulRQWcbrrbNBRXLiqijrYix0WduhLN3q8WrOAeVR0NRqjXJWhNptxkhcNV+yWPavljVHkPaF5Yfm8NcwfMAz5I/I3XjmE+QlY2qVysQxK1A9uE7nooccb199CQ85tcVITuhpNyVPgjvdkJ6M0kLp6FWg=
+	t=1743762499; cv=none; b=CiyuZVB0JFmKuoJ3FuwfEcVb1uRWKLVZp9PMVD7c8S9MqLW+ircaal0nq9gzFZVsMvNjewHA+hWz42XvCcMAnsD1P6bG0Rwn+bxM4Qn1gRTEiak9rK3bATq42oL9qt0N6P6529vWqnS7XtSKqGrmGYeGhp9p/ub/q4//ZkYMfMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743748959; c=relaxed/simple;
-	bh=0sNFLsZt36WP0ArGJgC3GkocW3/1dxtR/X0H6ngPGLQ=;
+	s=arc-20240116; t=1743762499; c=relaxed/simple;
+	bh=Hqa3Al6vJ7R8e0eaJMoLY9urVrZte3sXZPkLGUYGYYo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=t9cATuBiTxVvnFOZHefdbp7632Dgf4hxRlGFedOGk23y3dQucTsr1m2IASVjymE6YN53l8LZvJVtdwpDY+C/bZ9q3HKheBFWzQtVK18/uMYxOntEZ+h1WjyoaasbEB1n70VpJ2Ma92A3isnobhKTKoUUL38Kyi+Iri/38uzfbDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YZWXseRi; arc=none smtp.client-ip=170.10.129.124
+	 To:Cc:Content-Type; b=Wu9q2nnV+kAFFbNIOixN/wtWzBzAcDwqn5/SUJwcnRRo/m4Fd3sIEDirPr9frbcq0uGnT8z4szFYnxOIWuvTXwPgaS37H11dXjYbsTL9VvdOEbXj/FzZ7sdfYk71XeEZn7BNLWwNgAJYHETwFhc+Bl02WtSrYWNQzhHTFvHFoT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RTQ75zYY; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YZWXseRi"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RTQ75zYY"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1743748956;
+	s=mimecast20190719; t=1743762493;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DjbeDINtt33084spi8VXyNdcuNwN74P6gqK5MyqIp0I=;
-	b=YZWXseRinU0JadqY9slk+E2yOAqHrm+oEUtSM/1IyTRk31ykSinQPchKuCjJqYFdJcoFu2
-	g9ARjJ1jVYaUL9Q4d/ra+RAQIR2k2Ojo15ifZQ86YfkxEKlMpKK4u8CoLSUk7alaUbGs55
-	hF7QPAUB+vV8CxvSdf8NIok/fajat78=
+	bh=UmSPTLfARn0sIwuwYqo89JtimHThN4vkfYBg4LAVWfw=;
+	b=RTQ75zYYs4bazVKZsjxByLrrLsD0XNhYHgvv79lf7PPq/SPmQj/ufoqZlM8/Hgw65tciJT
+	tEJHINmMT0eMmFyC7MQxnc5u5u0XvV7A05rf9KiojAVDt0AA1IcBosQY7UUlPvq6iluzXX
+	kspmqa0mP1kFkG1HhHPV9X3TsLO92wc=
 Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
  [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-597-1Fbn9fIhMiyJhNeIEdmiAA-1; Fri, 04 Apr 2025 02:42:34 -0400
-X-MC-Unique: 1Fbn9fIhMiyJhNeIEdmiAA-1
-X-Mimecast-MFC-AGG-ID: 1Fbn9fIhMiyJhNeIEdmiAA_1743748954
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-ac3d3cd9accso140856866b.3
-        for <linux-debuggers@vger.kernel.org>; Thu, 03 Apr 2025 23:42:34 -0700 (PDT)
+ us-mta-377-pjGetypHMpWhI-5GvZyU9g-1; Fri, 04 Apr 2025 06:28:12 -0400
+X-MC-Unique: pjGetypHMpWhI-5GvZyU9g-1
+X-Mimecast-MFC-AGG-ID: pjGetypHMpWhI-5GvZyU9g_1743762491
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-ac27f00a8a5so143099266b.3
+        for <linux-debuggers@vger.kernel.org>; Fri, 04 Apr 2025 03:28:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743748954; x=1744353754;
+        d=1e100.net; s=20230601; t=1743762491; x=1744367291;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DjbeDINtt33084spi8VXyNdcuNwN74P6gqK5MyqIp0I=;
-        b=KmtPRsJMVbWy6enH1LNATbfi3cGspVN3jFhbmFQqtjtN9kCeFNf65xUp3lvRSAlP3r
-         y8tq4akSk2Kjz6a4w/+d/rjWv6dodlVT6vwTljHONfexQH47PD/LK/WKDdNclqayjkXE
-         JlEweGK8KMzgIJfD3lTDg80ZqxZ0UDTsZoVL3CKbXdHw678IijSV1Y4Q5+z6qCDWUwNm
-         zDGssfzb6ZGKREjHZ5VrlpKZlPo8FyNUYKJ3EW1HFIbZ2k6DLNP0c62ggE4Csnvs7Ybz
-         QgJL5OUj0plaqUGtqzqXhAvG+uR2LYmL9IzQtpUbEJJ+ifYNyYo+vgqKj100lcv+iAsR
-         YSoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV2/PjSYaDbtJkTvYfjN9XIbC1WU4NWNJ7C++2TjedjkAwfe/DV6gcZY4OX/mjv+QM/2CG2PbVEPxDc45qTRSg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXWfGnalFw8PgTW0J5mHIg78DU4HvO+XdUn8rM6jGWc1dPg7uY
-	jKp8Z2Fz60wkDvUEz9anLFWr0zVqWYJI1iVoNYMT65r7BAKDFmYECuKFEFT7AiiqXosy6OByzns
-	OCGEzwM3LCNs3bLizO+O/7HvWPfz8tZ5g8bfB3//qeG7xMIUDXD+dKYdw9WnZajN+bBJUNTMV2N
-	44APEBp7PzaWhqZcKVVoXXRMqnZOu2rPJ7/tgiSbNv
-X-Gm-Gg: ASbGnctxY1+s03Q2lyXq7/Sf8qUHcornu3e0RHcKEmdg+NACodOczHOsjZyUXnPk/tz
-	FQo7qhnVh7pUZy1w45QhchGXhl/l/XQHwFRe18o/1M9t+eLcoc62WbGxVGBAjdkR1f2/ufBaGWn
-	o=
-X-Received: by 2002:a17:906:c144:b0:ac3:50b:b810 with SMTP id a640c23a62f3a-ac7d191bfe5mr201550766b.33.1743748953598;
-        Thu, 03 Apr 2025 23:42:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFXs3w1oUWeWLXitSPJIhcgYqTowisSe4ABvnHc0Dt64ptmmgBHK83Ce18B2gpyW6PObK35/zC0lhUiMLrsfwM=
-X-Received: by 2002:a17:906:c144:b0:ac3:50b:b810 with SMTP id
- a640c23a62f3a-ac7d191bfe5mr201549466b.33.1743748953177; Thu, 03 Apr 2025
- 23:42:33 -0700 (PDT)
+        bh=UmSPTLfARn0sIwuwYqo89JtimHThN4vkfYBg4LAVWfw=;
+        b=fL1DD8W26IzYpx9+LJJwUfCiW0FpI0PhDlHb4K9nAWvBmq94/HbEpPaban6OouElHd
+         A1ce63HlPp0OyI7f4H6U2LZbzFPE5OPIRUiCiFFtLyd2aAwbzWZzn79phO4qySWy1UwK
+         LIyTkUZZ/uVmG8vsvP8q0OKs/X53OEAF/+J0Xdse0yYZq6vtUBlKrlNW2Wqx8/vDSuKg
+         UKptd6kIioKnRODkAZ/MCuvRSNH/yIT7sNJnDNFMAHQnGmTOthh4g8+D/K3odMcmkQUR
+         aejGiOzeXNSuREuUi3Ov7pqmYO/n1RvgtkHyyUkYhLf1PwQt87WIIRpdCw4ZfOPXGwPZ
+         Aznw==
+X-Forwarded-Encrypted: i=1; AJvYcCXoulwbFxzY1qOlAmRU3mD6+31+80ZD5CBBMu4MjEIXp+WK65I0MeoAdwBga2Y5cNwiO9L2Nt9UmVMUfjhKwjc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzCI700KaCbZm+zmavHf1zA9yknWNoA54sYBuUuJsC2bFOJmjD7
+	c54E4hXpwYDrKT4+n9HxUNduWxGA9ZMYrqsKkmR1kYPJcYhhrUbLito3ofo8uxm9S7S/UwAuPvQ
+	ySf1EJQ16x340XFOJAdtL2fJv8Xfnl53AZRFpLg9dBg4dZQFiiCekIkn8y8tpdePUjWrBzwQTH6
+	LJ26aKK2E5tj/mkPf2VKyFXIz5Sr0XninUsrH5laTIiWs85dX3r40=
+X-Gm-Gg: ASbGnctNjNwKoYdhj6dRDFgM9ebUCTjLgG3ZHEqpINkqouOXpwu/rYpxyk0Hn559pRX
+	XnTUi7KRJm89ZqItEJRLEVVpx6vEPEOieFXAsVp+QJ+pMxGOIDNcit1ZqsNcgaXQLYYzFQM8heF
+	I=
+X-Received: by 2002:a17:906:c14c:b0:ac7:30a2:696c with SMTP id a640c23a62f3a-ac7d6d230f2mr207861066b.16.1743762490332;
+        Fri, 04 Apr 2025 03:28:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFWxd8crNnoDE809HYow0CSWd8xhGWfqnmYzANLT4RilTyjFpnpA/jZlgRbVZHpAf1ttSfVQ6hwK6U53+7VQ40=
+X-Received: by 2002:a17:906:c14c:b0:ac7:30a2:696c with SMTP id
+ a640c23a62f3a-ac7d6d230f2mr207859266b.16.1743762489834; Fri, 04 Apr 2025
+ 03:28:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
@@ -71,21 +71,20 @@ References: <20250401210132.171107-1-stephen.s.brennan@oracle.com>
  <877c42ywxw.fsf@oracle.com> <871pu8zx1k.fsf@oracle.com>
 In-Reply-To: <871pu8zx1k.fsf@oracle.com>
 From: Tao Liu <ltao@redhat.com>
-Date: Fri, 4 Apr 2025 19:41:56 +1300
-X-Gm-Features: ATxdqUF4hgW-_JQkP-s0ZQFj3I2MP0S0wtFWTzLlrdVbqvjTxqZou_dCyPnPf1Q
-Message-ID: <CAO7dBbUBvRh_u_mcXDszswTaob0zyeS21zVyMTyA0ZSmci0zOg@mail.gmail.com>
+Date: Fri, 4 Apr 2025 23:27:33 +1300
+X-Gm-Features: ATxdqUEUGGNhyuYYqwEpU_qup0EfTq3_kgAwEZPVoodajFz1l5xCCab9pJ4T9vg
+Message-ID: <CAO7dBbUAOfK-k-CKFgBopN_i4bGBO+bykO9VMQ0pu6Ja4hSGEw@mail.gmail.com>
 Subject: Re: [Crash-utility] [PATCH CRASH] Fix module section load address
  when sh_addr != 0
 To: Stephen Brennan <stephen.s.brennan@oracle.com>
 Cc: devel@lists.crash-utility.osci.io, linux-debuggers@vger.kernel.org
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: HkPOiOaq3fSXRgYhqzvuT0Uo5Nui-NwVKmCwQmXGWkc_1743748954
+X-Mimecast-MFC-PROC-ID: 2q0N3JFzB88GwqzoaI668sd74cqWvZjtJxTVcS5D_DM_1743762491
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 Hi Stephen,
-
 
 On Fri, Apr 4, 2025 at 11:43=E2=80=AFAM Stephen Brennan
 <stephen.s.brennan@oracle.com> wrote:
@@ -213,9 +212,69 @@ t
 > > I'm wondering whether this has anything to do with ELF relocations.
 >
 > Hello Tao,
+
+Thanks for your detailed debug info, which is quite helpful! For your
+No.1 patch which fixes the global variable relocation, it looks good.
+However, for your No.2 patch in the attached file, I have some
+questions.
 >
 > I've continued debugging and verified that the root cause for this was
 > GDB performing relocations to the DWARF info incorrectly. At the bottom
+
+1) Is this a gdb bug? If it does, then the proper way is to post No.2
+patch to gdb mailing list and get it fixed there, then we can do gdb
+patch backporting to crash. Frankly I haven't figured out whether it
+is gdb or crash bug so far by myself...
+
+2) I'm quoting part of the commit log in your No.2 patch has follows
+(Please don't send patch as attachment next time, because I cannot
+comment directly on it)
+
+...
+1. In default_symfile_offsets(), GDB detects the nonzero sh_addr field
+   and fails to apply the user-supplied section offsets. The result is
+   that later, in symfile_relocate_debug_section(), relocations are
+   applied to the DWARF info using the wrong section addresses, which
+
+Didn't we have corrected the .data section address in No.1 patch of
+the .ko? Then why the "wrong section addresses"?
+
+   results in invalid addresses for variables. Clearly, this has
+   happened before, because crash has special-cased the "__ksymtab*"
+
+Which line of code do you mean the special-cased __ksymtab? I didn't
+find one in gdb/symfile.c.
+
+   section names to avoid this condition. To resolve this, we simply
+   drop the check for nonzero sh_addr altogether: the only ET_REL files
+   we encounter should be kernel modules, so there's no real reason to
+   be picky.
+
+2. Even with that fixed, the user-supplied section addresses are
+   clobbered by the addr_info_make_relative(), which subtracts out
+   section offsets during its operation. To resolve this, undo the
+   operation for ET_REL files where a section address was provided by
+   the user (i.e. crash).
+...
+
+According to your description, it seems to me the gdb cannot handle
+the nonzero sh_addr in the .ko case, but .ko isn't the only one whose
+.data VMA is non-zero, see this case:
+
+$ readelf -S /lib64/libc.so.6
+...
+[30] .data             PROGBITS         00000000001e8000  001e8000
+       00000000000016c8  0000000000000000  WA       0     0     32
+...
+
+I don't know if gdb also fails in the userspace .so case? I mean, if
+gdb can handle the user case with no problem, then probably we don't
+need to hack gdb like this.
+
+Thanks,
+Tao Liu
+
+
 > of this email I've attached my patch, which you can apply to the master
 > branch to test out my proposed fix. The patch file also contains a
 > longer explanation of what I believe the issue is.
@@ -227,13 +286,6 @@ t
 > I'm not certain how the GDB patches are normally updated & reviewed. I
 > also recognize that this change is a bit messy, so I'd appreciate your
 > feedback as well.
-
-Thanks a lot for your efforts on this. I'm looking into your patch,
-please wait a while.
-
-Thanks,
-Tao Liu
-
 >
 > Thank you,
 > Stephen

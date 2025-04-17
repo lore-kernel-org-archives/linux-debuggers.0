@@ -1,85 +1,196 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD35025C70E;
-	Wed,  9 Apr 2025 10:19:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 115C71EB5CE
+	for <linux-debuggers@vger.kernel.org>; Thu, 17 Apr 2025 06:06:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744193998; cv=none; b=Vb8Q5B7Wc6hz7xbcxTNHFk2z7GUIZbj88pGwKJk4fw7DxqDde1ZhBp5b60JHDvViFmH9Dm8jY2qIob/KPPwOTBMGJhF7D7WRwHPmvAbfgALtzCs5iXtiMa/2bafA55xonxMpX94d5QcPZ+RikOwfwSq1HjA46p3rcLgoP4TDnBU=
+	t=1744870018; cv=none; b=NssJr2OQNFEweCFDBOnSzyBCPrstZVX29bLYS8uPtLQYpFFgLjqRfGEtXC1r0DSrunxG+mk5U3e/KTY2un1qUkdZmBbhymcewsluSbCc3TZHE2hZxi1u/LFW62LhlaFulhTglxw7SgqTr346FvQrh2U1W9p/hUQDpGraBewbXRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744193998; c=relaxed/simple;
-	bh=iq3vmiiwSRfTnowwoY5VuZG9sUlU1DiW11sE0Xx00Ag=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Os0wFdkXHiTUAuZVIK9uRhLxA+ZIzMnu0zHtK+iCYb4lC0yhO9wnFyY/wsAZmofuwBlH7jAxpVUJ9o8zIJZlWU5f69il8PGu79IncwH9NzCqy1jrt8GznGBUjoJPuCTOfE5BWtBUqHrHAlCRFmSVAEEjkAFFxJBVRkGt5Xwi/fM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j0q63EE1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744870018; c=relaxed/simple;
+	bh=5GeC+qK8YG8hgshw/Vsza4sHAJzWnvUNdAHYih3+axA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pQftjH4DyeG7xWR2TSmUqt8oMFKCwK4WyVJkb+x7xbtgf1PoEeGvbO3UXrxKzyGMMkVYSYWh8t03J/0ARydJ0YFss6owQqL7wLkxHbSIi4thDN1TgwgFXgZxUpD6z1IadpoD73PlasreTzq5h70fJrbOzA9qPgJzBybk1zm08Y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com; spf=none smtp.mailfrom=osandov.com; dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b=WgGisocv; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=osandov.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j0q63EE1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23D61C4CEE3;
-	Wed,  9 Apr 2025 10:19:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744193998;
-	bh=iq3vmiiwSRfTnowwoY5VuZG9sUlU1DiW11sE0Xx00Ag=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j0q63EE1tFX7NStRIp585iZrR33JQ3xzvoNOTeIGVVKvtm2He5wLHnFQUfXh4/CaR
-	 yFDtr/hbafa1ez9TnCrakzHJ2Nn9H95UlxuGKdJwnwOIlRsgpP2AALgWyJMQvr3dpG
-	 KVzlLF9zknZb+yxviUiW1SFFJEPhaUVeNy0TIkkdxqID1FNtjNxOX2fljHDJqqAYSO
-	 eCP9Otbhk1axDn0/cMbiYPZHNJt2qV01kZRD0z28m6pTpH9QnMIa6e45eTjg7HxHln
-	 vY2THpGlDcbCmOCYLhbYwmE6Qx6sxBwkhuDbWr/sUqkhaoRO6v8ATo2FK49iRk16lJ
-	 kn1zWz6jW4hAg==
-From: Christian Brauner <brauner@kernel.org>
-To: linux-fsdevel@vger.kernel.org,
-	Omar Sandoval <osandov@osandov.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	NeilBrown <neilb@suse.de>,
-	linux-debuggers@vger.kernel.org,
-	kernel-team@fb.com
-Subject: Re: [PATCH] dcache: convert dentry flag macros to enum
-Date: Wed,  9 Apr 2025 12:19:25 +0200
-Message-ID: <20250409-sinkflug-fettgehalt-addc48830fbf@brauner>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <177665a082f048cf536b9cd6af467b3be6b6e6ed.1744141838.git.osandov@fb.com>
-References: <177665a082f048cf536b9cd6af467b3be6b6e6ed.1744141838.git.osandov@fb.com>
+	dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b="WgGisocv"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-22409402574so603305ad.1
+        for <linux-debuggers@vger.kernel.org>; Wed, 16 Apr 2025 23:06:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1744870016; x=1745474816; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=zGJ5OgB+eNLxh6yjEt0KC7v1R+HDpylF2/CRuaG8Yrs=;
+        b=WgGisocvmA3jKVz9PrveiD2/TTFfl0vYTGnNgfwWolUuGHCu5Ky0gO8/+3XCqygLA1
+         zAL23Aw3WEfnkR+Fs1lpqF1+P9p39p/KxmLqyNqIQX61GuED7s9XFuBsn0Xv4SN32rzv
+         9RmtTRDLQpUgd6LI1jLp8qQRnYVaHhi5Tb4IpEJjN/goTkKRfIUcDaCONskt0cDYHheG
+         b8A6R01nL75wZMWrNKnQaQTe9d6GOYTJmRVMvxGZQtodshYYUV4gxrdqxn4JPCrORYbf
+         rbWgNXbEvO/Az5xXGlFguH0imRtDJWGd2zPy9c/ois6GeazOkBOey7Hoqz0xr/NecHWN
+         /IrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744870016; x=1745474816;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zGJ5OgB+eNLxh6yjEt0KC7v1R+HDpylF2/CRuaG8Yrs=;
+        b=URwr82rwWuHaM97Y/WxbnM5niJil3X0a98kFwvoPuWt2LeF/iDeMfOxYmdV00zpgri
+         l4CbXYj5R96vO2hBifn6++oeXGawV2Vz0VYXnmdIWWSnIu6EnSR5XivjLSFZBg36i9w1
+         hqKajRpDKXb7K8A+Vo7fH69l5PZRurBf/FG99+uTxPWoBedzMbxB2uE2s8//HlQTaA7/
+         lNSvQPQ0m9LVR6y9dXE72FfrutxGXYgx+Si+bbLUdlzem/9JyHmnS72oXW0NKaMBrsF2
+         u74wxav7ZnGr9HMK4/d6EMYARn2QNkHCnVy3Rmb3gvgkO5mx9LWdulHqBv12WROS9Gnk
+         UJdg==
+X-Forwarded-Encrypted: i=1; AJvYcCU+b5qdxc3yILFa00GscGGq338S49JtXy5CvtK8PeVzYVANimBI7BL9RpASUqq8qg2dM1We0bMkOZko6HsskPM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6LqFhP1kjqn6pBNYKGYcyYinq40TvwLnZ+8XQNGEBBK/sfRf6
+	uxSKYuNOVLx1tt/AYEM2d0Ig8a0OgyMkFS+M6eyszNRbVjF8wHrQe/M3rXAC8TM=
+X-Gm-Gg: ASbGncs/KCojVOz0aZqtJOl7X6eYNZyfKheov/f7I7rMwhU258dL8Si7kHGdI/iFP5A
+	AHW74Wp9O9Bz482K5mE80uf/A+MQ9hCEuikCCwfNyNrvnlt7AYI86ziF1MMU5wQ8S0oU3lruk5v
+	YzQkL3yRGlm9C8A6yQukuCWaL6L+q/jbNm4mZvMIKqTD8CHCK2lNtWtPP/PoNe13l2+OHzBSIkJ
+	UDNC1M4hBe3Va6/i9n5Ago2DUxGFxViBssjWgKL5Q/zR/TIg0KR3W/fu97mmdWkFRkVs5J7Erqh
+	hgz66MIqZg9QI6d0eMaokzoLOz+tVt+L8Q==
+X-Google-Smtp-Source: AGHT+IGvvbEfuoj36uDT6iQfRvoVP/jlgaCQTj7ZxRBDmsIUR69H6fHHglU0zTLVf9g+bVwMLde9mw==
+X-Received: by 2002:a17:903:1251:b0:223:28a8:610b with SMTP id d9443c01a7336-22c412adbaamr10708135ad.14.1744870016272;
+        Wed, 16 Apr 2025 23:06:56 -0700 (PDT)
+Received: from telecaster ([2601:602:8980:9170::9098])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22c33f1d118sm25050395ad.86.2025.04.16.23.06.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Apr 2025 23:06:55 -0700 (PDT)
+Date: Wed, 16 Apr 2025 23:06:55 -0700
+From: Omar Sandoval <osandov@osandov.com>
+To: Ye Liu <ye.liu@linux.dev>
+Cc: paulmck@kernel.org, Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org, linux-toolchains@vger.kernel.org,
+	linux-mm@kvack.org, Ye Liu <liuye@kylinos.cn>,
+	linux-debuggers@vger.kernel.org
+Subject: Re: [PATCH] tools/drgn: Add script to display page state for a given
+ PID and VADDR
+Message-ID: <aACaf4_molKromnT@telecaster>
+References: <20250415075024.248232-1-ye.liu@linux.dev>
+ <20250415191414.a64de2d228ab5f43a5390acf@linux-foundation.org>
+ <42f50a48-10da-4739-9e51-f865fbf04bdd@linux.dev>
+ <098e977c-55cd-498b-bd36-725333c06210@dorminy.me>
+ <7e45afc8-dde0-481a-b0bf-0237f551ebe0@paulmck-laptop>
+ <665652ac-2e94-48b4-bf47-32870b823464@linux.dev>
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1356; i=brauner@kernel.org; h=from:subject:message-id; bh=iq3vmiiwSRfTnowwoY5VuZG9sUlU1DiW11sE0Xx00Ag=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaR/8zx58lvt+sDTj5bN7HAt+Bezcuan6bOaj9kuOPhtb sz9JFONNx2lLAxiXAyyYoosDu0m4XLLeSo2G2VqwMxhZQIZwsDFKQATsT3AyHAvP22Si75Dwvcb NjeL1qhsL/C1mbuk+VViYOpcjxOL//1m+F/lt+5ogqLSpBmWxr9y+OZNWXt1nYno7IBn3zUUxYX an/IDAA==
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <665652ac-2e94-48b4-bf47-32870b823464@linux.dev>
 
-On Tue, 08 Apr 2025 13:00:53 -0700, Omar Sandoval wrote:
-> Commit 9748cb2dc393 ("VFS: repack DENTRY_ flags.") changed the value of
-> DCACHE_MOUNTED, which broke drgn's path_lookup() helper. drgn is forced
-> to hard-code it because it's a macro, and macros aren't preserved in
-> debugging information by default.
+On Thu, Apr 17, 2025 at 09:29:23AM +0800, Ye Liu wrote:
 > 
-> Enums, on the other hand, are included in debugging information. Convert
-> the DCACHE_* flag macros to an enum so that debugging tools like drgn
-> and bpftrace can make use of them.
+> 在 2025/4/16 12:02, Paul E. McKenney 写道:
+> > On Tue, Apr 15, 2025 at 11:28:41PM -0400, Sweet Tea Dorminy wrote:
+> >>
+> >> On 4/15/25 10:46 PM, Ye Liu wrote:
+> >>> 在 2025/4/16 10:14, Andrew Morton 写道:
+> >>>> On Tue, 15 Apr 2025 15:50:24 +0800 Ye Liu <ye.liu@linux.dev> wrote:
+> >>>>
+> >>>>> From: Ye Liu <liuye@kylinos.cn>
+> >>>>>
+> >>>>> Introduces a new drgn script, `show_page_info.py`, which allows users
+> >>>>> to analyze the state of a page given a process ID (PID) and a virtual
+> >>>>> address (VADDR). This can help kernel developers or debuggers easily
+> >>>>> inspect page-related information in a live kernel or vmcore.
+> >>>>>
+> >>>>> The script extracts information such as the page flags, mapping, and
+> >>>>> other metadata relevant to diagnosing memory issues.
+> >>>>>
+> >>>>> Currently, there is no specific maintainer entry for `tools/drgn/` in the
+> >>>>> MAINTAINERS file. Therefore, this patch is sent to the general kernel and
+> >>>>> tools mailing lists for review.
+> >>>> Help.  My copy of linux has no tools/drgn/
+> >>> I noticed that the current upstream Linux tree doesn't contain a
+> >>> `tools/drgn/` directory.
+> >>>
+> >>> I'm interested in contributing a drgn script tool as well.
+> >>> Given that this directory does not yet exist in mainline, where would
+> >>> be the appropriate place to add new drgn scripts? Would it make sense
+> >>> to create a new `tools/drgn/` directory, or is there a preferred
+> >>> location for such debugging scripts?
+> >>>
+> >>> Thanks,
+> >>> Ye
+> >> I believe the traditional thing to do with new drgn scripts is to add them
+> >> to the contrib directory in drgn via pull request:
+> >> https://github.com/osandov/drgn/blob/main/contrib/README.rst
+> > I have an RCU-related drgn script in tools/rcu, so maybe this one should
+> > go in tools/mm.
 > 
-> [...]
+> 
+> To determine the most appropriate place to submit this script, I looked
+> 
+> into existing drgn-based tooling in the kernel tree. Several drgn scripts
+> have already been added under `tools/`, such as:
+> 
+> - `tools/sched_ext/scx_show_state.py`
+> - `tools/cgroup/iocost_monitor.py`
+> - `tools/cgroup/memcg_slabinfo.py`
+> - `tools/writeback/wb_monitor.py`
+> - `tools/rcu/rcu-cbs.py`
+> - `tools/workqueue/wq_dump.py`
+> - `tools/workqueue/wq_monitor.py`
+> 
+> Given this precedent, I believe it would be reasonable to place
+> `show_page_info.py` under `tools/mm/`, since it's focused on memory
+> subsystem internals and would follow a similar organizational pattern
+> to the above.
+> 
+> I'd appreciate any input on whether this is a suitable direction.
+> I'm happy to send the script for review once the location is agreed upon.
+> 
+> Thanks,  
+> 
+> Ye Liu
 
-This seems good to me and helps drgn. I've reflowed the enum a bit.
+Hi,
 
----
+The drgn repository and the kernel tools directory are both valid places
+to put drgn scripts, and it's ultimately up to you where you'd prefer to
+put it. Here are some factors to consider, though:
 
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
+1. Reusability: if your script is very generic and would be widely
+   useful, the ideal is to add it as a helper to drgn upstream. For
+   scripts that are less generic but could still be useful to many
+   people, I'd personally prefer for them to go into the drgn
+   repository's tools or contrib directories. At the other extreme, if
+   your script is only useful to a handful of developers of a specific
+   subsystem, the kernel tools directory makes more sense.
+2. Kernel version coupling: there are a couple of options for dealing
+   with kernel changes that require drgn scripts to be updated (e.g.,
+   struct member renames, data structure changes).  Scripts in the
+   kernel tools directory tend to only handle the current version. This
+   is simpler, but it also means that sometimes you can't use features
+   from a new version of the script on old kernels. On the other hand,
+   the drgn repository supports every kernel version that's still
+   meaningfully deployed. This can complicate scripts with
+   version-dependent logic, but it means you can always use the latest
+   and greatest features on any kernel version. I prefer the latter
+   approach, but the choice is yours (except for drgn helpers upstream,
+   which are required to support all kernel versions).
+3. Maintainership: who wants to own the script? A lot of the current
+   drgn scripts in the kernel tools directory are written and maintained
+   by the relevant subsystem maintainers, so it's a no-brainer for them
+   to own it without any involvement from the drgn project. It's not as
+   obvious for other contributors. If the subsystem maintainer is
+   willing to own a drgn script in the kernel repo, then I won't
+   complain. I'm willing to take just about anything for the drgn
+   repository's contrib directory, and I'm slightly more selective for
+   helpers and tools.
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+All that being said, your script looks pretty widely useful, so I think
+it'd make sense in the drgn repository's contrib directory (or even the
+tools directory if you want to make it a full-fledged tool with test
+cases, support for all kernel versions, documentation, etc., but contrib
+is fine).
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
-
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
-
-[1/1] dcache: convert dentry flag macros to enum
-      https://git.kernel.org/vfs/vfs/c/63690b75feb1
+Thanks,
+Omar

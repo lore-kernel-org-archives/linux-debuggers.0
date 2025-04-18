@@ -1,186 +1,248 @@
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1E11E1DEB
-	for <linux-debuggers@vger.kernel.org>; Thu, 17 Apr 2025 08:19:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744877957; cv=none; b=AokHVmayRGWlfNwy2cg3ddNhMULMRjodwh8zsMy34kYqlXBxgqvpb6C6Tyo89vI0SwhcsRxYoLEzK8JK4sC/P0ojuIFW2sCImJ3eo1GmccpSxxniCwHg40oRiDHYQro8fADxu+4/8UETPIAHp0qdq/lMoD+HRfq9jFqXZV+b6Fs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744877957; c=relaxed/simple;
-	bh=xCWd6ki5GrDlLykqmHH2klMoYvbEqjjVSnjddmgLQs4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=C5E+8DkBIiRR9FP4iT8a3edaMY9LVXDgGylE+TwtMri9qUqcrDQ7AsSSiZN/oSRnGi6a+XJxUSMjqIaKRikC3zSVxFd05OkAV6LB8W2+/XhmV67tAR+9piKn5Cb09bhBwzu67GL3BhUC209MHoiX9LHfsr6R2SFuOLrfJGmygW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=s0Mj1sVD; arc=none smtp.client-ip=91.218.175.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00074267B61
+	for <linux-debuggers@vger.kernel.org>; Fri, 18 Apr 2025 03:11:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744945908; cv=fail; b=rQRcg1WJ++P0UNIgS1T6jNgmQUNCfc/kbJYtSbnYjiztxKk4zZsMu3OgmGsiRZh6sqy8CagICO3c2zkciH8e9a93+VPOcMp+HDgnY00nUnLfDwSNToo53A6KJR32aI/1+9U12nY811fpmqei+pG4CQOjEa5hPGN+mR/wdhTMcf4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744945908; c=relaxed/simple;
+	bh=InJU0JoPfIYEKvUh037v7FPEBEX6ESLS7XmLXJVHWIY=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=I+nVJzLMVehn5AZKmwJhdqZY51qYo8EV5JFw0M6sh0cJWJMswZlCyzbXizFF2xRMANv1TTlaiUMmXyNr4aAaMIylwzJcywh4mTlqtaxher7+X6Uy6BmH/Vl4kR3umg+DP4F0yoQip4QtyKTH+JF2qxKf/a0hS6kuOMOnTXB1O+I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=ATSgaPnI; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=cTlWar+T; arc=fail smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="s0Mj1sVD"
-Message-ID: <c11e3511-62b1-4c6a-aadf-7e0939fda9f7@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1744877952;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MFGnHY+VW4c1DYMChWjV1PIKxfT0t/ucmTyO7p9u9R4=;
-	b=s0Mj1sVDlzq7lr255WnuuMxP8xJqKJf4R+xdCGn8SdUfUBq17aXWB3GvCuLcrRUyHJqvDk
-	AVY4ZpxW02/kJ4EgB4Bm0xUd9R6JS06OpXRbX27mBCvJNj7TemHisT3oR/FjVHwCzleGUx
-	SEmdsJjlpNu+GK+Id6I0ufB60TWPvjM=
-Date: Thu, 17 Apr 2025 16:18:53 +0800
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="ATSgaPnI";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="cTlWar+T"
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53HJsWxQ013375;
+	Fri, 18 Apr 2025 03:11:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2023-11-20; bh=L0iHNqGErtFaRaOpxUYT4jZN0exypESgySls34KcXEc=; b=
+	ATSgaPnIFecrN/bJIdrJEpTanF0g6/36XlwA9je1DHr9DoHqLY+8uQH3fDbRQDyk
+	dMMsL0Odf7/ONfU3v2mBZYHVNvrUkB609jhaF+JFe21A80dCPSKnwvLQpxUesd+E
+	UZ6cNU0i3ekU5Sgke7uxk+TzXPsGgbGVVf0xhE9F4yMcLBsjlUEad3nAMC+GiZX5
+	1PixHu5S76ctPJKyqlx0vSj3tFj3fqX1TWGFiYp+JrbrDsu8NryztqjRf9h6AVeW
+	SfRfr8nxOJMAT+sh4SgHf8Kq6vjSvy/BtGGAJqO+APSpHd1WSENZ9IpCnZ1bVMYc
+	cuUkkjr7+w1lP4Ij79/Igw==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4619447f2a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 18 Apr 2025 03:11:42 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 53I1USLm005917;
+	Fri, 18 Apr 2025 03:11:32 GMT
+Received: from ch5pr02cu005.outbound.protection.outlook.com (mail-northcentralusazlp17012050.outbound.protection.outlook.com [40.93.20.50])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 460d60b4yr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 18 Apr 2025 03:11:32 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=t/zKnEB65SJuZHs6Tb7xrWNhC+BwDi+/hwVRv3/nYsj+JDIH3VXZ83eZ+bKCoXwOL5wOA+n/udcdw7BZg0h7arQPXwoY9cMM88xLBC4sTUHbFvZFU/51qK16Z6dQFBvcWieff+g5AtHa7A0tNdIDdTxym9A9mk3hNfe2ri/UiqX0HGJkbKSWYIONFT30kVuj1Sb7NPHEmtdCrlqIc6SdYasN7Lx6BeweRQ2hROJ87PGEmJaG94RvZtGuSzLQcjK5zCCgb5k6gYy3jIJKuvBVCi7n93A7Yft/N+KGRx+nocw3HqgyviODYlt03eu88m8xbkDdvq0QQ27sw0wUXRE7Yw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=L0iHNqGErtFaRaOpxUYT4jZN0exypESgySls34KcXEc=;
+ b=XOf6hpAqThYFppINrzwLGDsQji4d/vZLF4aoBtav1cP9YUpS7ZO/5+VNT934uOGpZr6CcOebyc3rkAAflmqK0zrn4FLjQ15DSxwB1DZhHEic9Zh1AaX3dYeVQ+kQz7TdQ0sWzBKTrLDEdqpdEBqLyXPBe/bPezzmH8A4jVIUs+XwQ4BoljxP5juJcz03SJmqO+qv5i39/WnvklzHnAvF5foNKfWi8nI5kJKsPj0JdXdtW2nm7e/k99xEFombq3ROh5FBT62G4r7ZnNy6IbPT93PodqPKV+/ORDGenzT/GutPnVFBmzPpan+j7RSGAGrz0CcgXJuwFG5nNGmnBdlorw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=L0iHNqGErtFaRaOpxUYT4jZN0exypESgySls34KcXEc=;
+ b=cTlWar+TQCOvLS4Ug/4BBcIOdJzBPZLeemsZPnidTJU2X4PhIwa75ZDNDP+ma8edAweZEryD/lVuji9JgtN6deRon06c90c1p8kw8tv/qVGtXXOxfABWebi6IEoMhFT/+T4Ws28BD4clO1R6rjOo53PqDKus+itn4AqBSHklme8=
+Received: from PH8PR10MB6597.namprd10.prod.outlook.com (2603:10b6:510:226::20)
+ by SA1PR10MB7700.namprd10.prod.outlook.com (2603:10b6:806:38f::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8655.22; Fri, 18 Apr
+ 2025 03:11:30 +0000
+Received: from PH8PR10MB6597.namprd10.prod.outlook.com
+ ([fe80::6874:4af6:bf0a:6ca]) by PH8PR10MB6597.namprd10.prod.outlook.com
+ ([fe80::6874:4af6:bf0a:6ca%7]) with mapi id 15.20.8632.030; Fri, 18 Apr 2025
+ 03:11:30 +0000
+Message-ID: <c90d660f-6222-4bca-ba61-000dcd6f7155@oracle.com>
+Date: Thu, 17 Apr 2025 20:11:27 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH CRASH] Fix module section load address when sh_addr != 0
+To: lijiang <lijiang@redhat.com>, Tao Liu <ltao@redhat.com>
+Cc: devel@lists.crash-utility.osci.io, linux-debuggers@vger.kernel.org
+References: <20250401210132.171107-1-stephen.s.brennan@oracle.com>
+ <CAO7dBbVa=HMvZEsFTCYwULSgjbfac7SCZNEKgYePgPXb9kNvgA@mail.gmail.com>
+ <877c42ywxw.fsf@oracle.com> <871pu8zx1k.fsf@oracle.com>
+ <CAO7dBbUAOfK-k-CKFgBopN_i4bGBO+bykO9VMQ0pu6Ja4hSGEw@mail.gmail.com>
+ <87y0wfy06z.fsf@oracle.com>
+ <CAO7dBbXBsXwniUQm0ox-XgwzHPTfRf2GCjSvt2ger2VYK28ZxQ@mail.gmail.com>
+ <CANU+ZyeHSoJXUu5m9SaNEy0gQi+HDCzA+NMzp-w=XngGyFMADA@mail.gmail.com>
+Content-Language: en-US
+From: Stephen Brennan <stephen.s.brennan@oracle.com>
+In-Reply-To: <CANU+ZyeHSoJXUu5m9SaNEy0gQi+HDCzA+NMzp-w=XngGyFMADA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BL1PR13CA0208.namprd13.prod.outlook.com
+ (2603:10b6:208:2be::33) To PH8PR10MB6597.namprd10.prod.outlook.com
+ (2603:10b6:510:226::20)
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] tools/drgn: Add script to display page state for a given
- PID and VADDR
-To: Omar Sandoval <osandov@osandov.com>
-Cc: paulmck@kernel.org, Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
- Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
- linux-toolchains@vger.kernel.org, linux-mm@kvack.org,
- Ye Liu <liuye@kylinos.cn>, linux-debuggers@vger.kernel.org
-References: <20250415075024.248232-1-ye.liu@linux.dev>
- <20250415191414.a64de2d228ab5f43a5390acf@linux-foundation.org>
- <42f50a48-10da-4739-9e51-f865fbf04bdd@linux.dev>
- <098e977c-55cd-498b-bd36-725333c06210@dorminy.me>
- <7e45afc8-dde0-481a-b0bf-0237f551ebe0@paulmck-laptop>
- <665652ac-2e94-48b4-bf47-32870b823464@linux.dev>
- <aACaf4_molKromnT@telecaster>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Ye Liu <ye.liu@linux.dev>
-In-Reply-To: <aACaf4_molKromnT@telecaster>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR10MB6597:EE_|SA1PR10MB7700:EE_
+X-MS-Office365-Filtering-Correlation-Id: c24925e6-e984-4be7-1c89-08dd7e26b6e4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?cG1kT1E1Z3g0bEV0RzNueHBkN3g1ZEZzbW5MZWpkVEZUcEVHVVpWb1NwRkEy?=
+ =?utf-8?B?SksvL2JQdWVGbU1acDNoWEVrTmU1a29OVmpYbFpMWTNkZzhiYXhMdHJSd1VD?=
+ =?utf-8?B?MHV0U05rVWpjWnBVREhtZFFwVXNkcVF4MWpnbGhORUhKekFFd21JZTZuQVVF?=
+ =?utf-8?B?WFczMzJPZ1FnS3dhclRkL01uTmxtTVMxYVJWc3BIeUZLNlJOVFFxNmlGazJr?=
+ =?utf-8?B?dCtqWkppRTFFWGRseHRJdXJxWSs3Q1VGNjc1ZGhUNXBWQjN2ZlBmUm81SzVW?=
+ =?utf-8?B?dmVqNFFyYkdidGFpeFVWc3RrS2RGK2lQK0wyZ0V4WUlRRVBhOFhPRW52d3NO?=
+ =?utf-8?B?MTZubkxoM050UXI4TmR6bDVhdVZuMVU2RkZLaTBzS3BoZjF5ZzhHWmtQS0lv?=
+ =?utf-8?B?TnA3dFhsbWluSDVKQ2FmMGpqSXlaSFd0dUJRYTkzZ2JJVUJtbTZDRWxxTXFz?=
+ =?utf-8?B?WXdrV0JRek5aVzV2WkN0NXRKa2QraXdLQXAwakJsd09Nd3M1MWVJNDJYTTB2?=
+ =?utf-8?B?R2NWWUFpRiswRFhkcVZCVWUxdDhvem1Nd3A5RmNOazh4NDZMNFVxM2FlUG5t?=
+ =?utf-8?B?SS9wS2IwYUZlS2hwbURFUHVtKzh4R1FYSlVJSm0ySFU1eEdRZUF3VjlNUzhY?=
+ =?utf-8?B?NGRKaytzZlVCMG1WQXNZSHRlM2JSdTNsWG9XcFVIdWZ2WnZ1dHRrMkZwS2cz?=
+ =?utf-8?B?WmRJWEF2MnFrVmFZVW1tUjh6RzZsY2NBN2tEb1ZvdWNPd0xTMVVOYUtZbFJB?=
+ =?utf-8?B?V0ZMdTE4b0ZZc2t6ZFZYOHhkdzZZUzRIcUZVY1dGQ01WczlFaUwxZ0J3RFVq?=
+ =?utf-8?B?b1JRSENUemRPeTNhdndqT1ROUTJxeDBwSWZlK25QZW1LU24veGFRaGx2ZFJx?=
+ =?utf-8?B?dXA1aURiMmZCakU0ektvN3U3d2Q1WkFBOW01RmgvQ2tIQjVSdTVyZnJ6bXF4?=
+ =?utf-8?B?VjJuRE5mVWJpKzlJb0RIdlZpc0w4NGwxR0hCLy9RQzQveGlzQlE4NzJMWFFj?=
+ =?utf-8?B?L1ZaSDIwRi9CaUs2b0gxVDRNZUZpdSt5aW8vL1E0SDFSQ0Uvd08zL09lc1FO?=
+ =?utf-8?B?U0RKV08wc0tuekpkSUZtVThjQlo2YTZvRnJZRG43ZERScHhndnlJWTJudUZk?=
+ =?utf-8?B?VG1iNGV2V2tmTWU4K1JCNUZuYndIWCtSUjByanI3SWFqcXdpdjJUdnBlSndO?=
+ =?utf-8?B?L1pGdlRXOWI3ZjkxNkNhdWFjTkwxN2t4b0U2d0w0N09ac25RQjc0bmhYM0Fx?=
+ =?utf-8?B?SktpK2FWVThxVi9ObUVqOUFRRUdnNzMxQXh5d2FXeVRlNms0aVBpZlF6c1hj?=
+ =?utf-8?B?bHhvc1J5TDhzalJrT1NGbjZadkJNQVB0RzA0QTVnclZMcGdMOUZadStVRytl?=
+ =?utf-8?B?WHNnZUlVZVZJeUNhZHRsc3RPRFZFaUJGa1JteEpPdHRWamE3R1Z2TGxIMUFU?=
+ =?utf-8?B?QkdSenliRnRsNUttQUJnc0Y1eFdOaXE5Sk5xN3locFRsT2NseDM5UTZETVpH?=
+ =?utf-8?B?ZENidGR0MFNxclpLZkdVdFJWOHh1Q2tUeTVCVFdxREdCWkZKSkxIMzkwTlNU?=
+ =?utf-8?B?VXFFbkp2cCtaOTdBYWc5Mk9Wamlvb04yY3pRRHlsb2lrbHVweUxCUlNVRXBF?=
+ =?utf-8?B?VzBQa3lZWEE4SmtSZGVGS0YzQ1BQQWlsM2JxREhyMm4rWDBTdzBVYnhhV0V3?=
+ =?utf-8?B?R0xoZ1ozNEcxbGJISUtVRWU2a3JuNzJHSXRkU2hHajFpU2FURE95SmFucDZn?=
+ =?utf-8?B?blVKUG1tZlJYMTlYYWZPMlh6bDRPOS9qM2VlQnZ2ckRzQ29PRExxY2VxSVN5?=
+ =?utf-8?B?T3ozdFUyUFhTdlFURUR0dktIWEJFWG13SjFNUnpzTzVLWU94bmlrWEdwZkFr?=
+ =?utf-8?Q?HhJIK9jCV7FAp?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR10MB6597.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VXg1REUzRUVlcWEyZUMzUEpVU3dGNVJzYkYzRmk2bXNyRTN6YXp0blQ3QS92?=
+ =?utf-8?B?eFIrM1VUcW5PNWJNRndJZ2V2dU9nOFBhTWpGQnNkUXBtaGVzMCtXc1h5dmZu?=
+ =?utf-8?B?aVE0NXk4SmxOL1lJelIyUTRmN2VSRGs3eGwvMWd4Rm51WjJPSEkxR3NRakgy?=
+ =?utf-8?B?bnB4eFZDR2x1aUxCaUxIKy83M1RsOTloR09BT1hxNHhEeWpuaGd3WUc4ZkxZ?=
+ =?utf-8?B?VzljN0ptNXMwajdpTVFpdEVRUDVkUE44NnNtTFhCSGZuM1FvTitPWWhJQUd4?=
+ =?utf-8?B?QkcveGo1RzcwVXBRdzVXRGlLb0RvMGhmSi9DeDNDVkVaRUsrL1RCcjh6R29a?=
+ =?utf-8?B?bnVNR1FXRUE4a0IwUURJOU1YTHVvdWVqZXlOazVYRWRYTmkrL2xSUDhDZkpW?=
+ =?utf-8?B?M1BHY3FwQmR4U2hUWEYwY2o3SUZmZ0FYdi9jOHp1cFRiamhKZFJwMU4wSG00?=
+ =?utf-8?B?eVU5TWkwYlYzejcvSkVoMHIrM2cwUmRQUHpqdm5NcHpqU3lxQlJLblErVEVw?=
+ =?utf-8?B?enE2Uk9JeExoQW9CSzZncHpCU1JJUHhNb2dPdkNMSlJ2NFhXa09qdnJwb2dq?=
+ =?utf-8?B?bGlQOVEwOHUrdDl4RzBXNU12aDhVeVBReklOeEhDOTJ2ZTRvZHFSN0Q0MTVV?=
+ =?utf-8?B?OUIwMUdVV2hLVkw3SmJjTm1FcDZTZVpHZzdocUVSTDlsVXJDa20xUnVxMmZS?=
+ =?utf-8?B?YU1TOXJ4RE9UTGI1bndRbVQ0TG9pTEFsMTN4RGowdTBoVmZ2a2JKS3lGRGd0?=
+ =?utf-8?B?a1RBM3ZuUjN5NGl2aVdUYnZmM3JOY2ZWem1vZkx4V1U5Rk5ueWNUbUZwOXhh?=
+ =?utf-8?B?MytYaXczRUErc3RSeFZRTmk5bnVYNHhTeWQ5Z29wd3krUm5neUp4MkdkTlhC?=
+ =?utf-8?B?T09rSWhRWW0wV1V2eDJMWWtoQWlBd3JlWllCd0pCbjdFbWgyTnU3cTZBS0Zi?=
+ =?utf-8?B?NU04ell1VFhWQ0Nlcm5XK2V6ZGo0c25EOG9wQ015ekJLWGRzMmdLWDBnVzdF?=
+ =?utf-8?B?dm0veHh3UExMcXRUOExhWDdHSVhJcnFKNHlucVpjek1oSTJvU1lkRDM3Ulc3?=
+ =?utf-8?B?OTFCNld0WHhCVGVrS2ZjMTRobWVMNlFETzZaVUJhcDJRdkhOUStoSXZ6VzhI?=
+ =?utf-8?B?anFyNEpSbEFDL1BWVFIrRGhPdUx2TDFIa3FwZm1ZQlVjakJtYUswekI5Z29o?=
+ =?utf-8?B?QTU4eTBDL3BhdUJGM0FZUUlqbjRHV2pQSExSbGNwSTFmV09ib3ZQcHRtSGhx?=
+ =?utf-8?B?ZFJhVG53R3ZyV3N5OXJsS3ZhaHZnZE9pZjRoV3VQTkVmNmczbjlqVXhJVlI1?=
+ =?utf-8?B?L2JxaFBiTHB4MHRIZzlCa21Nb2s4cEdJN1RCWXl3VWNNWmNpMUJXZzZHb1Z6?=
+ =?utf-8?B?TnJheVRLMTRmVkYwWFk5WnBNZk1scSt3YVJQa09PenZxQnpzbDJrZEhYNHhi?=
+ =?utf-8?B?QnZiM3BjOEpRYmI3VVhXYmpUTG8yY0s3UWh0OFAzUkt6d0lzQTFLMVZjZjN1?=
+ =?utf-8?B?U1hOMUJDUzBPZGVBTEFXVDZVY1czMjJhQ243SXNsaHB0S2p6WDdJMlZibDFu?=
+ =?utf-8?B?TnNZcUVRZjk0aHVsUGJCMHQ3SElvK0hRUlM1WDdiTUhjdmhoNjlGSmkwaUp5?=
+ =?utf-8?B?UDdtVGo2OEpXOGdLRGRjUEhvQyt3WTEzbHNXaU5Ca2d5OWdkcFNibU5HdjNz?=
+ =?utf-8?B?ZXlBV2hpNVlmRFBkWUpnTjBUSkYxcWRBY1owSjVEWkx0eG5nOW1RUWIwUVNo?=
+ =?utf-8?B?cVNYQlpjaVd2QklBOXhyb2hUQml1djdPRk5XajJaTExBbGt6TURvRjJoUzdt?=
+ =?utf-8?B?Q2MyOVVsVFd6RExzQ21odzYzUlVLRGNSb0dySXI0bFN5TnU1MFp3OGIyRTJv?=
+ =?utf-8?B?cEdySEV6eDdka0hXd3dXVWsxblFTVFV6VEJEQVpWV0lWQjRxZlJtOEhDRjhm?=
+ =?utf-8?B?UDhGZitXaDVTNXpxN2VYb20vVkg1SW9sRkZaVVJUYllEMGprN202b0l0WTNk?=
+ =?utf-8?B?R1ZkdmN3dnFhSFZBdkQrM3pxNWxJNWpUbGRheC92cU5aajJyekFyalk2N0I3?=
+ =?utf-8?B?bHc3cU9NZ2FHbzRydksrd0hiMXZGMWJwdldTYUtQdUsyeDdWNkFKQ2V4Ri9i?=
+ =?utf-8?B?cW1NVzNqbDhlb2FrRUZFd2hMZElDS2hvS01tbDh4ajYyR2Fwdk5EMVZnaU85?=
+ =?utf-8?B?RGc9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	uqijpT/W7hRQ3aX2WbHfNKLTa90V4N3+ObvguWbfTzzt3IKobrx4onhlTcBF3Y7h3mVWUyFpx5tA4UQTyiVYjtLOe91645xDPr678FU58PCz2O0u196aZODEAZiKL/sQpLyLKI+mOW+kKtyJn03xtXGRTivwAeIV7ffVejlsgt4XhsyhXK0j6jzbQ4fYU/QUdHtNvGNpoHoLc1O1rq601FCk7A6cQbdH3WSjwk9/NLTQP3dcngwXlNSx+P7qdk0xG6+clGl7mP0AmLC7MGC7mXkn3FS7rpeEEsqVOYPJEGLmGN2YqyE1VsMfI6EJl9QLEicWH1LGP8ZbfdgaYRz0iJVgNODX8ODL4DJJiC0KGSUDVlrjVQ+EGapLeuO5vdWNe3zcI4gpLtiMIMZRK/W3on+AG/9kg76cIRw3+7UbIVjAXo+twyXaJA1LdnsjIzkg6pnYwG1yjnC/GdMZBneN7XWfWtPMIf43g9wNdXcEfSJmiMRJdlsXmcwVbdjWhko0ygoeAwTh1XS5lh1otJ9WAyrBE2GKFbAh5ffEj7mb7ZJcNk47h0L+ls5+oC1OBzoV7hcT+cR487dyJSp4IfNJz3vzwlUWeJEzKGjrNs5kzO8=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c24925e6-e984-4be7-1c89-08dd7e26b6e4
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR10MB6597.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Apr 2025 03:11:30.2429
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: VlhQYSgeL+9tg/UqzgdEc10kPUPOo2Ih46tEEyWie+A5KZJNLYpNXtYKryNGUOJeVJ8rPwbraG2CBbrYXNu+r6Cs9bp8vSIDvtIoluqpSao=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR10MB7700
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-18_01,2025-04-17_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxlogscore=999
+ suspectscore=0 spamscore=0 bulkscore=0 malwarescore=0 adultscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2502280000 definitions=main-2504180021
+X-Proofpoint-GUID: ztWU9zfmJNFUwJhVK92ZNbv5EC0n3VCg
+X-Proofpoint-ORIG-GUID: ztWU9zfmJNFUwJhVK92ZNbv5EC0n3VCg
 
+On 4/17/25 18:43, lijiang wrote:
+> On Mon, Apr 7, 2025 at 4:18 PM Tao Liu <ltao@redhat.com
+> <mailto:ltao@redhat.com>> wrote:
+> 
+>     Hi Stephen,
+> 
+>     On Sat, Apr 5, 2025 at 12:30 PM Stephen Brennan
+>     <stephen.s.brennan@oracle.com <mailto:stephen.s.brennan@oracle.com>>
+>     wrote:
+>     >
+>     > Hi Tao,
+>     >
+>     > Thanks for digging through the code with me. I'm not very confident or
+>     > familiar with it, so I don't have 100% confident answers, but I'll
+>     do my
+>     > best to answer:
+> 
+>     Thanks for your explanation! I think your modification is reasonable
+>     and I have run tests against your patch, no regression is found.
+>     Though I still haven't figured out whether it is a gdb issue or crash
+>     specific, however I think it is OK to accept your patch for now. So I
+>     will ack your No.1 and No.2 patch. Though No.2 patch needs some
+>     cleanup on the code, but I think that is just a minor change, I have
+>     no objection to its major part.
+> 
+>     So ack.
+> 
+> 
+>  Applied:
+> [1] https://github.com/crash-utility/crash/
+> commit/2cf1a93805a8df6a2a4b7fde8d57b6d873c1bbeb <https://github.com/
+> crash-utility/crash/commit/2cf1a93805a8df6a2a4b7fde8d57b6d873c1bbeb>
+> [2] https://github.com/crash-utility/crash/commit/
+> b982ddc4d66dcd59e567201428eb6191e4a24695 <https://github.com/crash-
+> utility/crash/commit/b982ddc4d66dcd59e567201428eb6191e4a24695>
+> 
+> BTW: regenerated the patch for [2].
 
-在 2025/4/17 14:06, Omar Sandoval 写道:
-> On Thu, Apr 17, 2025 at 09:29:23AM +0800, Ye Liu wrote:
->> 在 2025/4/16 12:02, Paul E. McKenney 写道:
->>> On Tue, Apr 15, 2025 at 11:28:41PM -0400, Sweet Tea Dorminy wrote:
->>>> On 4/15/25 10:46 PM, Ye Liu wrote:
->>>>> 在 2025/4/16 10:14, Andrew Morton 写道:
->>>>>> On Tue, 15 Apr 2025 15:50:24 +0800 Ye Liu <ye.liu@linux.dev> wrote:
->>>>>>
->>>>>>> From: Ye Liu <liuye@kylinos.cn>
->>>>>>>
->>>>>>> Introduces a new drgn script, `show_page_info.py`, which allows users
->>>>>>> to analyze the state of a page given a process ID (PID) and a virtual
->>>>>>> address (VADDR). This can help kernel developers or debuggers easily
->>>>>>> inspect page-related information in a live kernel or vmcore.
->>>>>>>
->>>>>>> The script extracts information such as the page flags, mapping, and
->>>>>>> other metadata relevant to diagnosing memory issues.
->>>>>>>
->>>>>>> Currently, there is no specific maintainer entry for `tools/drgn/` in the
->>>>>>> MAINTAINERS file. Therefore, this patch is sent to the general kernel and
->>>>>>> tools mailing lists for review.
->>>>>> Help.  My copy of linux has no tools/drgn/
->>>>> I noticed that the current upstream Linux tree doesn't contain a
->>>>> `tools/drgn/` directory.
->>>>>
->>>>> I'm interested in contributing a drgn script tool as well.
->>>>> Given that this directory does not yet exist in mainline, where would
->>>>> be the appropriate place to add new drgn scripts? Would it make sense
->>>>> to create a new `tools/drgn/` directory, or is there a preferred
->>>>> location for such debugging scripts?
->>>>>
->>>>> Thanks,
->>>>> Ye
->>>> I believe the traditional thing to do with new drgn scripts is to add them
->>>> to the contrib directory in drgn via pull request:
->>>> https://github.com/osandov/drgn/blob/main/contrib/README.rst
->>> I have an RCU-related drgn script in tools/rcu, so maybe this one should
->>> go in tools/mm.
->>
->> To determine the most appropriate place to submit this script, I looked
->>
->> into existing drgn-based tooling in the kernel tree. Several drgn scripts
->> have already been added under `tools/`, such as:
->>
->> - `tools/sched_ext/scx_show_state.py`
->> - `tools/cgroup/iocost_monitor.py`
->> - `tools/cgroup/memcg_slabinfo.py`
->> - `tools/writeback/wb_monitor.py`
->> - `tools/rcu/rcu-cbs.py`
->> - `tools/workqueue/wq_dump.py`
->> - `tools/workqueue/wq_monitor.py`
->>
->> Given this precedent, I believe it would be reasonable to place
->> `show_page_info.py` under `tools/mm/`, since it's focused on memory
->> subsystem internals and would follow a similar organizational pattern
->> to the above.
->>
->> I'd appreciate any input on whether this is a suitable direction.
->> I'm happy to send the script for review once the location is agreed upon.
->>
->> Thanks,  
->>
->> Ye Liu
-> Hi,
->
-> The drgn repository and the kernel tools directory are both valid places
-> to put drgn scripts, and it's ultimately up to you where you'd prefer to
-> put it. Here are some factors to consider, though:
->
-> 1. Reusability: if your script is very generic and would be widely
->    useful, the ideal is to add it as a helper to drgn upstream. For
->    scripts that are less generic but could still be useful to many
->    people, I'd personally prefer for them to go into the drgn
->    repository's tools or contrib directories. At the other extreme, if
->    your script is only useful to a handful of developers of a specific
->    subsystem, the kernel tools directory makes more sense.
-> 2. Kernel version coupling: there are a couple of options for dealing
->    with kernel changes that require drgn scripts to be updated (e.g.,
->    struct member renames, data structure changes).  Scripts in the
->    kernel tools directory tend to only handle the current version. This
->    is simpler, but it also means that sometimes you can't use features
->    from a new version of the script on old kernels. On the other hand,
->    the drgn repository supports every kernel version that's still
->    meaningfully deployed. This can complicate scripts with
->    version-dependent logic, but it means you can always use the latest
->    and greatest features on any kernel version. I prefer the latter
->    approach, but the choice is yours (except for drgn helpers upstream,
->    which are required to support all kernel versions).
-> 3. Maintainership: who wants to own the script? A lot of the current
->    drgn scripts in the kernel tools directory are written and maintained
->    by the relevant subsystem maintainers, so it's a no-brainer for them
->    to own it without any involvement from the drgn project. It's not as
->    obvious for other contributors. If the subsystem maintainer is
->    willing to own a drgn script in the kernel repo, then I won't
->    complain. I'm willing to take just about anything for the drgn
->    repository's contrib directory, and I'm slightly more selective for
->    helpers and tools.
->
-> All that being said, your script looks pretty widely useful, so I think
-> it'd make sense in the drgn repository's contrib directory (or even the
-> tools directory if you want to make it a full-fledged tool with test
-> cases, support for all kernel versions, documentation, etc., but contrib
-> is fine).
->
-Hi Omar,
+Thank you!
+Stephen
 
-Thank you so much for the detailed guidance and thoughtful suggestions.
-I really appreciate your insights on maintainership, version compatibility,      
-and the organization of drgn scripts — that context is super helpful.
-
-Given the nature of this script, which is fairly tightly coupled to the current
-kernel’s memory subsystem and primarily intended to assist mm subsystem
-developers, I’m leaning toward submitting it under `tools/mm/` in the kernel tree
-for now. I believe it aligns with similar precedents like
-`tools/rcu/rcu-cbs.py` and `tools/cgroup/memcg_slabinfo.py`.
-
-That said, I’d absolutely be happy to contribute future scripts to the drgn
-`contrib/` directory — especially those that are more generic or extended
-to support multiple kernel versions. Your feedback has been very helpful
-in shaping how I think about future tooling work in this space.
-
-Thanks again for your support and for maintaining drgn!
-
-Thanks,
-Ye Liu
-
+> 
+> Thanks
+> Lianbo
+> 
+> 
+>     Thanks,
+>     Tao Liu
+> 
 

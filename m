@@ -1,89 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4FA41EBFFF;
-	Mon, 21 Apr 2025 19:13:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C3ED223DD0
+	for <linux-debuggers@vger.kernel.org>; Tue, 22 Apr 2025 20:42:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745262786; cv=none; b=OY3qrODjvy2/S6vzF9gG3wE492+zL5Bnl+h5cLcNoxrHl46Ak8ybRQlBMjnD+Y4uubnsDs7iPZR2cP0kk7ENs48CaJVuNYew90+xs6zjEJuiCcl8fsLiT7XsUamsUyG4vPqhMutNhK1j3fPBZmPWLa5pP5dQAmCULy6OeEoOHzE=
+	t=1745354579; cv=none; b=oufyqlerZg5cyUInOUD+bmW5qOCNDb9lM5e+RhKrlfr4XR1/JPGEnkHLSKx9z6hYRi5SzAufNYFmQNThpzgE5RAvuHGto6AqCSop8HJUq1QJ2RJ61QqEqmCYGEmIOX+AAvR8usj2MFxVbDwg39LXhvjpcg88AfOmbYCLdnFIi/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745262786; c=relaxed/simple;
-	bh=BKkVEnLF4TJWYcbO2wHLsFrQEBgHpTv/FcMJ6OGMxMs=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=h1L7AVvAZwp6nDosRv3+KdKsfI4XvFisEGJtEI91tpG0d0fjeQC3OdRfLCIYwSA0HHEfiSG489P232rXosPMUwT/IZ8/pyUmpc91OxfCHQZbxglhKe/JAUa0/7z1ZO3SH8YccVh7Sm8Efut6+9gMjPyubBXzJakQRAK5exMmyvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=b4Vt08Qa; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745354579; c=relaxed/simple;
+	bh=4tz071/JKkyO8GjyMhP0Yw2DuPgEthWr6AvAcAL6dPc=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=GNP+KS8VHg0M5NY+36vp2J88C7bvoiRuIJ9b+C21cvkMA6aHJHvKSihIrK/swXaPO0tK/U0q5PUADCqyk4YmcNUKf7n1ifMl8xJK3jAe7dEFsbQNVkLk0AGm4yuggR2ImbjOBZSejw+jMrytUU8SgOsNcncKshTBj8sBqnqLP2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com; spf=none smtp.mailfrom=osandov.com; dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b=h5Xc8YKl; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=osandov.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="b4Vt08Qa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FF13C4CEE4;
-	Mon, 21 Apr 2025 19:13:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1745262785;
-	bh=BKkVEnLF4TJWYcbO2wHLsFrQEBgHpTv/FcMJ6OGMxMs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=b4Vt08Qa9Dc9AB2eaG3RyJ/IIL4TIeHdl6P5AqdIrZByEAMeOwIggNrTQwhld5xBf
-	 Vba98LSBRFEf4oXvsHRQPPWT6bvNUb1bsrdlNuZcbcvvMU8W5+NkwV7UkCteQ7tqqF
-	 kPlvyWKRMYeDpxSnrtXFVrd/DHKk4xImbHJd2bg0=
-Date: Mon, 21 Apr 2025 12:13:04 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Ye Liu <ye.liu@linux.dev>
-Cc: linux-debuggers@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-toolchains@vger.kernel.org, osandov@osandov.com,
- paulmck@kernel.org, sweettea-kernel@dorminy.me, liuye@kylinos.cn
-Subject: Re: [PATCH v2] tools/mm: Add script to display page state for a
- given PID and VADDR
-Message-Id: <20250421121304.8504ae5839e490450029f113@linux-foundation.org>
-In-Reply-To: <20250421080748.114750-1-ye.liu@linux.dev>
-References: <20250421080748.114750-1-ye.liu@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b="h5Xc8YKl"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-224104a9230so6115475ad.1
+        for <linux-debuggers@vger.kernel.org>; Tue, 22 Apr 2025 13:42:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1745354577; x=1745959377; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=rDnRY28IvmLEsqSBduz7okiIg5Hbce83r+EAG/0qcmw=;
+        b=h5Xc8YKlvfaKfcdJPCSjJe2tRBjbCh5OJBMg2AcRx07GqdLlngaT7hVplobVs+paF4
+         xs4aSU47tt9cu1w5eNOm9BIGe2XG/kEOttSvO9fxTExstuXbCMPZqNaq2v+5n15LgQdC
+         9F/a5drwdCywnAG26TFTVWYhWVOQxaJjQbU9AhYNyc8QLjKb/7ECpEunMp30shTXTw4U
+         r/ExOJGkrjp0Z87hhw8M0H95ZY8GHuNBgpaJBReVrbi+wgFUfssK1htw1nOyMJdjcC32
+         2l3kj36S//j42kzVv2E/WueTftjsFut0jlugy8rTgYf2q+crSvtWqtWUOnQJLKsH9eQf
+         ln5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745354577; x=1745959377;
+        h=content-disposition:mime-version:message-id:subject:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rDnRY28IvmLEsqSBduz7okiIg5Hbce83r+EAG/0qcmw=;
+        b=NlM4jXPniT5u8qAVWCRRhOkhMfGQofmlgJ+IVq7d8qTYvL4R3OUC/LzipTdOjqOpWM
+         nbybYTbuPZriPLip1+xV80kbcHvAbHhT/tShUxGm/Lr714ZRofd9C4w5EG4Qz/o+GqkX
+         lOL7chkB/pm55e4BR6BDuQkpqJb9KYigb50+bGcX9DXwsmeEiMeHuqBEmU6LUMclLT87
+         jqziYf9k6Zy+efUNnJCqtMonN5Y8aDjI2iomHD1k5LHRMukyqKLfQvKy8KEZJayyAjqY
+         qd5b9+ZR2hcBVAUVrWrxQmftH/VpgdQI7vAlfEYoQdozs2v6MCeSqRhRZoRqdBdrCl9j
+         m1bQ==
+X-Gm-Message-State: AOJu0YxkKqtp0d6ZSzIjX0usDIk8X7G6BdlPlgtLoLXMOHHHIfm/TIKx
+	zmTSs5GPF9w6p9jqz7avfUZI7IfORm4R2oOzxV/E2C1XuVnmIR9BCQMv0FDTISGdcKx2y8fx4NP
+	L
+X-Gm-Gg: ASbGncv0TeaO8x5Zc+jJLE6a6hdl43PjEbKm87trNFTjWE+4wO5fFChhqnMK7K39fg2
+	ZJRt0ph3uOqVfv2ic9MacPm2PShpFrh+JCIfWeuIAPwr6dX0Kpl9tw0IKpES4u8wxIP+z19XBFL
+	6hZlwp/pub8gEHWWkGC6s8P6Y9B84eUrv7SA9W2/FJN/ekIXmehfuU+zQQXluf5ofTriaX4SzHL
+	j+4PD/7gddrpD4cnw96PWhGncr/skhjEWOyb78Ferk4HuJOHIQyuwcGjM8Avv3NV5CQx1JWbq85
+	RbaKr4VWcHYvt2PmF5E482I=
+X-Google-Smtp-Source: AGHT+IE8cooWJiQxw87tkc5UCPBVbrLvYjgVS2zqrrb1tHyYKr72A32vyUq60bMlMJRbqPEXdqx2ag==
+X-Received: by 2002:a17:903:40c6:b0:216:3dd1:5460 with SMTP id d9443c01a7336-22da30098f3mr2734515ad.2.1745354577391;
+        Tue, 22 Apr 2025 13:42:57 -0700 (PDT)
+Received: from telecaster ([2601:602:8980:9170::9098])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22c50ed183dsm90390195ad.180.2025.04.22.13.42.56
+        for <linux-debuggers@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Apr 2025 13:42:56 -0700 (PDT)
+Date: Tue, 22 Apr 2025 13:42:56 -0700
+From: Omar Sandoval <osandov@osandov.com>
+To: linux-debuggers@vger.kernel.org
+Subject: Linux Kernel Debugging Tools Monthly Meeting on Wednesday, April 22nd
+Message-ID: <aAf_UDW8imnXvowu@telecaster>
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Mon, 21 Apr 2025 16:07:48 +0800 Ye Liu <ye.liu@linux.dev> wrote:
+The next Linux Kernel Debugging Tools meeting is tomorrow, Wednesday,
+April 22nd at 11:30 AM Pacific time. This meeting is a forum to discuss
+development of Linux kernel debugging tools like drgn, crash, and more.
 
-> Output example:
+Here is the agenda so far:
 
-The spacing around the colons is inconsistent and a bit odd, IMO.
+- drgn module/debug info finder API first impressions.
+- drgn vmtest improvements.
+- Auditing hard-coded constants in drgn helpers.
+- Plans for commands in drgn.
+- drgn kmodify ideas:
+    - Kprobe-based breakpoints.
+    - Injecting more complex code (multiple function calls, control
+      flow).
+- drgn review backlog.
 
-> sudo ./show_page_info.py 1 0x7f2c7de4c000
-> PID : 1 Comm : systemd mm : 0xffff888116b6d440
+Please reply with anything else you'd like to add. As always, if you
+would like to attend, please email me offlist.
 
-PID: 1 Comm: systemd mm: 0xffff888116b6d440
-
-would be more conventional. Or
-
-PID:1 Comm:systemd mm:0xffff888116b6d440
-
-> User Virtual Address : 0x7f2c7de4c000
-> Page Address    : 0xffffea000b3a4000
-> raw: 0017ffffc000416c ffffea00045d1b08 ffffea000456d408 ffff888104521970
-> raw: 0000000000000000 ffff8881083fdb60 0000006900000018 ffff888107a41000
-> Page Flags      : PG_referenced|PG_uptodate|PG_lru|PG_head|PG_active|
->                   PG_private|PG_reported
-> Page Size       : 16384
-> Page PFN        : 0x2ce900
-> Page Physical   : 0x2ce900000
-> Page Virtual    : 0xffff8882ce900000
-> Page Refcount   : 105
-> Page Mapcount   : 24
-> Page Index      : 0x0
-> Page Memcg Data : 0xffff888107a41000
-> Memcg Name      : init.scope
-> Memcg Path      : /sys/fs/cgroup/memory/init.scope
-> Page Mapping    : 0xffff888104521970
-> Page Anon/File  : File
-> Page VMA        : 0xffff888109e135e8
-> VMA Start       : 0x7f2c7de4c000
-> VMA End         : 0x7f2c7de58000
-> This page is part of a compound page.
-> This page is the head page of a compound page.
-> Head Page       : 0xffffea000b3a4000
-> Compound Order  : 2
-> Number of Pages : 4
-
-I think the style of /proc/meminfo (for example) would be more expected.
+Thanks!
+Omar

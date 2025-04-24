@@ -1,33 +1,33 @@
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6721AED5C
-	for <linux-debuggers@vger.kernel.org>; Thu, 24 Apr 2025 03:25:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FC6B19ADA2
+	for <linux-debuggers@vger.kernel.org>; Thu, 24 Apr 2025 03:27:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745465113; cv=none; b=IgRopTVwJ5C9hfrfUg2qZfzkaybIX595GKhGDgbLkRYqxXiCrt/LqOWwyjfk9/uG5gcTSyJ/0gLS3ghq6gV1Bm+Kyvti2DQNJ7XLNLiiwiwFIiXIuAHk0NTdVPJt7gpM0k+2TRYQl0/D5qPSZNe6VLui64XhSfo5CFc24/jJL2U=
+	t=1745465248; cv=none; b=RdYbCKGf6NsX275hwg3+ndqLT/v3EPkqVrlpBMvqhn+bsr/PCPOGB5tzVQMjNM524doFBsjEMdrEIMBotz7+lhVFpH6w4dwLCeEf3WpiEAfkHCR4RJ+7fi6py74Vz9QC+zhgcXWLT3IOjIW6EOuymav2im6zVaxGgWQpm6cWRTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745465113; c=relaxed/simple;
-	bh=S4vSTnprUy1lUj0+B99E1br+tAKKR1TgOENRitZrRs4=;
+	s=arc-20240116; t=1745465248; c=relaxed/simple;
+	bh=7v/hyP7WZUp7nWjiK4fbZi5iBHksoD8f5I5+ENyE6+s=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VWVx6Is3R+mNGFlsaWLTeY4B766ne31e32ULsVDJEJRyQzIoHDG3To4+3oMEnG20EdlNPvDjGM/d9wd7dXsp/iQWHEiB0ltVZlP5pPz8yAFWQZZzQfJdJD0N2hXBocZZcsR49vIFh7YuGxTikAQbk7oKQoxjYDg5g0aoxbUm2Tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=M4/UtGkh; arc=none smtp.client-ip=91.218.175.189
+	 In-Reply-To:Content-Type; b=niAU6YWQLotElkEXjEMmWnIuQZsxzEz/uCT7Fh8Hq1nxnixx9naKSHeBkhaA+6f+rOp28X2vJpeYNgscSqS9NA9cYX9zWreYaG25c+KiS2mroTJM7x6QNKSwEjBGZWkgeZUsJTEeRqaKIVbStk2dShbkxdsHnG7HdbesATKvvZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=c2W6jdR3; arc=none smtp.client-ip=91.218.175.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="M4/UtGkh"
-Message-ID: <973db2d5-4be2-492f-844c-a0f46c9e588f@linux.dev>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="c2W6jdR3"
+Message-ID: <91db850c-6c5d-4ea3-bca0-fc853a00a457@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1745465098;
+	t=1745465244;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FVDjeBNnPTWVeTuJxMamLn8xjiEJP+YW7FPYAirQOdM=;
-	b=M4/UtGkhNMQBdeNogTqKu86uJa7ZLfUiNQx5bFoWdxjspO3SewfkHX4h4P/bEIcqC2COSl
-	8lsH8WZduNeWi8WE3iwNvdS2VP36XDTpx5sDCWSjcomcjSbw0QLMwTIBKWEn3wAaiqJxAG
-	AmMC9bseapNZUau3G2c6gJNEhpab4Z4=
-Date: Thu, 24 Apr 2025 11:24:33 +0800
+	bh=xd0gahNoT+bypY4s9KPQJobXki3DYYYU4L9ST/2/O7M=;
+	b=c2W6jdR3CXE5JKGUT7wYr+6b4tquBM/NnjD7LhPMww++9mOAdQ2wghT8kOwnNZM8Rdu7Kd
+	kWc7gw/mMubMS5YwkbLF7zNkC3rG5p3ey4XYe4B9+AgvKcmyA6jyaFQpMutBWQGnqgKaWJ
+	6YDGXcs+WmTE/0VU0KBMRinxyfkstz0=
+Date: Thu, 24 Apr 2025 11:27:10 +0800
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
@@ -95,7 +95,7 @@ X-Migadu-Flow: FLOW_OUT
 >     +        "Page Size": page_size(page).value_(),
 >
 > [1] https://drgn.readthedocs.io/en/stable/helpers.html#drgn.helpers.linux.mm.page_size
->
+You're right — I'll update it to use prog["PAGE_SIZE"] here.
 >> Folio size can be calculated using the Compound Order, but of course,
 >> it can also be shown directly as a result.
 >>
@@ -187,9 +187,7 @@ X-Migadu-Flow: FLOW_OUT
 > Ah, you're correct, thank you.  After fixing my test, the error I reported
 > before is disappeared.  But I think the follow_page() error handling would
 > better to be updated to catch the exception and provide a better error message?
-You're absolutely right, I initially overlooked the error handling in
-follow_page(). I’ll update it to catch exceptions and provide clearer,
-more user-friendly error messages.
+>
 > Also, I'm getting below new error:
 >
 >     $ sudo ./tools/mm/show_page_info.py 47657 0x7fffaf925b6c
@@ -227,25 +225,9 @@ more user-friendly error messages.
 > kernfs_node' change or my old version of drgn?  But anyway, I think it is
 > better to provide a better error message to users.  I'm also curious if you
 > have a plan for finding and fixing or avoiding this kind of future breakages.
-
-
-As for the new error you encountered, it does appear to stem from a recent
-change to the struct kernfs_node, or possibly from a mismatch between
-kernel headers and the drgn version. While it may not be a bug in the
-script itself, I agree that the script should handle such scenarios more
-gracefully.
-
-Regarding compatibility across versions, this is definitely something worth
-paying attention to. Currently, the script is being adapted based on the
-latest drgn and kernel versions. If future changes to kernel structures
-occur, I plan to patch the script accordingly to maintain compatibility.
-
-That said, I’m very open to suggestions — do you have any ideas on how
-we could better detect or guard against these kinds of breakages
-proactively?                                                               
-
-Thanks again for raising this!
-
-Thanks,
-Ye Liu
-
+>
+>
+> Thanks,
+> SJ
+>
+> [...]

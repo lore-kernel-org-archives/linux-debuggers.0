@@ -1,33 +1,33 @@
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1509120322
-	for <linux-debuggers@vger.kernel.org>; Thu, 24 Apr 2025 01:55:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF641CAB3
+	for <linux-debuggers@vger.kernel.org>; Thu, 24 Apr 2025 02:18:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745459741; cv=none; b=fqWLAeEHUgFsLrQ+hEpDhq8nilEuplCziM/aYZDqlfmI8xHoYbVaNMFaW8Nzhf1cIDdpRKlseFUtka1xv4uXFkZhPr+sZglp3V4h/+KBh9jl9NxIyqEQAPVs6wILW1yoAn8AD5jmUETTyynhcw2abldTASiOHXWskxZoD6PL/3A=
+	t=1745461105; cv=none; b=cmASLELkWimPgcZDkvA5JTAe+ZJAILE9+KeLuzhqUsmtbLcY1lfY2p2lUpVpa9+hJduOIh7m4bEJuNHBIxeljoLHg7RtO1zir7+6YpHgHYmYWxJC5BqTP1WQh3luhSzex+W0+6DwKPRl0sGMCrE7KZ7VA9vnF728xvPT7xRH6IM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745459741; c=relaxed/simple;
-	bh=ua0D3xjnuZCg3RsgqzMC0bGtVSYtqZ+fpmSTlNekOUM=;
+	s=arc-20240116; t=1745461105; c=relaxed/simple;
+	bh=UVVi4P/sqC1/mlMQUgwoPMiBvWDUJoPNhcKxSph6Fow=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Hx9hWaDIDRuUPUDTZg3wUsXOcSUSwS/0E6NcLv7Xfx8okCZRW6eaoG0sZOPAFE3jpoNeGvg25nnH1xeptIVXn3k4YJwFgm3qNFq6ULdJPfMDp1q1poGJB+4rGEGv2I7XmVTAUeO5oGGiGHJPfY1bMdhluwm1DMqy9J+GwicMO/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=WMmbcJVS; arc=none smtp.client-ip=95.215.58.181
+	 In-Reply-To:Content-Type; b=L/U6l5EE3u6BZuFRE7yRdN0a33B/uChjs6PTZWWENwUtm8TCnyO6tobIqWaKI3leAkjnKPX2ZcJybFXHFW6NtObEaTSlq+03r7IxFuoZQpf11kg0kgLpG3g/5B9hANDTqMtmyg86ntO4jnBC/7pXiSqxIc1rMDJ/fZactxmpVb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=EJi9vs5V; arc=none smtp.client-ip=95.215.58.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="WMmbcJVS"
-Message-ID: <758b1d83-f1b3-43d2-8c37-324cc89c78f7@linux.dev>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="EJi9vs5V"
+Message-ID: <ba37651b-95fd-4db2-8806-58cd2a08a979@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1745459735;
+	t=1745461091;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=osPFFvNjtTk96vp1U5EovQpHJ4GgVBpRetuRN4Tu+Bo=;
-	b=WMmbcJVSXU0ksgnxx5DiJ+wdYNCDeNBHTMSD5u1azcz9nw1Jrd4nHkOtC+8SaBTw8hxCC4
-	LIDQRqvnyBUVONzyBLIUy5z/Vcx1RO++qwr6YVCjRJuqtG0aSbuUzpvyVvvG5VsZIdBP+w
-	9xYlv1cJD9iNmtmsjdCaPq7BKLQOjIM=
-Date: Thu, 24 Apr 2025 09:55:22 +0800
+	bh=2T5lAnrEJNQwQyiPVjj4uMl+QlzCXBRaN6qYGLhWYKE=;
+	b=EJi9vs5VuPrCf+IsuIhmfeiUsjfuW5oijaBPLAesl2OHnb4Ge6KVn4qvnoI0fU9psMDF8S
+	HSqkipFcZiY3aBK8VUUnFztyL5Hg/bnx42cesDbGQAF2a64Qi9GskUXeln6DVMzpLjWSIt
+	Pvrtpvx5HmlDBGDz5rSlWEyEe+LQZTo=
+Date: Thu, 24 Apr 2025 10:17:59 +0800
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
@@ -36,23 +36,24 @@ List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Subject: Re: [PATCH v3] tools/mm: Add script to display page state for a given
  PID and VADDR
-To: SeongJae Park <sj@kernel.org>
+To: Florian Weimer <fweimer@redhat.com>
 Cc: akpm@linux-foundation.org, linux-debuggers@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  linux-toolchains@vger.kernel.org, osandov@osandov.com, paulmck@kernel.org,
  sweettea-kernel@dorminy.me, liuye@kylinos.cn
-References: <20250423220018.45789-1-sj@kernel.org>
+References: <20250423014850.344501-1-ye.liu@linux.dev>
+ <87jz7bky7i.fsf@oldenburg.str.redhat.com>
 Content-Language: en-US
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Ye Liu <ye.liu@linux.dev>
-In-Reply-To: <20250423220018.45789-1-sj@kernel.org>
+In-Reply-To: <87jz7bky7i.fsf@oldenburg.str.redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
 
-在 2025/4/24 06:00, SeongJae Park 写道:
-> On Wed, 23 Apr 2025 09:48:50 +0800 Ye Liu <ye.liu@linux.dev> wrote:
+在 2025/4/23 17:45, Florian Weimer 写道:
+> * Ye Liu:
 >
 >> From: Ye Liu <liuye@kylinos.cn>
 >>
@@ -74,14 +75,6 @@ X-Migadu-Flow: FLOW_OUT
 >> Page Flags:           PG_referenced|PG_uptodate|PG_lru|PG_head|PG_active|
 >> 		      PG_private|PG_reported
 >> Page Size:            16384
-> Should this be called folio size?  Or, could this simply removed since Compound
-> Order is given below?
-
-
-Page size refers to the base page size, which equals PAGESIZE.
-Folio size can be calculated using the Compound Order, but of course,
-it can also be shown directly as a result.
-
 >> Page PFN:             0x12682c
 >> Page Physical:        0x12682c000
 >> Page Virtual:         0xffff88812682c000
@@ -101,113 +94,18 @@ it can also be shown directly as a result.
 >> Head Page:            0xffffea00049a0b00
 >> Compound Order:       2
 >> Number of Pages:      4
->>
->> Signed-off-by: Ye Liu <liuye@kylinos.cn>
->>
->> Changes in v3:
->> - Adjust display style.
->> - Link to v2:https://lore.kernel.org/all/20250421080748.114750-1-ye.liu@linux.dev/
->>
->> Changes in v2:
->> - Move the show_page_info.py file to tools/mm.
->> - Link to v1: https://lore.kernel.org/all/20250415075024.248232-1-ye.liu@linux.dev/
->> ---
->>  MAINTAINERS                |   5 ++
->>  tools/mm/show_page_info.py | 120 +++++++++++++++++++++++++++++++++++++
->>  2 files changed, 125 insertions(+)
->>  create mode 100755 tools/mm/show_page_info.py
->>
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index 17ed0b5ffdd2..85686a30dc72 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -18351,6 +18351,11 @@ F:	Documentation/mm/page_table_check.rst
->>  F:	include/linux/page_table_check.h
->>  F:	mm/page_table_check.c
->>  
->> +PAGE STATE DEBUG SCRIPT
->> +M:	Ye Liu <liuye@kylinos.cn>
->> +S:	Maintained
->> +F:	tools/mm/show_page_info.py
->> +
->>  PANASONIC LAPTOP ACPI EXTRAS DRIVER
->>  M:	Kenneth Chan <kenneth.t.chan@gmail.com>
->>  L:	platform-driver-x86@vger.kernel.org
->> diff --git a/tools/mm/show_page_info.py b/tools/mm/show_page_info.py
->> new file mode 100755
->> index 000000000000..8622c5499dfe
->> --- /dev/null
->> +++ b/tools/mm/show_page_info.py
-> [...]
->> +def main():
->> +    """Main function to parse arguments and display page state."""
->> +    parser = argparse.ArgumentParser(description=DESC, formatter_class=argparse.RawTextHelpFormatter)
->> +    parser.add_argument('pid', metavar='PID', type=int, help='Target process ID (PID)')
->> +    parser.add_argument('vaddr', metavar='VADDR', type=str, help='Target virtual address in hexadecimal format (e.g., 0x7fff1234abcd)')
->> +    args = parser.parse_args()
->> +
->> +    try:
->> +        vaddr = int(args.vaddr, 16)
->> +    except ValueError:
->> +        print(f"Error: Invalid virtual address format: {args.vaddr}")
->> +        return
->> +
->> +    task = find_task(args.pid)
->> +    mm = task.mm
->> +    page = follow_page(mm, vaddr)
-> I tried this script on my test machine and got the below error:
->
-> $ cat ./a.c
-> #include <stdio.h>
->
-> int main(void)
-> {
->         int foo;
->         printf("hello\n");
->         printf("%x\n", &foo);
+> Does this show the page access flags anywhere in the output?  If not,
+> would it be possible to include this information?
 
-To avoid address truncation, you can use the %p format specifier
-instead of %x or %lx when printing a pointer (memory address).  
+
+This script is currently a basic version, and we plan to gradually add
+more detailed information about pages, including the page access flags
+you mentioned, as well as PGD, PUD, PMD, PTE, file/anon rmap folios,
+and more. This will be refined over time.                             
 
 Thanks,
-Ye Liu 
+Ye Liu
 
->         scanf("%d\n", &foo);
->         return 0;
-> }
-> $ gcc ./a.c
-> $ ./a.out &
-> [2] 45666
-> hello
-> f7eb7c0c
->
-> $ sudo ./tools/mm/show_page_info.py 45666 0xf7eb7c0c
-> Traceback (most recent call last):
->   File "/usr/local/bin/drgn", line 33, in <module>
->     sys.exit(load_entry_point('drgn==0.0.30+82.ge2b60e4b', 'console_scripts', 'drgn')())
->              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->   File "/usr/local/lib/python3.11/dist-packages/drgn-0.0.30+82.ge2b60e4b-py3.11-linux-x86_64.egg/drgn/cli.py", line 461, in _main
->     runpy.run_path(script, init_globals={"prog": prog}, run_name="__main__")
->   File "<frozen runpy>", line 291, in run_path
->   File "<frozen runpy>", line 98, in _run_module_code
->   File "<frozen runpy>", line 88, in _run_code
->   File "./tools/mm/show_page_info.py", line 120, in <module>
->     main()
->   File "./tools/mm/show_page_info.py", line 112, in main
->     page = follow_page(mm, vaddr)
->            ^^^^^^^^^^^^^^^^^^^^^^
->   File "/usr/local/lib/python3.11/dist-packages/drgn-0.0.30+82.ge2b60e4b-py3.11-linux-x86_64.egg/drgn/helpers/linux/mm.py", line 1068, in follow_page
->     return phys_to_page(follow_phys(mm, addr))
->                         ^^^^^^^^^^^^^^^^^^^^^
->   File "/usr/local/lib/python3.11/dist-packages/drgn-0.0.30+82.ge2b60e4b-py3.11-linux-x86_64.egg/drgn/helpers/linux/mm.py", line 1109, in follow_phys
->     return Object(prog, "phys_addr_t", _linux_helper_follow_phys(prog, mm.pgd, addr))
->                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> _drgn.FaultError: address is not mapped: 0xf7eb7c0c
->
-> Am I doing something wrong?
->
->
 > Thanks,
-> SJ
+> Florian
 >
-> [...]

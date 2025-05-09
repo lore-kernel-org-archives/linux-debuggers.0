@@ -1,120 +1,94 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD571215F48
-	for <linux-debuggers@vger.kernel.org>; Wed,  7 May 2025 23:44:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D42191F77;
+	Fri,  9 May 2025 11:17:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746661475; cv=none; b=M41X9C2hAlYLGyyZz3a9ZCNEQwt9l5Gfx0PUglotRFTUGC+eTXjsND4UhkCfOoU6uvbpQGklUmD+mrHbWeej8R8mq3Qc+YcE6HD63A4k2V9XHwgkxwV04eTQyEPp0P92BHCHrZF/vGlhBOfsWPHB6dWtpkfgaiUc7ud8eWOOZGw=
+	t=1746789467; cv=none; b=q+uNlPY68rBWQ9DTWlM70g7T5U9EK0xO0rManJWgMvRyOE4L7Fle+V6FkL9PuOBaCooMAETpj+Pa4ARk5X62MNJB8CoETYxtCBGtTV5PZLg5SsIJRmLuQC6Ti7UI3tQRX8MB7p3lcxoYaZbzfu4CDibpdVMVxeOOJh1HstHt/1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746661475; c=relaxed/simple;
-	bh=McqG76/nf8MlLfDjpSyC1XiVVjV5pcZ15cXB50q0bXs=;
+	s=arc-20240116; t=1746789467; c=relaxed/simple;
+	bh=5toU20lLPcHpFhmH/fo6ZfSW85f0kYgZLq6AuB/xV4w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sXNIUgImDqNisD1Lewm9mP8uWeZk3Y+W1vTKq375T1GGgS2AHV/4+3mSwcdPaPh7IhLuZ7fAgVgM6yxF68jaUfrzKwyejsoXL1opARnhPF158rRD0z+kJEmGVWIlMozBv5YGQuqi/K6C7JsxQruGE7BXY/KckFuWAoNovxeu+yE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com; spf=none smtp.mailfrom=osandov.com; dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b=viGyaoWz; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=osandov.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=mn6qqFw4ejNlCQJwJ9i4t8ELMdOh6jHcDYk6FQ1f7QWym7Z6FVo60Q0parEnC1ZZc1HeLcTHYEbvkAUb10/tit3Fmh+4osVY5ZYakiAbwyeuUm9cuiuvbB/aSBCjLbLXBvC8VclTug6LennJMOz8O6ducOXA0CSQWFDN9vSft9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qlrnuZbr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b="viGyaoWz"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-22e1782cbb2so645645ad.0
-        for <linux-debuggers@vger.kernel.org>; Wed, 07 May 2025 16:44:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1746661473; x=1747266273; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Tfb3bAOsMFCJhaUq67lrZsZgh4mtlw/i42GKCd/C1R0=;
-        b=viGyaoWz4C9ZOhnyu0yqK/HsPzGv883rgWGglv+SxBQmF1tiQFifIoZUHhYtrdgl+S
-         rtCEhEnb/RBEetbesQnQn4vowP9RhOOwuQl7WJn4ZxZbTE0lo4AdmVEIX5LhUBadBn/c
-         A3qtxwVHu7BTvZ7O/VPqM6k7RIzU9YWYuO8RzHHx/rnJxfV2X0ke39TGQC241Ou6idfv
-         nlH/8WrjcqSxFj4f25aiv4nI0SlJfcpQBeczM7WFcUtDXmbZVEJV0CVj1B9q9tPeYGtl
-         erX5t6JphpEZ+/sneXIQbif3GCYzyP1NSsnTlRrVkE0lOvz056gNrMLvldXi3yvrN3ki
-         TrNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746661473; x=1747266273;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Tfb3bAOsMFCJhaUq67lrZsZgh4mtlw/i42GKCd/C1R0=;
-        b=UHAEJCMZsaklrhoc46qOxk7EvXdKOPy00837db4r4N8f9DY4ELF0za0xRhh4MxrW33
-         RI9Z452u7Pw7+rNYXd559wPIJhbTPdl/oAEIwiOZoL8scq6Vrf4uWRgf7wlfJUDdMfEG
-         BGJVx0pKV1MHRX+wkmD/n1mLBr7PZksUe5vRd5devaNhDAHz5BgPvkMMaG/if7/NWJjT
-         3urwR30DVpy18Kbqk8Ypu5b1+sAbL59veJR0WNZ1bDpiU9hrgJBioekgVLX1uOfGQUw7
-         8ZgdHyt+ArbCgOGuMFbgfwTWcmZnlPQ4HEtFYwe6unQK/zVroyWYOr/8xh8bN3Ia7OfN
-         qc2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUCfLlLhL6a7Ui1LbEAE+tPmArDfv+wi4HgaRlMp/xsueSk4HQlBp/iMBOUfAmassKFAt3rtc29B10y6Wx18Kw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyR6DcClKP2gYu7a2d8oGAK4eTjjkkR9qLKZYn7ucTsIhzsiV+s
-	arNxZkrAJqcd/T3tRi1+T71EI3jXe2VtMpCw05v9TyTRV3r9lsAjBoFJuje1ozs=
-X-Gm-Gg: ASbGncs+pTkub/y58IP5NYHKgvlCjKSMj8UwyV3WuouulhR7QX351JnZOcxugLsFf0+
-	6YTatiw+Tmax1tQvfECqk3GjlPtJNePiKGIdf5534skKzrDdseOE8k3tkhBRUhDqqvD0QsKr9q3
-	yjCvhPT52e4cj61yP4TWGAzH49hn6ewYVRWpNENERu6j+I+MjYnc7zkLB/7atqG9wFjGtHuWNxn
-	3lveq6m9AycrjCQEU/d47ZiNAO3GZQFr0sijLA8vWw7PNoorjoZieMQFkqwuLziZBScwLjaWCRg
-	U0XNN4BD8L9dN3Jdwtg7TbYh1pWFSmlYEA==
-X-Google-Smtp-Source: AGHT+IGsw/kqtJ5YRr5g0wNhluC5yR3HEHTrO/ETSJlGHPSk6zfdLjLmP4vMyotPP+sP55DiHI/tJQ==
-X-Received: by 2002:a17:903:2352:b0:223:5124:ee7f with SMTP id d9443c01a7336-22e5edf9fdemr30230265ad.12.1746661472908;
-        Wed, 07 May 2025 16:44:32 -0700 (PDT)
-Received: from telecaster ([2601:602:8980:9170::71f1])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22e5369bea0sm32015845ad.117.2025.05.07.16.44.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 May 2025 16:44:32 -0700 (PDT)
-Date: Wed, 7 May 2025 16:44:31 -0700
-From: Omar Sandoval <osandov@osandov.com>
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Stephen Brennan <stephen.s.brennan@oracle.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Mateusz Guzik <mjguzik@gmail.com>, linux-kernel@vger.kernel.org,
-	linux-debuggers@vger.kernel.org,
-	Sentaro Onizuka <sentaro@amazon.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qlrnuZbr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3774C4CEE4;
+	Fri,  9 May 2025 11:17:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746789466;
+	bh=5toU20lLPcHpFhmH/fo6ZfSW85f0kYgZLq6AuB/xV4w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qlrnuZbrDdMl1LOXEWXmOYAJpjdDqAv6MQvg1k5KaG0HBW1S0JtR/iaFXWXli9wZG
+	 +tUnEtTzgB0O48cwF1QBdw0uV95qWfA1eBSsKhl+PcvSO3RSFfrTBS3un5mc/Jvc3k
+	 aiyBhi2jSDQC0lg6k0BalpwSnd6xgQBgOvOLsWNpASxNeaYMqDvzyPtDCpqkd827ys
+	 brZD5Nd9iPZieQmAHpoycI2B5RcvLPz3KabH5McP0dT71ahCsUm796opsi8c5hHAsp
+	 tRi05iqxUiofNpuc/52QY8+yyNKX7NSYrNr3r6sWd1MxOYJYrnx+EpPZwV2LGpPr5a
+	 9E8lmt76Eb1Lg==
+Date: Fri, 9 May 2025 13:17:39 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Omar Sandoval <osandov@osandov.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>, 
+	Stephen Brennan <stephen.s.brennan@oracle.com>, Mateusz Guzik <mjguzik@gmail.com>, linux-kernel@vger.kernel.org, 
+	linux-debuggers@vger.kernel.org, Sentaro Onizuka <sentaro@amazon.com>
 Subject: Re: [PATCH] fs: convert mount flags to enum
-Message-ID: <aBvwX_QaVgBNpedP@telecaster>
+Message-ID: <20250509-hebel-medizin-9e4808c9aece@brauner>
 References: <20250507223402.2795029-1-stephen.s.brennan@oracle.com>
  <20250507230511.GA2023217@ZenIV>
  <aBvo_-Ee7QQtd3YU@telecaster>
+ <aBvwX_QaVgBNpedP@telecaster>
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aBvo_-Ee7QQtd3YU@telecaster>
+In-Reply-To: <aBvwX_QaVgBNpedP@telecaster>
 
-On Wed, May 07, 2025 at 04:13:03PM -0700, Omar Sandoval wrote:
-> On Thu, May 08, 2025 at 12:05:11AM +0100, Al Viro wrote:
-> > On Wed, May 07, 2025 at 03:34:01PM -0700, Stephen Brennan wrote:
-> > > In prior kernel versions (5.8-6.8), commit 9f6c61f96f2d9 ("proc/mounts:
-> > > add cursor") introduced MNT_CURSOR, a flag used by readers from
-> > > /proc/mounts to keep their place while reading the file. Later, commit
-> > > 2eea9ce4310d8 ("mounts: keep list of mounts in an rbtree") removed this
-> > > flag and its value has since been repurposed.
+On Wed, May 07, 2025 at 04:44:31PM -0700, Omar Sandoval wrote:
+> On Wed, May 07, 2025 at 04:13:03PM -0700, Omar Sandoval wrote:
+> > On Thu, May 08, 2025 at 12:05:11AM +0100, Al Viro wrote:
+> > > On Wed, May 07, 2025 at 03:34:01PM -0700, Stephen Brennan wrote:
+> > > > In prior kernel versions (5.8-6.8), commit 9f6c61f96f2d9 ("proc/mounts:
+> > > > add cursor") introduced MNT_CURSOR, a flag used by readers from
+> > > > /proc/mounts to keep their place while reading the file. Later, commit
+> > > > 2eea9ce4310d8 ("mounts: keep list of mounts in an rbtree") removed this
+> > > > flag and its value has since been repurposed.
+> > > > 
+> > > > For debuggers iterating over the list of mounts, cursors should be
+> > > > skipped as they are irrelevant. Detecting whether an element is a cursor
+> > > > can be difficult. Since the MNT_CURSOR flag is a preprocessor constant,
+> > > > it's not present in debuginfo, and since its value is repurposed, we
+> > > > cannot hard-code it. For this specific issue, cursors are possible to
+> > > > detect in other ways, but ideally, we would be able to read the mount
+> > > > flag definitions out of the debuginfo. For that reason, convert the
+> > > > mount flags to an enum.
 > > > 
-> > > For debuggers iterating over the list of mounts, cursors should be
-> > > skipped as they are irrelevant. Detecting whether an element is a cursor
-> > > can be difficult. Since the MNT_CURSOR flag is a preprocessor constant,
-> > > it's not present in debuginfo, and since its value is repurposed, we
-> > > cannot hard-code it. For this specific issue, cursors are possible to
-> > > detect in other ways, but ideally, we would be able to read the mount
-> > > flag definitions out of the debuginfo. For that reason, convert the
-> > > mount flags to an enum.
+> > > Just a warning - there's a bunch of pending changes in that area,
+> > > so debuggers are going to be in trouble anyway.
+> > > 
+> > > Folks, VFS data structures do *NOT* come with any stability warranties.
+> > > Especially if the object in question is not even defined in include/*/*...
+> > > 
+> > > _Anything_ that tries to play with these objects must be version-dependent
+> > > and be ready to be broken by changes in underlying code at zero notice.
 > > 
-> > Just a warning - there's a bunch of pending changes in that area,
-> > so debuggers are going to be in trouble anyway.
-> > 
-> > Folks, VFS data structures do *NOT* come with any stability warranties.
-> > Especially if the object in question is not even defined in include/*/*...
-> > 
-> > _Anything_ that tries to play with these objects must be version-dependent
-> > and be ready to be broken by changes in underlying code at zero notice.
+> > That's totally fine, we can deal with breakages as long as we can
+> > reliably detect what version we're dealing with. We can see changed enum
+> > values, renamed/removed structure members, etc., so that's why those are
+> > preferable. Macros are invisible at the debug info level (since no one
+> > compiles with -g3), so those are no good for us. We also avoid version
+> > checks as much as possible because backports in RHEL and co. make
+> > version numbers mostly meaningless.
 > 
-> That's totally fine, we can deal with breakages as long as we can
-> reliably detect what version we're dealing with. We can see changed enum
-> values, renamed/removed structure members, etc., so that's why those are
-> preferable. Macros are invisible at the debug info level (since no one
-> compiles with -g3), so those are no good for us. We also avoid version
-> checks as much as possible because backports in RHEL and co. make
-> version numbers mostly meaningless.
+> To clarify, we avoid version _number_ checks (i.e., `if (kernel_version
+> >= 6.15)`) as much as possible. "Version checks" in general are
+> unavoidable, but in drgn, we try to base them on the existence of
+> structure members, global variables, types, enum values, etc.
 
-To clarify, we avoid version _number_ checks (i.e., `if (kernel_version
->= 6.15)`) as much as possible. "Version checks" in general are
-unavoidable, but in drgn, we try to base them on the existence of
-structure members, global variables, types, enum values, etc.
+Yeah, that should be fine imho. I know that you're aware that we give no
+stability guarantees but drgn is actively used by kernel developers and
+that's a change we can accept without a lot of trouble for ourselves.

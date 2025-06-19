@@ -1,63 +1,63 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5AE1EDA0B
-	for <linux-debuggers@vger.kernel.org>; Tue,  3 Jun 2025 16:17:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F45521D5A2
+	for <linux-debuggers@vger.kernel.org>; Thu, 19 Jun 2025 21:51:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748967452; cv=none; b=h8TLas6s/sUURG9RNMeS2rvcaFVUULr+noLc9u4knTcwAEEU4w2VxfhkYTPEix+SKvYs8IQgBbwX8qWfez2eiFx0rKsF5dhzav2W7p6VsyR23imU5EbKCBXbKdN8dbFbBQC97NhQO7U7XfU54SHOCq+XzJVu2Jq1emDSanS2aXs=
+	t=1750369881; cv=none; b=Nm646g1NfQMJtZ8PqGSGsJZ6p7kVwsSwOrBvyu6urs+jv8k9t3bBNpqaZZy6OkhQou3LDxPXqpz7/NEtUmtlrDRM3wBg/Z7iZHzoyYwSKvmPNDuG+f9MzWpHIjMokn/e3MdzbjZH7tgEO1ER5kW+go7Ra0/CDXnX0vmeNrNipJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748967452; c=relaxed/simple;
-	bh=BAvgnkzHtB2c8vpthRgNAdZhR+GYSvFqOvjqehlkatk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HP8sD6og0NMerIKRNa2qqTrpdse9GQ3SHzJIIxEqLq1rdTQyR2KPFJO5SmP8EeREuw6/W1qk+WQBVnZBUGvckHk6m2xs8PXgdftK7TIkcjwekqCuV800CeUEpz6iNZ0BeUVT2rHCy3BSVUpsst/U5nrfLaaIvqq8ltXwcd8oG/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=FJdL06Ir; arc=none smtp.client-ip=209.85.216.46
+	s=arc-20240116; t=1750369881; c=relaxed/simple;
+	bh=6b4xdbHAEobeRhtMS7us5of5Xvlx0zvK/T5YXduUbFw=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=Uwsi/SbJhRCNpMIkuZ46BfyVuSpPVhkVPZt6i6qOlbtDayRoJySpNfsUrp2tVWmcirVN2M8N4g1wEKf4GWtemHTK0OedKMuGGtcRSHd7sf/1u0vNsr8PV8X69EUARhVpt8R3nGo8/JQdikXVEBQAABE6vgHwt0JWeJTgJEKsdLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=d1Wq9FaL; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="FJdL06Ir"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3124f18c214so3450079a91.2
-        for <linux-debuggers@vger.kernel.org>; Tue, 03 Jun 2025 09:17:30 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="d1Wq9FaL"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-236377f00a1so10432475ad.3
+        for <linux-debuggers@vger.kernel.org>; Thu, 19 Jun 2025 14:51:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1748967450; x=1749572250; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=1EG07NZgPsq4emiv3q3VxU5auIKs0kGPVFq8cw7gpCQ=;
-        b=FJdL06IrEqaP5MhAo6FnJ/2BvQM5XovNpjkx7mFvhl0rSvhoftO2xpafhbl93zqXjk
-         tUdueR2TmWaKfsWzsi3BuZuUW2YZfulmdfxfvkhlDuGd7PhTIoMwgrcmmdWOjo4JZa52
-         /PZBqORK1jukbAJE15HXgc9fvWwwihzgq8QHs=
+        d=broadcom.com; s=google; t=1750369879; x=1750974679; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:cc:to:from:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=QNrd+Ka91X9vzoKAkMJyDjy2RBoEtHPH04v+UX5wZMw=;
+        b=d1Wq9FaLII+vaeA0Xit/A9GE3gSxdAS4R2xRlQOJWLte3rSN2shVYJDS/vVKWjQifE
+         dtWEQgMbNvJU6ZBWMMhwI84X4tNO2C1hM8EES4vWEErqoLg+sXoWOH0EJGLAmZVAMC/j
+         btge3VcybjeoCoGoTldrOdnkjheecMwg+cAl8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748967450; x=1749572250;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1EG07NZgPsq4emiv3q3VxU5auIKs0kGPVFq8cw7gpCQ=;
-        b=LZj+wISRCMbDJqPaVTxD96JfKCnyUngukEhtDs7qQMizpIDjyXwSZ2DMnrdSI0gUVl
-         Hqut0YQueeEkQ4gqgIqgi5yh/QWSYpWPUDMcNa8495M2T1KwYhCPKJVyfXo2V5oLr8eK
-         6DAawS31QGlj04G8cNFqJqFqKNwVFO+7dfgwz3LRmp62xTFd/r9rHe6qSSBJP9Z2g5j6
-         uSKVrhfqbjK+CoiRAo0lnqR+thpc+dcjApZuHUBco0bqVOk0E2eKeAcozxLKlTLP7+c7
-         381aFvVQ0f/Q2772CN8GsEmYidwCxlJNSOQYOcVVDc6fjXBi0MubXOaeGdBjwhzoiFue
-         NFAg==
-X-Forwarded-Encrypted: i=1; AJvYcCXAo6MElecppSKgZwT6qpaNvkQmSjdCzmBrGfRjrtzQono5F8shlXD/noU0ypKVz7gnoQkFYsBIQb/C11yDMOM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyfz6G2YSZzYnuhvMtEhspo2//kgm8khcpVW9YZ/ocUm1uCufya
-	XcR/kT+4yNQtSB64hbfrvBCNU9atBtqrsWAh1QvtT6a4uc6fHhijyIEsBVYyB8OKFw==
-X-Gm-Gg: ASbGnctldW46APyPcvry/RthFJ6N+gy5SYivcjXrrvfy4+dTpoFQpjekNuKFkEnR8MT
-	FxuRQeNTBh5Uo9dqAUxmfXoHWBiOLbdXV5UKtstwmZ6vfbQJCpGelSx/cyz0qP2rppNwHNddaRJ
-	opk4gVfmf0/k6qiuL0Hl7VMiVzJs3YdZpKLGm/2E+m1bzZIRM4CzIVEsv2JIwtOmbuSw+GOoUzX
-	88+RQrz0/RBh/+mop6ZRTPwKNiyuQAcEvCbg5JN5tmpLsLI5iQISUx+aUDwGiBdbAO5DSkebw8X
-	89EjdixcsYKrttg1RzluOe6EDFoIc1q1EjjohkHTktdgFbp/EdfcVFEqvm0YiSprO1V6jVdzDJC
-	Cf7KrkIurTb3y1oQ=
-X-Google-Smtp-Source: AGHT+IHL3+MWhy3ET4amnre8H+2NPPBpTDeLRE7vqidqrMaPDjBHMQrShQau5GY/Q7/2M4T+2vCvbg==
-X-Received: by 2002:a17:90b:538d:b0:312:26d9:d5b4 with SMTP id 98e67ed59e1d1-3127c718575mr22034168a91.17.1748967450061;
-        Tue, 03 Jun 2025 09:17:30 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1750369879; x=1750974679;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:cc:to:from:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QNrd+Ka91X9vzoKAkMJyDjy2RBoEtHPH04v+UX5wZMw=;
+        b=RXwwwaajbR+F1gd0RGBnHJ691UeFVUINze5Jl0b/5VR5GV1a6fP4jdWcVmIoFm4o6p
+         eI7Au3yMttQRWG/XMA3D6CiGgBXulOsSUmvwDdKwL7D2ePQ2yIxraCz3v+akrXtPpF2+
+         Mp5+FwJRuTH06eX0OX43TYsvICBY6ASxsG9jmeO6Do9L+BTjq1UUraDSWo0MCMXLPnON
+         x51VjYRuZWNm2jjbRMTMcu6wXbYQoOzxIbqs1GPugTaYUzxeiAa6FKSgVKJkNKulcA+9
+         jo5kg9grq9eCDCKU/EyKW9ZQyYvhCUBNYFBgFLQavuM4EWcyA0jUgokNQBPZGsPSrdJG
+         5V9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUz1eLdKOsb0oT/qDnDFXTB4onY+yYQiJTFZd+u140uTfX0FSgYlnb4BB3u44Mz0Fmn/zn08TZ7JpSMQbvzL30=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx1NAn2MXUIvAJkYqiS0+N0ZmAQJH18ECyOQAyEgfTjkHUr5j+g
+	dlJFYYlw7Nwa0Ok4mdLduqG6y0ty2EamqZoRbrkveKFiR2zcHYcFaf0VIexoYKIOKQ==
+X-Gm-Gg: ASbGncthBNL5MVjJSMLMJY2uUTonNj5BhrvVrUMLsiAf6oIbrrj4zkA1UISF7az7Pj1
+	vbW62IR+dofqEtwR9Amc2pgaTY91nHA/wP2sQZjfwzXQYgq1yMYFnEDSuVbVavVfKaJOZYBrYEr
+	Aty/7cdE6ZkGHFo/SColNSK6+Sl5nhoVEPf29JCZMHflizi7Dn97YHTu7Kf70GKEyE/7RDaQdGm
+	to3os7IW0pQVXkNYv99Uf/Ho9kGzPxjYpszeguYe5t/+fzM0tEMNFKGquXcAzoG1XEfkItsG2F2
+	rkpIeqfbTaGTBxAc1/1P1wqt/NWS4sdR+oOuTbGVW9q27eXNLJjbz1BkFNOILzCZknw/KVz+aIc
+	I9aKhTGnDaFH/NDv7mv7s6duMkUUJzjHEH4Oc
+X-Google-Smtp-Source: AGHT+IFyEOg5XEeQ+aTcGDmVsuLniEdzYWdJFqg7fVC3s9zi7nKYJdY+MpYwPbLSToYsK7tOebVQrA==
+X-Received: by 2002:a17:902:f790:b0:234:a44c:18d with SMTP id d9443c01a7336-237d97b4515mr5569825ad.22.1750369879517;
+        Thu, 19 Jun 2025 14:51:19 -0700 (PDT)
 Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-312e72ec43asm1623165a91.0.2025.06.03.09.17.28
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-237d87391e5sm2605945ad.244.2025.06.19.14.51.18
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Jun 2025 09:17:29 -0700 (PDT)
-Message-ID: <6388ccbc-3189-46ad-a146-b6b732417a09@broadcom.com>
-Date: Tue, 3 Jun 2025 09:17:27 -0700
+        Thu, 19 Jun 2025 14:51:18 -0700 (PDT)
+Message-ID: <7ab95eac-47c0-437b-aa45-5b2871c31a8d@broadcom.com>
+Date: Thu, 19 Jun 2025 14:51:16 -0700
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
@@ -66,6 +66,7 @@ List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v1] scripts/gdb: fix parsing of MNT_* constants
+From: Florian Fainelli <florian.fainelli@broadcom.com>
 To: Stephen Brennan <stephen.s.brennan@oracle.com>,
  Tony Ambardar <tony.ambardar@gmail.com>, linux-kernel@vger.kernel.org,
  linux-debuggers@vger.kernel.org
@@ -73,8 +74,8 @@ Cc: Jan Kiszka <jan.kiszka@siemens.com>, Kieran Bingham
  <kbingham@kernel.org>, Christian Brauner <brauner@kernel.org>
 References: <20250601055027.3661480-1-tony.ambardar@gmail.com>
  <7984ea38-20cc-49ad-ad72-c6433ad64698@oracle.com>
+ <6388ccbc-3189-46ad-a146-b6b732417a09@broadcom.com>
 Content-Language: en-US
-From: Florian Fainelli <florian.fainelli@broadcom.com>
 Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
  xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
  M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
@@ -107,50 +108,56 @@ Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
  MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
  7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
  95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
-In-Reply-To: <7984ea38-20cc-49ad-ad72-c6433ad64698@oracle.com>
+In-Reply-To: <6388ccbc-3189-46ad-a146-b6b732417a09@broadcom.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 6/2/25 21:42, Stephen Brennan wrote:
-> On 5/31/25 22:50, Tony Ambardar wrote:
->> Recently, constants in linux/mount.h were changed from integer macros
->> parsable by LX_VALUE() to enums which are not, thus breaking gdb python
->> scripts:
+On 6/3/25 09:17, Florian Fainelli wrote:
+> On 6/2/25 21:42, Stephen Brennan wrote:
+>> On 5/31/25 22:50, Tony Ambardar wrote:
+>>> Recently, constants in linux/mount.h were changed from integer macros
+>>> parsable by LX_VALUE() to enums which are not, thus breaking gdb python
+>>> scripts:
+>>>
+>>>    Reading symbols from vmlinux...
+>>>    Traceback (most recent call last):
+>>>      File ".../linux/vmlinux-gdb.py", line 25, in <module>
+>>>        import linux.constants
+>>>      File ".../linux/scripts/gdb/linux/constants.py", line 19, in 
+>>> <module>
+>>>        LX_MNT_NOSUID = MNT_NOSUID
+>>>    NameError: name 'MNT_NOSUID' is not defined
+>>>
+>>> Update to parse with LX_GDBPARSED(), which correctly handles enums.
+>>>
+>>> Fixes: 101f2bbab541 ("fs: convert mount flags to enum")
+>>> Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
 >>
->>    Reading symbols from vmlinux...
->>    Traceback (most recent call last):
->>      File ".../linux/vmlinux-gdb.py", line 25, in <module>
->>        import linux.constants
->>      File ".../linux/scripts/gdb/linux/constants.py", line 19, in <module>
->>        LX_MNT_NOSUID = MNT_NOSUID
->>    NameError: name 'MNT_NOSUID' is not defined
+>> Hi Tony,
 >>
->> Update to parse with LX_GDBPARSED(), which correctly handles enums.
+>> I was totally unaware that these constants were being consumed by
+>> another debugger, and having fixed them for one, I broke them for 
+>> another!
 >>
->> Fixes: 101f2bbab541 ("fs: convert mount flags to enum")
->> Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+>> Thanks for the fix. Having read through the preprocessor magic and this
+>> change, they make sense to me. In the future, I'll be sure to make an
+>> extra check for GDB users when updating enums.
+>>
+>> Reviewed-by: Stephen Brennan <stephen.s.brennan@oracle.com>
 > 
-> Hi Tony,
+> Not targeted to anyone in particular but this is a recurring problem, 
+> the GDB scripts are typically not part of any CI and it is not natural 
+> to grep for constant names outside of the C/Rust code where they are 
+> being used...
 > 
-> I was totally unaware that these constants were being consumed by
-> another debugger, and having fixed them for one, I broke them for another!
-> 
-> Thanks for the fix. Having read through the preprocessor magic and this
-> change, they make sense to me. In the future, I'll be sure to make an
-> extra check for GDB users when updating enums.
-> 
-> Reviewed-by: Stephen Brennan <stephen.s.brennan@oracle.com>
+> I suppose that QEMU it should be much easier to ensure that GDB scripts 
+> are being exercised than with my current set-up using OpenOCD + real 
+> hardware...
 
-Not targeted to anyone in particular but this is a recurring problem, 
-the GDB scripts are typically not part of any CI and it is not natural 
-to grep for constant names outside of the C/Rust code where they are 
-being used...
+And also:
 
-I suppose that QEMU it should be much easier to ensure that GDB scripts 
-are being exercised than with my current set-up using OpenOCD + real 
-hardware...
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 
-Thanks
+Jan, Kieran, can you please pick this up? Thanks!
 -- 
 Florian
-

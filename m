@@ -1,87 +1,69 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender-of-o51.zoho.in (sender-of-o51.zoho.in [103.117.158.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E140D26A09F
-	for <linux-debuggers@vger.kernel.org>; Tue, 26 Aug 2025 21:42:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756244539; cv=none; b=ZfbCcpD0xHnrDa5MkcnSg8zMJJBPyNWcXR1ROif8LK9sJUOxjEturkbDIAHv0XNsPorRNdlKUCZrhwgZz8Ndj0sYCtXltFdytJWhbWS+3atTBFqMMbeFGPd2cXFO9lBbJ5Z8eLWKq8PCBBuWGI1xrouJM1ImZzS+FPr9gFfiAMM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756244539; c=relaxed/simple;
-	bh=/ziTFy0qWYUHkOnmnDYPfJ9/OX077TWG8OUp/ob2JjU=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=f7AQoC61YOM7ZLHOzeCkWqrT/rATEkKN7xJXA2gbVhD0TKwI5ne64tkYHgWnbYgId+lnT2XTopktV3EjTVJ0TRbj4UAk6FX8qMgZM7ysCjh7JOHUvIda85mgHmANZKQ27ys7v/dz5DwwlTs/a1D8gZb6pF5CFWT9GD9wF/U8MPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com; spf=none smtp.mailfrom=osandov.com; dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b=tmyAndao; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=osandov.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D15530C62F
+	for <linux-debuggers@vger.kernel.org>; Wed, 27 Aug 2025 21:27:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=103.117.158.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756330052; cv=pass; b=FfqzdfcFg37ilnmPDj64jFDdr8pkWsiLb5WivX1zhYnErhIkjwISBfJd9bWHrFkIWt5DimytNAtMVqc0ZBxvoGUjBVkWLCcD6nz24uRAnXoAfKntImyJeAVljLMef+JGf0HYGnG/H9WnFd9lyAhFiDdhjqgMsYn+l7vqXwUwVJs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756330052; c=relaxed/simple;
+	bh=eKEBRAoDZIZnIMVjidhzMguThXalmNkeRZQ6WsvSv/M=;
+	h=Date:From:To:Message-ID:In-Reply-To:Subject:MIME-Version:
+	 Content-Type; b=Je16tLFMelGuiMC5LOUuW+ZTj7ZSmApS8wrllljpIMtUhVzDRU8atBZKKzwlTe4PpYhIX7b9I2XTmHuFypYZUvGFHR7ST9L9FanGcIUWyS0tHsMFmfrgm+jHYc4A5q1QbkJk3ogtx70Nv+lvQkgjhfB96fgkf35j6cxSqkLmGuo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sob.moe; spf=pass smtp.mailfrom=sob.moe; dkim=pass (1024-bit key) header.d=sob.moe header.i=mika@sob.moe header.b=RcsWrjfT; arc=pass smtp.client-ip=103.117.158.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sob.moe
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sob.moe
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b="tmyAndao"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-324e2c12f43so573049a91.3
-        for <linux-debuggers@vger.kernel.org>; Tue, 26 Aug 2025 14:42:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1756244537; x=1756849337; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/ziTFy0qWYUHkOnmnDYPfJ9/OX077TWG8OUp/ob2JjU=;
-        b=tmyAndao9rvVfJ8eIIfJVwWL6FIsNP/YRP3SJVSFB29MalzPLtJmfPRklESXj7qJH3
-         jo4Kt6H8Qjv6CKOtW0U600sdRWLD61h+RmvMUz0JUuBu7ZehkDx+dDy1nZldwziK6naA
-         Us2AiLEb8moRiUpDhirP4z6v+Q//+aN4HtcP5zGDTEdujgcUWCgwI9IIbapc9GUd7vo2
-         3cYv5JQ/XBsCojmRMkpI6jBcnIXjI5/5foVRkAgMulSOYUU9hZH/GEAHGO7O0+NvFtY9
-         V5DzuWyTrC9XuXj3757M5QpQj/yRpDmy+IbWq8Z6EHBgPtMHvFBHZvJFdgkzVg/tCuS3
-         QnAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756244537; x=1756849337;
-        h=content-disposition:mime-version:message-id:subject:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/ziTFy0qWYUHkOnmnDYPfJ9/OX077TWG8OUp/ob2JjU=;
-        b=PjwpTG0KAj6g6j6fpv0wnxkJn/Ula9zGwWu/HJ/rHub7p3XMOLLK1rzuIYRKXpnViF
-         1EJdtTGp6Sr9gRTk5/zuKsD/M2bfCtgb8BW6DRA674p1+0oDY3YuK9fTqJVvuc/i6V2m
-         kqNvZp5D+ohXU8Woua34U8jtwKktgnJ9QtMuwJ1bSin+mjPS2/Vz9s/Q6qngbGGZ5o8z
-         pDmNfs9B3o69ASxaPRrebW1v+yWWsM/SkMAJ1x4uO9yPdWZyyWh/AFLsQpdrIER0OVdo
-         VKD6J1PIwCzD/DZRlY2oOPPd5vwBWyWu2S/lE81sjpwgWoL56d7gsJJJOljhuHzqQSio
-         6V5A==
-X-Gm-Message-State: AOJu0YxRGPHdAu1LTZsJSjkopb4IcdKI6FTBeN2a47/da1uXVcQronfE
-	Me9wDyPricErsXfh4QJTHjuFm1xoE9G+TJtJ2Cc89oGd4DnMEAB/WJ0wFRpPPmlkOpg93aeLHre
-	RGOLD0nI=
-X-Gm-Gg: ASbGnctVpTuTo6CYRO2KvUbbh7TC2/Vpfj1+6bTH1AN5dm1aP5TRz2Vo/Ij4Hs0LKmf
-	TXSefbHyhrBIhXFc1hk9+RCKHq2mK0sutQWVzlLKTNq6MMAwSmUxzx/wo/ceqSh39NPPyj0BfrO
-	2AepdE0/WVlofA7HMO1G/RgXqp5TvQnBVLZuHgzgDizfKXxlLcnxFGOPXyXRG8Ppdlp+HZHvmhB
-	le42abaxlJdcOYIuuu0RGgOYs9bk+Ety1D6+Jsf8DDU7Vpb35AIgevoQ5T5lelK+6JskPNoC+Td
-	fDi0OBSZXy6L0Z6veBTenX+7NLNpFI4Ub1QVb9yEwIW1i19+XQjYXRlCVUYzQX4w/xzPNOQHkpF
-	3afqx
-X-Google-Smtp-Source: AGHT+IFMD2I5vJsPSyYvVWIbV1aFspKHnInGEqx2XUtAHgttUFaXkBDX+F1Hxlde3E0WMkCrxu9vXw==
-X-Received: by 2002:a17:90b:4b86:b0:327:4fab:1dd9 with SMTP id 98e67ed59e1d1-3274fab1fddmr2209630a91.5.1756244536869;
-        Tue, 26 Aug 2025 14:42:16 -0700 (PDT)
-Received: from telecaster ([2601:602:9200:4a00::c7f7])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b49d858ae34sm8064857a12.47.2025.08.26.14.42.16
-        for <linux-debuggers@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Aug 2025 14:42:16 -0700 (PDT)
-Date: Tue, 26 Aug 2025 14:42:15 -0700
-From: Omar Sandoval <osandov@osandov.com>
-To: linux-debuggers@vger.kernel.org
-Subject: Linux Kernel Debugging Tools Monthly Meeting on Wednesday, August
- 27th
-Message-ID: <aK4qN43NFVTjlaAV@telecaster>
+	dkim=pass (1024-bit key) header.d=sob.moe header.i=mika@sob.moe header.b="RcsWrjfT"
+ARC-Seal: i=1; a=rsa-sha256; t=1756330045; cv=none; 
+	d=zohomail.in; s=zohoarc; 
+	b=IplYmlwfbz4QxdUlhBfgLpcDTMDeNiy8BwhprL0TP0HCz7bLCtoGeZc3Id513M3ooziUGOiK53nLOp38X0w/EnJaMm2/R1sVCSHyUgv7FmCbWeZeOqCkvWs/qj4fMraiSE+ZQlmuHHUHwTdww2DJ0UT7IzGlvHe1U0tv5BQt4Pc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
+	t=1756330045; h=Content-Type:Content-Transfer-Encoding:Date:Date:From:From:MIME-Version:Message-ID:Reply-To:Reply-To:Subject:Subject:To:To:Message-Id:Cc; 
+	bh=nMFB5vTUiL8svIlRrBQKynXzZ40I+i1oMttrW7jr+Ag=; 
+	b=cJXXjlFjW8Stxu/zljboYY36DSarF/fX+/7NIuIRp1RjmAh2LLBfLdOhNmLPm1/OeuYVCbXPSMT8wcHJU9SjADbXf5kj1y7AQLJFBtaOJg8G+W+XmCz8F93qtFvtPOMvGnY3R9hU0mpqqvPFVnXVWvzsJeMi51KNMIgm0LkikJc=
+ARC-Authentication-Results: i=1; mx.zohomail.in;
+	dkim=pass  header.i=sob.moe;
+	spf=pass  smtp.mailfrom=mika@sob.moe;
+	dmarc=pass header.from=<mika@sob.moe>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756330045;
+	s=zmail; d=sob.moe; i=mika@sob.moe;
+	h=Date:Date:From:From:Reply-To:Reply-To:To:To:Message-ID:In-Reply-To:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Cc;
+	bh=nMFB5vTUiL8svIlRrBQKynXzZ40I+i1oMttrW7jr+Ag=;
+	b=RcsWrjfT61MuyTG5hNcpvmnLiOAUfwCeCj1XmQpj9D1d4SzZvY+a29wFxsqRxDk5
+	Ji9keCBTXbm2RivunL1+zmzw6+AI0tfocLRvoIFc4tw3zf5kbABEh8rFRORkkd9k5Iq
+	VZLZfDM6C5w7tSK74xXrJPHr0fHVeAmT/zHwkkk8=
+Received: from mail.zoho.in by mx.zoho.in
+	with SMTP id 1756330044610796.2469500500854; Thu, 28 Aug 2025 02:57:24 +0530 (IST)
+Date: Thu, 28 Aug 2025 00:27:24 +0300
+From: mika <mika@sob.moe>
+Reply-To: mika@sob.moe
+To: "linux-debuggers" <linux-debuggers@vger.kernel.org>
+Message-ID: <198ed6dacb0.4a07bf8f49181.4124477810217390203@sob.moe>
+In-Reply-To: 
+Subject: kdb output is not visible when simpledrmdrmfb is used for fbconsole
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Importance: Medium
+User-Agent: Zoho Mail
+X-Mailer: Zoho Mail
 
-The next Linux Kernel Debugging Tools meeting is tomorrow, Wednesday,
-August 27th at 11:30 AM Pacific time. This meeting is a forum to discuss
-development of Linux kernel debugging tools like drgn, crash, and more.
-
-The main agenda item is again status updates on porting crash commands
-to drgn. I've been tied up with some production investigations, so I'm
-behind on code review but will hopefully catch up in the coming days.
-
-Please reply with anything else you'd like to add. As always, if you
-would like to attend, please email me offlist.
-
-Thanks!
-Omar
+Hello. I'm using the latest kernel on a few x86_64 systems and I'm experiencing an issue. I want to see the KDB output on a monitor. When I use a real GPU driver such as nouveau, amdgpu or i915, or when I use EFI/VESA fbdev without any DRM driver - in all those cases I can see the debugger's output. But on some systems I really need to use simpledrm (CONFIG_DRM_SIMPLEDRM). And whenever I use it, the KDB output is not visible... Important detail: it all becomes visible after I blindly type 'go' and CPUs leave the kdb NMI handlers.
+I tried to change kernel/debug/kdb/kdb_io.c like this (inspired by kernel/panic.c) around the 'c->write()' call:
+                 ++oops_in_progress;
++                console_unblank();
+                 c->write(c, msg, msg_len);
++                console_flush_on_panic(CONSOLE_FLUSH_PENDING);
+                 --oops_in_progress;
+But it didn't help, I also added a call to redraw_screen() function of the vt subsystem,but again, nothing changed :(.
+I was also able to make sure that the control actually reaches 'c->write()' there ,and 'c' refers to the correct graphical console.
+But I can't currently understand what happens there, and why specifically on simpledrm... I viewed vt, fbcon code, added debug printks in some places, edited ...,but none helped.
+I believe that simpledrm specific code is under drivers/gpu/drm/sysfb/, but I haven't found anything insightful in it either.
+What can be the problem? Thanks.

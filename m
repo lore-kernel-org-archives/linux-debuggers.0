@@ -1,81 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D4B030EF9F
-	for <linux-debuggers@vger.kernel.org>; Mon, 22 Sep 2025 13:15:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F045026F292
+	for <linux-debuggers@vger.kernel.org>; Tue, 21 Oct 2025 22:55:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758546910; cv=none; b=imdv+waYFZJ4t29jJVu5IsUMyiyFEHawPiepgbzbvR+j2JolJz07/7ougPBzV+BTDWBwMmjdXooVBAtb/y9rVf7iP57rejxD1rFm3DaWsC/ElXXgLbO53JcH9fYMlvB6LQ1nacUrPB+2xKfTR78lxwqwx7N2tuEJ6x6wnEsMy0Y=
+	t=1761087361; cv=none; b=OkUsLvbXqlWkpuMMqOyl+FgA7rdq+i+cAI6NquJpWANe4cWGTdKNkp4bBSZ9RGpoBHhaDDqxHOPb+EVQHzQ9eJt2k74FPujVxXCyPMTng7PHc333qQwFbqdqTKFTpoMNW8XaCoa5DkaJ5t/oS84UjpvrbhXYt/wcLcdod1+EtNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758546910; c=relaxed/simple;
-	bh=w0BgZ/0PysnMar/u7LAhZ9GfXOMmoJnFFf/iWDEkfiM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qv7Kt1GZlDyv4LBKe78Xs6NqbC4yPFElE7xgy6k25WqXyV4W3hP6B1v/zjFfTBniJvkm43LzB6qfQXEOwjD8g45F+/DS3Q7f15rardb7ywMkErH/Pq7zKBWZdw513o8mwbVf/bNjxmPcYSaSlP/YH03uXW22nhS1gFi7FOzP/w4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WHytwIDZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761087361; c=relaxed/simple;
+	bh=MdJ9c2Bd5dv+No+kHVvXqM7ymjqQibkCRg5DAcNjN8M=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=sFfrcPXlcKAgOD9+vshfCOvcrBsugekn9eECQZnSywbDeexXnUlAznmMT+17rMU8hpsLNMTtxv9cijFsKigY2V59bPGI1++tINIrL0fcXeU7LxvmIjO8S9PYSTZ8Uw9q3qNwEDQUQv/HlWoQy1NGH1HB1pqvFtDz6GdYyCEpqgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com; spf=none smtp.mailfrom=osandov.com; dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b=P55yoSvk; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=osandov.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WHytwIDZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41A18C4CEF0;
-	Mon, 22 Sep 2025 13:15:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758546908;
-	bh=w0BgZ/0PysnMar/u7LAhZ9GfXOMmoJnFFf/iWDEkfiM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WHytwIDZe5D+QvFzO+KrhrqFEJmBwnN8l6c14HrO5UkiNkICTXX/X+ukHk0D5svKg
-	 9V8CWy12ndQ8543BWsrWgmdmyxnxd+ssqglrRQXygC2nk9fD2sgl6cwg9ckf5qMWI0
-	 evI7jBREbXGoFg+dLPetUUY6qUD/PxEA9ONZoURHqOKQxom/CefUjZRLrjhGFLjV2W
-	 pQBB+1MgpO1g4tEhky7IwUUe+4g9AUNBjTKm+nCNdP9mH1qs2WvWUHpeYXy0BajDa/
-	 dXAypbx+Yl7aBvQr4NiD659O6HCXeojs38B1A76zqazfiUeMBK0QFP3M79x9/btg8B
-	 LeFPyuxAumA/A==
-From: Will Deacon <will@kernel.org>
-To: Catalin Marinas <catalin.marinas@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Omar Sandoval <osandov@osandov.com>
-Cc: kernel-team@android.com,
-	Will Deacon <will@kernel.org>,
-	linux-debuggers@vger.kernel.org,
-	kernel-team@fb.com
-Subject: Re: [PATCH v2] arm64: map [_text, _stext) virtual address range non-executable+read-only
-Date: Mon, 22 Sep 2025 14:14:48 +0100
-Message-Id: <175853869848.3126168.11981509234580321695.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <93a6f8e47cce118493e250b719a927f517be12cf.1758316750.git.osandov@osandov.com>
-References: <93a6f8e47cce118493e250b719a927f517be12cf.1758316750.git.osandov@osandov.com>
+	dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b="P55yoSvk"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-32edcc68e0fso936127a91.0
+        for <linux-debuggers@vger.kernel.org>; Tue, 21 Oct 2025 15:55:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1761087359; x=1761692159; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=X61Vv2P8dTPiQGnEzL//3nM9quI96um/gsyo9NMf5ok=;
+        b=P55yoSvklFwacf8ApOythDrE4HYEUzbwax8LHq6irMMbm62Yt4ZKIVsy6RrIw49nOE
+         b6huhB+XLSrIw4HG4c/JeOaU1RVm9OnzEn64gp67FcnKqb98//Bu2RnKpiwZIgQMd4f7
+         U/xMelp4SOe/GB+jwxF7flfM22iVeuAXBxLCqtsi91vylblIFkfmUtaPjEyO1/dWk38X
+         ZMSTCthHTkCt5orR+jLfsL7q1wdAGoT6bDJPXmNo0A7plohetEgAoLB9uo0lGn+o16Gh
+         kv0BfNHz00aThjOo4Dca5TpZBejFcQhlUyL8WbviIuKxD+/ju12u+9+yITCiDAuPEmEE
+         HMpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761087359; x=1761692159;
+        h=content-disposition:mime-version:message-id:subject:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=X61Vv2P8dTPiQGnEzL//3nM9quI96um/gsyo9NMf5ok=;
+        b=droH+EnHCGUZ4y7MeBNB2n41As08G91e7f0CvtHx04aocMdRoyBIybQINRpSVa7ZTi
+         GW7fqfCKESbGo8Nue1hXPA/+4cZaXrCjnY3u50Ie/36YvWRhu2iHEXJ3loaSD15ffzA0
+         k1ZsnKyLa3iXLrzyYgEw+kf/TEUKai3CbgJ3QADyw44mR/ZM6MqMzE8paX/nTkylS5dH
+         rrybT6xwWeIkvzqHz0ZvC1GFp6J0fXQOykc06Hdct5EGpV+2YD68S3sovexAoWsdt0YO
+         bPohh2E0Jf8WuzXsuDsQTELnNN2Gbq+0FxjgM1HsuPEgXWed1BGquRDgiwXPg1fwwL57
+         /pEQ==
+X-Gm-Message-State: AOJu0YwHV2msfeQM/f5UN/6hLOcN+3WH/YVM/UC8E/IYRoWY0SmT+Jy1
+	SgnDBBBTqXALpOHAIP4nPAYGbIfKs1CgTE96X9i7qYztHQDh3kTPtD7NTYNp64V/YsFOL4/G100
+	5Bl0D
+X-Gm-Gg: ASbGnctewoQGipLuvjwfiFhK8WpR1lZQBAAYkwvJ2OHxxLacac6TRYiRckLGo0ytTEk
+	BXiQYSVRIyrgR2KEebB5VaFyj4lIRc7MqIQje9VVHKuPKIA2O/PAtfatxe6NwvEUmvIpBrrDtrK
+	Tk3UNE7gu8D0lr2EB7dAMkp07VelOUhA6xDXdassC1RpiuqXx/8nFhxE0HT4mIVm77HVii1e/qa
+	U0Km+AbJgKJ8VGKEwVqAe3reJGxdBf/NtDlgjajZd46ZEFXO3xVZ4PbdO6ZjP0mImiFgBgQWTT+
+	2l9hIjcLqHmTt+t1EQq8gweRBrOKNfGCLoLqF0TZJCxtrkI6u5/WQOTaWpcI7CgAgqrBeM1j4Eu
+	01dNGY3x7lPrv11wfbo5iAoYdK3aYUYx1wGE+jedRVjVEew/qcTyR9BTDjA==
+X-Google-Smtp-Source: AGHT+IHjhlZ7yNY2b9+GWivQvRi9esZbVxPIDN8cjNrwrJS7yZYm6aP3ZAdbzp7ILZn601hF6oFwiQ==
+X-Received: by 2002:a17:90b:38c7:b0:32b:a333:d3dc with SMTP id 98e67ed59e1d1-33bcf8fbb2cmr12608857a91.3.1761087358792;
+        Tue, 21 Oct 2025 15:55:58 -0700 (PDT)
+Received: from telecaster ([2620:10d:c090:400::5:a3ad])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33e223d11c8sm639711a91.4.2025.10.21.15.55.57
+        for <linux-debuggers@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Oct 2025 15:55:57 -0700 (PDT)
+Date: Tue, 21 Oct 2025 15:55:56 -0700
+From: Omar Sandoval <osandov@osandov.com>
+To: linux-debuggers@vger.kernel.org
+Subject: Linux Kernel Debugging Tools Monthly Meeting on Wednesday, October
+ 22nd
+Message-ID: <aPgPfGsc9bC1mJdQ@telecaster>
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Fri, 19 Sep 2025 14:27:51 -0700, Omar Sandoval wrote:
-> Since the referenced fixes commit, the kernel's .text section is only
-> mapped starting from _stext; the region [_text, _stext) is omitted. As a
-> result, other vmalloc/vmap allocations may use the virtual addresses
-> nominally in the range [_text, _stext). This address reuse confuses
-> multiple things:
-> 
-> 1. crash_prepare_elf64_headers() sets up a segment in /proc/vmcore
->    mapping the entire range [_text, _end) to
->    [__pa_symbol(_text), __pa_symbol(_end)). Reading an address in
->    [_text, _stext) from /proc/vmcore therefore gives the incorrect
->    result.
-> 2. Tools doing symbolization (either by reading /proc/kallsyms or based
->    on the vmlinux ELF file) will incorrectly identify vmalloc/vmap
->    allocations in [_text, _stext) as kernel symbols.
-> 
-> [...]
+The next Linux Kernel Debugging Tools meeting is tomorrow, Wednesday,
+October 22nd at 11:30 AM Pacific time. This meeting is a forum to
+discuss development of Linux kernel debugging tools like drgn, crash,
+and more.
 
-Applied to arm64 (for-next/mm), thanks!
+Here is the agenda so far:
 
-[1/1] arm64: map [_text, _stext) virtual address range non-executable+read-only
-      https://git.kernel.org/arm64/c/5973a62efa34
+- drgn release preparations.
+- Monthly drgn crash compatibility status update:
+  https://github.com/osandov/drgn/issues/507.
+- Macro to enum conversion wishlist:
+  https://github.com/osandov/drgn/wiki/Linux-Kernel-Macro-to-Enum-Conversion-Wishlist.
+- drgn kmodify write_object() bit field bug:
+  https://github.com/osandov/drgn/commit/bc3bfbdf4c7ebe8b1596c8354364f4b7fa3ebc55.
 
-Cheers,
--- 
-Will
+Please reply with anything else you'd like to add. As always, if you
+would like to attend, please email me offlist.
 
-https://fixes.arm64.dev
-https://next.arm64.dev
-https://will.arm64.dev
+Thanks!
+Omar

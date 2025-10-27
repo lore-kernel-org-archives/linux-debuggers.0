@@ -1,189 +1,324 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DBDE31B824
-	for <linux-debuggers@vger.kernel.org>; Mon, 27 Oct 2025 19:17:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592632; cv=none; b=lDx2n7ab6+/DzHcW0VfEmmW+DX45an23n2AOMLpz/6nR1HjNjY4kCoGsKx+hArsSkXpfqBSQ8RXUSOMhF5cQAHSEVgD/YqDCjC88OkMNLzAEvlZ+hTKYvJ8ffMfS8hUxPCAztXCIE/KkQM531+SqqFEcKipT1FJgivRwXca56WI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592632; c=relaxed/simple;
-	bh=+jMu4E9dIN2HFrMhlipru6WxdIINvqSlO2x7AgLGd7g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RBRntVoXawQckQN3tTQil/QKd5BearF3ePbWBK6sb1gazud3X01oNz/3QW04Ezgxqsj14I2wdHhmtz/Ql0Fks2kwnYRPDmnW2IPVah/R+4FI8zukmBrT4RwGwKF85wgV2PLhNv+nD9+vJOsLLMtDAtxE6/AWh4P74i/W0jDWT78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LxGalJfj; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36BFD1DDC1B
+	for <linux-debuggers@vger.kernel.org>; Mon, 27 Oct 2025 19:47:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761594429; cv=fail; b=aY9gZHC5v3kxBrg/pbAF7O8YgXvQvQ6x/BSfBv1Kemp1G1qWw1e3pcq2XJER6cv3Lagm/9fO0wQekp7ZxpoHraQXWztZFQc1M8I6H7UAfiijE5OezCXKm2Q5r4iRxtujpNbzS+rUnt1hkbI0Yofaaj3m7IIMQWhgeavoMAB1bas=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761594429; c=relaxed/simple;
+	bh=lhjg2jaFo4w4mgeXb+0eDMeZggRct+C9luC9lrSzyuc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=WqD5Y607IJFrNInhJC9qM8XxENkCoI/XpviUq9RgYUQ0DtjBgNg4HVay0b23qtEkkM2uCTtkm8DS4ysU4yxAR39SRW63lW6Je81IxEIMBW+TeZF9GbkYYlVc8Vyo4AVF9d4q/EEL/Af3bWz6U++M/Nal5rSHv8Kb+Bk/g95UTEc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=XcDwxTop; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=OmViznQZ; arc=fail smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LxGalJfj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761592629;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=k68tctDaos2r7S2/tugCy531UZpNh5YbiETzZ7k4MIg=;
-	b=LxGalJfju0lkE0B98sm4sNOR30+MezInMbwRfbPpOuDUEt0g/YYmnyMqfw3/6D/IUtkO7+
-	DoUuB4eRrnL2Z/LGyZ2uLjdIgDv+OkRGbOzVRh386VhRGxqQwc6P5/R+JkwF7hgPQCtBuO
-	h1gc/YQtIBd+CCFH0FLXdCWHZW7Hl5o=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-625-YIDc4IqXME6e-KXC2TOp1Q-1; Mon, 27 Oct 2025 15:17:06 -0400
-X-MC-Unique: YIDc4IqXME6e-KXC2TOp1Q-1
-X-Mimecast-MFC-AGG-ID: YIDc4IqXME6e-KXC2TOp1Q_1761592626
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-475ddf7e925so3109595e9.2
-        for <linux-debuggers@vger.kernel.org>; Mon, 27 Oct 2025 12:17:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761592625; x=1762197425;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=k68tctDaos2r7S2/tugCy531UZpNh5YbiETzZ7k4MIg=;
-        b=pXyit6L0G1RI4g78Md47Au3RpdsVCGtHP5XFrNR70u99HPduzFDys8PL9qCjMYGEX4
-         X79HW6qrbSxapMpAPuOXJxdqLWijoFLbGBZpAs5w/5hofVShld9gVGRwohW+89So+TOz
-         5gzw6tnkG7dMUWKFG2bIzJaLMWEtYtIngYV7B1KX+pAWx0AYufHQFOusrlxsiUuWSSPo
-         bXFyRuRug9XJhr+odLKceg8zdKHuC671M6KxA0fdXAe6m5+wrY1cOaWlLUqWISDayiFm
-         ILwAxh+KEvhZLHWV9QazB93uwEKDOyVBcOHkspNP4i/3weS3kNuP6wlJnnsPwNfDZrjO
-         Es6A==
-X-Forwarded-Encrypted: i=1; AJvYcCWsQtc3Qaio8l7QjAtRSh4BeS2kWjhSJR9Q1gRpBi8p4HJyn3ReYJzTP2tVEZHlsfwVyfztCAXhT3+HWXbSYho=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyV2vIopbxy/WjKndrlY5HI3YvPGTCV7Z2akX3t8lyChGIRe1/7
-	Cz8qcy4V8toDYqan8YmczyGD2mi6UqTnwyBfNq5N2l021Y5qu8MupxFyV0u52d86ShRBjWYi3/f
-	kfvsN0fbbE0hrTl/6Bl4fGz/d26NdWcIFEa01rT6/+U0oMlVaBSUNeG6uyAlvx+h3dhng9A==
-X-Gm-Gg: ASbGncsPL7cIRvRFpKQ5yy42lycvgxdGF7vI0vQFt5D0h5sJswVU8Qj6GDF2bL6Fsye
-	fOqUH+HxwbkwAaJmgUTmXrNmAC26et4b6UNq3/EoP67VFk54IaZPfo4ldOyySCVEzbtYISlcgKi
-	TZMQNEZ69wveFeHUU+w1QplCNCqXhABBoobZNBlIHho17JLB4dq9McFkly1/kECNpAjXJTIhPXu
-	tdcJ8auWNkaT3i/lQkPPlm39AE1V4jnpU9yzuvLFbT1BUkMC0tS5VH6+4KyWacNMr6wSeqDjDEf
-	zEFynr9taPUc38dAX4e9IzGHXUX6FUYzQOzQLYYGr93VCYlgwmlKKb4QHOr7iPulE6kiHH5TWpj
-	LLIRCJbGKr+SddnHRsz3FbXV+DH0WKQtCwHC+e/1Qpu1p5qLEcD5Ojm6fsuCRTnYx4Z+yq7ebZU
-	pdyW4sCNE+Q4/n6iaJIho0wUbCrws=
-X-Received: by 2002:a05:600c:530e:b0:475:dd9a:f791 with SMTP id 5b1f17b1804b1-47717e41487mr7111765e9.28.1761592625624;
-        Mon, 27 Oct 2025 12:17:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF6A2ms8gZTaN5GeqRUQRthpN1XLh7Sry8dQ+oUPP7Dy1GpsfL+yHR8GnCvPgFOi8kufaaMnw==
-X-Received: by 2002:a05:600c:530e:b0:475:dd9a:f791 with SMTP id 5b1f17b1804b1-47717e41487mr7111525e9.28.1761592625179;
-        Mon, 27 Oct 2025 12:17:05 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f3f:4b00:ee13:8c22:5cc5:d169? (p200300d82f3f4b00ee138c225cc5d169.dip0.t-ipconnect.de. [2003:d8:2f3f:4b00:ee13:8c22:5cc5:d169])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475dd4cc596sm155530485e9.15.2025.10.27.12.17.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Oct 2025 12:17:04 -0700 (PDT)
-Message-ID: <e899be34-ba23-4769-b159-2fa85e1c1876@redhat.com>
-Date: Mon, 27 Oct 2025 20:17:03 +0100
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="XcDwxTop";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="OmViznQZ"
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59RJXCiZ019640;
+	Mon, 27 Oct 2025 19:46:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=NEOpglkz47mNlItP0B
+	QiiPkA0sLKce4Q7GdJRaNLKNE=; b=XcDwxTopbsdxuonyz1hvQI6Zd3CLjka/rB
+	1LN/AdA98S7wKlblofcCDXS5wL6FPjFW0qK2yKgPKaE9IeYqeq1kUznxX3m0Ut+D
+	f+GRktqE+YiSBITM/OT99/h/i98YFuKzazSnJdt2INEvWaJNiaxxHU2+C1v5nQYg
+	h6Vm5bMtwzcqzMmS92jXIN9kQGobw8Qny3BVKfdRQZfzlQV7OoydTxKOZ3qI2gbw
+	AD1v3s5JfU6uy51NGhkVMTNpyYLDNMkqOrst+l7iMe4MqsVD/bZ40OrTAZGBMnXe
+	6t8aAbR5h/eAV24+fVv3G7w1eXi9yYZ4vgv5dN+VcrHhs+wV0MNQ==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4a23gvht05-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 27 Oct 2025 19:46:50 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 59RJDp8N025676;
+	Mon, 27 Oct 2025 19:46:50 GMT
+Received: from cy3pr05cu001.outbound.protection.outlook.com (mail-westcentralusazon11013000.outbound.protection.outlook.com [40.93.201.0])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4a0n07g3js-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 27 Oct 2025 19:46:49 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wxGC32Hla+7FFKlkix7hTIKykKcRsV48Inqvta36N9V+cHpV8jJaqq++5gthD4jlMr2w0IpToVq0dTErkbE3MIszRpENJ9a2IqYkQsPwUrDKGJXj3LFwOlLL/IxSx1xl32YrWoPsNUhZ2LqdGZuxNFOpcK3EfhCpIvdOkDc32v3QQAectvhqF0KHAdX3CuaGDoUvzXgqwo2tjnMonsfmswS7Lmz6pLBcTNvT4MJ+2gIkaWyok1StZMpXVk2hNc5dNAHQA37pqjcem+O9cVAqhO1JidRR7kIXctsKpq7CIVpkpgghbtwnlRdbjHWB21hWkA1p1ln5dotR+HbWIMdl9w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NEOpglkz47mNlItP0BQiiPkA0sLKce4Q7GdJRaNLKNE=;
+ b=SLW8VgcLwwzgEQuTbfY44PK6g+PJQjiO34E+zmdQj5uzaTh2YmERPK1cjCHe0rx1azkSipdJD2lRPlNnDC2g0qMhRiouvaSfeiuL2RkudN8SB70JsrgpvxmTnyRoxKpMQU7vVgjTYr5R9v2b7glFznnnuOm+FyrgH4STA4GayDMpLy4geP2/AE5JntGTGrYjz6R9q5rKBEMGiF1HPrnjM8A0qZGO+sXcpcbud5urWgl+9I7pEgC2ykrsWyq2p2v5O5z2rncVQE2JiV0chG4PaRuCZnUGKoD0LaIBNDbEnxRV3O+doPvua3n3b1req605V4IPt2y25IpYNHWKJLNOQg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NEOpglkz47mNlItP0BQiiPkA0sLKce4Q7GdJRaNLKNE=;
+ b=OmViznQZw4yQL6aC4Z+YXiQPEMM6slGspOsrkrjlHIIxxvGarwHTkWNjH2XZu7dh4hdluX741Ci5dAVUSZJwGqy8xqAFcplMdNuckKFbq+Jsb/66QVLEy4MxBoL/Ecp1W3jjbqB47d0WPEgPVWW2OHTAdADHnl5N5dbNZ5YpD94=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by PH7PR10MB6156.namprd10.prod.outlook.com (2603:10b6:510:1f3::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.18; Mon, 27 Oct
+ 2025 19:46:46 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2%2]) with mapi id 15.20.9253.018; Mon, 27 Oct 2025
+ 19:46:46 +0000
+Date: Mon, 27 Oct 2025 19:46:43 +0000
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Omar Sandoval <osandov@osandov.com>
+Cc: David Hildenbrand <david@redhat.com>,
+        Israel Batista <linux@israelbatista.dev.br>, akpm@linux-foundation.org,
+        linux-mm@kvack.org, linux-debuggers@vger.kernel.org
+Subject: Re: [PATCH] mm: Convert memory block states (MEM_*) macros to enum
+Message-ID: <3d3bfa52-3e13-4d23-8ef7-6cb8b1ab7d79@lucifer.local>
+References: <20251026162156.12141-1-linux@israelbatista.dev.br>
+ <811fd675-b231-45e4-b9d5-636fe63bde6b@redhat.com>
+ <aP-2x314BKks2_N9@telecaster>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aP-2x314BKks2_N9@telecaster>
+X-ClientProxiedBy: LO4P123CA0284.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:195::19) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: Convert memory block states (MEM_*) macros to enum
-To: Omar Sandoval <osandov@osandov.com>,
- Israel Batista <linux@israelbatista.dev.br>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
- linux-debuggers@vger.kernel.org
-References: <20251026162156.12141-1-linux@israelbatista.dev.br>
- <aP-3dauwpc-Kq5Kh@telecaster>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aP-3dauwpc-Kq5Kh@telecaster>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: SvQQsmrbJrKDBWXiyff_H3_3RR309jdK7zvIWXWSCvg_1761592626
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|PH7PR10MB6156:EE_
+X-MS-Office365-Filtering-Correlation-Id: 78bd6bd7-82a7-422a-09a8-08de15918fb0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?qLZDXo4FWdJfEXDBy1EwM8EUykmP+rEv3nZ2Y20HoM9pNNO6EeBrDAlwrLsa?=
+ =?us-ascii?Q?0h8CwgA9GAXabzP5OEtrWNWwSyd3erEbVgTETczVjcBzZY+fE0YXdLTAsYn3?=
+ =?us-ascii?Q?xyeyB0dwomH2fx78aGec34cff/erl2IU6zUuI25K96blMj25Dqtxf6ws71E/?=
+ =?us-ascii?Q?0MPDZCjpGIu2m1SMQpn8EUAQzFhvNjHiyjaHUnoIMsN3XWsX0NIbziN+VZda?=
+ =?us-ascii?Q?MgWvNau6m4VIYs90UYY1M5yIARjJmiQuT+Gn75V5qYLADiOMLTL+1FaXDQwT?=
+ =?us-ascii?Q?Hr5XBpAPXup0S4Cz4hHRIO6TU8oEFvWgK1pRGAMzJBzhEHSOE5Q9RQAUL3Bu?=
+ =?us-ascii?Q?ih0b82prOMJIgt7MwbOvdNiWkYypOOQsCXQ7VMhq/oJNLQ6UDNbX+NqPpb5B?=
+ =?us-ascii?Q?cJ841CdufxCXYn77qaBJkYFonqZ9mitwQie8WmCTIeM1rDhRpyX77pdxxYVN?=
+ =?us-ascii?Q?fBLrVxvQBDAVugTPaEi3eTbE4Gy+Cl8STCo2C77moWR72kEiwzmQ9BLx8NhH?=
+ =?us-ascii?Q?29haTrc2vkOeAl04uZqGZwBp40PT0yn7x5ODallLkGy4+vxZ517MoFjcUn9j?=
+ =?us-ascii?Q?ojs15rg4sNVZEx6pLp6AZtDjRQov3PVJ1zgQ7Kjkm63ZAP1pvNSDXNmgzwtd?=
+ =?us-ascii?Q?E9dzYkF6CUvrt41+4ko0SwyRtIQWkiwJ1Ii8O43odUhHAJ/OJ7TaVyvP4MHs?=
+ =?us-ascii?Q?Mu7EzxUlYPUhX0/WtuacIx6fUNebLX0sgd0N8CJfwJwGmXKmcqUCfVVwe6kN?=
+ =?us-ascii?Q?7YBeVwaLVEgm9LlsX3OT8omdAc3/iOaU/5MCYCiXgDxqX09W1gReYb4IOaf0?=
+ =?us-ascii?Q?9jwcfzfnMVS01z4rHcxpsfCWqBoJjv1NCCr0EWzHY4moBjdTUltaEs7CcQAC?=
+ =?us-ascii?Q?vOGPlA8bcmubloadC5cFFunAWErTaWkIZmyLUBRVxgXdc1rWHoDugsWopXQG?=
+ =?us-ascii?Q?luy6SBY5VRdNocqmlf3kNWuGRsPcWAYyS/puAAp+SixmbjiLaDSm1p3jQwX3?=
+ =?us-ascii?Q?Qc5MOespwx08xwvInpLVSLdwNPuvJ4DPZhYeUgc/wNu9XB4/H9/9L/+zJknO?=
+ =?us-ascii?Q?m3VqDgRB9ZE3F1LVJBOK9YjDUYwqZL8SoxTpAJFx12eKZVUrpcVR5sRv6yGY?=
+ =?us-ascii?Q?zMKul5zyvDCWRNHhKk+jnCWbbeoM57i4wUwcsR97PrhBpJxC6I51Fxq38+Q5?=
+ =?us-ascii?Q?tMIHou8Cylwp4J88lvt3ru152/jyCwsaP0+E7EEdv513ZrxfOrdDvTvHQvO0?=
+ =?us-ascii?Q?qKBKM0WaKVtGouQYuuHSRypsAlf9+YP+IiHmEOlT7MOkAxVKZJvH9Picx3Yy?=
+ =?us-ascii?Q?bYIYj8MAFIPexV0eexKUCNRVkImZzZ+Vf4y/uFdMr/xYbAstOIdrZqcKgYOH?=
+ =?us-ascii?Q?IEkmYxGeQrVciLBeAly8BeCVVQi7JHnL6POvUVeNKi7nMkZm6tFCEPMalsLu?=
+ =?us-ascii?Q?jdsfcEpchAZqEshBDP7+XoVfUy/TolZy?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?kZEpl1ZwYKcteEsqPuuh1+Ddb7Vv5CZjpTygpQBQtzPo10pWhdVVUgVhKXoM?=
+ =?us-ascii?Q?NuXz7Oro0Ni5MhLbFq4Qyky+zJ7bPL4MYHyFWBz+Bv7mxjyPd1KxvsRvVb1/?=
+ =?us-ascii?Q?gkugSHfNv58q/796a4TjBj5LooEsD649hpwHwzcFsbf3SnI7ueo51xXU3M6H?=
+ =?us-ascii?Q?4eIQZdOg1oN2uJwH6ZAzRJ6IOucZtVSTkg9kcTjXP321yqllGl6tXKhzW+yB?=
+ =?us-ascii?Q?+5o+hdBh2soI5JqzqT3lnQxQqTM62kjJHC6sYfpipV9OQZA4rdE9iHk2S/dd?=
+ =?us-ascii?Q?4Gg1NckfMfhdSoLqaNzqEHKi+tePFkUAVdpmx8jGGUfLMVv/h9JJ1Z+Bh8NN?=
+ =?us-ascii?Q?JOtqtxcfkNe88KdsxnnzIMh1OcCBxrV/+lvLgHQKkjTC5lAx7ZqnSqjmERdT?=
+ =?us-ascii?Q?X7qtc+ADc0R04ah0LfkEf9ujaFRc5KFXnd5EP+HsU7Dh9geXEAtfrs10affU?=
+ =?us-ascii?Q?9iiZQz4xCgB6tmc82F9S9tl2Bmbmt9XeZ/ZjE8ZVZH7GNBLnSap9yKP+Jmdb?=
+ =?us-ascii?Q?EnmBtba1Zp2sJc/dRiW+wcQLxjmWuiCkGzKa8SJKa8fcMyvTHMnOWHguUs3G?=
+ =?us-ascii?Q?WLnjLysGsf7yhrVb+3VyPJD6Z8uHV/+/9vblyq908E/ZbsHsS+U/19vVNxan?=
+ =?us-ascii?Q?7pG9A96PUTxNtLd5jhRRv2LWRUR7n2M0kC/je35zOux5Y1il/BqaH8vnemQy?=
+ =?us-ascii?Q?Io2QIhzIs2lmDURnjfBazTT+dmtcwuGVT8KhlnBzw9jvV/U3tvLlwubvGLsb?=
+ =?us-ascii?Q?ivhwoLYHOxCjpCXFvbkFABdEid6Kxz2Cd5rzOkTSA5CHP0FloDIv2R7NxhzD?=
+ =?us-ascii?Q?41+WNQNYY6cVGa1rHzbtBLNGHU29HQADClvSwzAuO4hHSh3LLWh+0wlGf+L0?=
+ =?us-ascii?Q?auwGcercwvGNRTUH0TP3LMG+Us4k0kVU7ZUuSyTqWLS81MuP2k4OjN0Ey+od?=
+ =?us-ascii?Q?lv2pFLeqQVjwboXMsKAZocqWcO/QojVCfuhzeFO0H59cVYQUoIHPuT4k6Pw0?=
+ =?us-ascii?Q?LSwAOlg7d5dl0YX7zxztwo604pPgIMoaAAX+Z84jJDtB65hGOxMWWpBkm7cb?=
+ =?us-ascii?Q?M7GR1MEDtXjFSW5q2QzOKB5FJ/1LD8416E8huHm9OATugJOpJvh7QOCtyu7/?=
+ =?us-ascii?Q?s/JX+b2KTsaxg4luyGT+GCDqMeniF80V68KIeIN+4fF4wtKDtZNvCvVKryto?=
+ =?us-ascii?Q?q2Y1OXBeOpnhaT5dn7wRwZS/WAVsQvLruVhPIFcRO2HbiGbqYA9cSAByUezJ?=
+ =?us-ascii?Q?w0dqzHuW/EH+c+o371yi8ksspyq1PRrHvV/rVHNC4eCHEt9PGg2KEVBW0l/V?=
+ =?us-ascii?Q?XBXU+GH2oyDm31EzZEjho7QOcezY9oeYXN1bYDRfY0/vwCT83NHoV75PQhpN?=
+ =?us-ascii?Q?Xq0pvdK7tS14lCW5BwC8zELb7FbO2p2escXdJcjWw88o40gJ3Qc4KwPx6b4x?=
+ =?us-ascii?Q?lot5pF7Sq5iab8yAm90NSS2CsC5Y2HoZAj25ML/gLzID7aKcPWGn011wuIzE?=
+ =?us-ascii?Q?nLolvr30dy0o0ZTk7Jl5ArBzcuaumSS/bQgP9vD5Ysv1L5yjGyD8nTA+iLeo?=
+ =?us-ascii?Q?5bxb72u61DspAyRbv6le5/kyXgsFoGX9JlALFryclcm7JUxgQJZpiY1Rqmi1?=
+ =?us-ascii?Q?Zg=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	zi+yEhRXGdVfpYbiaRfRJhQHDcW8haXHVVI4VewpFbWZzzbIhyZZGM2b3DsZoi4nPIYngjltKFTyZ+nxB6pmHle5klO85ws++7hMWjRnTf8EI6hZTwyLuQ8Th70bhysqMllFuxvRzFIAcYG7nkW0tJuSzga3AugmwhSfJYzuv+VRy7fQbo7zmrf2TRaQ9R/AHcP/SSiP9a5DrdO3pRIV09W7OwTC9PlX0vO9eq1j6UEQuDLmxR8/8zlhahoJJ6Qnw7MMBgbQb6/P4VAqr7ixuaFyPpVBqwrUbKx3MxU8Rlm9JpwZPfL/i1yDWVQ70WJsOH2kUVoaxVckxhn+w9G3vHeudg6OFZuY2KJH+UACxLy4i3cnvDi9wqR5vKNyxZ6cICpoVRoPB2wnlLExM+cI70rpXZIDA2IGtdYEhhYLw2msuc3tBJopj+/ChtnheaaVtKdqbZpxdPNKbNE1M+tUrQZvlsGujREyGSy3mNaCqdyaNPEKN2esYwWAZUYPGPCFIq3OHIr5ac/D3jvrqxA3hXksxQtKodDazjskHZ/vdxqcpvGcx639vEWasiLW2deEMCmcISMb1Vt92bhNm15Q47mgemXhMU2O8TlzrYP9CFY=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 78bd6bd7-82a7-422a-09a8-08de15918fb0
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2025 19:46:45.9786
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: TyA7H1RiwHf9lOprg+iYhOmtJCfSF4HqzWTeid7lWeCQYdcNFnyZZAwhzKNz5L7sDlFQZSX/rCMOVMOFE6qtvyeFlOYBFwSFIHs9O+5yTGU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR10MB6156
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-27_08,2025-10-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=960 adultscore=0 mlxscore=0
+ phishscore=0 malwarescore=0 spamscore=0 suspectscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510020000
+ definitions=main-2510270181
+X-Proofpoint-GUID: CdHS3MrE3pfYVqHvhIS1vBzXl82GS3bw
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI3MDA1OCBTYWx0ZWRfXzB0vSzU3aeFx
+ w1tKoZmKV309A2MuxA3IlJM5EVVMWjR76kWzyiQrWy+wKKJs+KPf7tMiQ2tVzkiNhoRAfzy8sjt
+ aciThhd6Ducp23/F0jRLibwVg/nEecppUvBMDUSM8ilK8yZuPdDiTm4wUMaF3BSORIbUe3HGBMw
+ QEuqlyIavruGYtTleYUst1V+9M6+HCQbViTp9csLBLFxkebPBVTrhhwmkbmLvg5w32VpvjgMrDL
+ J0r/lnngUM6M5XSLIFttfUzpzCJkCmf/bHe2kWbNDK5ZA5+QyrIZRckyapFlF8pClCoem8QDiuu
+ SLPClrJS+jnxFzWJZNB/ZTSJeDKALbhLty/cYIyS7XF2fvxDIvp6uWNWcYxT5gv/Befgu4pgrV3
+ i+zsXi1gfIUA1m0SRrocE7LJzs7J2g==
+X-Authority-Analysis: v=2.4 cv=HsN72kTS c=1 sm=1 tr=0 ts=68ffcc2a b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=x6icFKpwvdMA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=YMJ4S7zjzT1Txv9Q5fcA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: CdHS3MrE3pfYVqHvhIS1vBzXl82GS3bw
 
-On 27.10.25 19:18, Omar Sandoval wrote:
-> On Sun, Oct 26, 2025 at 04:22:05PM +0000, Israel Batista wrote:
->> The MEM_* constants indicating the state of the memory block are
->> currently defined as macros, meaning their definitions will be omitted
->> from the debuginfo on most kernel builds. This makes it harder for
->> debuggers to correctly map the block state at runtime, which can be
->> quite useful when analysing errors related to memory hot plugging and
->> unplugging with tools such as drgn and eBPF.
->>
->> Converting the constants to an enum will ensure the correct information
->> is emitted by the compiler and available for the debugger, without needing
->> to hard-code them into the debugger and track their changes.
->>
->> Signed-off-by: Israel Batista <linux@israelbatista.dev.br>
->> ---
->>   include/linux/memory.h | 16 +++++++++-------
->>   1 file changed, 9 insertions(+), 7 deletions(-)
->>
->> diff --git a/include/linux/memory.h b/include/linux/memory.h
->> index ba1515160894..8feba3bfcd18 100644
->> --- a/include/linux/memory.h
->> +++ b/include/linux/memory.h
->> @@ -89,13 +89,15 @@ int arch_get_memory_phys_device(unsigned long start_pfn);
->>   unsigned long memory_block_size_bytes(void);
->>   int set_memory_block_size_order(unsigned int order);
->>   
->> -/* These states are exposed to userspace as text strings in sysfs */
->> -#define	MEM_ONLINE		(1<<0) /* exposed to userspace */
->> -#define	MEM_GOING_OFFLINE	(1<<1) /* exposed to userspace */
->> -#define	MEM_OFFLINE		(1<<2) /* exposed to userspace */
->> -#define	MEM_GOING_ONLINE	(1<<3)
->> -#define	MEM_CANCEL_ONLINE	(1<<4)
->> -#define	MEM_CANCEL_OFFLINE	(1<<5)
-> 
-> What kernel version is this patch based on? It doesn't apply on mainline
-> because it is missing a couple of definitions added in 6.9 by commit
-> c5f1e2d18909 ("mm/memory_hotplug: introduce
-> MEM_PREPARE_ONLINE/MEM_FINISH_OFFLINE notifiers").
-> 
->> +enum mem_states {
-> 
-> mem_state is very vague. enum memory_block_state might be a more
-> appropriate name.
+On Mon, Oct 27, 2025 at 11:15:35AM -0700, Omar Sandoval wrote:
+> On Mon, Oct 27, 2025 at 10:29:15AM +0100, David Hildenbrand wrote:
+> > On 26.10.25 17:22, Israel Batista wrote:
+> > > The MEM_* constants indicating the state of the memory block are
+> > > currently defined as macros, meaning their definitions will be omitted
+> > > from the debuginfo on most kernel builds. This makes it harder for
+> > > debuggers to correctly map the block state at runtime, which can be
+> > > quite useful when analysing errors related to memory hot plugging and
+> > > unplugging with tools such as drgn and eBPF.
+> > >
+> > > Converting the constants to an enum will ensure the correct information
+> > > is emitted by the compiler and available for the debugger, without needing
+> > > to hard-code them into the debugger and track their changes.
+> > >
+> > > Signed-off-by: Israel Batista <linux@israelbatista.dev.br>
+> > > ---
+> > >   include/linux/memory.h | 16 +++++++++-------
+> > >   1 file changed, 9 insertions(+), 7 deletions(-)
+> > >
+> > > diff --git a/include/linux/memory.h b/include/linux/memory.h
+> > > index ba1515160894..8feba3bfcd18 100644
+> > > --- a/include/linux/memory.h
+> > > +++ b/include/linux/memory.h
+> > > @@ -89,13 +89,15 @@ int arch_get_memory_phys_device(unsigned long start_pfn);
+> > >   unsigned long memory_block_size_bytes(void);
+> > >   int set_memory_block_size_order(unsigned int order);
+> > > -/* These states are exposed to userspace as text strings in sysfs */
+> > > -#define	MEM_ONLINE		(1<<0) /* exposed to userspace */
+> > > -#define	MEM_GOING_OFFLINE	(1<<1) /* exposed to userspace */
+> > > -#define	MEM_OFFLINE		(1<<2) /* exposed to userspace */
+> > > -#define	MEM_GOING_ONLINE	(1<<3)
+> > > -#define	MEM_CANCEL_ONLINE	(1<<4)
+> > > -#define	MEM_CANCEL_OFFLINE	(1<<5)
+> > > +enum mem_states {
 
-Agreed. That then nicely fits "struct memory_block".
+Why are we naming a type we never use...
 
--- 
-Cheers
+> > > +	/* These states are exposed to userspace as text strings in sysfs */
+> > > +	MEM_ONLINE		 = (1<<0), /* exposed to userspace */
+> > > +	MEM_GOING_OFFLINE	 = (1<<1), /* exposed to userspace */
+> > > +	MEM_OFFLINE		 = (1<<2), /* exposed to userspace */
+> > > +	MEM_GOING_ONLINE	 = (1<<3),
+> > > +	MEM_CANCEL_ONLINE	 = (1<<4),
+> > > +	MEM_CANCEL_OFFLINE	 = (1<<5),
+> > > +};
 
-David / dhildenb
+If it has to be named, can we just expose the bits as an enum and the values as
+BIT(...)?
 
+> > >   struct memory_notify {
+> > >   	unsigned long start_pfn;
+> >
+> > CCing Lorenzo, we recently had a discussion about such conversions.
+>
+> Yeah, I've been asking people to send out these conversions as we
+> encounter them in drgn, but ONLY when the absence of a value in the
+> kernel debugging symbols causes actual problems for drgn. I want it to
+> be clear that we're not spamming these just to cause churn. This is an
+> unfortunate corner case of debug info that leaves us with no other
+> option.
+
+Right. That really sucks, but I like drgn so if reasonable I do want us to
+make life easier there... :)
+
+>
+> > The states are mutually exclusive (so no flags), so I wonder if we can just
+> > drop the (1<< X) setting completely.
+>
+> FWIW, putting my C standard committee hat on, there is nothing wrong
+> with combining flags in an enum. C11 is silent on the matter, but C23
+> made this explicit. Quoting 6.7.3.3, paragraph 16: "After possible
+> lvalue conversion a value of the enumerated type behaves the same as the
+> value with the underlying type, in particular with all aspects of
+> promotion, conversion, and arithmetic." Lorenzo may have been thinking
+> of the stricter rules in C++.
+
+I don't really understand the argument being made there.
+
+That's just saying the enum behaves as if it's the underlying type? I'm not
+arguing otherwise.
+
+Consider:
+
+enum some_name {
+	X,
+	Y
+};
+
+void some_func(enum some_name val)
+{
+	switch (val) {
+	case X:
+		...
+	case Y:
+		...
+	}
+
+	// compiler doesn't warn about missing cases.
+}
+
+This is already giving some sense as to the intuition that enums specify
+all the values as declared specific enumeration values.
+
+But intuitively, with the enum as a _named_ type, it's _weird_ for there to
+be possible values for it that are not listed.
+
+The problem here for me is the type being _named_.
+
+If it's unnamed, then it doesn't really matter, it's just another way of
+declaring the values.
+
+If drgn needs it named, then just name bit values and use BIT(...).
+
+>
+> Of course, semantically, it makes more sense to use distinct values in
+> cases like this where the values are not actually flags.
+
+enum's are kinda defined by being distinct values...
+
+>
+> > IIRC, these values are not exposed to
+> > user space, only the corresponding names are, see state_show().
+> >
+> >
+> > Won't the compiler now complain that e.g., kcore_callback() does snot handle
+> > all cases? (no default statement)
+>
+> Only if the controlling expression of the switch statement actually has
+> the enum type. All existing code uses unsigned long, so the compiler
+> doesn't care.
+
+So why are we naming the type... does drgn require it?
+
+Thanks, Lorenzo

@@ -1,179 +1,137 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from butterfly.birch.relay.mailchannels.net (butterfly.birch.relay.mailchannels.net [23.83.209.27])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93C9E34AB1E
-	for <linux-debuggers@vger.kernel.org>; Tue, 28 Oct 2025 17:40:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761673257; cv=none; b=R+AUQHAu3EIUw18wsVuIPXeA0USU1/PE0767w4rv8hRW0ISn1uWOAlyegvSZtxdV2561YN3CrnZpIjyY0+exGla4vMsUmrumzo6dxkCkGuTDihhVz/F4Db8AjnIjsM3c2yV4W5l5tKfCObtiCMsuBnsczYEDOOKadG02FMp7JOY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761673257; c=relaxed/simple;
-	bh=XMvb4GZuBGzmX7IowocrYTBh2xBzO1pX6/ozlgz39uU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NFCJIF0bfF9K03cIlfC9qzbNy8a3O5ChRSaKhXa55Cs/qouhl3JOvtr5ZFl5lY7QsL0/1DuPCL6CV9s858DE8Ie2SEBNFZvNO8RC1VmWbUrnYE3iTHzjBVy82jvcM4zDAha3WaOzO8n15iD1fAIliExFm7mupk+dHluNeayAdOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com; spf=none smtp.mailfrom=osandov.com; dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b=BWFfeNA8; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=osandov.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9F434F46F
+	for <linux-debuggers@vger.kernel.org>; Tue, 28 Oct 2025 19:06:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.209.27
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761678373; cv=pass; b=DgYj25GgyTEO3lVENhMjrnP8EwKY5aIYl/eL1FXMl8xzHNgNwHIbd0cwaSJLDr14pcLKywFj3ScRS7lmIAp7xP99NNU9CHiMFqLZDagccZkxTqovmNFLh2uvP+TFjqFg3nZsDg/KSgRETaCGiOY7/pqrsId8JD8ey1SkuBjvpwQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761678373; c=relaxed/simple;
+	bh=PJ7kPZwFSkxdAaoiqBB3V0crQXB0aDVOcN55il3dPxk=;
+	h=Message-ID:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:Date; b=ZQ8U2h6c306LIMBJXaYBAf51DxoI4/n87faHgdubeY0A7yrfluoKv4M1Sc97swGDzQnypiWgRWr1a7QW/q+DpKtBhUKDXA0LWWrU51abiBMmuBYiy5radZPAtzyFVEZFD9K5xxHP/SdtGo41sAT5S1ZsyqKHoVyZO8L2YBTQoQQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=israelbatista.dev.br; spf=pass smtp.mailfrom=israelbatista.dev.br; dkim=pass (2048-bit key) header.d=israelbatista.dev.br header.i=@israelbatista.dev.br header.b=hAAyE9YZ; arc=pass smtp.client-ip=23.83.209.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=israelbatista.dev.br
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=israelbatista.dev.br
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b="BWFfeNA8"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-29301049db3so9703815ad.0
-        for <linux-debuggers@vger.kernel.org>; Tue, 28 Oct 2025 10:40:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1761673255; x=1762278055; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DVopLmZTDOEubg3fbqWRZo6mnJncBRlkh5KwLtpkxzw=;
-        b=BWFfeNA8ec0V0EyK7xtqN0fjOA4j4i9CLeU2A1XIxOyAY22T2PdzSOjmBDB6EEjP9f
-         RFI9/kyvcMiGm3PbXNmTESpALiv3VXbodi3za3CwsSh9uoIDNWtSWX164ssN5gIyu09f
-         W6KkgkOMnTFcnfAFRf4v7smmD3BFn4Vzxy8W31yO0gQdhoI6xw4ZXp7+1HfwCJO8aMYM
-         pZcQky0MncobvTmh5usbvz/gBfm1SID4CgLgGxG5C4/ZRW6lSDi8nM7yJgVoFvlPnDXY
-         7f00vVT4Htr09f7M81tFkUpImN0kXL2UdGmajtpuyv4h+oNcRZwRyEW+uxi7M6f3V/FL
-         JPUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761673255; x=1762278055;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DVopLmZTDOEubg3fbqWRZo6mnJncBRlkh5KwLtpkxzw=;
-        b=SFRp/F7gMSEDR0hiwcOM8lKZmE8CakCJ598lZuO0P2o/LKj/Y4+RyaomsE9vH7QEZ8
-         gEC4grZVckh4P5b3WtpdnUmpenM5V7qxjim1BeI9w1CLfs8rpe5vNetBzHJRc7nUTu2U
-         kIpsBaThpxYvWJGZiHORTy+re2/6v6MBJ0nuDXHByDlplGKQmQwdFy/u+grm7eF4EvtM
-         BRZMyI1PwVT2aFWIC6QXHbVn3sFSv9P4EpXADT9cMgXE1XEojMqGtMfCEBxuCl7mh8wS
-         JvUXXyiYX2gCxwIjyk09BOHeo65RamAT6PEUrDq4uQmL+5HwbIqwsdaqGhSD5LeMApbW
-         ma6g==
-X-Forwarded-Encrypted: i=1; AJvYcCWFaRt770HyU5akI8SQ6shpokYWCLEPVLImAx+/VRqJxPd/DPpqqOXUWFtVsiIztr6q8zHwFaEQzR52KQyIh/Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3CeyGgBJeI5rLQA1njSv55BItZqFabrJWSXnR8LpI/0543zLX
-	hYqDM/Qjh98S6GR3bMi9OUKwCYeE4JaVEe1u7Wp2vSbFvKv7hINuuFERZf2aTlgr6AQ=
-X-Gm-Gg: ASbGncsRs7mb2xtRtyGtlurzDRloN4+xRZt0pqGp091hLkqa2vWMersGMvghXUISWRQ
-	6A9jufzxxuAloee95HDbuPEyRIZYsW+ZqUL/ra6ZkexcbMjtB+EjYxXPpgDYZXw2pwLT2GrDnTj
-	+xoP+AYrnzghlF+ViHuL5d+dWuDhJrq5/lMb2oPHw6VuxgFlJk92vwjvOgPfDwRBWvG6o97aGkF
-	uqePbJD5zG0kLdK1K3Q9YeHRH5DLfsM80l3Gwn+osHaT+5pElz9CxpBs3PMUOcoDH6djVl+vAsd
-	uiDnxfJegoS43zxxHtlOByK+SJSQDTnfkBjlLFWzJln3WFcM+gPA5OU4QXm2qhgBYuIQ8aAONLa
-	hBmCArH0y3Vho4/wjZxlj1sx3rHQ21sAQKq7OOTacVPsXJXqAtQGlhtlbYg==
-X-Google-Smtp-Source: AGHT+IGLnKJ6Jj69RQwIIMchu5h5MkeqjXzbXQh6dtkz5j1ePmwYZovsH4iKAXHndPBmmR4iy3RfBA==
-X-Received: by 2002:a17:902:d2c1:b0:273:a653:bacf with SMTP id d9443c01a7336-294deb398f3mr295865ad.0.1761673254580;
-        Tue, 28 Oct 2025 10:40:54 -0700 (PDT)
-Received: from telecaster ([2620:10d:c090:400::5:59c6])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29498d274b6sm121931015ad.59.2025.10.28.10.40.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Oct 2025 10:40:54 -0700 (PDT)
-Date: Tue, 28 Oct 2025 10:40:52 -0700
-From: Omar Sandoval <osandov@osandov.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: David Hildenbrand <david@redhat.com>,
-	Israel Batista <linux@israelbatista.dev.br>,
-	akpm@linux-foundation.org, linux-mm@kvack.org,
-	linux-debuggers@vger.kernel.org
-Subject: Re: [PATCH] mm: Convert memory block states (MEM_*) macros to enum
-Message-ID: <aQEAJHvO2bHvaEy1@telecaster>
-References: <20251026162156.12141-1-linux@israelbatista.dev.br>
- <811fd675-b231-45e4-b9d5-636fe63bde6b@redhat.com>
- <aP-2x314BKks2_N9@telecaster>
- <3d3bfa52-3e13-4d23-8ef7-6cb8b1ab7d79@lucifer.local>
- <aQABhaMC8xfO2Vem@telecaster>
- <bdf568ce-0e60-4a63-8d67-8d272e05fab2@lucifer.local>
+	dkim=pass (2048-bit key) header.d=israelbatista.dev.br header.i=@israelbatista.dev.br header.b="hAAyE9YZ"
+X-Sender-Id: hostingeremail|x-authuser|contato@israelbatista.dev.br
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id DB16E703A2D;
+	Tue, 28 Oct 2025 19:06:06 +0000 (UTC)
+Received: from de-fra-smtpout2.hostinger.io (100-118-36-217.trex-nlb.outbound.svc.cluster.local [100.118.36.217])
+	(Authenticated sender: hostingeremail)
+	by relay.mailchannels.net (Postfix) with ESMTPA id 684407018F7;
+	Tue, 28 Oct 2025 19:06:04 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1761678365; a=rsa-sha256;
+	cv=none;
+	b=WKzSYiTEvfMiWE3kWZ0gnq6Lj1QDPi5aePwmcnSH8SzIGimVUsj6bP0sPKH2iXsd/q4QPl
+	KmDLjmJp0L6d/FnRbMvQ8hiVHcrz0vpkOtm4SE/1OrB8eKzQ8smcOJD2kpj2kolEe1jd8h
+	ZJ1eF621KuFEFLDThQPhvKTOk4C6e9EZT+OtH2eqtBjllbpT1TMJRLLjBR11v1DblCOCH0
+	mKT98NV+1t5VOXQhCWQNvE6DjmMX+0upfOQZ+554dGNLUeMdhy10N6VAkJ3Czpl+e0bLcs
+	aV7+cEQtF4b9DgREtxpsUGj7K4HDy6q84FsmHMaSySdFnPJevVLzp/uUM1Wj5A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1761678365;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=K7yMuFnXzZTs27rxsR5yqI/BDHOQRZQBcgCQ/UynaDY=;
+	b=VeZ0Pp7WUdG1GPG4NNcxdnmIZ0j08AXw87uIsPrYAsk0ck4GGjIr6AUafBkT1gj5Pd3qaz
+	0Dgkdqh1iZ3l3TmSbhDdD1KQRCSNJbaGT+xvVlq4oBK5E0YN3PCBeC06e+L9g9pDvP8l9X
+	8dNCqbk5Wq+kevHK+lPOnWrZ4/wH1AtnnmTj5jQzZVK5sQDiVtsycVtKjipZ4x2xkAFXVa
+	9x0n7veiNbPQGU3man5h/lTwys76v4PtywS3yp00nrry8faG29BM0rj/1gVEqOfPTKP8dD
+	LpBbWu0L0FPgvkFFa4HQHTZoqgASOV0d2z2p7GkHhJIYjiykYCyR3YHCvr0WzA==
+ARC-Authentication-Results: i=1;
+	rspamd-768b565cdb-6ldbt;
+	auth=pass smtp.auth=hostingeremail smtp.mailfrom=linux@israelbatista.dev.br
+X-Sender-Id: hostingeremail|x-authuser|contato@israelbatista.dev.br
+X-MC-Relay: Neutral
+X-MailChannels-SenderId:
+ hostingeremail|x-authuser|contato@israelbatista.dev.br
+X-MailChannels-Auth-Id: hostingeremail
+X-Trade-Versed: 44c630e95ed6652c_1761678365765_1624956607
+X-MC-Loop-Signature: 1761678365765:230569200
+X-MC-Ingress-Time: 1761678365765
+Received: from de-fra-smtpout2.hostinger.io (de-fra-smtpout2.hostinger.io
+ [148.222.55.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.118.36.217 (trex/7.1.3);
+	Tue, 28 Oct 2025 19:06:05 +0000
+Received: from [IPV6:2804:d59:8970:3b00:5f26:e2da:68e6:2358] (unknown [IPv6:2804:d59:8970:3b00:5f26:e2da:68e6:2358])
+	(Authenticated sender: contato@israelbatista.dev.br)
+	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4cx0G05f3dz3whC;
+	Tue, 28 Oct 2025 19:06:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=israelbatista.dev.br;
+	s=hostingermail-a; t=1761678362;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=K7yMuFnXzZTs27rxsR5yqI/BDHOQRZQBcgCQ/UynaDY=;
+	b=hAAyE9YZBFJ3sI2e8h5NgrMvFpPAht636ZAKxj9t7TFgBRDgGiasYLk49ZnVezObFRF1Pr
+	aLqnzWpFIP4mYIvSq553tSV+Ixl4lkwqKw4JRPi5tWRQUoeLECKOGAbm8etORLUtKxxyCt
+	0/vxTO7vMFFdrmME7ybQGXX+tsieR7F3tc2cP14mrX+pwNuFbCt/gCsUfY+8SHqlsLz2Zj
+	IugmjvIyXh5G3aMyesBnyR3/2YeJLGkeURoyBqyjaZY0rb+/JjmbeG43Op78qDpJxjhSow
+	lPCWFW0znP4bQWstBCH8BEUdJxY791QMkBNvPqWn4k9getgX9oNPTYPJPprB3A==
+Message-ID: <7a46f3cf-3256-4179-8ac6-25223908480c@israelbatista.dev.br>
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bdf568ce-0e60-4a63-8d67-8d272e05fab2@lucifer.local>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: Convert memory block states (MEM_*) macros to enum
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ David Hildenbrand <david@redhat.com>
+Cc: Omar Sandoval <osandov@osandov.com>, akpm@linux-foundation.org,
+ linux-mm@kvack.org, linux-debuggers@vger.kernel.org
+References: <20251026162156.12141-1-linux@israelbatista.dev.br>
+ <811fd675-b231-45e4-b9d5-636fe63bde6b@redhat.com>
+ <aP-2x314BKks2_N9@telecaster>
+ <3d3bfa52-3e13-4d23-8ef7-6cb8b1ab7d79@lucifer.local>
+ <aaff172e-8fdd-4ff3-8161-1c7afb1f3e64@israelbatista.dev.br>
+ <3873b85d-a8c8-472b-82e1-2751c6fef3b0@lucifer.local>
+Content-Language: en-US
+From: Israel Batista <linux@israelbatista.dev.br>
+In-Reply-To: <3873b85d-a8c8-472b-82e1-2751c6fef3b0@lucifer.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Date: Tue, 28 Oct 2025 19:06:00 +0000 (UTC)
+X-CM-Analysis: v=2.4 cv=Ceda56rl c=1 sm=1 tr=0 ts=6901141a a=WIeu/gG1zxr2CnNbFFeIHA==:617 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=1xXcZfXGjt39WaqPgXAA:9 a=QEXdDO2ut3YA:10
+X-CM-Envelope: MS4xfCWsKzO+MIZLG4tJPcBkExWHQSwr2NmAEzHTyhaUlMc3dSRdwvGrW0qwZwguU21Y4EKCZSwY1k3W3Okha9lHih0K+s92a/kQ9rGlkjwO5JYpES+6toRU 5RjY3NSyNsyzZ5wtZO53Uh3K9YBy5Pu8yKwjfsOJPmyOmGUkyma1kc2m79RDLElOu0TjMKdAeTWdqXBJsXaq7yxMIkEWR6+Qu1CuII7Lb3gy0zRtxI/EWK3/ UVXW93tTX/llLESPLHhr/oSATlvM01p9z2FCrMnMetfROwQR6JhbZKa8eFhVGYmrYXNFEZ+qbQCazdR/GYnAqERBPmXgtjKpF/IUhsHKymsVhnjqHFSAhRz+ MVTKGNma1bExUFYnkqlZBzpdzqgyEACPeXQktrphqP4tB5r3Tk5eNec1Ol+Kk3/0/Vd3JriqOwMpIIUm+5KRcL0fWM4nw43amwjyccm4U3gV0FdXhWS5ettF hfi6uh5J2c7fpC9f
+X-AuthUser: contato@israelbatista.dev.br
 
-On Tue, Oct 28, 2025 at 04:33:39PM +0000, Lorenzo Stoakes wrote:
-> On Mon, Oct 27, 2025 at 04:34:29PM -0700, Omar Sandoval wrote:
-> > On Mon, Oct 27, 2025 at 07:46:43PM +0000, Lorenzo Stoakes wrote:
-> > > On Mon, Oct 27, 2025 at 11:15:35AM -0700, Omar Sandoval wrote:
-> > > > On Mon, Oct 27, 2025 at 10:29:15AM +0100, David Hildenbrand wrote:
-> > > > > On 26.10.25 17:22, Israel Batista wrote:
-> > > > > > The MEM_* constants indicating the state of the memory block are
-> > > > > > currently defined as macros, meaning their definitions will be omitted
-> > > > > > from the debuginfo on most kernel builds. This makes it harder for
-> > > > > > debuggers to correctly map the block state at runtime, which can be
-> > > > > > quite useful when analysing errors related to memory hot plugging and
-> > > > > > unplugging with tools such as drgn and eBPF.
-> > > > > >
-> > > > > > Converting the constants to an enum will ensure the correct information
-> > > > > > is emitted by the compiler and available for the debugger, without needing
-> > > > > > to hard-code them into the debugger and track their changes.
-> > > > > >
-> > > > > > Signed-off-by: Israel Batista <linux@israelbatista.dev.br>
-> > > > > > ---
-> > > > > >   include/linux/memory.h | 16 +++++++++-------
-> > > > > >   1 file changed, 9 insertions(+), 7 deletions(-)
-> > > > > >
-> > > > > > diff --git a/include/linux/memory.h b/include/linux/memory.h
-> > > > > > index ba1515160894..8feba3bfcd18 100644
-> > > > > > --- a/include/linux/memory.h
-> > > > > > +++ b/include/linux/memory.h
-> > > > > > @@ -89,13 +89,15 @@ int arch_get_memory_phys_device(unsigned long start_pfn);
-> > > > > >   unsigned long memory_block_size_bytes(void);
-> > > > > >   int set_memory_block_size_order(unsigned int order);
-> > > > > > -/* These states are exposed to userspace as text strings in sysfs */
-> > > > > > -#define	MEM_ONLINE		(1<<0) /* exposed to userspace */
-> > > > > > -#define	MEM_GOING_OFFLINE	(1<<1) /* exposed to userspace */
-> > > > > > -#define	MEM_OFFLINE		(1<<2) /* exposed to userspace */
-> > > > > > -#define	MEM_GOING_ONLINE	(1<<3)
-> > > > > > -#define	MEM_CANCEL_ONLINE	(1<<4)
-> > > > > > -#define	MEM_CANCEL_OFFLINE	(1<<5)
-> > > > > > +enum mem_states {
-> > >
-> > > Why are we naming a type we never use...
-> >
-> > As David suggested, naming it means that we can then use it in a way
-> > that enables compiler warnings and documents the code better.
-> 
-> Which compiler warnings?
 
-I was referring to a situation that David suggested where:
 
-1. enum memory_block_state contains distinct values, not flags, and
-2. We convert struct memory_block->state to enum memory_block_state.
+On 10/28/25 13:34, Lorenzo Stoakes wrote:
+> On Mon, Oct 27, 2025 at 11:53:57PM +0000, Israel Batista wrote:
+>>
+>>
+>> On 10/27/25 16:46, Lorenzo Stoakes wrote:
+>>
+>>>
+>>> So why are we naming the type... does drgn require it?
+>>>
+>>
+>> It doesn't need to be named, but as David pointed out, we could find
+>> where these values are being used and replace the type with the proper
+>> enum. I quickly grepped the codebase and it seems doable, I'm probably
+>> adding these changes to the next version of this patch since there are
+>> some things to fix anyway.
+> 
+> I mean we're getting a little out of scope here but fine, if these are not
+> in fact used as flags, I don't mind, just remove the silly 1 << x values
+> while you do it.
 
-Then, everywhere that does switch (memory_block->state) would get
-warnings for forgotten cases. Maybe desirable, maybe not, but those are
-the warnings I was referring to.
+Could you also point me to what tree is preferred to base the patches
+for the mm subsystem, please? There are differences between linux-next
+and the current version of mainline regarding these values.
+(MEM_PREPARE_OFFLINE and MEM_FINISH_OFFLINE are being removed on
+linux-next).
 
-> enum foo {
-> 	X = 1UL << 40,
-> };
-> 
-> static void blah(enum foo foo)
-> {
-> }
-> 
-> ...
-> blah(3);
-> 
-> Doesn't generate any.
-> 
-> Nor does W=1 or W=2.
-> 
-> Nor with clang, etiher.
-> 
-> The better solution is to do something like __bitwise with sparse.
-> 
-> Also re: type, I'm not sure it is all that safe, or you certainly lose
-> control somewhat as the size of the integer you're passing around is
-> 'whatever fits the values'. Technically it should be restricted to a signed
-> integer (e.g. 32 bit) for C11 but I think gnu c11 is using some compiler
-> extension stuff to just make it adapt it to the correct sizing.
-> 
-> Anyway, this is all probably moot as I believe David suggested these
-> _aren't used as flags_.
-> 
-> In which case I'm fine with it.
-> 
-> I'm just confused as to why we're still debating the flag stuff?
-
-Right, it's irrelevant in this case. I mainly wanted to know for the
-future what MM's preference was for cases that really do need flags. My
-bad for not making that clear. It sounds like the answer is a __bitwise
-typedef with bit numbers in an anonymous enum, which is fine with me.
-
-[snipping the rest as my question has been answered]
-
-Thanks,
-Omar
+So I would appreciate if you could indicate what tree is the best to
+base my changes, as I'm not that familiar with this subsystem.

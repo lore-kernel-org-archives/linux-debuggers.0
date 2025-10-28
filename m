@@ -1,118 +1,101 @@
-Received: from buffalo.ash.relay.mailchannels.net (buffalo.ash.relay.mailchannels.net [23.83.222.24])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D5519D08F
-	for <linux-debuggers@vger.kernel.org>; Mon, 27 Oct 2025 23:54:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.222.24
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761609254; cv=pass; b=eBVyVcn+ZlTVtnIg9h3uWGZm6hUjsrXps+Z2bFqL3yDvUomWu7nVR23v48+BWT3p1mAlxTPVcurzk19aV5RmGerEIV5z9OMXGdwPC0UsCPZ8ylEOccTCVOa5XDGvBhZylmTJDP+afazKGrPUm52m0tbcEZM9uMPm/tCMcQfhbNU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761609254; c=relaxed/simple;
-	bh=yBSXdwn6LuwpP1fTE4zXBh6ljDEPv17eBxWEtpJnXeM=;
-	h=Message-ID:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:Date; b=UNzn1LA9jpNZpQ9ozTqiw9pyKQk3wPJggMN2DVA1130TENtO1vWTqLPxF+7da/8fSLtrHjQLiiVcNGMcQdbGcwQwVB/yZxAkwbyhvZHuCarxPf11Jr3+RB+YIB594Z/oyYZi6pMQI0eYI9b3bgj2867Cse0L2teJ5Q3+qOMOdPA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=israelbatista.dev.br; spf=pass smtp.mailfrom=israelbatista.dev.br; dkim=pass (2048-bit key) header.d=israelbatista.dev.br header.i=@israelbatista.dev.br header.b=V5psUi7S; arc=pass smtp.client-ip=23.83.222.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=israelbatista.dev.br
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=israelbatista.dev.br
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05A7B86337
+	for <linux-debuggers@vger.kernel.org>; Tue, 28 Oct 2025 06:51:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761634289; cv=none; b=D+H6/5ZwOLjf9vt6LoKwXDpaiySL770WjbgQaPvwm6CKJmmmCLBPfVWa1D8UyxhBuRtmi0e+QV73Sgfi1TuQoFsf9SxjFCDfF21Yj1Mt/v/pMquhh8WOIWhWsvSJUSZHsNv9vk2Y9M7SBGB5ktidbV/4ICYpBbgRCZY3NX6UkcY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761634289; c=relaxed/simple;
+	bh=r0MDH7Vu7YrdxvCpmCSj1aPQjI6ZvfhJQ4+9p/NIKuw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sRLAs7euMgAm53X65GZCkLRyK4CUR/y9MkWuVQihMLPzAYQQ6uVB6dRoDaXa45zyuMKLbNitt9Ll4oVXVb13ltDo9/V4eJ0SQi60fS9ax+EfwGOGrxiYVLVW1ueDZ4deDTpuMQEda59aG3fCsVWosgCgxUfYK9sXfxtBrG+gdfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com; spf=none smtp.mailfrom=osandov.com; dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b=gvQQiKmD; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=osandov.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=israelbatista.dev.br header.i=@israelbatista.dev.br header.b="V5psUi7S"
-X-Sender-Id: hostingeremail|x-authuser|contato@israelbatista.dev.br
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id DDAFC901A48;
-	Mon, 27 Oct 2025 23:54:01 +0000 (UTC)
-Received: from de-fra-smtpout2.hostinger.io (100-117-132-18.trex-nlb.outbound.svc.cluster.local [100.117.132.18])
-	(Authenticated sender: hostingeremail)
-	by relay.mailchannels.net (Postfix) with ESMTPA id 5E8569019BB;
-	Mon, 27 Oct 2025 23:54:00 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1761609241; a=rsa-sha256;
-	cv=none;
-	b=rqJYtCvOCDrcpx+2JXR+s21IGNL4tnaczAC4qk8qCqvkeObLIMkYj7oKUA4LliVRD+omto
-	8A2BK/J2/s60dZbHb5LN7QKVpktXLNAOyuXhqV4Ne3+EDrA4mJOlT4/Zu/fyXgXO2kRQu0
-	h0G0B4JvZBfHWP4RQBUAzGtHbJmA1erLm8c6vwBMK6Im/F84BvqXFpT/UlFbf3YXjyjbRG
-	dQyWQvpm6+TEcR9Gk9lgUzx7sptboO/t+6MFcidclxHEZj3OJONi6laVs0UyRCc+S/juaT
-	JzHspExZyKBGGsdto55qRQVqRJQtIM22ik2W0033YtTOhQud+M+BJdifwK9Y7Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1761609241;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2hHmlaz+cO6ss8rEa7DEhaPgSA8+zPxoNmKUdon4sxE=;
-	b=btoGfdvgYQWCXN2mQe+cj94s/JJlvM0x7UJL+tocq6fxyKKZDZMXo0cRkkQZX23vP4pP7E
-	8/6ClyeC6V5riLpuGDip3b9/xvTHrLyYP5+Q12zJklvPDXLgUmvh9a64p77NfSkKHBUGtU
-	Tz5WkP+P39uaVfHapHWUd4sDYamJTjsw0AAgb/uv4ea6H8O24suSxfDsyFpLWNelSkZKN8
-	N5BgAKhhLHzNh5fzM6X1VTk18m01iFOmBifnbrTA9nwUiCxXK9r1uI0mYjcrJhWxz8+g0D
-	AjIUKBLwFE250aSNbssi3HJPOjIh+hDHng4JpextzlnOS4EOFyQcbylk1HMSqg==
-ARC-Authentication-Results: i=1;
-	rspamd-9799b5d46-sl7bq;
-	auth=pass smtp.auth=hostingeremail smtp.mailfrom=linux@israelbatista.dev.br
-X-Sender-Id: hostingeremail|x-authuser|contato@israelbatista.dev.br
-X-MC-Relay: Neutral
-X-MailChannels-SenderId:
- hostingeremail|x-authuser|contato@israelbatista.dev.br
-X-MailChannels-Auth-Id: hostingeremail
-X-Sponge-Tasty: 2a24e5a130323413_1761609241797_968232376
-X-MC-Loop-Signature: 1761609241797:3855391038
-X-MC-Ingress-Time: 1761609241797
-Received: from de-fra-smtpout2.hostinger.io (de-fra-smtpout2.hostinger.io
- [148.222.55.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.117.132.18 (trex/7.1.3);
-	Mon, 27 Oct 2025 23:54:01 +0000
-Received: from [IPV6:2804:d59:8970:3b00:5f26:e2da:68e6:2358] (unknown [IPv6:2804:d59:8970:3b00:5f26:e2da:68e6:2358])
-	(Authenticated sender: contato@israelbatista.dev.br)
-	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4cwVhj1cvnz3wbj;
-	Mon, 27 Oct 2025 23:53:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=israelbatista.dev.br;
-	s=hostingermail-a; t=1761609238;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2hHmlaz+cO6ss8rEa7DEhaPgSA8+zPxoNmKUdon4sxE=;
-	b=V5psUi7SswikmUfPKEutE0yIsvu2VGZ+xjWmYfqp931bUUfCe9N1zlVkRNexCtpndWJfVJ
-	CRpmFL1ocRNbABJjLvpNmCR1tnTPWRSHPSCdXJsaZSrAlXuPReEfy6iLC1RmPg3PWxiF9K
-	HsXwrTvgaK7TwLYPT6NOjgewy7rLx6nebbX1iPie7zK+w7fk3/rPn+LJCRlyCBFBfRnqNn
-	zUP/73qk61pRNud7hT+09B0uRHAqh7CQ2LH1nVRozk1ExLcqSzZjT8XEvQ9iBGvsfce3rU
-	wwLDlZjibqmDzIH1GNkTy6iB6MgDM5CwBm0OB7maXoNkaOVcPbJE86a3hRTIlg==
-Message-ID: <aaff172e-8fdd-4ff3-8161-1c7afb1f3e64@israelbatista.dev.br>
+	dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b="gvQQiKmD"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-33bb66c96a1so1647486a91.1
+        for <linux-debuggers@vger.kernel.org>; Mon, 27 Oct 2025 23:51:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1761634287; x=1762239087; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=psj4jXCemJsZZUfGmvOoOf/gazxcdY/IyYfCWFGurIk=;
+        b=gvQQiKmDZAE0lQ72dbcc7pGpsXbLhHv0sB2INZGgXe6tYAguqCD8o8JsdcDSPhTHvh
+         bbGe03wZoUk/zFqU4OHGOv0BD6C7WDMmzrMeHl3a96qvg8XXxWa4maeGd4qmrD89qod3
+         vlyK1Z5a8k26M9cAfDk3Q7C47IwPW1hVM+X1CqgzFBCG3XoBI7fxeyD5n+GQghPUTvdl
+         XP968rcgZNDnA83xg3iRXV+ROVyCnujcjpmkbQauhurwAQtJFiCZDShWXUEHSRXjSCPi
+         VKjAZK8sk4E1G9FpVwgXjsWt9m36B4jtZIujMiKnz8SOn7RCM8EYJ3papEbdmx7tydvg
+         XxvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761634287; x=1762239087;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=psj4jXCemJsZZUfGmvOoOf/gazxcdY/IyYfCWFGurIk=;
+        b=KirK5tc0kUBvX5Zvx/2dKR/c3GV37U/uTjxmqgLjNkuw2guQ73zIe77VrqKdaUweOC
+         GIwlIGBO0AVTrZ0oR0lPO1+HiEIh526t0rWF6XAlmgg+yAOGbhCriC5yIm9GCyaKDN6a
+         MqSlVyFAQl68W84uB5rtqFhko3pLXHV/YM33otGvehMbEW7Ujc6yIkNQYxrmQOFYExdM
+         lDGxRNGxCV0gMzxFznat1U1eIwpD4kXR3T3k3vt9O7Px5pbrh3wdv4SKVzOBnA7aZY7t
+         a4LUeE27aeYamE5tJa7sXvtK6Qp5jb6wJG/WKaORjJegoiLDwMRoIejk9hUsLpfJIQGY
+         Vx/A==
+X-Forwarded-Encrypted: i=1; AJvYcCWq7GWxBLQtGlKP9p7ArKl8RZFVGqgcF3HG1z7/77v2CxkL9J33/BUm0sd2cXz5IMCWiXBhbi1BqBxcMPBYmrI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx79oDhHP+tuQVQwoZB9zNavtVYoj37yzZ3ao6Ujq46QNBQPsNo
+	bNfligJe6H9Mu/dsloR7Xq3BU0KN84KCzh6Jukw5ckPFRzzRaVEKYJFdHW6nQHiyYVM=
+X-Gm-Gg: ASbGncu5Ou5q+1Jrqxgp206PcriT6ZfKjfGnPaJOv5pKUpEQWrnsdHf3qWDcl6NBQ3y
+	D3scBHyWb+YdosKijQBrEEhG4TKQtNtdBdBDPHu2nQue1zroQFzTUbBpOjGNT1mp598Dx99laHy
+	vOe5fptiyqgQoRgDm6+z/A680PQtFJJwv/KwSnBvJpsl1LIBhs6TiPDtaqp5P867bFYl5lxkQom
+	sCVwsJnki0HhsJNB+N0Oz+pGC2Yh5ZpA0z96wWPRE/0eFzxvq3A/Kc/pwr+puFqu0NXWEnALcEP
+	/jtFXh34Ipo5rYYGLF2+nEAUaM8DlEzYLmgR12RalzP7JqO2MNDDtgK+hLKETTmJcb7m2hHCfbH
+	F3uw6FcAIYNs0mUV3aeir8uqgrR6mHtA3TrEAyxvo4+MV3VtdVPozqDGuNg==
+X-Google-Smtp-Source: AGHT+IFexfDJiwsqeon/6lRgY/61fR03YmnIDMpYALp3seN/ceKZ1SeYGsExlHLpW7rSPgb1Om7wdg==
+X-Received: by 2002:a17:90b:3912:b0:33b:cb9c:6f7b with SMTP id 98e67ed59e1d1-34027607154mr1674832a91.0.1761634287183;
+        Mon, 27 Oct 2025 23:51:27 -0700 (PDT)
+Received: from telecaster ([2620:10d:c090:400::5:1183])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a414049a44sm10331539b3a.35.2025.10.27.23.51.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Oct 2025 23:51:26 -0700 (PDT)
+Date: Mon, 27 Oct 2025 23:51:25 -0700
+From: Omar Sandoval <osandov@osandov.com>
+To: Israel Batista <linux@israelbatista.dev.br>
+Cc: akpm@linux-foundation.org, david@redhat.com, linux-mm@kvack.org,
+	linux-debuggers@vger.kernel.org
+Subject: Re: [PATCH] mm: Convert memory block states (MEM_*) macros to enum
+Message-ID: <aQBn7Xsx2qi6YDWp@telecaster>
+References: <20251026162156.12141-1-linux@israelbatista.dev.br>
+ <aP-3dauwpc-Kq5Kh@telecaster>
+ <391c924d-b6f4-429f-8190-b33e3b6a3942@israelbatista.dev.br>
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: Convert memory block states (MEM_*) macros to enum
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Omar Sandoval <osandov@osandov.com>
-Cc: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org,
- linux-mm@kvack.org, linux-debuggers@vger.kernel.org
-References: <20251026162156.12141-1-linux@israelbatista.dev.br>
- <811fd675-b231-45e4-b9d5-636fe63bde6b@redhat.com>
- <aP-2x314BKks2_N9@telecaster>
- <3d3bfa52-3e13-4d23-8ef7-6cb8b1ab7d79@lucifer.local>
-Content-Language: en-US
-From: Israel Batista <linux@israelbatista.dev.br>
-In-Reply-To: <3d3bfa52-3e13-4d23-8ef7-6cb8b1ab7d79@lucifer.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Date: Mon, 27 Oct 2025 23:53:57 +0000 (UTC)
-X-CM-Analysis: v=2.4 cv=Ceda56rl c=1 sm=1 tr=0 ts=69000616 a=WIeu/gG1zxr2CnNbFFeIHA==:617 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=a51BL_R8RzZOHhO6insA:9 a=QEXdDO2ut3YA:10
-X-CM-Envelope: MS4xfGXM2iX6cMtMD4gYf0VOTxgQxMkzqQMmPBhXrc8K4Diye1+jZk1x7wGKANwGY+9urEwZMQM3ns/EtmRuuUYlLZdM3cwal165PTsGCkd633bO2GCHibYT zWrR/CL8l6CQzAPCVwfzuLVTrSCa2kuulzAi1SqHlCdjj2DaDNJ0qUAbMGB37y85D04QJeicJbIvS/81lNnmV4/IPhjUrXOSZWDPRizTuJJsZtVoKWCdFgtC F+k9uiWKETeqmUD7RetGmzQhIOGcNGMTeGJJaQaZz99x5KBDzdau2dj1EUzTa1e6fa4g7ddozP8FR1jsFonn253b38BqtZL8at/mu0fMUlJ7Iyc3VYFMm0Aj C2NKdxnsn/XnJ36rlX+vPH0z1t/mbUyExx4x4V+mgvPsgVnGJsyDgE9j6PBqT+yw5OTCuazugVWkPmEGrsKOBhazwG/fesvPBktjnb+o4Xfvl489QT7krt+C UbHuITY5+AzOiZyK
-X-AuthUser: contato@israelbatista.dev.br
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <391c924d-b6f4-429f-8190-b33e3b6a3942@israelbatista.dev.br>
 
-
-
-On 10/27/25 16:46, Lorenzo Stoakes wrote:
-
+On Mon, Oct 27, 2025 at 11:41:47PM +0000, Israel Batista wrote:
 > 
-> So why are we naming the type... does drgn require it?
 > 
+> On 10/27/25 15:18, Omar Sandoval wrote:
+> > 
+> > What kernel version is this patch based on? It doesn't apply on mainline
+> > because it is missing a couple of definitions added in 6.9 by commit
+> > c5f1e2d18909 ("mm/memory_hotplug: introduce
+> > MEM_PREPARE_ONLINE/MEM_FINISH_OFFLINE notifiers").
+> > 
+> 
+> Sorry, my bad. I mixed-up my local branches and created the patch from
+> linux-next rather than Linus's tree. I will create a new patch with the
+> proper changes.
 
-It doesn't need to be named, but as David pointed out, we could find
-where these values are being used and replace the type with the proper
-enum. I quickly grepped the codebase and it seems doable, I'm probably
-adding these changes to the next version of this patch since there are
-some things to fix anyway.
+Oh, linux-next is usually fine, too (different subsystems have different
+preferences, and I don't know mm's preference). Regardless of what tree
+you base it on, it's nice if you mention the base in the patch email
+under the ---.
+
+Thanks,
+Omar

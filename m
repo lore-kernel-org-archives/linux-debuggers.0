@@ -1,101 +1,162 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05A7B86337
-	for <linux-debuggers@vger.kernel.org>; Tue, 28 Oct 2025 06:51:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96A322173D
+	for <linux-debuggers@vger.kernel.org>; Tue, 28 Oct 2025 16:06:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761634289; cv=none; b=D+H6/5ZwOLjf9vt6LoKwXDpaiySL770WjbgQaPvwm6CKJmmmCLBPfVWa1D8UyxhBuRtmi0e+QV73Sgfi1TuQoFsf9SxjFCDfF21Yj1Mt/v/pMquhh8WOIWhWsvSJUSZHsNv9vk2Y9M7SBGB5ktidbV/4ICYpBbgRCZY3NX6UkcY=
+	t=1761667584; cv=none; b=WxJIQ/ROGUEmtbz9/izXbWlxDKhMClpfEjTDPhW8t8DRMgwpVAKpW8KagksInwjx5M9q2HkInHH83ywTFnFDHivL2G+gmUylH4d6rNphaB76UYDd7ppeibSWshLb/Pn/LSrTAoqc7cSh/mSTea76yQVqwqdxB4PWKM0AGcZ7Z88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761634289; c=relaxed/simple;
-	bh=r0MDH7Vu7YrdxvCpmCSj1aPQjI6ZvfhJQ4+9p/NIKuw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sRLAs7euMgAm53X65GZCkLRyK4CUR/y9MkWuVQihMLPzAYQQ6uVB6dRoDaXa45zyuMKLbNitt9Ll4oVXVb13ltDo9/V4eJ0SQi60fS9ax+EfwGOGrxiYVLVW1ueDZ4deDTpuMQEda59aG3fCsVWosgCgxUfYK9sXfxtBrG+gdfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com; spf=none smtp.mailfrom=osandov.com; dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b=gvQQiKmD; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=osandov.com
+	s=arc-20240116; t=1761667584; c=relaxed/simple;
+	bh=bmnmA73xpnPPZqC7UO0wa3cwBwtkXnIxlAxnUFLE84g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=M6f8CQ25cXrDqB8k+Q5fvOJTNVpTZUWhoXyohZIKRqv9xxSxAX2OEQ/AokKljeJWs58Nji2w7FVFY4/p5FkuLp5fC0OTVMjqpCmQN2rnjGpcU42G7TDrF2/BPlnfowlXuRDZ7Ow2h8r3V14CeynxP/aSFrCI7uRIlkn3xllW5dY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UTiZibmk; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b="gvQQiKmD"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-33bb66c96a1so1647486a91.1
-        for <linux-debuggers@vger.kernel.org>; Mon, 27 Oct 2025 23:51:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1761634287; x=1762239087; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=psj4jXCemJsZZUfGmvOoOf/gazxcdY/IyYfCWFGurIk=;
-        b=gvQQiKmDZAE0lQ72dbcc7pGpsXbLhHv0sB2INZGgXe6tYAguqCD8o8JsdcDSPhTHvh
-         bbGe03wZoUk/zFqU4OHGOv0BD6C7WDMmzrMeHl3a96qvg8XXxWa4maeGd4qmrD89qod3
-         vlyK1Z5a8k26M9cAfDk3Q7C47IwPW1hVM+X1CqgzFBCG3XoBI7fxeyD5n+GQghPUTvdl
-         XP968rcgZNDnA83xg3iRXV+ROVyCnujcjpmkbQauhurwAQtJFiCZDShWXUEHSRXjSCPi
-         VKjAZK8sk4E1G9FpVwgXjsWt9m36B4jtZIujMiKnz8SOn7RCM8EYJ3papEbdmx7tydvg
-         XxvQ==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UTiZibmk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761667581;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=7fEiTV8vRb6ThfDpOr4lY+uCNfpmz0C8bm6VrusAPB8=;
+	b=UTiZibmkm5RzAZ3gVfizXfzOh8awh32fTKvA0pK0ABGWCOcnszZ/EMwUHuMKeRaLB/UC2E
+	t1rYlzVFfbMLoZrUxOqbTV2vmMgc16StNad1HRXaTgfZEqLC6xpaUfr75KND5NFOmSXODt
+	VRQuIdJMMbtMjDWNeRBDY2Y7fqfbiqE=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-614-WikFz_s0PkiVhLdElQGs2A-1; Tue, 28 Oct 2025 12:06:20 -0400
+X-MC-Unique: WikFz_s0PkiVhLdElQGs2A-1
+X-Mimecast-MFC-AGG-ID: WikFz_s0PkiVhLdElQGs2A_1761667579
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-47106a388cfso36338535e9.0
+        for <linux-debuggers@vger.kernel.org>; Tue, 28 Oct 2025 09:06:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761634287; x=1762239087;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=psj4jXCemJsZZUfGmvOoOf/gazxcdY/IyYfCWFGurIk=;
-        b=KirK5tc0kUBvX5Zvx/2dKR/c3GV37U/uTjxmqgLjNkuw2guQ73zIe77VrqKdaUweOC
-         GIwlIGBO0AVTrZ0oR0lPO1+HiEIh526t0rWF6XAlmgg+yAOGbhCriC5yIm9GCyaKDN6a
-         MqSlVyFAQl68W84uB5rtqFhko3pLXHV/YM33otGvehMbEW7Ujc6yIkNQYxrmQOFYExdM
-         lDGxRNGxCV0gMzxFznat1U1eIwpD4kXR3T3k3vt9O7Px5pbrh3wdv4SKVzOBnA7aZY7t
-         a4LUeE27aeYamE5tJa7sXvtK6Qp5jb6wJG/WKaORjJegoiLDwMRoIejk9hUsLpfJIQGY
-         Vx/A==
-X-Forwarded-Encrypted: i=1; AJvYcCWq7GWxBLQtGlKP9p7ArKl8RZFVGqgcF3HG1z7/77v2CxkL9J33/BUm0sd2cXz5IMCWiXBhbi1BqBxcMPBYmrI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx79oDhHP+tuQVQwoZB9zNavtVYoj37yzZ3ao6Ujq46QNBQPsNo
-	bNfligJe6H9Mu/dsloR7Xq3BU0KN84KCzh6Jukw5ckPFRzzRaVEKYJFdHW6nQHiyYVM=
-X-Gm-Gg: ASbGncu5Ou5q+1Jrqxgp206PcriT6ZfKjfGnPaJOv5pKUpEQWrnsdHf3qWDcl6NBQ3y
-	D3scBHyWb+YdosKijQBrEEhG4TKQtNtdBdBDPHu2nQue1zroQFzTUbBpOjGNT1mp598Dx99laHy
-	vOe5fptiyqgQoRgDm6+z/A680PQtFJJwv/KwSnBvJpsl1LIBhs6TiPDtaqp5P867bFYl5lxkQom
-	sCVwsJnki0HhsJNB+N0Oz+pGC2Yh5ZpA0z96wWPRE/0eFzxvq3A/Kc/pwr+puFqu0NXWEnALcEP
-	/jtFXh34Ipo5rYYGLF2+nEAUaM8DlEzYLmgR12RalzP7JqO2MNDDtgK+hLKETTmJcb7m2hHCfbH
-	F3uw6FcAIYNs0mUV3aeir8uqgrR6mHtA3TrEAyxvo4+MV3VtdVPozqDGuNg==
-X-Google-Smtp-Source: AGHT+IFexfDJiwsqeon/6lRgY/61fR03YmnIDMpYALp3seN/ceKZ1SeYGsExlHLpW7rSPgb1Om7wdg==
-X-Received: by 2002:a17:90b:3912:b0:33b:cb9c:6f7b with SMTP id 98e67ed59e1d1-34027607154mr1674832a91.0.1761634287183;
-        Mon, 27 Oct 2025 23:51:27 -0700 (PDT)
-Received: from telecaster ([2620:10d:c090:400::5:1183])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a414049a44sm10331539b3a.35.2025.10.27.23.51.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Oct 2025 23:51:26 -0700 (PDT)
-Date: Mon, 27 Oct 2025 23:51:25 -0700
-From: Omar Sandoval <osandov@osandov.com>
-To: Israel Batista <linux@israelbatista.dev.br>
-Cc: akpm@linux-foundation.org, david@redhat.com, linux-mm@kvack.org,
-	linux-debuggers@vger.kernel.org
-Subject: Re: [PATCH] mm: Convert memory block states (MEM_*) macros to enum
-Message-ID: <aQBn7Xsx2qi6YDWp@telecaster>
-References: <20251026162156.12141-1-linux@israelbatista.dev.br>
- <aP-3dauwpc-Kq5Kh@telecaster>
- <391c924d-b6f4-429f-8190-b33e3b6a3942@israelbatista.dev.br>
+        d=1e100.net; s=20230601; t=1761667579; x=1762272379;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7fEiTV8vRb6ThfDpOr4lY+uCNfpmz0C8bm6VrusAPB8=;
+        b=Hu/woRpwvOPHiEXDXQ0YPQtRkNLXmXnHfbax4hud00mG6QaS9ojxgT2880hHBPtPJF
+         MmAmn8dkA1XWuwCEC9mPQST3V0+l9Lqfol7Iq5EzuTkACVJ0wmPfXYZYR1HgcWKXJBRP
+         eNJqZoJZ8JoW4dUbh6z7le+uHdv1u2Lsa09VYlrGzpcCCmS/FahPniwUMm/F/JFHTqk4
+         rfoZuDcKIMTL2Y+dg4AeSK0QKyXjrnBxLuk1v6I8XKjajnHKdxkXudCzEVUGv7yYgFu3
+         QhOaa+yRO71Dft+4nlt+frWu2jk2wAL/vtPVowkr8mCKqUfy7D+vcVEQDj/Xv9kCjk1S
+         4wsw==
+X-Forwarded-Encrypted: i=1; AJvYcCUgnLqeAWCSBEluBrZnvdZuW1VBYXgly6VObDynT9kKeDdGx+QdeE4FigZWjogRzjPLFNmibosoLISOh0YDwwg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywik4UIJHxeys6Krg0Z+favlUh7gumKmb58s9sxBdJcfM7cJO2c
+	hYVIJJz0R/ok5JkbflfoN6ADU+8tPB59U6R4w7VCry9En65egokHVxh4burlE2pHjQrj/9Fdd0q
+	1CEnHgxrnx/RvKkRoK0tipaJt4VrmAZTZDlsRlXKvmrI3bKgwaoidsSZQaym9k1mfFrBjUg==
+X-Gm-Gg: ASbGncujMSRmVaOwVy1LK6MZa+ViCUOFDmKYNgryyS/sgjdzQyygVv+WF/PcCcNYwMJ
+	UuxKnpyhpQPJT7Hpl/fMBeX5t9PKraIxBUQAL0B6YOmras+iqJY805bcaIBNTcUoBFGNKscvq05
+	jWwCfUBICgKbOdiTfviUpNYe0Tu8BZorOfX3VeXbfZft3jX6PfpFFyk+OdbKMDef/JteJJ8vZnR
+	cO+fjd6sIZncL7uBHT3P6j7F2zLI/elPjXxTABvuneUScPb7a9KVs7aJ5iq9NVamdNV8S3she8A
+	66ogBjNDD6cJEnbk0Mu1V8PwEb1k7jfJ+rxjbryCMYmGKVKHhg6NYZ9KXwYeapFzlDoiZEjR5go
+	iJrl9IfP/sRMcihPWDdMz/DJSMmHQPVGh
+X-Received: by 2002:a05:600c:3510:b0:46f:b42e:e394 with SMTP id 5b1f17b1804b1-47717e7a904mr28298545e9.41.1761667579328;
+        Tue, 28 Oct 2025 09:06:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFXT5BB0dlLpX7heAZB79STVaY/doPErnydPItM+XhQvOUsNw5gcKnIBB8PLR6EDjE/Vkd2kw==
+X-Received: by 2002:a05:600c:3510:b0:46f:b42e:e394 with SMTP id 5b1f17b1804b1-47717e7a904mr28298285e9.41.1761667578841;
+        Tue, 28 Oct 2025 09:06:18 -0700 (PDT)
+Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475dd4a36easm204397805e9.10.2025.10.28.09.06.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Oct 2025 09:06:18 -0700 (PDT)
+Message-ID: <b40b7eb6-4e15-475b-9a74-c3ca1560fd38@redhat.com>
+Date: Tue, 28 Oct 2025 17:06:17 +0100
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <391c924d-b6f4-429f-8190-b33e3b6a3942@israelbatista.dev.br>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: Convert memory block states (MEM_*) macros to enum
+To: Omar Sandoval <osandov@osandov.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Israel Batista <linux@israelbatista.dev.br>, akpm@linux-foundation.org,
+ linux-mm@kvack.org, linux-debuggers@vger.kernel.org
+References: <20251026162156.12141-1-linux@israelbatista.dev.br>
+ <811fd675-b231-45e4-b9d5-636fe63bde6b@redhat.com>
+ <aP-2x314BKks2_N9@telecaster>
+ <3d3bfa52-3e13-4d23-8ef7-6cb8b1ab7d79@lucifer.local>
+ <aQABhaMC8xfO2Vem@telecaster>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aQABhaMC8xfO2Vem@telecaster>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: V0KpB7yy0nZ0ygJ526Y5QZmL1Q2u8sDz26A2eJD-de0_1761667579
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Oct 27, 2025 at 11:41:47PM +0000, Israel Batista wrote:
+> I read
+> https://lore.kernel.org/all/809f552d-3282-4746-ba49-066d2bd8d44f@lucifer.local/
+> ("it's not valid to have flag values as an enum") as a claim that this
+> was invalid at the language level, but it sounds like your objection is
+> more of a personal style preference. Which is totally fine, the MM
+> subsystem can have whatever rules it wants.
 > 
-> 
-> On 10/27/25 15:18, Omar Sandoval wrote:
-> > 
-> > What kernel version is this patch based on? It doesn't apply on mainline
-> > because it is missing a couple of definitions added in 6.9 by commit
-> > c5f1e2d18909 ("mm/memory_hotplug: introduce
-> > MEM_PREPARE_ONLINE/MEM_FINISH_OFFLINE notifiers").
-> > 
-> 
-> Sorry, my bad. I mixed-up my local branches and created the patch from
-> linux-next rather than Linus's tree. I will create a new patch with the
-> proper changes.
+> To play devil's advocate, using a named enum for flags makes it easy to
+> document what flags are used for a given field
 
-Oh, linux-next is usually fine, too (different subsystems have different
-preferences, and I don't know mm's preference). Regardless of what tree
-you base it on, it's nice if you mention the base in the patch email
-under the ---.
+A current best practice for flags is to use a __bitwise typedef. That 
+way, sparse will be able to make sure that people are not using other 
+random values.
 
-Thanks,
-Omar
+We don't make use of that everywhere yet, of course. FOLL_ flags are 
+still wrapped in an enum, for example.
+
+-- 
+Cheers
+
+David / dhildenb
+

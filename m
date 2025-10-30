@@ -1,252 +1,144 @@
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from tiger.tulip.relay.mailchannels.net (tiger.tulip.relay.mailchannels.net [23.83.218.248])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795DA29C33F
-	for <linux-debuggers@vger.kernel.org>; Thu, 30 Oct 2025 11:00:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 610334C6C
+	for <linux-debuggers@vger.kernel.org>; Thu, 30 Oct 2025 11:16:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.218.248
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761822035; cv=fail; b=LSQw03VXDRvcgwM/LXDJV7NElXA8zHn2EHFlYXgoX5gunVplAKXhL4j1gzkkqhEAUAvjoaUkx/n/MAAKEejrZhnKhbF3LlLc0L56zgVJ1yCqhVIsFPdwa0DxjUctMl1RiYZphZ5Fl18IqfhtxY71FlCAhNdBDuWKji8YWuP9Nlc=
+	t=1761822973; cv=pass; b=LbYgRbFGqGA0aFXZL/IldjpQc2AgpDUghN5LTBqu++BVfPLOpsrG6TqzBTD1Z0NDB+VnEx/XKb2Ov8SythY3kHmcjn5uv7a3G6HDHQzbx2JiXtFUBLXh0cpPGzLK0GPfIlb9woAUBT8hp94ecKpTN1logyqP38EkRdJIv4vOhKI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761822035; c=relaxed/simple;
-	bh=SZPWAtunzuWD9D/yZAThvhoKrbXq1Yj2e+vfshKf4JY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=AwhptkrgKnoY7YYOcmSkQ3yQEVIGBw/1S8SVcZ9mjL7wkhqIfexqREUlUTyk6oM1eOYyDBNmg+LohKI3YT+hwLaVRr4P/wI05aywg++EaNEnssKvHgCr+4S+5sv+IaZxHuGqH3Jz6feZ4sKF4Sx+AmuqEfxvTipPm+uL01LfJKs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=Hy0PyhLN; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=dfUBrgRG; arc=fail smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	s=arc-20240116; t=1761822973; c=relaxed/simple;
+	bh=E6wmylzDmjzLWGHj/nYJxoyasSiZ3dhRw+cDPSzqTRk=;
+	h=Message-ID:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:Date; b=OEEX29Lm5p3t7Ge6HATo/dlGvb9fplJjblNVZ1+YtaDa7ctGb20Amuo+GFwxkKzweKzfCW8VMm9Woxxq7RK1wFbamWfTyu4yRw6TXMszC7V7Ods+GOTCzAljTRcjn7DiExeVpB/W6PYExanshANA+F+D2YRTr4Xxv3oKy6zJRRI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=israelbatista.dev.br; spf=pass smtp.mailfrom=israelbatista.dev.br; dkim=pass (2048-bit key) header.d=israelbatista.dev.br header.i=@israelbatista.dev.br header.b=CAcB0saY; arc=pass smtp.client-ip=23.83.218.248
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=israelbatista.dev.br
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=israelbatista.dev.br
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="Hy0PyhLN";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="dfUBrgRG"
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59U9ukTY012799;
-	Thu, 30 Oct 2025 11:00:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=kCdNDUWvRAHU5wKUrH
-	0nyJJXkpLMAQ98DVjqYliI/Ww=; b=Hy0PyhLN6wJm3+jpQRTZCSYi1G/4ZLzoas
-	ZBZdKDgCVe6YT98u+EiOQFrp8DbF5jx2dBR8dICIu3CqB1VkgFhT5QoDjjHV7d0i
-	54OP+E97Beje06p9IIiUV/EoabNnUJ2HfGY10mffxJIsVduW/GdujHRbE7EEa1cz
-	YN+qmea7xJY7o/wmrwD1l9LlovmeLrnkWL3Cv7phShvkXFtc6T1OWlOO8Rc/6j8b
-	V1sjI64wQAzekTG66yBvsg2aFsbJzKnDWQ8jyzMHpwU72MvpueIK+Yp10M0SFg/W
-	jnfVw/Wd1pEqkJQ2iSA9PchzICVo5iwt0HjR/GF+ppkozmsFV50g==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4a430x8dx7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 30 Oct 2025 11:00:17 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 59U8oF9B011288;
-	Thu, 30 Oct 2025 11:00:16 GMT
-Received: from mw6pr02cu001.outbound.protection.outlook.com (mail-westus2azon11012027.outbound.protection.outlook.com [52.101.48.27])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4a33vyfqc0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 30 Oct 2025 11:00:16 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hT8cXB/GrenoSDo3i188n4d3BiLeZsRyAmGSD2JnP4k31WJ/pyRGcm/csoDl2X1r4ZOfIel4QPBDGLXzGhHk+ZOEP2oPYdGOn5DFfYTqyvhx2fVck6rD2J4KZ64LfbJmaC3uMWLC9M+ZMBJtvjuQx2EDrS0TvcmsigmhAFNn+wa7soZfMnTeJzVOZ/BLYU6gzSnNTc/MjupO1hiYvC/rjon4DaMFb5h28hdZFF6V0i1gobMd8bjiHgJ4VnBmXdz6izPdD6Vix1lVI31s9WGjmwmFBd6M4k8htsdq1kA5ptBrGDcs42ltcCCdQNq44xCGXb1KE07kSPhZsYcJn1gpoQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kCdNDUWvRAHU5wKUrH0nyJJXkpLMAQ98DVjqYliI/Ww=;
- b=AIvQqxNCN9e3YbO7ccFlcwdxmbfX0okdnDbEUAkrt3ol3fBo5er6MPxaIsmRq4WU6dNroFSW3eYLQaNs9DC54kCmQ1kJUn4DMVXZePCiI0RU1ltG2f+oBrINzKu/jTQWCN8aegHbn6IGi38GRXqhtZ0Xs3/6cPZLtBR79a5+kA8IdNRtOau4QS6vqzZk6BX3NImF/Zg5KwOW3WobPSa8Lqe94eZ6Dzl6LboaMPvDbtlpD7M+mW1SOmSsIQxXiA10ELFYfjvFcHtcXXP3jedab563ize9KCNnIy9w6yWtQamKgZpbHvet7a+drXVbM2kN5W55oBIpRYiaCwKkFnKumw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kCdNDUWvRAHU5wKUrH0nyJJXkpLMAQ98DVjqYliI/Ww=;
- b=dfUBrgRG/AY5OCfjjfx4cqXhLzinLq4YphHS4xnyRCsiKfC/EaTRB3V/nR8OpSvqpIVS+ztH8hNENQB32TxmRLCds+AcyCWkC0P2xXtFr5nY7yw4FmwbrD3TfB7tPmnrkgVAFj6CXClAlTYJAh7hShl0i8B6Tgo/5N83S274+wc=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by DM4PR10MB7508.namprd10.prod.outlook.com (2603:10b6:8:17d::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.12; Thu, 30 Oct
- 2025 11:00:14 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%2]) with mapi id 15.20.9253.018; Thu, 30 Oct 2025
- 11:00:13 +0000
-Date: Thu, 30 Oct 2025 11:00:11 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Israel Batista <linux@israelbatista.dev.br>
-Cc: david@redhat.com, akpm@linux-foundation.org, linux-mm@kvack.org,
-        osandov@osandov.com, linux-debuggers@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] mm: change type of state in struct memory_block
-Message-ID: <320170b8-fc25-4253-9a97-e185cb985486@lucifer.local>
-References: <20251029195617.2210700-1-linux@israelbatista.dev.br>
- <20251029195617.2210700-3-linux@israelbatista.dev.br>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251029195617.2210700-3-linux@israelbatista.dev.br>
-X-ClientProxiedBy: LO2P265CA0164.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:9::32) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+	dkim=pass (2048-bit key) header.d=israelbatista.dev.br header.i=@israelbatista.dev.br header.b="CAcB0saY"
+X-Sender-Id: hostingeremail|x-authuser|contato@israelbatista.dev.br
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id 3C5A57E3BC7;
+	Thu, 30 Oct 2025 11:16:07 +0000 (UTC)
+Received: from fr-int-smtpout17.hostinger.io (100-121-225-152.trex-nlb.outbound.svc.cluster.local [100.121.225.152])
+	(Authenticated sender: hostingeremail)
+	by relay.mailchannels.net (Postfix) with ESMTPA id 2B02F7E2A99;
+	Thu, 30 Oct 2025 11:16:05 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1761822966; a=rsa-sha256;
+	cv=none;
+	b=BErV2McJc1hkGSdKLyrYzjg+21W0sgLZYoadhHA7h3e2Ok4BoKYyE6PpFt3LdHWQ68H2Hy
+	VhG9CcS4qtgt9+RqMv0VijOjlL6waVX4irBKVGWLtIN1p0VPpslO4Gr1gSVMN/1IjrsqzA
+	UoJz3ot8X747BCvSYUzZW/fPLyTQumiUJSgpMf7tOX5g7qb6bzmZkUy2LicJe8Q9+qowX/
+	ccikcBSgK2BfC82zsfVCwu/mi1u74N8XoUFrB2c0A51/AK5IBjphRLApTO3E66uZv7u9iA
+	bmGgaL8bk73GdnB+oM5t6SS5OSfFQzPoTr83Z/BUsi+c4phEUpFYGTMbGi4STw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1761822966;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=VDHL4ewZk9zrCDH9K3OikY1VZw90grf8AVfLkeh2kCY=;
+	b=g6iAedbE3Dh4huHhq7VoWR7Z/jLKM5YXS08EXE/0H8EiLsWav2WwMvpy/jv8z2Y8ajNv/b
+	JXHYhtUBLHZyBhrsW28lbcxkfRL+FBBOioj0FwaJDqfIbxFgnTb1SbX5y/jiPaFc87fq1Y
+	x4mUc30UTs1hzuncyHy/IacUblDHvrDdLvCY0782vSWn+SCfcDId8PRpxogg0H+llAPg83
+	ePEx/2ei/1zGF3gI13JoBWEeA8PNDAULzEz4shtcwKaO5Sb2qtiyGcA1smc9+c0HZ2m66Z
+	cTZwSIexIFPBKZ8MFfqpaNgOI8xq77Y76/OtaBzZZppcQGy1np1f0nq4BwmZqQ==
+ARC-Authentication-Results: i=1;
+	rspamd-768b565cdb-vxqzd;
+	auth=pass smtp.auth=hostingeremail smtp.mailfrom=linux@israelbatista.dev.br
+X-Sender-Id: hostingeremail|x-authuser|contato@israelbatista.dev.br
+X-MC-Relay: Neutral
+X-MailChannels-SenderId:
+ hostingeremail|x-authuser|contato@israelbatista.dev.br
+X-MailChannels-Auth-Id: hostingeremail
+X-Left-Imminent: 2c2af0c46274d279_1761822966546_743931888
+X-MC-Loop-Signature: 1761822966546:1214081577
+X-MC-Ingress-Time: 1761822966546
+Received: from fr-int-smtpout17.hostinger.io (fr-int-smtpout17.hostinger.io
+ [148.222.54.37])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.121.225.152 (trex/7.1.3);
+	Thu, 30 Oct 2025 11:16:06 +0000
+Received: from [IPV6:2804:d59:8970:3b00:5f26:e2da:68e6:2358] (unknown [IPv6:2804:d59:8970:3b00:5f26:e2da:68e6:2358])
+	(Authenticated sender: contato@israelbatista.dev.br)
+	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4cy1km6VZ8z1xnd;
+	Thu, 30 Oct 2025 11:16:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=israelbatista.dev.br;
+	s=hostingermail-a; t=1761822963;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VDHL4ewZk9zrCDH9K3OikY1VZw90grf8AVfLkeh2kCY=;
+	b=CAcB0saYZ0TRqppdT2MLgdkZBHkEpLRpKnNi41nKaGVw4Zc4V+4yj/q6JJ8ukHyc/sZ10z
+	HMCGUhwZi8f/AkVhit6pSROeTQM3afJSQB8mjmXUG5SLlSxCGaVJk2pcBCEVwETLmWgR+r
+	sN1tICwSs8tZnHhT9HPDTxjAVKFnG8/8pKn3kKWMGlEII1QiLsQrCEm8XxT/S0wgfd2Mmk
+	VwekRg2TckNcgGK9dhcRoBIFcR0bF128vuR6EadKu97koXiV+JocpObKj1dFbJHCe84TTO
+	3iqdTognOCt+Nrl1SmTPEjGS8V9U1/3HDXrUYdwbs0q5wJHg57hnhTGR83bXoA==
+Message-ID: <f7dd549e-7dd3-4fdf-89f7-ef6993376809@israelbatista.dev.br>
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|DM4PR10MB7508:EE_
-X-MS-Office365-Filtering-Correlation-Id: c2c03741-5a33-494d-dc1b-08de17a38052
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?HBq4ryQpTD0+DCQTfTns6pt8nYwbsWJbyKBxTWb0iO6HKwtzODD3JT4VidP2?=
- =?us-ascii?Q?Ke0o7LMmHD/LEulAOcFMSZBNGYpcnGGxW0zYlDZ9ych/a9GY9GamK1zZPDBv?=
- =?us-ascii?Q?yAJ8OcUUfuKjTRU73X+TEFrTajRHaa3DMgZ9WHU37+cOt2Y03FhFhG2uQQ4f?=
- =?us-ascii?Q?wQOQKKiNcWnj7Eu3pw8usI9goa49DeOUNzCAvOpbotAwExtluFXd3eYWniSo?=
- =?us-ascii?Q?0symXqdU2Mx/qk7NHNYzhkeIkhIq2AJEMkr+AFR8AWw10dX0rTRqykpIW4+d?=
- =?us-ascii?Q?SdH0+RKvp/JFrH2k4uMt3GwpoZsdbiXez2ZcpkYA3hOcJ/hszN+BG9uOJDYH?=
- =?us-ascii?Q?BNC3DR+jDArp8WDNMAeLwWMEyKovq7riYKhhFtZq2qExQCeR0D/QFf723l7/?=
- =?us-ascii?Q?K3r2a2yFWfBR9Xqd9WaHm4pGYH4Bxaj950DelJ6h9HI73uqw9Y9blvtXUF/h?=
- =?us-ascii?Q?nRd7OnLwRTYRMiS9ResXXa9EqMf/wpVlAnOW1UIBGpRDzHQSkcvnrrhRGQf4?=
- =?us-ascii?Q?OkD0YeJokvMU/+SnZNXlfgxHHV3aU/YePWtuU0AIy1cEfxUZZmvsVkXdz7Td?=
- =?us-ascii?Q?LFFLAvXFtKe2/7Fr+ylMeE79sB0BQEK8Oy/nKlFRiKdXFzxiB48nfbDS4D55?=
- =?us-ascii?Q?dpB1PTjPb3dqpAyiISqJSRcPlf4V9MllUB1AY7pz2DhStlwkiTAyxtks9bwZ?=
- =?us-ascii?Q?wdgCImr6XUihhth3yUy8fAkaUGk1SbfdlWl66TzMDXrB5iIUsbZeQ4hBMBed?=
- =?us-ascii?Q?VfSb2PyYdIbJVR1y+UoaxWNCTuwIgi0rpAma6k4VKJNY1uqvYql0uvffXygB?=
- =?us-ascii?Q?Jjmy2VeoHIRr68DOwdmhjAzZmPCfsWuv25Lpa9uavVn36lutaHAYC7krRcGD?=
- =?us-ascii?Q?xylRW6SLHsiPVtWtrtvmijTGJy7r3vUzB5u83YNkpMPgZI2gOwcYE8PmXlt1?=
- =?us-ascii?Q?4HiCTpCQ0QM9LjXyqy+MahsWOZ8W9wXSoolx4uwqU7wsdF6kJX3yVoTKf3b7?=
- =?us-ascii?Q?EfG7qaLH7Sllr4v21tM7BmRp0nlZjsdoSElDep+SivUVtw/hwWt8GRmNERvR?=
- =?us-ascii?Q?MYvVcTdWLu5WZvdL0ytB13SBNbtIn/R+x6BSD43eHJH/FOz4m9VZj+f+tgdj?=
- =?us-ascii?Q?3tbtKu85KYN+fmqg8Dvd/ddJoeg2pw+lhoeMFaAPTVvhKA6/sj6M3Nedechg?=
- =?us-ascii?Q?yNGidQ5zeCEu83A6SnK43jpnR0d0NaFpWR8YflSBfR+765DNbX0xo/6H0OE7?=
- =?us-ascii?Q?AJSI2qCJM66dxuwtXkzUru8hptLDUCzlNl/mOOvmR/SPQS/ccSlb8losgx1w?=
- =?us-ascii?Q?5lbiLTWAqjk/eGc49EwNc9dJGodjcK2V4773CKCOkEJq3kFoh8KJRw58A4Og?=
- =?us-ascii?Q?13aTql6bG4h3vZAv/AWy2NQVwog1qJ0gDiMXWYVC03f+YPDkaeVHWPlddESx?=
- =?us-ascii?Q?gNu9aK7TNtLNJH1bHImTHqeG2bvSUywC?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?BO9VPrzkuLRgW6YVe1+F5/THJoqtzFnEX2kAt8rtBJjG2Jj5xd1qcbHFsmRK?=
- =?us-ascii?Q?p0MVUoi81MQvmyBOyLUQi8S8F4NUX3aZqzDi82apBCfuSeHOEvwlB9raZTNO?=
- =?us-ascii?Q?AN+E2lgKKHSIyio3T5JB2Pm7Kpg6IhYB/dHjFfLsCvd68N/dHJ5URKHq5DRx?=
- =?us-ascii?Q?zyfdOHbefNnMJKGFX22+Yc/2ZDYyHFYGhIDAqqSudwVtmee3IHsrtghRmf1F?=
- =?us-ascii?Q?9gTFlmEz+F1qIk1zluAPmkSTg/ZmKl0n3/QaOf/oDJJBx4tElQqUxRAz55wi?=
- =?us-ascii?Q?4B6gtW4VCdv6CxMtnARIboSXlJPJtieJ4HMI1yobWKnjysPop2wKuP/qld9U?=
- =?us-ascii?Q?JPNEsdEZZv/2RHvOwksitgwE5LWBwQ/nLB4NjH3DiCOKwCfaXKN/2DcN74K/?=
- =?us-ascii?Q?QjoVnvkkEjIwkWlYr8QJGL/eJJ8AXGaL8nqtxj6Nz71Ie2gAr8Jmrn34D3lQ?=
- =?us-ascii?Q?6vlLmgwHlvbTrgeJn+D2BplwJe1FCxpWHfoFtr3m2FGTZ5fVVX9DcGYrl6xF?=
- =?us-ascii?Q?D56bqC5gWbXTDxKL7Nm2H4mmc0lSxefpoCkdwr1X0HKwFO4K8VNMV5grT2Aa?=
- =?us-ascii?Q?w80Hg3bZ5ZUAK/WECrqMV8TE0qRz5gm+c/SBQIjIRbddhXkgugqAGAd5Thho?=
- =?us-ascii?Q?CkGV+poAYmzyMtkBjG+2NMa8HCg39UcPu64fv4n74Py/lhvzv+joGUABewyn?=
- =?us-ascii?Q?DBn5WTiVSzIqgX4+o0evts7Wpxb/EluzJgnIEIeFArIKMsTnlviUI/zFrIob?=
- =?us-ascii?Q?Fc398mThH5vDCAZKHzwbpMpru+V/o2gAL/eg7t/K3vT4beSeMNZdCcwQ3Qlw?=
- =?us-ascii?Q?zbWw6s4GD/XcbpYjIXE8sa7Yw2VqSN2lBkoovwCKAGFfj1/cfcEokUACmXwx?=
- =?us-ascii?Q?+xOCg0ZhMwEBpgKIU3a1l55kawKnO9uSRvubCMJz/c7GMrkeTcCDDA9MVay/?=
- =?us-ascii?Q?Ino0dCyEAtkG5tv9tFU+ratIOG2g+unFVVQKhHldsUQd0lsrHxo/VMhdpi7/?=
- =?us-ascii?Q?oi4UiTTCcLhoA+PCCJUQgMm6RM4qD+4yi1HFjngnPS1nUpR1vmSQWo39m2Tw?=
- =?us-ascii?Q?Da2XM7g0Wj3onS0FF6SHjPjRLtr+iRrdS/Ofevb0vWDthMkFe8Db7Rn8GlQb?=
- =?us-ascii?Q?dLshYVQDqZVL5kKQW0y6ZrIjq/l1EJerf39os1QlrMxYp6/OZIDKcCqOPOes?=
- =?us-ascii?Q?u9wgdnf4LuZ3PDP3j9F7MiaudVDI/A5CcuFJ4JK2cSznXOhbwFE1qntMHxen?=
- =?us-ascii?Q?mtxQZHZBPWRG046WiAJ5LoYq68NQpv6d6zYLH7V3YgSb6RJIFnR8D9cmWpTm?=
- =?us-ascii?Q?CPWEPuzFHUo7VsdsrFGy8AKM/j7KgI924RF98VWvTdJluB18d49Pv8+J8yZl?=
- =?us-ascii?Q?54KxYyVAqSeoUOmrYCbKbPZCo1KH9bz1n91bL8q2mQzVudoV5Ia/Uf3xckwa?=
- =?us-ascii?Q?XRgM0UTIVsRaxi56m8e62RVV86/lKI6Q820IQomGxITJQ69bXdJMY36IJzG1?=
- =?us-ascii?Q?oO3/sZyEOTwFRcr+D7bdjhlycuo9utlKoeNe+a7w/GJyxmp15f556YQbYT5h?=
- =?us-ascii?Q?G/6lOIFIXJhQCMGa/Zugba1kx1Ph6/1Ds1wX3iJkA4vyeYc9H0i4DMf1oV+f?=
- =?us-ascii?Q?4g=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	U+SJwYhtNVC8OVNWYdFvkbYhFYkmonGj3m04TVquWXDqYwOZUz/zbO4KOp2XkIWBBTZJ/XGCilyGohOfjxS1mPi4T9nuiisewtxeD8xzO4KXjeZ4/0hbbjpI0V2ZuK56j5VnQ1XNVMtgFx0LopKwvJVupAaM/KyI+yVCCiFlka+imKIYAP83fQKN8uyPQE9r3y+n47MVbAEV7CgSdnElODd4VBrFWk5uRqXzEdxa19snvDA6kmQZ73mkMu3BpVw2SxVPv7q0yagL4PiEuf3Yz0GcWbo6faQRXk2wOlMwu9Tp4NHUnEVxEbfOqGRcQTYyx0WL11k5Ot9z/7fTCgV1CzK5r+lRNDdY9IvQSOrhtoDG4Rc9mdnZpvWxmxTczB4J20/d7/ITDCD0mmjJBk8VabGizftuZwP7Ja57Tji9zKZHkIJMeLD1+gGAF/pYgUGPcA3dOe4SiB0HSXJTq0Gm6z+nA0RJGSp06mTJVDGuwBeh0WlAVz3hpapF0GLdAiDrwPQRLzT+9KFJzNZn7JLxU8mse39GZNEut33+nCmD5j0mI4CArn7kuxdoibxbwF4yIOYROPpGgTGpZtOR5gDj+yGyCEJ6simO6diaASr97OQ=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c2c03741-5a33-494d-dc1b-08de17a38052
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2025 11:00:13.3768
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JOOlycZL6ecWL2Hp2lVidf7IR798nHPvuwC8bN+dbPw+wC8Kb3HNxF1/QRQPhN+OJSKuP9c6Y9r5a6mpn6VEnVcfjpi9ATz91B81ZPeBWj0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR10MB7508
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-10-30_03,2025-10-29_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 malwarescore=0 bulkscore=0
- mlxscore=0 adultscore=0 suspectscore=0 spamscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
- definitions=main-2510300089
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDMwMDA1MyBTYWx0ZWRfX5Gf2wZIMtDAz
- Qlkqbx1igGqMsbyc0eejPdRRKzqrLWadfLSKdJoDbyAOtgqHk2VqLrJ25nZ56UJCmwg/GnMKrz6
- Y4HYprN4J/NTTZgtFetdY5wIxpS6ZtDyzbRxfrT6KTCiS60CdMOASZ/HUNJsrvYCruWNilO/L+n
- owqJ35748WYiBwyjORjkKGfg23mc0ZBTJL+wAdRPN+JIqC/T3PVJZnwNLOCb+tPIuN/pQMfRlXI
- R4Hl68Wh9zf+TZEm6dgEdZaFhh9EnmknpD30iWfNqSQJjFe3F9EbHrn9O74DCtV2lACUGk80QxJ
- 4D3WQnSQ+nTgqPE4C0N4lHoLkKbyA9h6vK43Xuz1ygNbTwbRBdEGITSYylCfZ11ZuwIcjSsip7X
- cs/2F5fdhUzONxvkloGtmh7F6HCKIQ==
-X-Authority-Analysis: v=2.4 cv=F7Nat6hN c=1 sm=1 tr=0 ts=69034541 b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=x6icFKpwvdMA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=yPCof4ZbAAAA:8 a=i1VDJLL8ALoyPO76PwUA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: Zdesorwvx71JbfjnIqAYFKTj4xpd10zY
-X-Proofpoint-ORIG-GUID: Zdesorwvx71JbfjnIqAYFKTj4xpd10zY
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/3] mm: change type of parameter for memory_notify
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: david@redhat.com, akpm@linux-foundation.org, linux-mm@kvack.org,
+ osandov@osandov.com, linux-debuggers@vger.kernel.org
+References: <20251029195617.2210700-1-linux@israelbatista.dev.br>
+ <20251029195617.2210700-4-linux@israelbatista.dev.br>
+ <004bb148-a818-43d2-af04-2f2ed85cbd67@lucifer.local>
+Content-Language: en-US
+From: Israel Batista <linux@israelbatista.dev.br>
+In-Reply-To: <004bb148-a818-43d2-af04-2f2ed85cbd67@lucifer.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Date: Thu, 30 Oct 2025 11:16:00 +0000 (UTC)
+X-CM-Analysis: v=2.4 cv=NuiDcNdJ c=1 sm=1 tr=0 ts=690348f2 a=WIeu/gG1zxr2CnNbFFeIHA==:617 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=D6iVMuFdKyQZPKt9lRgA:9 a=QEXdDO2ut3YA:10
+X-CM-Envelope: MS4xfCPijR1zT2gvS2xZDo2skE0BVZOpfRXUrmejQzIgVHzmNSGG+Z7IJhTNf5qdIlEVSroN2MUFFep0E309stSbauB1hA6pwFC8Lbn+6+r8q3zyuc5PG4Kk oth7ABm3rHw482hXBaXHAj89bpcgrIY00zs76Ey8zPn7+sftI4CEVEpDQ67jR8bsPKBhHkQJAyZ7Occ4LCLiOZLbKZdK174UzzjN6w7iVepdXd4Avi0fO78s NZJwzsmkDU9xHBVY6s+AUxP9eLKhyreWVtkYXvqVJeGJ2Za4dYE1vxW1ueOxERbKKEAzD7ermT6JBvVUQ241YgeSte2zqPi41CuqmdOg/j6nLxShVHULtcQ8 Bk0UPr/eVwOsr8RykFWDQ1ixFYgHeHIf3bJtl6wgmgxg9OA4+CKTwiyObnfIYqNcTKNIpQJ61UHJ6BRBJdQfeng+Dol1kUzn7VvERpAwTSJDWfwfvRY1xgm7 n/o2A5msHC+nGMhB
+X-AuthUser: contato@israelbatista.dev.br
 
-On Wed, Oct 29, 2025 at 07:56:30PM +0000, Israel Batista wrote:
-> The state of a memory block should be restricted to values specified
-> in the documentation of the memory hotplug API. However, since the
-> state field in the memory_block struct was defined as an unsigned
-> long, this restriction was not enforced at compile time.
->
-> With the introduction of the enum memory_block_state, it is now possible
-> to incorporate the desired semantics in the field declaration and
-> enforce these restrictions at compile time.
 
-Well I'm not sure how much is enforced at compile time, the compiler treats
-the enum very loosely as if it were simply an int. BUt it does make it
-clear what you expect this field to contain!
+
+On 10/30/25 07:56, Lorenzo Stoakes wrote:
+> This seems fine, but I can see a whole bunch of others like:
+> 
+> kcore_callback()
+> mm_compute_batch_notifier()
+> page_ext_callback()
+> reserve_mem_notiifer()
+> etc.
+> 
+> So I think worth chasing all of these down?
+> 
+
+Yeah, I figured there were other cases and was originally planning to
+include them in the patch series. The problem is they are notifier
+callbacks and changing the type from unsingned long to enum
+memory_block_state would break compatibility with the type notifier_fn_t
+found in include/linux/notifier.h:
+
+typedef	int (*notifier_fn_t)(struct notifier_block *nb,
+			unsigned long action, void *data);
+
+So I think it's not worth the trouble for now.
 
 >
-> Signed-off-by: Israel Batista <linux@israelbatista.dev.br>
+> Some of the switches which don't cover all cases will need to be adjusted to
+> insert a no-op default:
+> 
 
-This LGTM as a reasonable change though, so:
+Good point.
 
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>> -extern int memory_notify(unsigned long val, void *v);
+>> +extern int memory_notify(enum memory_block_state state, void *v);
+> 
+> No reason you'd know, but we have a pattern of removing extraneous extern's like
+> this when we otherwise change a line.
+> 
 
-On basis that you fixup the formatting issue raised by Randy.
-
-> ---
->  drivers/base/memory.c  | 2 +-
->  include/linux/memory.h | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-> index 6d84a02cfa5d..3d17dd774947 100644
-> --- a/drivers/base/memory.c
-> +++ b/drivers/base/memory.c
-> @@ -198,7 +198,7 @@ static ssize_t state_show(struct device *dev, struct device_attribute *attr,
->  		break;
->  	default:
->  		WARN_ON(1);
-> -		return sysfs_emit(buf, "ERROR-UNKNOWN-%ld\n", mem->state);
-> +		return sysfs_emit(buf, "ERROR-UNKNOWN-%d\n", mem->state);
->  	}
->
->  	return sysfs_emit(buf, "%s\n", output);
-> diff --git a/include/linux/memory.h b/include/linux/memory.h
-> index f4e358477c6a..36d733283329 100644
-> --- a/include/linux/memory.h
-> +++ b/include/linux/memory.h
-> @@ -78,7 +78,7 @@ enum memory_block_state {
->
->  struct memory_block {
->  	unsigned long start_section_nr;
-> -	unsigned long state;		/* serialized by the dev->lock */
-> +	enum memory_block_state state; /* serialized by the dev->lock */
-
-I doubt it will be an isuse, but this obviously changes the layout of the
-struct.
-
-However since this will be an int and you have a bunch of ints here it should
-all pad reasonably.
-
->  	int online_type;		/* for passing data to online routine */
->  	int nid;			/* NID for this memory block */
->  	/*
-> --
-> 2.51.0
->
+Oh, that's good to know, I'll update it and keep that in mind for my
+next patches.

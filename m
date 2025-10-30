@@ -1,74 +1,74 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A1B2E8E0B
-	for <linux-debuggers@vger.kernel.org>; Thu, 30 Oct 2025 11:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEAE129CB4D
+	for <linux-debuggers@vger.kernel.org>; Thu, 30 Oct 2025 11:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761823961; cv=none; b=VeAuwqOiSYGXf6SV3Av6WAQ+dpKcwzo8bJjDUGUwCv9CvolABpq7M1eUsZv27yqBzfxz2AKNgDMx0cNsrPlHNORw4Erev1gqFbdoAzrXYg/TJO0YmtIEqk07mUq6QXqmgo3t8WEFH4g3ANCPKRJxFPTIcJYy+0TNaRo1Okc/82g=
+	t=1761824054; cv=none; b=rHOXafZ+qWwVz1JKGFetJVv4tOlxvN35PPsQpp2sd7VssWvIo7ol/dgWt4olcUMlYyf9vaipCh/9/w3eSV7Z2IaZQP+OdXQGPxC3fPz7RxwcWawptW4KO0Ovt5lxCpVnBJvAxnKSHOvgL+zW3fDs3wEOAGcf40KJqkpy2OwOfYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761823961; c=relaxed/simple;
-	bh=OXKbWENWl1YD+44q/rUMq5UxBNAzjmFRBgMMj86eyaY=;
+	s=arc-20240116; t=1761824054; c=relaxed/simple;
+	bh=rR+vii6f6CcSrgd7e2osPc2oOZopz11TFFx3CPUH2LY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=P0d2QbzBTyws8RPiXRJZItgpcZYUhqcJBeBTvv4avtNPXx65qk/RJvAAO3ogQEpHg5BUukt6hayu5gneMl11c7vC0omYRzKIbfkuM6wr4cE2yMzZfFDQQkH9tu+fwO91r4TKpRkxMVIggwftg/ZWn6+15sCsRTjYRUjMRVp871w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JWtwWSHH; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=HBBSKuzH0m4Fu+A5bTQKE1c8KS6aTxgdwXGtne4tk4uv1wT1+a7CcdijrDT1zriN2Fu+P3tV/R8+yKKRcwPcWMvO2cDlN4VX8A4BuXMqhirqHuEZKHYVLpGvPUV8fkmY9yvc1hW19wDKli9s5SCH9T4CFMtZEI/YNPjXqdKK5nM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XJcWVEJV; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JWtwWSHH"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XJcWVEJV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761823958;
+	s=mimecast20190719; t=1761824051;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=syt4FTvtbdwiswAZ/fDirrMVwTV5UaIUqPiBthAi08Q=;
-	b=JWtwWSHHtf+q+UpvLqGn0vChzg0Q/76yh6d/oIfzVa3upIvmzGgpVQSaNASo1l8NVjs5DA
-	WCE5NH6/D5GeAJnKI0cOuUPR2aeRoFdKU3L/kd66K0mzfFQ0uuni3ndMm4VmkgX6GNyuPM
-	tPAfncvcLdTmQOeTrHiZQq+ZMudQJ0Q=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=9w1uQN+XHy4hQ/YXkw4AP0gfZ9jwPVf23hTV0vL2o3Q=;
+	b=XJcWVEJVuElPZ6tjWJHThoWdOCDDY9CGJQFMX3kAOc6kU4ugoSbHtmE0ogGPTX+QglxXlo
+	NXbhlDqiNQDsC9l1KC5h0oHKADFYlI1dxco3UXxXpLpOG5ezZuEaNyoXmPR16bcJ0xiXXI
+	bFINvRez51HQYAgkMcza1wOO+bwUXuo=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-159-uzvTpuemMMW3qlyVZvs80w-1; Thu, 30 Oct 2025 07:32:37 -0400
-X-MC-Unique: uzvTpuemMMW3qlyVZvs80w-1
-X-Mimecast-MFC-AGG-ID: uzvTpuemMMW3qlyVZvs80w_1761823956
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-4278c82dce6so546768f8f.3
-        for <linux-debuggers@vger.kernel.org>; Thu, 30 Oct 2025 04:32:36 -0700 (PDT)
+ us-mta-441-LQFq_04iNBG1XLS5_Tu_FA-1; Thu, 30 Oct 2025 07:34:10 -0400
+X-MC-Unique: LQFq_04iNBG1XLS5_Tu_FA-1
+X-Mimecast-MFC-AGG-ID: LQFq_04iNBG1XLS5_Tu_FA_1761824049
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-46e39567579so4473855e9.0
+        for <linux-debuggers@vger.kernel.org>; Thu, 30 Oct 2025 04:34:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761823956; x=1762428756;
+        d=1e100.net; s=20230601; t=1761824049; x=1762428849;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=syt4FTvtbdwiswAZ/fDirrMVwTV5UaIUqPiBthAi08Q=;
-        b=LdIX2eGtQxam6s9QcnSak/gZ+MdmSgzwJsO6HqnLIKBARsN8Jpei7DHZpZ4OoBTiAH
-         La1ZiaFs3ajkQSvhlwYqK1hFCS3qfjalM8ODq+fPeJK8rwIoz4sMxhaoIWkBJ2hO8hp2
-         uz+6Qnxdvs9gUKEHRgFet4PwSEeJ3u4bRG5phpqhOYhYtwfbxoDs5IWXfH0hCa9S+bSh
-         90PDmjXS03jmzsEkzhL2UXRDUJAFsP/13u28xARFgzCJ3W8g9GOGgV1csAn635QeJll0
-         mPTcHv1zghJzZifKLiHtYH0vJTi+5x5YCUXoxtwE0fnK8Tn8nyKulqinpCxW17JBd1hQ
-         QeRg==
-X-Forwarded-Encrypted: i=1; AJvYcCVwxvFfDeffBq1O7mGx8DXvWPLIPdjz0LELhb9SGTysDlTgWKXL9rU5kF1f29ne5rQX+422XIWI3hUQ/1SHl1s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwUvCv1kpvUo5HHskkeo3eCq/Jq0xoqgt2EnnhPCumEy9wRfkGY
-	Ju3zfCW0F1aGQB9F8jjXxiN5rcL329oegZ62tM7yHcS7yrVpj2Nj1gLXl5CPcn2wcOJ+aNcetuT
-	YTcsYBosA/rW0CtSAMWgY/844BdImWr8I9B09UJewsyJF2deX0G6irFC/DOqSx6lcJLwbuA==
-X-Gm-Gg: ASbGnctk8cm4gIxLfICecoR8fx5sUtILaiGBiBDXR1+T+g/e/O7NrbpfssG9Ev3/hm7
-	p2rOsLNVzghCm3r7awryEwoFZm0YZO8LrZ1KaqMk+ln1HWA1t4pnj8PxYd8e3t0M9r7r6lPTWb1
-	rGOD8Xon3SP+j1UzqrpsHK1+B2Nq7KapQIHeWr3BC8tAa2dq4aVimXQ9+wP5l1EYusRt9d/16gS
-	iXG4DIascHVByDSRDHRMK0JM5i5MbQEnvyAzyf+4/hMW0gUQDUaqdRtfEYNrBMpugY859m2ESbp
-	xosDE++cjQDUTAB+UaaS+iKV5ljBICxk3UkE7OCiTeesGYymVsTv08G4cEaqiIDpDaMAMxKIcoK
-	/RIxPTq73rnX1tBfPpKPx6M5BDpdfBVgcCGFvsjL3MF1l33bWPp/i8FVEw7TLm5SYq+m2IP88q8
-	avMWmEu/+x6sJxuIeyan8HoeRMqtU=
-X-Received: by 2002:a5d:5f84:0:b0:427:490:68d2 with SMTP id ffacd0b85a97d-429aef77885mr5304852f8f.10.1761823955801;
-        Thu, 30 Oct 2025 04:32:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEDnTvQ9OrjFxRFD1/geNzCwFgc9KwHnl7pB3XSjGFmYobltgmRk2xkTvmuOYysl1iukCDRuA==
-X-Received: by 2002:a5d:5f84:0:b0:427:490:68d2 with SMTP id ffacd0b85a97d-429aef77885mr5304818f8f.10.1761823955337;
-        Thu, 30 Oct 2025 04:32:35 -0700 (PDT)
+        bh=9w1uQN+XHy4hQ/YXkw4AP0gfZ9jwPVf23hTV0vL2o3Q=;
+        b=mEp/Px+2JwlIZVgP3xBvofT0Ghmvcimja/SSHAWsbdBHtW7vWQCLxjabGKqy0nLdMY
+         yMXTwq6cGWf19YiLju/o/p+HwUnPRs8thIyNaInJiRfHyGwzz6DNZDGpihbQxAVb7f0z
+         y1d6k2B4mU8Bmaye1i9oKFdrIAGzvZfzSa8eYP0nF4T34di3L9lTcPY2+fxKykcBvQPp
+         tyHQIeFwSHwop6o4sSk1eHzY7LYIsJU2As8a15tp00cA5ptk+f2Kca9giqBJ+zOtseRm
+         a7Py3GMGvoSog9t93Y1vtoXPLCkCWE406OR8MlpQmknvZEPpj7YCkYxWzfD5YlDZFLVf
+         XmYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV/tQ9TMLk7kdqCIMo2fKGhFno3zHqiaaQBP6q+X4XUhO5FT+sPzj2SAFwFNrvm6JUvxBQXKG9AAJKeWMwRifw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCMHy2y2nXWEq+sJZ+1tEzLybqbX300Vg+lHxrsMkMfy8dn+Sl
+	OblEntnhRlS8MsmCVlwV2i+ACEgibslhHxn57JPoh8J+0Fd7nmZvkYDex6Oa1WKjKXSq6/iMECi
+	bXcPy+1lpz98lqGYjSr5kZ3vD4io+iLvNfpvrJ3EU8SLnAaYwDMHj8T2XWB41lHgwaJ1ZWA==
+X-Gm-Gg: ASbGncvMfre7D4vbAKorhG7XmnXFV+NNjthmhIcbmfWilw66D75G4TtBbTgo5TZrFOj
+	xoqejXFPAtZTOxENZVBiCzxbZw0hOP/gqu3yPYgH6gkLgT6iRDUpoTy1gNHwgN+nA/Qg2ThDDYQ
+	BUSCVTRw/NlZJWMLeaswYjPbNqYfLyLPLj/0B4W3NetQjXKWjHwuqdj1p/cSO/sQ/h0jWVDZEJq
+	GqC1GK3C34Fl++/PUOTyC29hp2xCuCo6Y7jJBpQxygrtb3sFkfTpcBETe2XRxLiCZ7zxGjw/kS4
+	/SFJgp87s8mQZhuPzLOhSAi/TtCXquGBbGc4Z2go2jSXqSNjG8EMRfOAy/jVtLZWZFmxayI9d6O
+	Y8Po3yRenDiZC2Wi66v69p+Jsr6pVUnEoRFj4qaOVj5TQBOKlkiRMqI8zbNM43fKq5KTb4bEDc6
+	mMWHCjpyvHUfokb/+wgEMSs6NuYww=
+X-Received: by 2002:a05:600c:1ca5:b0:471:6f4:601f with SMTP id 5b1f17b1804b1-4772686efeemr32236385e9.19.1761824049092;
+        Thu, 30 Oct 2025 04:34:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFiZFuRhX8Dwhv/z7p5mtCfdnZxWjcz8QOPOy9GE4BDcvy3635c3ogWbyAUBHwqCjgRyFyBPQ==
+X-Received: by 2002:a05:600c:1ca5:b0:471:6f4:601f with SMTP id 5b1f17b1804b1-4772686efeemr32235995e9.19.1761824048586;
+        Thu, 30 Oct 2025 04:34:08 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f3f:4b00:ee13:8c22:5cc5:d169? (p200300d82f3f4b00ee138c225cc5d169.dip0.t-ipconnect.de. [2003:d8:2f3f:4b00:ee13:8c22:5cc5:d169])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429952df3c7sm31046327f8f.40.2025.10.30.04.32.33
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4771902991bsm63465535e9.7.2025.10.30.04.34.06
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Oct 2025 04:32:34 -0700 (PDT)
-Message-ID: <b40f638e-dbe9-48b1-a431-b3ba10c893a9@redhat.com>
-Date: Thu, 30 Oct 2025 12:32:31 +0100
+        Thu, 30 Oct 2025 04:34:08 -0700 (PDT)
+Message-ID: <9385ec9c-c002-4781-8f1f-a9eb29b2ff40@redhat.com>
+Date: Thu, 30 Oct 2025 12:34:06 +0100
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
@@ -76,12 +76,15 @@ List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] mm: change type of state in struct memory_block
-To: Israel Batista <linux@israelbatista.dev.br>, lorenzo.stoakes@oracle.com,
- akpm@linux-foundation.org, linux-mm@kvack.org
-Cc: osandov@osandov.com, linux-debuggers@vger.kernel.org
+Subject: Re: [PATCH v2 3/3] mm: change type of parameter for memory_notify
+To: Israel Batista <linux@israelbatista.dev.br>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, osandov@osandov.com,
+ linux-debuggers@vger.kernel.org
 References: <20251029195617.2210700-1-linux@israelbatista.dev.br>
- <20251029195617.2210700-3-linux@israelbatista.dev.br>
+ <20251029195617.2210700-4-linux@israelbatista.dev.br>
+ <004bb148-a818-43d2-af04-2f2ed85cbd67@lucifer.local>
+ <f7dd549e-7dd3-4fdf-89f7-ef6993376809@israelbatista.dev.br>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -127,60 +130,42 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20251029195617.2210700-3-linux@israelbatista.dev.br>
+In-Reply-To: <f7dd549e-7dd3-4fdf-89f7-ef6993376809@israelbatista.dev.br>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: D4OaAweRA0MrSnGBbHRmoVFFK8_1Q4xJI9fpNc5JU5I_1761823956
+X-Mimecast-MFC-PROC-ID: Z3CaDxmENMHLaDvFkJHgWfsRqr2H6UK2xYIoxG_RDWg_1761824049
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 29.10.25 20:56, Israel Batista wrote:
-> The state of a memory block should be restricted to values specified
-> in the documentation of the memory hotplug API. However, since the
-> state field in the memory_block struct was defined as an unsigned
-> long, this restriction was not enforced at compile time.
+On 30.10.25 12:16, Israel Batista wrote:
 > 
-> With the introduction of the enum memory_block_state, it is now possible
-> to incorporate the desired semantics in the field declaration and
-> enforce these restrictions at compile time.
 > 
-> Signed-off-by: Israel Batista <linux@israelbatista.dev.br>
-> ---
->   drivers/base/memory.c  | 2 +-
->   include/linux/memory.h | 2 +-
->   2 files changed, 2 insertions(+), 2 deletions(-)
+> On 10/30/25 07:56, Lorenzo Stoakes wrote:
+>> This seems fine, but I can see a whole bunch of others like:
+>>
+>> kcore_callback()
+>> mm_compute_batch_notifier()
+>> page_ext_callback()
+>> reserve_mem_notiifer()
+>> etc.
+>>
+>> So I think worth chasing all of these down?
+>>
 > 
-> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-> index 6d84a02cfa5d..3d17dd774947 100644
-> --- a/drivers/base/memory.c
-> +++ b/drivers/base/memory.c
-> @@ -198,7 +198,7 @@ static ssize_t state_show(struct device *dev, struct device_attribute *attr,
->   		break;
->   	default:
->   		WARN_ON(1);
-> -		return sysfs_emit(buf, "ERROR-UNKNOWN-%ld\n", mem->state);
-> +		return sysfs_emit(buf, "ERROR-UNKNOWN-%d\n", mem->state);
->   	}
->   
->   	return sysfs_emit(buf, "%s\n", output);
-> diff --git a/include/linux/memory.h b/include/linux/memory.h
-> index f4e358477c6a..36d733283329 100644
-> --- a/include/linux/memory.h
-> +++ b/include/linux/memory.h
-> @@ -78,7 +78,7 @@ enum memory_block_state {
->   
->   struct memory_block {
->   	unsigned long start_section_nr;
-> -	unsigned long state;		/* serialized by the dev->lock */
-> +	enum memory_block_state state; /* serialized by the dev->lock */
->   	int online_type;		/* for passing data to online routine */
->   	int nid;			/* NID for this memory block */
->   	/*
+> Yeah, I figured there were other cases and was originally planning to
+> include them in the patch series. The problem is they are notifier
+> callbacks and changing the type from unsingned long to enum
+> memory_block_state would break compatibility with the type notifier_fn_t
+> found in include/linux/notifier.h:
+> 
+> typedef	int (*notifier_fn_t)(struct notifier_block *nb,
+> 			unsigned long action, void *data);
+> 
+> So I think it's not worth the trouble for now.
 
-With comment alignment fixed
-
-Acked-by: David Hildenbrand <david@redhat.com>
+We could just cat from unsigned long -> type at the beginning of all 
+these notifiers to have us then work with the actual type.
 
 -- 
 Cheers

@@ -1,167 +1,199 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F0E1891AB;
-	Thu,  6 Nov 2025 01:08:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF6122DAFA8;
+	Thu,  6 Nov 2025 06:10:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762391306; cv=none; b=QlyRQFd4FFJchyFC42a3GJY5GCZH7szbb9BdPEC1NRgT9xhXVRIy2t7fsx0dtfDQ9rzM5QDXEAUwB6KlwOb96ysF3bYCq+4n/NESZB1SMFKQf/YuIRle0MjzUfHfw0GhJRhAjJUiAWNYk0o7FdCpY/N9ApxsqoGPhDSWwaJqMfM=
+	t=1762409412; cv=none; b=SAXZume6Z8jjdpQy+TAg1gSdzhWS0BAIl+yZvuCF6OjxQwZ1OuapePJdKqJV5LngdWK1mk7Bw/pYTHOTFlGLDDemJndVxF+E4FiTxqPRlhMKZR8g0hC9EsYuto2u5gSBa+b7em3NfdelPUpiCH2XVsxme7YIHEe9zLlSEivWCUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762391306; c=relaxed/simple;
-	bh=C1CMXKhozu8LYFPbX6ylpFCy9Bm+8ecgB1ZjwnG2s6A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d0PJBF928F/r3CGL9uWVK7a/5WT3kLzwrKylDdLjG2PqDWyZhtwN4RjcKFw1zOoxuoLJc1+iavR++RleKO7DAFhDJkQOs2ax3ARkhNq0h8FIyFGUWn35Y+RwH+Vqysb6x3OQ6Y6VRH9euL9ofbqdNS6ObEAZgyPhtKXUayeruA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RznJW4KQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762409412; c=relaxed/simple;
+	bh=PNbZ//mjttXPJb3yONShlvpYxJ0IjQ+8uVab+aHuuM8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UC/AGqa9QrvzUgxZ1w2sQ7LTEdYeACz5EdP+7ZBWgIqL0QONj5iFKHJ+iP3m6NHraDD+852Rg5mmeyHR5Xapiqxo3U4bpAtazlEP1RuPRr9edjZ9BW5ZCK7Fjak1G9OSSDJ0vor60qvBj/libAdSB28Qfi70rBdeW3FYn5rIsag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ElF1dVm0; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RznJW4KQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C62DC4CEF5;
-	Thu,  6 Nov 2025 01:08:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762391305;
-	bh=C1CMXKhozu8LYFPbX6ylpFCy9Bm+8ecgB1ZjwnG2s6A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RznJW4KQCN5afy0v0SrJz6ewkOwCFcTW5mT6gKEDRbByUJ/aXvmZOKgHub0HfGd8F
-	 C62tJ3ju+U+txK4vrh5547VZXBHPVZ6z1b9FWZlV02UTTcV4YzzmkRxBn8D96VkDv3
-	 i5DocrXEANqZcwu3Ue356M+VYoVdTckBOc6aIs0ShO3a3dzIVMXgXBOgbu53tyx4dJ
-	 49NwlzJdN7yZvJCUhFduK41LNPzVqrvC8dHhK0pyklkvM0fV+GM+TzNWz57AuMdUG5
-	 4Q6TgklWVOkAEMA4uUYP7eOqjiTioLhq6rtY/ec36qG0EkQSxMzx2xmXs5KxYvxu0P
-	 3y492NtCsA4vg==
-Date: Wed, 5 Nov 2025 18:08:20 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Omar Sandoval <osandov@osandov.com>
-Cc: Dimitri John Ledkov <dimitri.ledkov@surgut.co.uk>,
-	linux-kbuild@vger.kernel.org, Samir M <samir@linux.ibm.com>,
-	linux-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	linux-debuggers@vger.kernel.org, Nicolas Schier <nsc@kernel.org>,
-	Alexey Gladkov <legion@kernel.org>
-Subject: Re: [mainline]Error while running make modules_install command
-Message-ID: <20251106010820.GA3031707@ax162>
-References: <7fef7507-ad64-4e51-9bb8-c9fb6532e51e@linux.ibm.com>
- <56905387-ec43-4f89-9146-0db6889e46ab@linux.ibm.com>
- <aQpCE_XTU-bZHFbk@telecaster>
- <CANBHLUhJ5UVsN4-JN2PG=jq63yGttB9BD6Qm8MgvYirTvg_stw@mail.gmail.com>
- <20251105011548.GB769905@ax162>
- <aQvHSVXbOdiN_J5D@telecaster>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ElF1dVm0"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A65aI3e009252;
+	Thu, 6 Nov 2025 06:10:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=Phvrrh
+	TQJ7Z0NnfSz3ZRbSMUDYtfHlMm5TlpGRPS3ek=; b=ElF1dVm0Y8J9Z4+WacWS4t
+	E7C+n9m9KCBRYkpzb1B/97BLNwkknsEq1BZgyb1HaJENCg8ptGIe1NJrsOKjcj+4
+	YorQvHTZrcR9H0i7TAwIE3Fr1Ypa8myZvG0/lc7apoTlvfNdsz0R6Ylt6uTNZi+w
+	NcoLpja4uflyzGKCB/dwX5gvyydG/hSxjc7SWEtG5d79gnZLlq8kApNIRiOBQw32
+	AwqdAA09ERi3HaYeeEUu7iUsBBqNEyhJAonvjLO1JFbKQZIpwM4jcgIdZXmrNq5g
+	mmjeqpmaxC5AwuqNdzzbrninEMG84wiPok1v/xwjydCfnALeBOwexX+8lD3Z8WSQ
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a59xc5cqy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Nov 2025 06:10:00 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5A628A7U025605;
+	Thu, 6 Nov 2025 06:09:59 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4a5vhsv6d1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Nov 2025 06:09:59 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5A669vod53018934
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 6 Nov 2025 06:09:57 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7419C58051;
+	Thu,  6 Nov 2025 06:09:57 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A2ED85805E;
+	Thu,  6 Nov 2025 06:09:53 +0000 (GMT)
+Received: from [9.61.250.250] (unknown [9.61.250.250])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  6 Nov 2025 06:09:53 +0000 (GMT)
+Message-ID: <16abe317-1a17-4edb-ab71-5f2e27405c18@linux.ibm.com>
+Date: Thu, 6 Nov 2025 11:39:51 +0530
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aQvHSVXbOdiN_J5D@telecaster>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [mainline]Error while running make modules_install command
+To: Nathan Chancellor <nathan@kernel.org>,
+        Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+        Omar Sandoval <osandov@osandov.com>
+Cc: linux-kernel@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
+        linuxppc-dev@lists.ozlabs.org, dimitri.ledkov@surgut.co.uk,
+        stable@vger.kernel.org, Nicolas Schier <nsc@kernel.org>,
+        Alexey Gladkov <legion@kernel.org>, linux-debuggers@vger.kernel.org
+References: <7fef7507-ad64-4e51-9bb8-c9fb6532e51e@linux.ibm.com>
+ <56905387-ec43-4f89-9146-0db6889e46ab@linux.ibm.com>
+ <20251105005603.GA769905@ax162>
+Content-Language: en-US
+From: Samir M <samir@linux.ibm.com>
+In-Reply-To: <20251105005603.GA769905@ax162>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTAxMDAyMSBTYWx0ZWRfX5xvM4uBI9w8N
+ x5e5DR8fZtLo/Bsjq58z0vXlqP3eHxrKTODaB3AMlGVdnhNZ1nA/vAFMCbRASud179b6+JrUxru
+ IvJSd+ii4Zb/1K1EtSvc00myh169edFI6fBm0FUU+E3MKnm8S95I/NlqXpFk1fjVDijwRYR4PaE
+ UHTySjCS9HP6Y/d9W0ygOAZ+KH3hlRywNULVcg0mD7eX2iP41c62ymE7xJiQjAFyGoHG2409Ksw
+ 1EvL1yNWD51lpB533gnHil+7JS+nHC0MyXvuL6eyAixyKj7YiVaPfaOy27nJHu+nyX/nd2c8BK8
+ NDLSA4gsO+zrHSYY/sWfzPIU1YNez0MsfDzrZ19GCTu8JhTqA16A5xCj01nf5pnNx7fEPzXqy0n
+ mHDpPX81wKEvXMfPFke8haQkjmdTiQ==
+X-Proofpoint-GUID: epWAkT0AsDvtFuRGDI0Lw5v2vkCRLxEm
+X-Authority-Analysis: v=2.4 cv=OdCVzxTY c=1 sm=1 tr=0 ts=690c3bb8 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=WG_6xDmpAAAA:8 a=s5HezVcRJVFevGRlhjIA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=vnvZt3YqmSlbJLwVaSfU:22
+ a=cPQSjfK2_nFv0Q5t_7PE:22 a=HhbK4dLum7pmb74im6QT:22 a=pHzHmUro8NiASowvMSCR:22
+ a=Ew2E2A-JSTLzCXPT_086:22
+X-Proofpoint-ORIG-GUID: epWAkT0AsDvtFuRGDI0Lw5v2vkCRLxEm
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-06_01,2025-11-03_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 adultscore=0 spamscore=0 suspectscore=0 impostorscore=0
+ lowpriorityscore=0 priorityscore=1501 clxscore=1011 phishscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511010021
 
-On Wed, Nov 05, 2025 at 01:53:13PM -0800, Omar Sandoval wrote:
-> Here's a script that reproduces it:
-> 
-> ```
-> #!/bin/sh
-> 
-> set -e
-> 
-> host_arch=x86_64
-> compiler_version="12.4.0"
-> 
-> compiler_dir="/tmp/arm64-gcc-$compiler_version"
-> if [ ! -e "$compiler_dir" ]; then
-> 	rm -rf "$compiler_dir.tmp"
-> 	mkdir "$compiler_dir.tmp"
-> 	curl -L "https://mirrors.kernel.org/pub/tools/crosstool/files/bin/$host_arch/$compiler_version/$host_arch-gcc-$compiler_version-nolibc-aarch64-linux.tar.xz" | tar -C "$compiler_dir.tmp" -Jx
-> 	mv "$compiler_dir.tmp" "$compiler_dir"
-> fi
-> 
-> export PATH="$compiler_dir/gcc-$compiler_version-nolibc/aarch64-linux/bin:$PATH"
-> make ARCH=arm64 CROSS_COMPILE=aarch64-linux- tinyconfig
-> make ARCH=arm64 CROSS_COMPILE=aarch64-linux- -j$(nproc) vmlinux
-> readelf -W -l vmlinux | awk '$1 == "LOAD" && $6 ~ /0x0+\>/'
-> ```
-> 
-> It prints something like:
-> 
->   LOAD           0x1ef008 0x0000000000000000 0xffff800080220000 0x000000 0x000000 R   0x10000
-> 
-> I.e., a segment with FileSiz and MemSiz 0.
 
-Thank you, that was incredibly helpful.
+On 05/11/25 6:26 am, Nathan Chancellor wrote:
+> + Nicolas and Alexey, just as an FYI.
+>
+> Top of thread is:
+>
+> https://lore.kernel.org/7fef7507-ad64-4e51-9bb8-c9fb6532e51e@linux.ibm.com/
+>
+> On Tue, Nov 04, 2025 at 04:54:38PM +0530, Venkat Rao Bagalkote wrote:
+>> IBM CI has also reported this error.
+>>
+>>
+>> Error:
+>>
+>>
+>> depmod: ERROR: kmod_builtin_iter_next: unexpected string without modname
+>> prefix
+>>    INSTALL /boot
+>> depmod: ERROR: kmod_builtin_iter_next: unexpected string without modname
+>> prefix
+>> depmod: ERROR: kmod_builtin_iter_next: unexpected string without modname
+>> prefix
+>>
+>>
+>> Git bisect is pointing to below commit as first bad commit.
+>>
+>>
+>> d50f21091358b2b29dc06c2061106cdb0f030d03 is the first bad commit
+>> commit d50f21091358b2b29dc06c2061106cdb0f030d03
+>> Author: Dimitri John Ledkov <dimitri.ledkov@surgut.co.uk>
+>> Date:   Sun Oct 26 20:21:00 2025 +0000
+>>
+>>      kbuild: align modinfo section for Secureboot Authenticode EDK2 compat
+> Thank you for the bisect. I can reproduce this with at least kmod 29.1,
+> which is the version I can see failing in drgn's CI from Ubuntu Jammy
+> (but I did not see it with kmod 34, which is the latest version in Arch
+> Linux at the moment).
+>
+> Could you and Omar verify if the following diff resolves the error for
+> you? I think this would allow us to keep Dimitri's fix for the
+> Authenticode EDK2 calculation (i.e., the alignment) while keeping kmod
+> happy. builtin.modules.modinfo is the same after this diff as it was
+> before Dimitri's change for me.
+>
+> Cheers,
+> Nathan
+>
+> diff --git a/scripts/Makefile.vmlinux b/scripts/Makefile.vmlinux
+> index ced4379550d7..c3f135350d7e 100644
+> --- a/scripts/Makefile.vmlinux
+> +++ b/scripts/Makefile.vmlinux
+> @@ -102,11 +102,23 @@ vmlinux: vmlinux.unstripped FORCE
+>   # modules.builtin.modinfo
+>   # ---------------------------------------------------------------------------
+>   
+> +# .modinfo in vmlinux is aligned to 8 bytes for compatibility with tools that
+> +# expect sufficiently aligned sections but the additional NULL bytes used for
+> +# padding to satisfy this requirement break certain versions of kmod with
+> +#
+> +#   depmod: ERROR: kmod_builtin_iter_next: unexpected string without modname prefix
+> +#
+> +# Strip the trailing padding bytes after extracting the .modinfo sections to
+> +# comply with what kmod expects to parse.
+> +quiet_cmd_modules_builtin_modinfo = GEN     $@
+> +      cmd_modules_builtin_modinfo = $(cmd_objcopy); \
+> +                                    sed -i 's/\x00\+$$/\x00/g' $@
+> +
+>   OBJCOPYFLAGS_modules.builtin.modinfo := -j .modinfo -O binary
+>   
+>   targets += modules.builtin.modinfo
+>   modules.builtin.modinfo: vmlinux.unstripped FORCE
+> -	$(call if_changed,objcopy)
+> +	$(call if_changed,modules_builtin_modinfo)
+>   
+>   # modules.builtin
+>   # ---------------------------------------------------------------------------
 
-> Using a newer crosstool version fixes it, so maybe this was a GCC or
-> binutils bug.
+Hi,
 
-Good observation, as this was reproducible with GCC 12.4.0 from
-kernel.org but not GCC 12.5.0, which I noticed has a newer binutils
-version. I was able to reproduce it with a self compiled copy of
-binutils 2.42 but not with binutils 2.44 so I reverse bisected the fix
-to [1], which certainly makes sense :)
 
-The diff of 'readelf -lW' before that change:
+This change fixes the reported issue. You can add below tag as well, 
+ while sending a patch.
 
-diff --git a/tmp/.psub.9QY0ZO b/tmp/.psub.6lHG9T
-index 7f7f4de7be8..ea3a9b4ffb0 100644
---- a/tmp/.psub.9QY0ZO
-+++ b/tmp/.psub.6lHG9T
-@@ -7,14 +7,14 @@ Program Headers:
-   Type           Offset   VirtAddr           PhysAddr           FileSiz  MemSiz   Flg Align
-   LOAD           0x010000 0xffff800080000000 0xffff800080000000 0x14f000 0x14f000 R E 0x10000
-   LOAD           0x160000 0xffff800080150000 0xffff800080150000 0x08f008 0x0c4c40 RWE 0x10000
--  LOAD           0x1f0000 0xffff800080220000 0xffff800080220000 0x000d08 0x000d08 R   0x10000
-+  LOAD           0x1ef008 0x0000000000000000 0xffff800080220000 0x000000 0x000000 R   0x10000
-   NOTE           0x1860f8 0xffff8000801760f8 0xffff8000801760f8 0x000054 0x000054 R   0x4
--  GNU_STACK      0x000000 0x0000000000000000 0x0000000000000000 0x000000 0x000000 RW  0x10
-+  GNU_STACK      0x000000 0x0000000000000000 0x0000000000000000 0x000000 0x000000 RW  0x8
- 
-  Section to Segment mapping:
-   Segment Sections...
-    00     .head.text .text 
-    01     .rodata __param __ex_table .notes .rodata.text .init.text .exit.text .altinstructions .init.data runtime_shift_d_hash_shift runtime_ptr_dentry_hashtable .data..percpu .data .mmuoff.data.write .mmuoff.data.read .bss 
--   02     .modinfo 
-+   02     
-    03     .notes 
-    04     
 
-After:
+Tested-by: Samir M <samir@linux.ibm.com>
 
-diff --git a/tmp/.psub.x5uqM8 b/tmp/.psub.LHoP7d
-index 7f7f4de7be8..27bda6ea7cc 100644
---- a/tmp/.psub.x5uqM8
-+++ b/tmp/.psub.LHoP7d
-@@ -1,20 +1,18 @@
- 
- Elf file type is EXEC (Executable file)
- Entry point 0xffff800080000000
--There are 5 program headers, starting at offset 64
-+There are 4 program headers, starting at offset 64
- 
- Program Headers:
-   Type           Offset   VirtAddr           PhysAddr           FileSiz  MemSiz   Flg Align
-   LOAD           0x010000 0xffff800080000000 0xffff800080000000 0x14f000 0x14f000 R E 0x10000
-   LOAD           0x160000 0xffff800080150000 0xffff800080150000 0x08f008 0x0c4c40 RWE 0x10000
--  LOAD           0x1f0000 0xffff800080220000 0xffff800080220000 0x000d08 0x000d08 R   0x10000
-   NOTE           0x1860f8 0xffff8000801760f8 0xffff8000801760f8 0x000054 0x000054 R   0x4
--  GNU_STACK      0x000000 0x0000000000000000 0x0000000000000000 0x000000 0x000000 RW  0x10
-+  GNU_STACK      0x000000 0x0000000000000000 0x0000000000000000 0x000000 0x000000 RW  0x8
- 
-  Section to Segment mapping:
-   Segment Sections...
-    00     .head.text .text 
-    01     .rodata __param __ex_table .notes .rodata.text .init.text .exit.text .altinstructions .init.data runtime_shift_d_hash_shift runtime_ptr_dentry_hashtable .data..percpu .data .mmuoff.data.write .mmuoff.data.read .bss 
--   02     .modinfo 
--   03     .notes 
--   04     
-+   02     .notes 
-+   03     
 
-I am not really sure how to workaround this in a concise way... at least
-for arm64 since it does not seem to use PHDRS to describe ELF segments,
-it just relies on the default linker heuristics? It also seems seems
-like this is a generic problem not specific to .modinfo, we just so
-happen to see it with this section since it is in its own segment and we
-are removing it.
+Thank you for the fix !!
 
-[1]: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=7f26d260ef76a4cb2873a7815bef187005528c19
+Regards,
 
-Cheers,
-Nathan
+Samir
+

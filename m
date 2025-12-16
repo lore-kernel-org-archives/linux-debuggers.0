@@ -1,244 +1,213 @@
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52CC305E21
-	for <linux-debuggers@vger.kernel.org>; Fri,  5 Dec 2025 18:38:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764959901; cv=fail; b=NvUVs1t5yxVdN32wX5TL5Oyo06B9ADSD9/WLYP3sjnQp70ZvAUx04jqSSTPTQdaqIPeoCkjqnB8MdVgo9+jATq8FPuxIsWgYEx5C4GTysN7A+oC0ngHG7HqLYhxb/cGE+pCsmg5MbUwqCj6XTJQuiYbZrxBzyvklFbsBMmJKntk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764959901; c=relaxed/simple;
-	bh=yMjjyy4K6mcNsjaXLmbBq4hSO7lHM277DyKk5EYVtAg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 Content-Type:MIME-Version; b=iE2J5FUwzQSZTq878x672mB9n50OQaDJkY2VlBLF+9SPHgyKb/7kXNLo8i0oUl5IFgVvFPWSZ/L3vgfhvmoQPSkSzQbSwDqEfwApdU6awn5pgWnMJvOPAas0ZxmaTiO1OSBJUwxv6btDUeDaduLjpvhtRQY1rGQokKZNcxCWiGs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=fail smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=rACLEgPM; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=fmw2REhf; arc=fail smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=oracle.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451DE225413;
+	Tue, 16 Dec 2025 07:00:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765868438; cv=none; b=XSrHAMOHQu6PuoDTk7ndzAW4g0Jqak1klYBs/plcCwhzBfCZDov8P1gD2XGngVMf0dC4TakUjAvfYxAB/vT2mKcx5I/HwT3mcX+FBfkQpE66AHHHYpHKq1RqEEeclIsRUTodi1edAZNjRyz1AmkvquqMdvQBd2lVHfjaZFpQsck=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765868438; c=relaxed/simple;
+	bh=qY8QMfnRy/a3cs9SUvODsIarwko2nwg42PutdqdoI9s=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=TtxYymZGUOz1yh3HHvsnWSA9ocwGsDauHZiGcZ49ahxKwFW4rJtGrqXw/dhToRmpIfKj2wvLKZIxvEqozwafahQXIgQ+jbg3f3i6zxlMmWrJmtdJczRU08xLgk9Ur8fx+xxf77FhiwTMLVGLOvgH2TID/pS0H25RQQVKbADWVro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=QJXU0ivI; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="rACLEgPM";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="fmw2REhf"
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5B5IZev3498226;
-	Fri, 5 Dec 2025 18:38:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=mJdAcL4pWCF6YGSWRT
-	UZ3sjmjJm5KKuVw9ryVFuMk+E=; b=rACLEgPMtRQRA0iq1LbHjDItIiGdBfO/Fz
-	OM8eDQ0fbMAF51Ltvo3EjN9abonh1F2eTFwNL1ZfE/J2zvjlb9Jk3j995LvieKmx
-	q+ggEoWWsife+9hTWkeUuF2vsevQ+1AM2eqCH26bEZFvE9MifYVvs2IOfQ/rRb/u
-	wyhPHqd4pLNU/OksmI9cdBmBYBldjpd5ypXeISi36/vvYQaHG7BknW6dRMFIplu+
-	wu5o18ojhE21IuySAme4mZjJ6ufiYs5yoOtVMGwj5jST8kG7J2A+yqROBddFhpzH
-	cRYdS/x6euX6a+LD5bWa7OoRsHDNcxwFSRgUloFzz7dDIrhwNNGg==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4av4td806x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 05 Dec 2025 18:38:17 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5B5HJPkA040596;
-	Fri, 5 Dec 2025 18:38:16 GMT
-Received: from bn1pr04cu002.outbound.protection.outlook.com (mail-eastus2azon11010023.outbound.protection.outlook.com [52.101.56.23])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4aqq9hbj4v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 05 Dec 2025 18:38:16 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=d+Y1b3qvDkJ3OSEyuPH7CbEf1u0id4IY3zlUFvaFqK8eegwAus1SWiED3uFsNcOFXnmDeKNEQvTB3brMYiwpk+iBE7irje/09x/QybtYguqs/aQoSlorHy9XMEUNSFMuWLacR+oHMqnxhoAAaA72/VscfnIY6A9NJW2cceiDkjijjCaQn0XGFEKQnVHARtpqQecbJJtUkwHx6U699YSkFEsuGZUaYbw/W6z1mQbrYtSuKWdU1SgMrlemmFtqxHnHeTt/45248XzQR9klpfXb03/ZPlestlz7CYDaFiDcLZA+5ATSwkCGN7c5X2YZq3ttlavzJQahohC9xpB2Dl7qdA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mJdAcL4pWCF6YGSWRTUZ3sjmjJm5KKuVw9ryVFuMk+E=;
- b=idTBfQ/oqcBR+kwSt8SFXhSBzozNp2OeveE9T3+h3FHdUQmONxi8A8KNCP5fug3lrK6qZY32CvQUVE7GoI4hqhxEww7RAeETeuNaeDcafEIbSgn2OwmP56d4cBnoR3r99I2+1zVSGgt/XU0Ji3zbb01YM8YJQpFPQ4b/3VT4GVAuPsnmLzjo0tuwWh4tZcqmPPLigUXfLkUbKLWjuuGsFfUcjaVKB1fvPnZyO7YLVXG0mX/r2fHeu5ntB3dkmZflwThPPfqyRf8Aw/WdZuzqATPzniazzaoAnMrq7hXYe7tQzAzmLP61Rgz1AHafbgtE7VRiXCis22zPh7T4lNDgxQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mJdAcL4pWCF6YGSWRTUZ3sjmjJm5KKuVw9ryVFuMk+E=;
- b=fmw2REhf50OuJuYqeZQJMnF+hbCV4OUZh7W3iVgc9krsr21YURndQcF9CG6x/zexwPcAPeeasTBRkh9cU+kXneGawCS93k6eHcZoSXRoinoGb7ZQImDSTxqvE8g2i2p+bwJ1y5+NUDfbmhIfvo7xu6G8ZYptDIJMq3vUFVIdtEE=
-Received: from PH3PPF654CF2C22.namprd10.prod.outlook.com
- (2603:10b6:518:1::7a9) by DM6PR10MB4249.namprd10.prod.outlook.com
- (2603:10b6:5:221::10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.9; Fri, 5 Dec
- 2025 18:38:07 +0000
-Received: from PH3PPF654CF2C22.namprd10.prod.outlook.com
- ([fe80::a94c:94e4:9c1d:d98d]) by PH3PPF654CF2C22.namprd10.prod.outlook.com
- ([fe80::a94c:94e4:9c1d:d98d%7]) with mapi id 15.20.9388.009; Fri, 5 Dec 2025
- 18:38:07 +0000
-From: Stephen Brennan <stephen.s.brennan@oracle.com>
-To: Philipp Rudo <prudo@redhat.com>
-Cc: Omar Sandoval <osandov@osandov.com>, linux-debuggers@vger.kernel.org
-Subject: Re: Unknown ORC entry type 5 on RHEL 9 kernel
-In-Reply-To: <20251205114106.07848df1@rotkaeppchen>
-References: <87h5u6j9k1.fsf@oracle.com> <20251205114106.07848df1@rotkaeppchen>
-Date: Fri, 05 Dec 2025 10:38:05 -0800
-Message-ID: <87ldjgwz8y.fsf@oracle.com>
-Content-Type: text/plain
-X-ClientProxiedBy: PH8P223CA0004.NAMP223.PROD.OUTLOOK.COM
- (2603:10b6:510:2db::29) To PH3PPF654CF2C22.namprd10.prod.outlook.com
- (2603:10b6:518:1::7a9)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="QJXU0ivI"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=ACLxWNBKlHzVYrQhk+bIPDxbMvRXgt1a0foI415LnX4=; b=QJXU0ivIeBSXYI/xeJMRaNszO/
+	3N07ehRAX6bpi9ocM0/RhO18PXW7yDlTSBZeY2KO/EzP7HrqEFfNMN+caN/TAlT0zTxOmhXJGKJGC
+	DFqJzmsU8Fi8N4yFEX/r/AOacAnnKIKh4nmIVmJbpUJkywLMkOCRnSYNF7OrmWCi/OIG1ObxhqRwi
+	n/IRgskUcjEfHp41IVygkeiJXsTqr7vxTO5scFMdybpHp4b3hnPPzNhX/EIzhPDuEpKyEwDdJstjq
+	h1X39dJKIHUTC+IqdNwmUHfo8E+U/j51fff9B9mT9yc0neDnekDPXsKfz7aX7iZfNa/QNy1EmvPDI
+	Lck+C40A==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vVP2w-00000004ojt-3TS1;
+	Tue, 16 Dec 2025 07:00:34 +0000
+Message-ID: <93682055-4a6d-4098-b74f-afef735d1699@infradead.org>
+Date: Mon, 15 Dec 2025 23:00:33 -0800
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH3PPF654CF2C22:EE_|DM6PR10MB4249:EE_
-X-MS-Office365-Filtering-Correlation-Id: bdb06227-7a51-4d29-c0da-08de342d6ee3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?EVLeLct7lMwCsR8GZ+kUgRNjK3oWYw+le9TfRCtLrvuPbnZ3rwxy5ijwVAZh?=
- =?us-ascii?Q?4CSFVKF7V31UH50xSk9eC3m9E09vWoje3YRp543NHh2u/VdJ8VGR2Um9Lacl?=
- =?us-ascii?Q?gQdqarURLani8I3qnk0xU+GTs5UAWmRTCuMykMVKsrfP5LhaAy62+kJJxLX4?=
- =?us-ascii?Q?WDVqzePItesFMOM1C3Jp3R7sh+l9/PzcCGCUYft9fD9hC3pKbUIu+vDXq4+o?=
- =?us-ascii?Q?IzFXoRtbv+xxhgGy9X6NoBf7Krxv6c4C93pByhK/IsDNVyLN3Ocjv11lQMlL?=
- =?us-ascii?Q?NdOyl0P4MAuO/6uH9BPt5nCdD+H4HdNmzzQktws23jKeUikBMFOwE7+/mSv4?=
- =?us-ascii?Q?vfs18VNvS3G9fqga/RvU2gh4M3PgIyasKBVXE6rgdS2BWlhv7c/Lxizaas55?=
- =?us-ascii?Q?QzZeqolhgSY3wuKwJNmfUH9YkHk5NSSz7YrDmzpScVMXqIS8SY8YvSB84HyM?=
- =?us-ascii?Q?7UB6d4GhWvx0D+78UHTztisRvu2DpRFIP27co7PmuqG6WfgF62sr6N2z3nW1?=
- =?us-ascii?Q?utx/bN8mDW7+4dJeZcRDpQlwBV9Fv6OBnPHHrjCkiv3QUnrvHncNKpOA7OKr?=
- =?us-ascii?Q?IYmQXlH1UjPfR9JVp6Z7JODGrknmnuPWKlw3aeE+3vYl+NsV7pHT8+BzBwCl?=
- =?us-ascii?Q?TmJed8ZsrwhVeSNjXUFakWu4NIpV2k1EDSw43W5KZQC0QFszppE40mCHgN+x?=
- =?us-ascii?Q?RDawnHNXJxs3qKX+4bOi5jYPxXqlVELPyJ24QjSrHv0d2iXaLP+yT4BpBLaf?=
- =?us-ascii?Q?gVAnZ0xDnWjSdm0jA2fo3y6SAG+LgRVmBGU6nnlcuSIsSsyu8SEOFweki01L?=
- =?us-ascii?Q?7FUPaARX9fzk6GxJuzKDnLLgoPL0gvyCJZ2MoJx0b8/3EbK3L5vlwZ4rcljv?=
- =?us-ascii?Q?lXbqmX8RK7jTrSr6YZ96ClYr7GOKyl/ed8PaB4qaFVu4KlJCNty4NIc9S+Bi?=
- =?us-ascii?Q?GptXbEOF04rXHmeQ66BgjHwy7FH4JPWRAE3AEJ1awj4jOvNv1YiGdcY5ABMG?=
- =?us-ascii?Q?GPG1T47CGNsCdMowe/CozUBHKbc4rwVcacutNBc7TKkidLg1v3DJuuCQZEGG?=
- =?us-ascii?Q?Y/cs/9eS5tzMsfdVfqjBfm2eD4EQs5ikcoy1bKPKfyFAsq7+6BVmr6dKLI4s?=
- =?us-ascii?Q?1QwlGUV9Nvs+U4tBopr1LHwdzW1pfc0s8UKoEDJOuKifDy49JgWnF3wY1KoJ?=
- =?us-ascii?Q?4I4lIoOmzKAWpzMO29B9NoEGpAo4KOyhmetBPo80z4FhXQenOl50YaJjOODi?=
- =?us-ascii?Q?JtDEaSnxHRRhm27cq7ydUTToRi2B/oAisPBwRsx12xCoHTo0VSDRA8waV/nZ?=
- =?us-ascii?Q?x2CamrCI1unkzTgP0okm3/O7mLhwurBxInIzV6Whrzgmnnrvfos1UJ9FZF9w?=
- =?us-ascii?Q?7RKPO4Phd93P6oyKZ6TZyX3NERSMQsNcCK9L56ElVQRb75HB8Q=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH3PPF654CF2C22.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?woRIQ62RraEkGNhPTETRSKfScrQNH8KUbRHM6Qd7QGkMm0RxMU+F1avKmY7Q?=
- =?us-ascii?Q?K4SCnLUSvmRg/TtDKQ6YZvxytSz8p1Uau/uU5rF8ZO0o6Y1CKVPX1pDQ4jdZ?=
- =?us-ascii?Q?QR4pfcijUKF/4pu9pmDcB3grY9irCVR4lw7XgKVMinu0I+LNWvg3Yl+AoHFz?=
- =?us-ascii?Q?K7JXco3wKEIR/RzYjA2iUl6vbdL0oY3huz74OVARykwOP6xmYRhu9slrI1eL?=
- =?us-ascii?Q?pX4s/3fORkV7mewBXYaJkGVKzAhZreQxoeUTl++iSIO4hMuH3K9WN/PAU7MZ?=
- =?us-ascii?Q?aop6PDQieG0quct+JqipojSwkpaIScE+DGGVVatygySS5B09oSRJ7eOOKPyz?=
- =?us-ascii?Q?uzq7PbUdmmnNkmatkTdPX0VhQgoMn96vIoAgyy2wdhWIuB1ijsc+fopkXAg/?=
- =?us-ascii?Q?V4l70hBO87zPCrmvXjjFU+U9Fm1WdHZkToWM70vswCTqxBeYXEJi+GyTwyh9?=
- =?us-ascii?Q?tkRp8ZOSUnI66QcI2usb1XbQhKPR44yUUXcxk9D6KTFY6jlfp41OF7xRxZ0q?=
- =?us-ascii?Q?6odf9kXvOhjvxRmHbcL05QyPP9lgt8Xs73MCWPE/gNjioca/98Pgky25VKrf?=
- =?us-ascii?Q?vuKlgKAXWlA7zTGOqDgmJrete/caJ8yDqexFw/QNZDxEkPz6K9K+iJQvlCfD?=
- =?us-ascii?Q?7sUQy9w3lMacG1rqAkxezUrkOkGOZb+XDOWfZceNaAFANPF7Ct8NorfpJmL6?=
- =?us-ascii?Q?nNibjGwAR8Oa+nkPeo7jiYTsCYSg6NhdO3n+9MLvW2gtMvBlOajWeEFh27GK?=
- =?us-ascii?Q?Yo3VuXPI+uQrTQ5basyrTvTwezvXQ9xzxGvKWWt1XxMq4eYMymARvuiT5EDx?=
- =?us-ascii?Q?/DvErf37n4LRoCnBkobzULhdSlzK8z82SbhwqOqS2oDdGfm0iLd16ezv78Ev?=
- =?us-ascii?Q?HLxE/1jSbyCmE26+ZugBlp3nPQxYizG0fuRfgVvmwWD7smAGMSFfuwwL2PKg?=
- =?us-ascii?Q?AQ9Acp6sBS9xCvPqtujcg9SwmvE01pAHOs/cRH89MWtThhljUeoiSiq9x/cB?=
- =?us-ascii?Q?gQ1mXtMoZ218gF9vY1w2aWZ3mZnfLoqBk8X/w7SAxjhqvN7mvx1A7ZU38Pd5?=
- =?us-ascii?Q?DQWINEX8qb0K8nL6jZBZSgclhaybUNGtxCHitK/sjXI7334ynNk3TdLtmoR8?=
- =?us-ascii?Q?cC5Bx0x00CAiP0RQ2g3ZVph2WydjyIpWKyEscMqGdMI6tNPautfWU7msTfuk?=
- =?us-ascii?Q?CmvZnIRqh1s4YximQS7zCXwDbL3uA/8OsV3ZJs1hQxdZ4ttTz/Ife/nNU0Yv?=
- =?us-ascii?Q?hRe115z82Kp72OMYqjic2TDds4jDrDZzFjqqmGiR0XKl0z0q+O9X8gJUgvj7?=
- =?us-ascii?Q?v57YeGjJI43gewFncejg8cDinJiOyZsKFrMidRxbWlfGK+jeiHnrGbq6V37Y?=
- =?us-ascii?Q?n9LsSelWHPvAbTCUT3fkj1RLYgYlz1iSY9lLRgU67EwAehzFTUoOIQji14q+?=
- =?us-ascii?Q?afqwGsrr4ZTeWId4gp9QgbgsFWCO3XrU4RJJErNwZnqjbEMu/jcFiiMfHDTu?=
- =?us-ascii?Q?t/YXLhx3YkcKuV42vzZYtmO0JBvXnDlPUaPHaAlRBt4sV7vYKbWcxKoBWe5K?=
- =?us-ascii?Q?lJtuQiuz3K1a8Sa8InGuW4qTkM3Jy8/lb5rtheVxPKH295x3/rfi7jW8K0eu?=
- =?us-ascii?Q?sA=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	C7RrhVSVPeW0lK3OHMdrJuT1chTfEx//y0wYt3wRfoNvMdo33MG62hUhEvcfulHjo6VQa99PE/DUqp+Hf5pADG/3+hsE/1cuchmCdexIs3xAwHuAc7laEnzxiW9D48wZusJ9rzwatDTn0k598Mj+bkF7ehVnjX9r5v8ixUbv8SlkFkd99FwN4omskW96QmJWyiwrFKVs8QrHljo9h6Sz0OY6pLfLQjjIqPmUPaULlSZ9/Tme9rmkW5mqFnJ6ul9IBfy8I/qTOO1sz3sHFDhwy/WMKcwMihEAgnHzpV7sFhv9HTeLy9t2ZURr7b0qh7cgp+aT2xyukcoW4UO0z0iwo/jsUH1S6zG6PM2VusQA3Zv8P6srHcBxRVjvnYqGCfSzZcp88zaAQnjWgs7NHUqpHjGWBNpYeH0xAcQdtduavU+VlWDFVBN4WD4b7WVbmfoGmaDBcW8HBin4JLXQ5ZE98POIs5YSw0HizUJEBJH3pQrFMGZ4RcZ1cqgfWcZxeZRQh9JadbZMt1ibOhgMjGUcnNXgPyIxflwC3KegLLMPdTOB8vB+awdXQLhrjMjYqUyAY92CC1cUCdESHa9a7vv6eFfnX5nzjFli/hXlGkJF3Qk=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bdb06227-7a51-4d29-c0da-08de342d6ee3
-X-MS-Exchange-CrossTenant-AuthSource: PH3PPF654CF2C22.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2025 18:38:07.4342
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NjCGP89r3p1c89RuH0cSOYY5Ulw+9yCg2mVg/D1OoyznhP3F59QGqBh1frdFyhHPcIgyuogUMzTV3L2tKUYynUT4G0tvm4hGdgOHev1yATo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR10MB4249
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-05_06,2025-12-04_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 adultscore=0
- mlxlogscore=999 suspectscore=0 bulkscore=0 spamscore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
- definitions=main-2512050138
-X-Proofpoint-ORIG-GUID: tMnrMcYfmTyjMeX_tLTJI0gg0Wl8Bsag
-X-Proofpoint-GUID: tMnrMcYfmTyjMeX_tLTJI0gg0Wl8Bsag
-X-Authority-Analysis: v=2.4 cv=ILIPywvG c=1 sm=1 tr=0 ts=69332699 b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=wP3pNCr1ah4A:10
- a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22 a=NEAV23lmAAAA:8 a=p0WdMEafAAAA:8
- a=20KFwNOVAAAA:8 a=yPCof4ZbAAAA:8 a=u9SqAmalycr8LLFts7wA:9 cc=ntf
- awl=host:12098
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA1MDEzOCBTYWx0ZWRfX/WIdTBT04+RI
- 93JOe0DRre4e5zbpV90uWE0e7NWRqEoXaHIn4y6xxSa/rjv9jH/AXsDhXfcggYI7BKv8Wn7fceH
- ra0YIPfLfeBxD70CbVkvA2Zt7UziBDdGLLnw3+6uZqWyY0NXIgznYbtml8ovBzR7UasTRD/np0r
- 1qCzdCTiuc2Mbk6W2UCIpT+OCbGUjSly6ehS3ZsBhqNGNXfOXjXZbTZwiudf+xohiBBMUt/s77p
- 7d3I/eQTdmZyIN5Xzx8LZugXode+Xo0lccvhWfXIEn4jFVe6mW12/6uNOHz4OGLAwnS93WshWdO
- CCGsgPlxexrpNj48HoxGnC2My9TJMY0wcVtjecwhXNo8iEUt4S9FbGkt91VxY1h4/jTa8X89Inw
- iN10Apjn/7hTJ/wUQWUbJy/KpXUMeoFw5QCO6WhiDGK90ie2KeA=
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/26] Introduce meminspect
+From: Randy Dunlap <rdunlap@infradead.org>
+To: Eugen Hristev <eugen.hristev@linaro.org>, linux-arm-msm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, tglx@linutronix.de,
+ andersson@kernel.org, pmladek@suse.com, corbet@lwn.net, david@redhat.com,
+ mhocko@suse.com, linux-debuggers@vger.kernel.org
+Cc: tudor.ambarus@linaro.org, mukesh.ojha@oss.qualcomm.com,
+ linux-arm-kernel@lists.infradead.org, linux-hardening@vger.kernel.org,
+ jonechou@google.com, rostedt@goodmis.org, linux-doc@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+ linux-arch@vger.kernel.org, tony.luck@intel.com, kees@kernel.org,
+ Trilok Soni <tsoni@quicinc.com>, Kaushal Kumar <kaushalk@qti.qualcomm.com>,
+ Shiraz Hashim <shashim@qti.qualcomm.com>,
+ Peter Griffin <peter.griffin@linaro.org>, stephen.s.brennan@oracle.com,
+ Will McVicker <willmcvicker@google.com>,
+ "stefan.schmidt@linaro.org" <stefan.schmidt@linaro.org>
+References: <20251119154427.1033475-1-eugen.hristev@linaro.org>
+ <bf00eec5-e9fe-41df-b758-7601815b24a0@linaro.org>
+ <5903a8e1-71c6-4546-ac50-35effa078dda@infradead.org>
+ <c3db6ccd-dfc7-4a6a-82b7-3d615f8cab4f@linaro.org>
+ <b74aef93-9138-413a-8327-36c746d67e10@infradead.org>
+Content-Language: en-US
+In-Reply-To: <b74aef93-9138-413a-8327-36c746d67e10@infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Philipp Rudo <prudo@redhat.com> writes:
-> Hi Stephen,
->
-> thanks for letting me know. And yes that is something we need to fix in
-> the kernel rather than drgn.
->
-> I took a quick look and found that the change was included when
-> backporting fb799447ae29 ("x86,objtool: Split UNWIND_HINT_EMPTY in two")
-> for 9.6. Thing is that I'll be heading to LPC tomorrow and won't have
-> time to work on it properly before that...
 
-Thanks for taking a deeper look! No worries on timing, it's not urgent.
-If you think the most likely fix will be to backport commit
-b9f174c811e3a ("x86/unwind/orc: Add ELF section with ORC version
-identifier"), then I believe the drgn workaround I proposed in the
-Github issue [1] should work fine: once the .orc_header section is
-found, drgn will detect it and use the correct hash. The only difference
-being that the "true" first broken version was 5.14.0-517.el9, which
-might be worth encoding in the code in case somebody ever runs drgn
-against a weird unreleased version from that development period.
 
-[1]: https://github.com/osandov/drgn/issues/578#issuecomment-3614826789
+On 12/15/25 10:54 PM, Randy Dunlap wrote:
+> 
+> 
+> On 12/12/25 11:22 PM, Eugen Hristev wrote:
+>>
+>>
+>> On 12/13/25 08:57, Randy Dunlap wrote:
+>>> Hi,
+>>>
+>>> On 12/12/25 10:48 PM, Eugen Hristev wrote:
+>>>>
+>>>>
+>>>> On 11/19/25 17:44, Eugen Hristev wrote:
+>>>>> meminspect is a mechanism which allows the kernel to mark specific memory
+>>>>> areas for memory dumping or specific inspection, statistics, usage.
+>>>>> Once regions are marked, meminspect keeps an internal list with the regions
+>>>>> in a dedicated table.
+>>>>
+>>>> [...]
+>>>>
+>>>>
+>>>>> I will present this version at Plumbers conference in Tokyo on December 13th:
+>>>>> https://lpc.events/event/19/contributions/2080/
+>>>>> I am eager to discuss it there face to face.
+>>>>
+>>>> Summary of the discussions at LPC talk on Dec 13th:
+>>>>
+>>>> One main idea on the static variables annotation was to do some linker
+>>>> magic, to create a list of variables in the tree, that would be parsed
+>>>> by some script, the addresses and sizes would be then stored into the
+>>>> dedicated section at the script level, without having any C code change.
+>>>> Pros: no C code change, Cons: it would be hidden/masked from the code,
+>>>> easy to miss out, which might lead to people's variables being annotated
+>>>> without them knowing
+>>>>
+>>>> Another idea was to have variables directly stored in a dedicated
+>>>> section which would be added to the table.
+>>>> e.g. static int __attribute(section (...)) nr_irqs;
+>>>> Pros: no more meminspect section Cons: have to keep all interesting
+>>>> variables in a separate section, which might not be okay for everyone.
+>>>>
+>>>> On dynamic memory, the memblock flag marking did not receive any obvious
+>>>> NAKs.
+>>>>
+>>>> On dynamic memory that is bigger in size than one page, as the table
+>>>> entries are registered by virtual address, this would be non-contiguous
+>>>> in physical memory. How is this solved?
+>>>> -> At the moment it's left for the consumer drivers to handle this
+>>>> situation. If the region is a VA and the size > PAGE_SIZE, then the
+>>>> driver needs to handle the way it handles it. Maybe the driver that
+>>>> parses the entry needs to convert it into multiple contiguous entries,
+>>>> or just have virtual address is enough. The inspection table does not
+>>>> enforce or limit the entries to contiguous entries only.
+>>>>
+>>>> On the traverse/notifier system, the implementation did not receive any
+>>>> obvious NAKs
+>>>>
+>>>> General comments:
+>>>>
+>>>> Trilok Soni from Qualcomm mentioned they will be using this into their
+>>>> software deliveries in production.
+>>>>
+>>>> Someone suggested to have some mechanism to block specific data from
+>>>> being added to the inspection table as being sensitive non-inspectable
+>>>> data.
+>>>> [Eugen]: Still have to figure out how that could be done. Stuff is not
+>>>> being added to the table by default.
+>>>>
+>>>> Another comment was about what use case there is in mind, is this for
+>>>> servers, or for confidential computing, because each different use case
+>>>> might have different requirements, like ignoring some regions is an
+>>>> option in one case, but bloating the table in another case might not be
+>>>> fine.
+>>>> [Eugen]: The meminspect scenario should cover all cases and not be too
+>>>> specific. If it is generic enough and customizable enough to care for
+>>>> everyone's needs then I consider it being a success. It should not
+>>>> specialize in neither of these two different cases, but rather be
+>>>> tailored by each use case to provide the mandatory requirements for that
+>>>> case.
+>>>>
+>>>> Another comment mentioned that this usecase does not apply to many
+>>>> people due to firmware or specific hardware needed.
+>>>> [Eugen]: one interesting proposed usecase is to have a pstore
+>>>> driver/implementation that would traverse the inspection table at panic
+>>>> handler time, then gather data from there to store in the pstore
+>>>> (ramoops, mtdoops or whatever backend) and have it available to the
+>>>> userspace after reboot. This would be a nice use case that does not
+>>>> require firmware nor specific hardware, just pstore backend support.
+>>>>
+>>>> Ending note was whether this implementation is going in a good direction
+>>>> and what would be the way to having it moving upstream.
+>>>>
+>>>> Thanks everyone who attended and came up with ideas and comments.
+>>>> There are a few comments which I may have missed, so please feel free to
+>>>> reply to this email to start a discussion thread on the topic you are
+>>>> interested in.
+>>>>
+>>>> Eugen
+>>>>
+>>>
+>>> Maybe you or someone else has already mentioned this. If so, sorry I missed it.
+>>>
+>>> How does this compare or contrast to VMCOREINFO?
+>>>
+>>> thanks.
+>>
+>> This inspection table could be created in an VMCOREINFO way, the patch
+>> series here[1] is something that would fit it best .
+>>
+>> The drawbacks are :
+>> some static variables have to be registered to VMCOREINFO in their file
+>> of residence. This means including vmcoreinfo header and adding
+>> functions/code there, and everywhere that would be needed , or , the
+>> variables have to be un-static'ed , which is a no-go.
+>> This received more negative opinions on that particular patch series.
+>> The annotation idea seemed cleaner and simpler, and more generic.
+>>
+>> We could add more and more entries to the vmcoreinfo table, but that
+>> would mean expanding it a lot, which it would maybe defy its purpose,
+>> and be getting too big, especially for the cases where custom drivers
+>> would like to register data.
+>>
+>> How I see it, is that maybe the vmcoreinfo init function, could also
+>> parse the inspection table and create more entries if that is needed.
+>> So somehow memory inspection is a superset or generalization , while
+>> VMCOREINFO is a more particular use case that would fit here.
+>>
+>> Do you think of some better way to integrate the meminspect table into
+>> VMCOREINFO ?
+> 
+> No, I just wanted to make sure that you or someone had looked into that.
+> Thanks for your summary.
 
-> One more hint. When you want to get the history of RHEL, it's better to
-> check the centos-stream repo then the changelog. There you have the
-> full git history (modulo some embargoed CVE fixes).
->
-> https://gitlab.com/redhat/centos-stream/src/kernel/centos-stream-9
+Although you copied Stephen Brennan on this, I think it would be a good idea
+to copy the linux-debuggers@vger.kernel.org mailing list also to see if
+there are any other comments about it. [now done]
 
-Thanks, that helps a lot!
-Stephen
+>> [1]
+>> https://lore.kernel.org/all/20250912150855.2901211-1-eugen.hristev@linaro.org/
+> 
 
-> Thanks
-> Philipp
->
->
-> On Thu, 04 Dec 2025 12:06:54 -0800
-> Stephen Brennan <stephen.s.brennan@oracle.com> wrote:
->
->> Hi Philipp,
->> 
->> I wanted to let you know about an issue with drgn's stack unwinding on
->> the RHEL 9 kernel. It looks like that kernel backports some ORC changes,
->> without including a change Omar made (including an .orc_header section)
->> to help identify the ORC format version. I've included more details on
->> this drgn issue:
->> 
->> https://github.com/osandov/drgn/issues/578
->> 
->> The result is that drgn can't unwind stacks on the RHEL 9 kernel. I
->> think the best path forward would be to include the .orc_header patch:
->> b9f174c811e3a ("x86/unwind/orc: Add ELF section with ORC version identifier")
->> 
->> As it is, the RHEL 9 drgn can't unwind stacks on the RHEL 9 kernel,
->> which seems less than ideal.
->> 
->> Thanks,
->> Stephen
->> 
+-- 
+~Randy
+

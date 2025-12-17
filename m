@@ -1,253 +1,153 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293D333A6FA
-	for <linux-debuggers@vger.kernel.org>; Tue, 16 Dec 2025 07:27:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64430338901
+	for <linux-debuggers@vger.kernel.org>; Wed, 17 Dec 2025 16:11:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765870040; cv=none; b=A7/fnsLoUxH09z/k7m/KeE1xbZjqY6VNtTO39jjaFbBaV6P39Y3CH3CyEX292aGKVvW4gY83xuckJUAD8ZEOuDd/yFHuU5xph4THV/aPKbrJ7IfHOuyL5on0TOUJGjJ7g3/TwbCsjxgYoBvMtr5g4/1fMYFsiMEZeM7Uaqtpt3A=
+	t=1765987880; cv=none; b=uEOlealO5z9f37okB7ttU4StRuaoSqNqWktfxXGBYZ1bPz6yyzL8ny2W+c0dWWqOMn+Zuihcr5qhTcr1lfMFRnn9YXzHuPQM/y2J1zPDsM6kGyWo3vnGp/2KUp1sZAdW+h3koABC7JGUS2MF+JbLzlyYrjAFRA3JORvwqRQDRNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765870040; c=relaxed/simple;
-	bh=0kPUYHQ/G4RfpscPzI7pr0OmdhWbcBqqBUxeWAMHLZc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PamVppk5OT0dE/UlCt9oFhWvNANeZyDR/gxyxY3VbWAcbBRMOLPKXidrrbkKsR+whkcaKUYOIVDjuUS7o62uv9iFPLiTkhPJwQJyBJ4EiSDHCduGCRYdogPvD4Qhn5E2wwrIAyCI9Lhyl+gmcjHvbCW0eb/cqZqC0fEaWT8hcBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lm5xSb2X; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1765987880; c=relaxed/simple;
+	bh=9of+tpkTjAxj1o/8ZXiIWl5CsujNjn4Njwojn+CC8tM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=s0vNVcCUfmIfyS2BqzEXpkqsFimtJqwiFUEAHQY3jsiqRqIj+F9t6kgcaPxFb+I+bN/f9V7fRTGS3l+ZHYc7MzO6uzYXKDYdNmvqYZN8ItBQKH5jy38NDntx8CApNhrUKFsR/QVZvJPMQUwmrkwBrsruWKSPWmr0m3PypqSQiGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=K/gs8H7m; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lm5xSb2X"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2a099233e8dso23471695ad.3
-        for <linux-debuggers@vger.kernel.org>; Mon, 15 Dec 2025 23:27:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1765870037; x=1766474837; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=PJCA2xXmtdABe9cuOOw6HKVAFYxYWKkv6zuIQkQSiJk=;
-        b=lm5xSb2XbgVJJua1CVQR22c9ySMunRfdv1obZuP3q9tqFUszoVK2AI81SnQikH6oQo
-         MtZz3tXiWDkspnAJG9pRyQ4Ltm06lq4i0Y/1r6nrQ7n4NUfmCokCI9OJPNpEk+hVlTjr
-         XtN9sbaOTK5KT0dqsURNXid7bpMHi3fCUu0lY49pRKjE2znj9nJwumsy+1PDrz2nnb/l
-         4qpvGvPntnl1xo+o7Y4hi81Lvd+3SOYfrOEWvRsh6zm87jsFXDWgQIMlAfslkwc275NP
-         L8+hfzcADz4BBx0QSc8lGEPh4F8coTr0wJC7uaehXSjP/n37CM9ALb0Izpzc84CUHXKo
-         sm/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765870037; x=1766474837;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PJCA2xXmtdABe9cuOOw6HKVAFYxYWKkv6zuIQkQSiJk=;
-        b=UdvWQSQAyMdVg+4+aI3rXNB0OjqzWMPaVgJZM2Hv+MQtToYKhK4yOjeQAJGOqKlbAn
-         6OciPlPwNGVXFR1LuvVT2bwXcZUeuKV8BNGu3vXl7Ml0gD3XECtb2ySEEhOb/1KCiW2z
-         JVMexOvZJzvc8k/gu7uIgKEagUbjWSGPJxIhC+DTdevgGvR00abQ5HXoBuxSK+UKYrkQ
-         BF/be0X/V8kr4ipJN/RylUBwTGblRkcdmag5KKXZFknwisPl8f32AMtoOeuNznkuACyC
-         9znb4vKzhbt+EWQ26c0gWzylsxx4OT6NezqLXXods8vAeh349VkbLuAPkYlPnBIyICyv
-         NUJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUIKLPSTXeVymL5yYxiJd+vOP4QU3At0faOU0XgA1WvpA4Tl7DobgrJ1fG4xPR9gVd/1k+ZtGgDGoQ+NoeQ+zo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyDNmAdiN1waG8+ODKcSBeDZOE3XkLgBUbhQTrHH6shyO4cREwu
-	PeFvlKP24Y4+MHxEeQkd60Y/OCLgXi3KI3Bq2ftP1J4Bn2bY9y4T+kkZ2L0kWDbDWbs=
-X-Gm-Gg: AY/fxX7RMSykflUC3IRsRg4FTxyuGvKFXWQimcAn1hoUwoohpxC39a0Y0fYN819KaiJ
-	Fvcrzc098/TkJFcFm2iEFbEu8NYXRkvyv74FWYf9ozvC3LQyZ/aqhrLlRGvrO3nGRsZAEj1zrn2
-	u3ZvukU2IWN9iVfveZtyXYCXo1WsOxuckW2gvvk6+adAnPr28wC1bMlUR5blckHV6s99betQBSi
-	VLNTTAG4KBIBn/xEoxs/YHyTia/7S4c5Iz9P9ZZxetyhPPRIZe4JdIMMtSw/TbmwnmLi4n+WZmb
-	rnLpBvqs+L+cVgxoPgaVwkyTABYaxHVmbhs5FSPfbr095OE4XZrQ908QMMJB/Jc1jrbCOw0oZB5
-	2lqDwTCMFTCWrrLj2ZjV5sVUOYiuPCQ4wYICEysGN5VyoeAFSbbtrbXXhDje+dmgaK1tLry89eK
-	nxWkA/9jxtUvzFreVB3PfyabaOKIZAHixsfv0oyViruMZcoxYiBu4l+Q==
-X-Google-Smtp-Source: AGHT+IG0XHPlxrZ19+Thmc35PPwHSeilDW9jn34WiJoQPAtDXf3ILNz55k3pKMcPVzcVte7yg4mphg==
-X-Received: by 2002:a17:902:ea0b:b0:297:dabf:9900 with SMTP id d9443c01a7336-29f23bde313mr144794935ad.0.1765870036820;
-        Mon, 15 Dec 2025 23:27:16 -0800 (PST)
-Received: from [192.168.10.197] (14-201-17-74.static.tpgi.com.au. [14.201.17.74])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29ee9b36a80sm155735495ad.19.2025.12.15.23.27.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Dec 2025 23:27:16 -0800 (PST)
-Message-ID: <93297eb0-1ad4-40ba-9438-ac02aa6b1d6b@linaro.org>
-Date: Tue, 16 Dec 2025 09:27:03 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="K/gs8H7m"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1765987875;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QtNSs/E51l4uAHS0XLofGGANMYC/vYq+/qpWLJ/WvZs=;
+	b=K/gs8H7mZHFbnLs4UyFMAqH6d8pXi3yj+BtoJoIw/JSsDGQCz2fKRsNz13A5MwXMoBJZw/
+	vZSCVmfyadVdhFsODSeLzoSSAxcYff2tF8+nXDwqugG/GpnHSPeutAEx+jPHadhnnXOrEj
+	ygUXcfsgo6suPCLvORnldkclihzNqu4=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-657-JEgA1aNdPsSi6litYoeIaA-1; Wed,
+ 17 Dec 2025 11:11:12 -0500
+X-MC-Unique: JEgA1aNdPsSi6litYoeIaA-1
+X-Mimecast-MFC-AGG-ID: JEgA1aNdPsSi6litYoeIaA_1765987871
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6A0711955DC7;
+	Wed, 17 Dec 2025 16:11:11 +0000 (UTC)
+Received: from rotkaeppchen (unknown [10.44.32.15])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0C65430001A2;
+	Wed, 17 Dec 2025 16:11:09 +0000 (UTC)
+Date: Wed, 17 Dec 2025 17:11:05 +0100
+From: Philipp Rudo <prudo@redhat.com>
+To: Stephen Brennan <stephen.s.brennan@oracle.com>
+Cc: Omar Sandoval <osandov@osandov.com>, linux-debuggers@vger.kernel.org
+Subject: Re: Unknown ORC entry type 5 on RHEL 9 kernel
+Message-ID: <20251217171105.67a9e059@rotkaeppchen>
+In-Reply-To: <87ldjgwz8y.fsf@oracle.com>
+References: <87h5u6j9k1.fsf@oracle.com>
+	<20251205114106.07848df1@rotkaeppchen>
+	<87ldjgwz8y.fsf@oracle.com>
+Organization: Red Hat inc.
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/26] Introduce meminspect
-To: Randy Dunlap <rdunlap@infradead.org>, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, tglx@linutronix.de,
- andersson@kernel.org, pmladek@suse.com, corbet@lwn.net, david@redhat.com,
- mhocko@suse.com, linux-debuggers@vger.kernel.org,
- "kees@kernel.org" <kees@kernel.org>
-Cc: tudor.ambarus@linaro.org, mukesh.ojha@oss.qualcomm.com,
- linux-arm-kernel@lists.infradead.org, linux-hardening@vger.kernel.org,
- jonechou@google.com, rostedt@goodmis.org, linux-doc@vger.kernel.org,
- devicetree@vger.kernel.org, linux-remoteproc@vger.kernel.org,
- linux-arch@vger.kernel.org, tony.luck@intel.com, kees@kernel.org,
- Trilok Soni <tsoni@quicinc.com>, Kaushal Kumar <kaushalk@qti.qualcomm.com>,
- Shiraz Hashim <shashim@qti.qualcomm.com>,
- Peter Griffin <peter.griffin@linaro.org>, stephen.s.brennan@oracle.com,
- Will McVicker <willmcvicker@google.com>,
- "stefan.schmidt@linaro.org" <stefan.schmidt@linaro.org>
-References: <20251119154427.1033475-1-eugen.hristev@linaro.org>
- <bf00eec5-e9fe-41df-b758-7601815b24a0@linaro.org>
- <5903a8e1-71c6-4546-ac50-35effa078dda@infradead.org>
- <c3db6ccd-dfc7-4a6a-82b7-3d615f8cab4f@linaro.org>
- <b74aef93-9138-413a-8327-36c746d67e10@infradead.org>
- <93682055-4a6d-4098-b74f-afef735d1699@infradead.org>
-From: Eugen Hristev <eugen.hristev@linaro.org>
-Content-Language: en-US
-In-Reply-To: <93682055-4a6d-4098-b74f-afef735d1699@infradead.org>
-Content-Type: text/plain; charset=UTF-8
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: EeajtucEeUsYaWvYonTnf3F-7rk7ugp5mb14RiiSFCU_1765987871
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
+Hi Stephen,
+Hi Omar,
 
+On Fri, 05 Dec 2025 10:38:05 -0800
+Stephen Brennan <stephen.s.brennan@oracle.com> wrote:
 
-On 12/16/25 09:00, Randy Dunlap wrote:
+> Philipp Rudo <prudo@redhat.com> writes:
+> > Hi Stephen,
+> >
+> > thanks for letting me know. And yes that is something we need to fix in
+> > the kernel rather than drgn.
+> >
+> > I took a quick look and found that the change was included when
+> > backporting fb799447ae29 ("x86,objtool: Split UNWIND_HINT_EMPTY in two")
+> > for 9.6. Thing is that I'll be heading to LPC tomorrow and won't have
+> > time to work on it properly before that...  
 > 
+> Thanks for taking a deeper look! No worries on timing, it's not urgent.
+> If you think the most likely fix will be to backport commit
+> b9f174c811e3a ("x86/unwind/orc: Add ELF section with ORC version
+> identifier"), then I believe the drgn workaround I proposed in the
+> Github issue [1] should work fine: once the .orc_header section is
+> found, drgn will detect it and use the correct hash. The only difference
+> being that the "true" first broken version was 5.14.0-517.el9, which
+> might be worth encoding in the code in case somebody ever runs drgn
+> against a weird unreleased version from that development period.
 > 
-> On 12/15/25 10:54 PM, Randy Dunlap wrote:
->>
->>
->> On 12/12/25 11:22 PM, Eugen Hristev wrote:
->>>
->>>
->>> On 12/13/25 08:57, Randy Dunlap wrote:
->>>> Hi,
->>>>
->>>> On 12/12/25 10:48 PM, Eugen Hristev wrote:
->>>>>
->>>>>
->>>>> On 11/19/25 17:44, Eugen Hristev wrote:
->>>>>> meminspect is a mechanism which allows the kernel to mark specific memory
->>>>>> areas for memory dumping or specific inspection, statistics, usage.
->>>>>> Once regions are marked, meminspect keeps an internal list with the regions
->>>>>> in a dedicated table.
->>>>>
->>>>> [...]
->>>>>
->>>>>
->>>>>> I will present this version at Plumbers conference in Tokyo on December 13th:
->>>>>> https://lpc.events/event/19/contributions/2080/
->>>>>> I am eager to discuss it there face to face.
->>>>>
->>>>> Summary of the discussions at LPC talk on Dec 13th:
->>>>>
->>>>> One main idea on the static variables annotation was to do some linker
->>>>> magic, to create a list of variables in the tree, that would be parsed
->>>>> by some script, the addresses and sizes would be then stored into the
->>>>> dedicated section at the script level, without having any C code change.
->>>>> Pros: no C code change, Cons: it would be hidden/masked from the code,
->>>>> easy to miss out, which might lead to people's variables being annotated
->>>>> without them knowing
->>>>>
->>>>> Another idea was to have variables directly stored in a dedicated
->>>>> section which would be added to the table.
->>>>> e.g. static int __attribute(section (...)) nr_irqs;
->>>>> Pros: no more meminspect section Cons: have to keep all interesting
->>>>> variables in a separate section, which might not be okay for everyone.
->>>>>
->>>>> On dynamic memory, the memblock flag marking did not receive any obvious
->>>>> NAKs.
->>>>>
->>>>> On dynamic memory that is bigger in size than one page, as the table
->>>>> entries are registered by virtual address, this would be non-contiguous
->>>>> in physical memory. How is this solved?
->>>>> -> At the moment it's left for the consumer drivers to handle this
->>>>> situation. If the region is a VA and the size > PAGE_SIZE, then the
->>>>> driver needs to handle the way it handles it. Maybe the driver that
->>>>> parses the entry needs to convert it into multiple contiguous entries,
->>>>> or just have virtual address is enough. The inspection table does not
->>>>> enforce or limit the entries to contiguous entries only.
->>>>>
->>>>> On the traverse/notifier system, the implementation did not receive any
->>>>> obvious NAKs
->>>>>
->>>>> General comments:
->>>>>
->>>>> Trilok Soni from Qualcomm mentioned they will be using this into their
->>>>> software deliveries in production.
->>>>>
->>>>> Someone suggested to have some mechanism to block specific data from
->>>>> being added to the inspection table as being sensitive non-inspectable
->>>>> data.
->>>>> [Eugen]: Still have to figure out how that could be done. Stuff is not
->>>>> being added to the table by default.
->>>>>
->>>>> Another comment was about what use case there is in mind, is this for
->>>>> servers, or for confidential computing, because each different use case
->>>>> might have different requirements, like ignoring some regions is an
->>>>> option in one case, but bloating the table in another case might not be
->>>>> fine.
->>>>> [Eugen]: The meminspect scenario should cover all cases and not be too
->>>>> specific. If it is generic enough and customizable enough to care for
->>>>> everyone's needs then I consider it being a success. It should not
->>>>> specialize in neither of these two different cases, but rather be
->>>>> tailored by each use case to provide the mandatory requirements for that
->>>>> case.
->>>>>
->>>>> Another comment mentioned that this usecase does not apply to many
->>>>> people due to firmware or specific hardware needed.
->>>>> [Eugen]: one interesting proposed usecase is to have a pstore
->>>>> driver/implementation that would traverse the inspection table at panic
->>>>> handler time, then gather data from there to store in the pstore
->>>>> (ramoops, mtdoops or whatever backend) and have it available to the
->>>>> userspace after reboot. This would be a nice use case that does not
->>>>> require firmware nor specific hardware, just pstore backend support.
->>>>>
->>>>> Ending note was whether this implementation is going in a good direction
->>>>> and what would be the way to having it moving upstream.
->>>>>
->>>>> Thanks everyone who attended and came up with ideas and comments.
->>>>> There are a few comments which I may have missed, so please feel free to
->>>>> reply to this email to start a discussion thread on the topic you are
->>>>> interested in.
->>>>>
->>>>> Eugen
->>>>>
->>>>
->>>> Maybe you or someone else has already mentioned this. If so, sorry I missed it.
->>>>
->>>> How does this compare or contrast to VMCOREINFO?
->>>>
->>>> thanks.
->>>
->>> This inspection table could be created in an VMCOREINFO way, the patch
->>> series here[1] is something that would fit it best .
->>>
->>> The drawbacks are :
->>> some static variables have to be registered to VMCOREINFO in their file
->>> of residence. This means including vmcoreinfo header and adding
->>> functions/code there, and everywhere that would be needed , or , the
->>> variables have to be un-static'ed , which is a no-go.
->>> This received more negative opinions on that particular patch series.
->>> The annotation idea seemed cleaner and simpler, and more generic.
->>>
->>> We could add more and more entries to the vmcoreinfo table, but that
->>> would mean expanding it a lot, which it would maybe defy its purpose,
->>> and be getting too big, especially for the cases where custom drivers
->>> would like to register data.
->>>
->>> How I see it, is that maybe the vmcoreinfo init function, could also
->>> parse the inspection table and create more entries if that is needed.
->>> So somehow memory inspection is a superset or generalization , while
->>> VMCOREINFO is a more particular use case that would fit here.
->>>
->>> Do you think of some better way to integrate the meminspect table into
->>> VMCOREINFO ?
->>
->> No, I just wanted to make sure that you or someone had looked into that.
->> Thanks for your summary.
-> 
-> Although you copied Stephen Brennan on this, I think it would be a good idea
-> to copy the linux-debuggers@vger.kernel.org mailing list also to see if
-> there are any other comments about it. [now done]
+> [1]: https://github.com/osandov/drgn/issues/578#issuecomment-3614826789
 
-Thanks . I copied Stephen because we had a discussion at LPC at his talk
-and he also attended my talk.
+I had a look today. Unfortunately backporting b9f174c811e3
+("x86/unwind/orc: Add ELF section with ORC version identifier") isn't as
+straight forward as I hoped. The problem is that the RHEL9 kernel is
+missing commit 321648455061 ("kbuild: use obj-y instead extra-y for
+objects placed at the head"). Without that commit Omar's fix won't
+work as intended and in fact causes problems...
 
-I also had a nice talk with Kees Cook and he was very interested in
-having pstore as a backend for meminspect. (copied now as well)
+I found an internal discussion about backporting 321648455061 ("kbuild:
+use obj-y instead extra-y for objects placed at the head"). But back then
+(~2 years ago) it was deemed to be too invasive to backport for RHEL9. I
+don't think this will change now even later in the RHEL9 life cycle.
+
+All in all I'm afraid we are stuck with Stephen's work around.
+
+Thanks
+Philipp
 
 > 
->>> [1]
->>> https://lore.kernel.org/all/20250912150855.2901211-1-eugen.hristev@linaro.org/
->>
+> > One more hint. When you want to get the history of RHEL, it's better to
+> > check the centos-stream repo then the changelog. There you have the
+> > full git history (modulo some embargoed CVE fixes).
+> >
+> > https://gitlab.com/redhat/centos-stream/src/kernel/centos-stream-9  
+> 
+> Thanks, that helps a lot!
+> Stephen
+> 
+> > Thanks
+> > Philipp
+> >
+> >
+> > On Thu, 04 Dec 2025 12:06:54 -0800
+> > Stephen Brennan <stephen.s.brennan@oracle.com> wrote:
+> >  
+> >> Hi Philipp,
+> >> 
+> >> I wanted to let you know about an issue with drgn's stack unwinding on
+> >> the RHEL 9 kernel. It looks like that kernel backports some ORC changes,
+> >> without including a change Omar made (including an .orc_header section)
+> >> to help identify the ORC format version. I've included more details on
+> >> this drgn issue:
+> >> 
+> >> https://github.com/osandov/drgn/issues/578
+> >> 
+> >> The result is that drgn can't unwind stacks on the RHEL 9 kernel. I
+> >> think the best path forward would be to include the .orc_header patch:
+> >> b9f174c811e3a ("x86/unwind/orc: Add ELF section with ORC version identifier")
+> >> 
+> >> As it is, the RHEL 9 drgn can't unwind stacks on the RHEL 9 kernel,
+> >> which seems less than ideal.
+> >> 
+> >> Thanks,
+> >> Stephen
+> >>   
 > 
 

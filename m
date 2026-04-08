@@ -1,68 +1,68 @@
-Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 663A43AA1AF
-	for <linux-debuggers@vger.kernel.org>; Tue, 31 Mar 2026 21:14:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523DF370D47
+	for <linux-debuggers@vger.kernel.org>; Wed,  8 Apr 2026 19:50:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774991685; cv=none; b=YRIa1GY+cFna/sHhnLBc1h33ZvjmRnNpP7tsbpqT7qHU5jElOiMMslMTVitUZ9Mh99L5fYROaDgaoSUOLmpk76cQFiwAtZePeNBSHHEOrJRubzNimUqnEozOycMAa85GIk17TLZnrhAqQjD9HbHNgA6A9djo+fug/Wpk8bKdEtw=
+	t=1775677818; cv=none; b=I9JLLap1GmvdAKJInF0l9neYVJri4pHDbLzGsUcS+4OLvd4o6mCcmFKIugmqoEbPc4QDm6O4KMfZWR9KYPVGi7Yr/uMrkck+AD50QUGbs5lsgUUhoPIGiMu5KqkPeSmOgPJsaIpPRzaah1DzWsMUq7mg8NvHeDEXOtCHEjx3pZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774991685; c=relaxed/simple;
-	bh=eq/BomVLXhLlSIE6kYda0LURr9QOpcbgES99B/IYBTo=;
+	s=arc-20240116; t=1775677818; c=relaxed/simple;
+	bh=+IA5m7ndzSYeppVYzrI5/8EN2PEGwr4deYc5UolMuDM=;
 	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=tucMM/WE9O6CaZ5cQLFyhstFf6mRCseTcNpnc+msr3AJ/cxaZ9RweQ1xGbVw7G20fwk2n8RY0F/pcqx7OqpizeKMWUyyKLQ3WuMf+1fkvfr6PatGER5iwoa7v8/eb1WuaVfiyLuW4QxG1rdFSJEFrhwgXLf0m/TMIWL9713WUeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com; spf=none smtp.mailfrom=osandov.com; dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b=jBWcZL6A; arc=none smtp.client-ip=74.125.82.43
+	 Content-Disposition; b=ILvaXRY5t2mwxej3/d0KIVuaQav++mbzK6Kwob2dXBzb9QHi3MY5ll20oJz5eOyXSB266NHLWEGxPR0qGBWG1wIRSCQKe5/8g1TFiOIwfyLdk6Zj3rDBfXzr2Pillvv6ZtMJC3HavUu4HZlut95L4963qwZwMR7+PAPJVUYtvMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com; spf=none smtp.mailfrom=osandov.com; dkim=pass (2048-bit key) header.d=osandov-com.20251104.gappssmtp.com header.i=@osandov-com.20251104.gappssmtp.com header.b=lckex/tC; arc=none smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=osandov.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b="jBWcZL6A"
-Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-12a77005d69so440095c88.1
-        for <linux-debuggers@vger.kernel.org>; Tue, 31 Mar 2026 14:14:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=osandov-com.20251104.gappssmtp.com header.i=@osandov-com.20251104.gappssmtp.com header.b="lckex/tC"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2aae4d2d215so234325ad.2
+        for <linux-debuggers@vger.kernel.org>; Wed, 08 Apr 2026 12:50:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1774991682; x=1775596482; darn=vger.kernel.org;
+        d=osandov-com.20251104.gappssmtp.com; s=20251104; t=1775677816; x=1776282616; darn=vger.kernel.org;
         h=content-disposition:mime-version:message-id:subject:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=eq/BomVLXhLlSIE6kYda0LURr9QOpcbgES99B/IYBTo=;
-        b=jBWcZL6A+ON/utUjyvgMUtFy5E1aLIzSl7Kn7FX4vjDnmDJzsMCK5IYVzvEeoGcRQi
-         3tRN5Vz9YhnWh9yaJ6jvb4GJRwF/zG3HcFjmdm7T4VYi8/3ThIXGVQT5MUm0GMd+sY7Y
-         NiacnUxF8EB6J3UP/MMQfVb3dnq/8LRcKSQ0U7DzZGPq4NOZ1wpof1jqQqd0jBcsop8N
-         n6/ax7YsHYKlvpy4lu91AvwMVVce5POwdlS2FQ/PjfhdqSi1/i+vwewkuKkiS5ARGXIH
-         DpqIcZxqAheWfhZxXOCeeGKN80+0uJeiHHp01lM+jgj5yMfjW6MWvOC395yXGVx0L62X
-         rmBw==
+        bh=+IA5m7ndzSYeppVYzrI5/8EN2PEGwr4deYc5UolMuDM=;
+        b=lckex/tCZ5Gz7YJTLlV9df/0iLXiOxvBjJIi+y0JeWrBs14uHfIJyY5Eeck4G/D44y
+         xKbIkcpN4z/6nwp6f64lnO0s7nRta+illbnIJjRh1wkVio+Jen9jEfolfml5vG5zMh11
+         lDjJm6NAuRHAc5l8oKQpitj1/KuifxUY1m+aGDOH9Qgu/0GlsDJybxBhQ//di1XUnSQj
+         iIoEBKN2XQzgajcnZ4h/mJHp8vElAj/slUW0neCZyLEYmdGWKZFKLsWghLuSLm+ie9Cj
+         H/Y3AIQZEFlZv03EDaxbmHZndqZZnhhReslS47ijqeK8bFtpOe7REi+N7Pfe8v9iiZcg
+         Ht9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774991682; x=1775596482;
+        d=1e100.net; s=20251104; t=1775677816; x=1776282616;
         h=content-disposition:mime-version:message-id:subject:to:from:date
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=eq/BomVLXhLlSIE6kYda0LURr9QOpcbgES99B/IYBTo=;
-        b=h2v43Kfeqcv4ACUi18YYRYkeTKwWSlShmKI1ztNb+VakFpUTLOTGNeWvHonbjl5mcZ
-         sU8738ns/QNdJk2B9aChPazqjjr4e7L5eH+R4/v66Zj/dh9cjgdgFGXlojggCCmyW/Ob
-         s3rur7ilEE0VqeRHVih09jQ4aw8fQ27KuFTTPsNBgqm6YHfm82jwfVr2dPlbzTBR7bmk
-         FH0eDsEnZlY1sjR4DgDHcdjcWtf4ci92ythWCr999HR4GKlTvH7rDpGVaelvhL0Nkk8x
-         dX1eJ0a57jWy5SMtqo4YJJZE5KhgXi1hFjF0ZQ8N8YvwiaAAyVQoe2iBg/VxyLSMkZKx
-         eY/w==
-X-Gm-Message-State: AOJu0YxhGLMpSpO5FPvgRmh22xJGn1fzVPsFEd97Sp1OEPgGT0LylK05
-	1HiJns/Tl+/uIecR2WPVf2FWMCvGxqIyIGsAfE48Y7QTfrbm7EI+KUmr6arBgd51caKMuf6Lp7V
-	9YHXp
-X-Gm-Gg: ATEYQzyOWPnKM/ZezrIHhmKZsozb7SE9/jGi3YsYeQLvE0dVYkD1/0Iurc+TBsxQMSb
-	4GmNTiYstg02heEKVpaNXLDnpZe/isq8GqThHKECWVuqQ718dY8RV4O/dfmqlagPjFJ186hog8h
-	zzy/GvAmGRcaCGPMCtgqMcnH42zy7ybnV0AaKPJIqDuarpD9MmZzFf/owjLVIS1zhOq5X5AiWYm
-	Io6c5bm1KMbFnysd8bA5hapr5kk232+dXHbIE7N1T6qvHtR7d3aRu89HnMECu72jUKhngZNqjl7
-	MOZ8qmeiSmIJmflw2F+OcIIfsAnqAmaqLaJlJCFZON5oAnnuD9imU4s9uFlyQEVDfj8XH+WOQKO
-	sPbt+lE8OrXYvFIMdvYbbGpugn/7Wdz0ppdrjWgdodA8sqWhOn1jOezmW5vZanfSBZiT0Qvuvke
-	2KvDX3UX36LvefrFgz+1et8yGJpgp+H5mF3Zv8ow==
-X-Received: by 2002:a05:7022:698e:b0:11b:862d:8031 with SMTP id a92af1059eb24-12be62e92f4mr331133c88.0.1774991682115;
-        Tue, 31 Mar 2026 14:14:42 -0700 (PDT)
-Received: from telecaster ([2620:10d:c090:400::5:f0da])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12ac4a0fa8dsm8302880c88.15.2026.03.31.14.14.41
+        bh=+IA5m7ndzSYeppVYzrI5/8EN2PEGwr4deYc5UolMuDM=;
+        b=k8ziAR3Co6DXwtthbFPwbNgeEA1bWiK7/cufjsx8gR0/rMwYW2bfPutP6yrcpooitt
+         PS3QKxvOkWmCuiuOcjagLt89Sp8RSQABNvkzuHc8uBfV7qa0lKfEp+uOpNDxKX0XJ/b9
+         GpTHHXPNmPGuYjdLGIpMl3yYG62dj0WFasSrgIcqcFilSbUOo+RpOh81oyhZBdBjdPHu
+         kV/Ms/wRmSX6lWzYnQXRSFSH6PcCC4bBbMUTPof0ISuH7OSuAxrZPzjE6FhWLMyBJBPq
+         +M5b26ONT8DNeTY4rZw4k5IST2RmuNl59xN5berM7eWQIfXPaXZqPWP7KDyKhZBTPmUY
+         21HA==
+X-Gm-Message-State: AOJu0Yy18XhiV6UxvRTstTxREVH9PqhonHCKsDYaGsSruuga25rjlE+N
+	NrqR36C3N4D01GRwq0T/UyfGSk/6LF4Wq34gYk5MkaI/M3Y0o5CkAIDS63d8M+GcEtwz1QxJubM
+	CJ0eg
+X-Gm-Gg: AeBDieuDE81qCtuAJ5yPbiSo22dznk6rWaOQmphWBkFze9UU8sYQXk1UG/CC3YUXEt9
+	0579vVqgPUnHkawHGzeys9s0beumt8L9i8TmmNmwk2DUxbFvyXG1Hr/2W7IzVxoVrkGLOfR4Y04
+	AnECbQcyOefD/gGZfV8A15mfX3F7M+vhcSGZNywWb+g6/hTLmU++9E2PAFcT8L9kUWmjRQU9V3Z
+	rDBw/Aqnzr4EJhST6YKaoLX4X5JetA5ZpvIbwkEbolx3Y6bLH4j0/SfhGUiYcuwjwtBIjzjTbaN
+	f5R8+lateN7I+8zAGE6Ka4qESd0p+g/prniskCVlulbEHzRuCfC1o5MAC7mJ1pAqLLgTloYfQeR
+	C8rPllIiopNdsmgEpSngVPoMXm0IwsTZ+cpE480hc5kcb1FP7JvH7zD+1wrqgc+Xifml0ZDckbv
+	C77flWx4bxSBUNV5S3E3HyLWp7zBc1zkZQSV3I2TFK2i+baA17CQ==
+X-Received: by 2002:a05:7022:10d:b0:128:d7b3:6c52 with SMTP id a92af1059eb24-12bfb74c351mr4772679c88.4.1775677816321;
+        Wed, 08 Apr 2026 12:50:16 -0700 (PDT)
+Received: from telecaster ([2620:10d:c090:500::2:7ae9])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12bfea5f860sm20999103c88.2.2026.04.08.12.50.15
         for <linux-debuggers@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 14:14:41 -0700 (PDT)
-Date: Tue, 31 Mar 2026 14:14:40 -0700
+        Wed, 08 Apr 2026 12:50:16 -0700 (PDT)
+Date: Wed, 8 Apr 2026 12:50:14 -0700
 From: Omar Sandoval <osandov@osandov.com>
 To: linux-debuggers@vger.kernel.org
-Subject: Linux Kernel Debugging Tools Monthly Meeting on Wednesday, April 1st
-Message-ID: <acw5QImtSPvTYVZ2@telecaster>
+Subject: Debugging Microconference at Linux Plumbers Conference?
+Message-ID: <adaxdvQvJX318oy9@telecaster>
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
@@ -72,16 +72,18 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-The next Linux Kernel Debugging Tools meeting is tomorrow, April 1st at
-11:30 AM Pacific time. This meeting is a forum to discuss development of
-Linux kernel debugging tools like drgn, crash, and more.
+We are gauging interest in hosting another Debugging Microconference at
+Linux Plumbers Conference this year. Topics would focus on common
+challenges people are facing with debugging tooling: collecting and
+analyzing core dumps, doing live analysis, developing more powerful
+debugger features and tools, etc.
 
-I was out of the office from the past month, so I would mainly like to
-be caught up on what I missed while I was out and share my plans for
-what's next for drgn, namely QEMU support and breakpoints.
+We last had one in 2023 which went well. The Linux System Monitoring and
+Observability MC last year also had some overlap.
 
-Please reply with anything else you'd like to add. As always, if you
-would like to attend, please email me offlist.
+If you would be interested in presenting or attending, please let me
+know (either on- or off-list is fine) so we can get a sense of whether
+we should do another one.
 
 Thanks!
 Omar

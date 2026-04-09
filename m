@@ -1,89 +1,103 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523DF370D47
-	for <linux-debuggers@vger.kernel.org>; Wed,  8 Apr 2026 19:50:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C52B63CC9F4
+	for <linux-debuggers@vger.kernel.org>; Thu,  9 Apr 2026 14:41:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775677818; cv=none; b=I9JLLap1GmvdAKJInF0l9neYVJri4pHDbLzGsUcS+4OLvd4o6mCcmFKIugmqoEbPc4QDm6O4KMfZWR9KYPVGi7Yr/uMrkck+AD50QUGbs5lsgUUhoPIGiMu5KqkPeSmOgPJsaIpPRzaah1DzWsMUq7mg8NvHeDEXOtCHEjx3pZk=
+	t=1775745708; cv=none; b=eU8z0Em1S1jlHV2WaZtclR9TREI3FRZ0fF5wwNDN1YFCs2MZ/6zQjr2W8IQ6fn2GWR77yDt+cWSBaIxbOcEXLY5DUlg38uT6cRqKfRo0WlMFdJqc0GA1LomZgGQJYYqnO1D3vi61fituajPD6rVJ29sH7JYgo8CKbH7Syedn+j8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775677818; c=relaxed/simple;
-	bh=+IA5m7ndzSYeppVYzrI5/8EN2PEGwr4deYc5UolMuDM=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=ILvaXRY5t2mwxej3/d0KIVuaQav++mbzK6Kwob2dXBzb9QHi3MY5ll20oJz5eOyXSB266NHLWEGxPR0qGBWG1wIRSCQKe5/8g1TFiOIwfyLdk6Zj3rDBfXzr2Pillvv6ZtMJC3HavUu4HZlut95L4963qwZwMR7+PAPJVUYtvMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com; spf=none smtp.mailfrom=osandov.com; dkim=pass (2048-bit key) header.d=osandov-com.20251104.gappssmtp.com header.i=@osandov-com.20251104.gappssmtp.com header.b=lckex/tC; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=osandov.com
+	s=arc-20240116; t=1775745708; c=relaxed/simple;
+	bh=DqfVCkF9c6eft1RwyIiUZrOG1hTIYB+7mgQ3XlYZKe0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Z0r0QEX8/3wpJknhglvorYT5BdGrUIevsj7t6j/s2Ru/36gyK3QvJKcpLSetjRJCdO8qtiOXXpKHI+QR2x614KaZ5bMxp4dorkEonyRWrN4ljV2ybXxLb2CfLgArz9Lzb9zzqbduf7ms6J9xyb8hcXdQSFn8WZPOOnTY95Y5ucM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=szTKJB0U; arc=none smtp.client-ip=209.85.160.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=osandov-com.20251104.gappssmtp.com header.i=@osandov-com.20251104.gappssmtp.com header.b="lckex/tC"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2aae4d2d215so234325ad.2
-        for <linux-debuggers@vger.kernel.org>; Wed, 08 Apr 2026 12:50:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="szTKJB0U"
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-50bbc41677dso12742231cf.0
+        for <linux-debuggers@vger.kernel.org>; Thu, 09 Apr 2026 07:41:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=osandov-com.20251104.gappssmtp.com; s=20251104; t=1775677816; x=1776282616; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+IA5m7ndzSYeppVYzrI5/8EN2PEGwr4deYc5UolMuDM=;
-        b=lckex/tCZ5Gz7YJTLlV9df/0iLXiOxvBjJIi+y0JeWrBs14uHfIJyY5Eeck4G/D44y
-         xKbIkcpN4z/6nwp6f64lnO0s7nRta+illbnIJjRh1wkVio+Jen9jEfolfml5vG5zMh11
-         lDjJm6NAuRHAc5l8oKQpitj1/KuifxUY1m+aGDOH9Qgu/0GlsDJybxBhQ//di1XUnSQj
-         iIoEBKN2XQzgajcnZ4h/mJHp8vElAj/slUW0neCZyLEYmdGWKZFKLsWghLuSLm+ie9Cj
-         H/Y3AIQZEFlZv03EDaxbmHZndqZZnhhReslS47ijqeK8bFtpOe7REi+N7Pfe8v9iiZcg
-         Ht9A==
+        d=gmail.com; s=20251104; t=1775745707; x=1776350507; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FNep397AIHLQpUcTLnJgj7YuGwAr6qyluIXIaj+5nmQ=;
+        b=szTKJB0UlRpYC7t+ovoNkiTd7E6vwL480OK+Y1F0iaRyhCNYDFyf3lDc3owH+zKd0N
+         AP3ZwxTMTlSTj4PWbfB9rF7Ew5AD6xdGj6K+BZdlG3JyHJv/D9kMRPlwC3fSArQ2n6YJ
+         xFmZUZ+JJZjs4lpXXYaGnaup/IGUanFYS5t6y/ws6ATiq0Ycu6f851AKnPrgfxAEXC/O
+         5c4hXRPH3dJ8iOJXFBj08pORf9OCurZQNyVHQUn9YvuS59W5aVGCPWOZ+BCeChoIhgEp
+         +0iHjseq9qfAh62ROKidpQDqYxlWlnWyrOsCaQvgZOQvZLx1egWi7nUNuTrKgEcoxW5i
+         XHQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775677816; x=1776282616;
-        h=content-disposition:mime-version:message-id:subject:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+IA5m7ndzSYeppVYzrI5/8EN2PEGwr4deYc5UolMuDM=;
-        b=k8ziAR3Co6DXwtthbFPwbNgeEA1bWiK7/cufjsx8gR0/rMwYW2bfPutP6yrcpooitt
-         PS3QKxvOkWmCuiuOcjagLt89Sp8RSQABNvkzuHc8uBfV7qa0lKfEp+uOpNDxKX0XJ/b9
-         GpTHHXPNmPGuYjdLGIpMl3yYG62dj0WFasSrgIcqcFilSbUOo+RpOh81oyhZBdBjdPHu
-         kV/Ms/wRmSX6lWzYnQXRSFSH6PcCC4bBbMUTPof0ISuH7OSuAxrZPzjE6FhWLMyBJBPq
-         +M5b26ONT8DNeTY4rZw4k5IST2RmuNl59xN5berM7eWQIfXPaXZqPWP7KDyKhZBTPmUY
-         21HA==
-X-Gm-Message-State: AOJu0Yy18XhiV6UxvRTstTxREVH9PqhonHCKsDYaGsSruuga25rjlE+N
-	NrqR36C3N4D01GRwq0T/UyfGSk/6LF4Wq34gYk5MkaI/M3Y0o5CkAIDS63d8M+GcEtwz1QxJubM
-	CJ0eg
-X-Gm-Gg: AeBDieuDE81qCtuAJ5yPbiSo22dznk6rWaOQmphWBkFze9UU8sYQXk1UG/CC3YUXEt9
-	0579vVqgPUnHkawHGzeys9s0beumt8L9i8TmmNmwk2DUxbFvyXG1Hr/2W7IzVxoVrkGLOfR4Y04
-	AnECbQcyOefD/gGZfV8A15mfX3F7M+vhcSGZNywWb+g6/hTLmU++9E2PAFcT8L9kUWmjRQU9V3Z
-	rDBw/Aqnzr4EJhST6YKaoLX4X5JetA5ZpvIbwkEbolx3Y6bLH4j0/SfhGUiYcuwjwtBIjzjTbaN
-	f5R8+lateN7I+8zAGE6Ka4qESd0p+g/prniskCVlulbEHzRuCfC1o5MAC7mJ1pAqLLgTloYfQeR
-	C8rPllIiopNdsmgEpSngVPoMXm0IwsTZ+cpE480hc5kcb1FP7JvH7zD+1wrqgc+Xifml0ZDckbv
-	C77flWx4bxSBUNV5S3E3HyLWp7zBc1zkZQSV3I2TFK2i+baA17CQ==
-X-Received: by 2002:a05:7022:10d:b0:128:d7b3:6c52 with SMTP id a92af1059eb24-12bfb74c351mr4772679c88.4.1775677816321;
-        Wed, 08 Apr 2026 12:50:16 -0700 (PDT)
-Received: from telecaster ([2620:10d:c090:500::2:7ae9])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12bfea5f860sm20999103c88.2.2026.04.08.12.50.15
-        for <linux-debuggers@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Apr 2026 12:50:16 -0700 (PDT)
-Date: Wed, 8 Apr 2026 12:50:14 -0700
-From: Omar Sandoval <osandov@osandov.com>
-To: linux-debuggers@vger.kernel.org
-Subject: Debugging Microconference at Linux Plumbers Conference?
-Message-ID: <adaxdvQvJX318oy9@telecaster>
+        d=1e100.net; s=20251104; t=1775745707; x=1776350507;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=FNep397AIHLQpUcTLnJgj7YuGwAr6qyluIXIaj+5nmQ=;
+        b=dETdMIpTs+oDjIUrcEs42FGYkbV2zhkk8k15dD9Flf7OmFkR0dtz79H55ARON0tdA1
+         BpScyQpymUZ5jvdP0czDf74LbW5vhADtbwXBzOLTp+mVgdoLK2swcJkT0DV4UREWQvX9
+         HuXmQco3eqFW9uBR8OYe0N0wYratA9jzRyXXipt2I2laytLT8iVxcO5sQ4ED3Rp/IBbl
+         DdQcfCLYdNYsr/uxB7D59rCSbSW9v4wxIWT9QSLYmE2E39vfNYOsdCXvZ6Vt4SL8tgSP
+         FLsikQDXzMl45V3GDlW+N4+08Oq7+pzk2gtYI9clnh8ZIdgagM8YxfN7Y61LO6N74eJB
+         wCxA==
+X-Gm-Message-State: AOJu0YwQZ6rYfPR+ScGJqr1n/HJXTbSec2fDAAtE8qnAHDVs1jxqE2u/
+	QZQn/O7t//0PN5bIUrPICqNI+n/FAm1VCs18avA4qCOiDQK7aOAn1KE1BOCyPeAB
+X-Gm-Gg: AeBDievOaAx0tglEthcgC50my3OQxhxdnH91vtk9Zq2IRBda6MBh54iIcnU6VeG53pI
+	5uZLIHq+51bghlJN7UFiWhI9En6hF1sEkomad1Dgc6dEwLCcwYWkypq7Bc8pkgHwcFU98pXiKCE
+	37C6vDAE5dQ9a4kcKdPK2JOw6WhB4D4t5Ba3qNrU01CEb0sBTwS+qJkQ9l78+6x3BzWI56r9P4s
+	5rGjiu+25K4NhFGXhYVCOq2hSZrpoPaV3JgmEukcqDDZVWDcUcEhjh1LNQOaWbjorycgfR+bLyt
+	BYxYGacX59STiwdz0bXf9Uo0fTXDoVTAl07n3gbEOOnGspZ3CD/e+RNZX+EHGn8VlMFspz1hBMu
+	vQZqbZT/whTTFrvbgipOG8FKNGOG6g9+tcaWbm3NhZe725ltIbUUJEuQQXE51mn+V3c+F0AAx8M
+	Jzb1QQ9CQhGSTMly5z2GkusVyTARqgGPIwYL7QQ7gzrwI1uJQnkWF1QgBLczLHFgtJ9KqUkdCry
+	KKTjiQ=
+X-Received: by 2002:ac8:5c8f:0:b0:509:2579:283e with SMTP id d75a77b69052e-50dc21a7ad0mr54082471cf.28.1775745706691;
+        Thu, 09 Apr 2026 07:41:46 -0700 (PDT)
+Received: from CW-FL20TJCW03-L.tailb3cd1a.ts.net ([144.121.74.118])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50db02b281bsm46950641cf.16.2026.04.09.07.41.45
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 09 Apr 2026 07:41:46 -0700 (PDT)
+From: Serapheim Dimitropoulos <serapheimd@gmail.com>
+X-Google-Original-From: Serapheim Dimitropoulos <sdimitropoulos@coreweave.com>
+To: osandov@osandov.com
+Cc: linux-debuggers@vger.kernel.org
+Subject: Re: Debugging Microconference at Linux Plumbers Conference?
+Date: Thu,  9 Apr 2026 10:41:44 -0400
+Message-ID: <20260409144144.72399-1-sdimitropoulos@coreweave.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <adaxdvQvJX318oy9@telecaster>
+References: <adaxdvQvJX318oy9@telecaster>
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-We are gauging interest in hosting another Debugging Microconference at
-Linux Plumbers Conference this year. Topics would focus on common
-challenges people are facing with debugging tooling: collecting and
-analyzing core dumps, doing live analysis, developing more powerful
-debugger features and tools, etc.
+On Wed, Apr 08, 2026 at 12:50:14PM -0700, Omar Sandoval wrote:
+> We are gauging interest in hosting another Debugging Microconference at
+> Linux Plumbers Conference this year. Topics would focus on common
+> challenges people are facing with debugging tooling: collecting and
+> analyzing core dumps, doing live analysis, developing more powerful
+> debugger features and tools, etc.
 
-We last had one in 2023 which went well. The Linux System Monitoring and
-Observability MC last year also had some overlap.
+I'd be interested in attending and potentially starting a discussion
+over a few things that we've been working on at CoreWeave!
 
-If you would be interested in presenting or attending, please let me
-know (either on- or off-list is fine) so we can get a sense of whether
-we should do another one.
+Specifically:
 
-Thanks!
-Omar
+(1) Capturing crash dumps with tight memory and space constraints at
+    scale
+
+(2) Triaging, deduplicating, and categorizing crash dumps in
+    production
+
+(3) We've been experimenting with out-of-band kernel introspection
+    (using drgn in a DPU to introspect the host with one-sided RDMA
+    ops). Would be cool to see if others have worked on the same or
+    similar problems.
+
+Thanks,
+Serapheim

@@ -1,89 +1,124 @@
-Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11E59284693
-	for <linux-debuggers@vger.kernel.org>; Tue, 21 Apr 2026 20:52:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9674737C900
+	for <linux-debuggers@vger.kernel.org>; Thu, 23 Apr 2026 10:46:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776804761; cv=none; b=euAfsFZN0TE244OLWHek8jKuJYlHpq8yUz1DNSSbjgKx88Wx5FRZadteAIFDTuB6RxQGrXlfRAQK2zJZtHyzlVxGvXjIOXgus/YZ2SdWuW8yWOTPjTqWF+6cfN7YZ3x0mYEB2AVpB15rJpufhfgYGZJGLUhBLY89xPpE9LbWos0=
+	t=1776941197; cv=none; b=mYibSOk3yeJk+xiBKg8WSOUcaFaNosEDetJLzp7fJcD1x+MXfwYjJHyOzNF2BUlW7DlPvHeaZwWJlL4yDLR/IfNUyBru6f3otSz1VUnZntikiHkySBsndfvx/+ZXL2Umqh75vPP8x+tSt/BuuuVn4YwqHj/Kt74YA2uezXzPTJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776804761; c=relaxed/simple;
-	bh=k434JVa5dquGZSwQjzp9kKbyxCSGWtwnfBlKsN3/tzM=;
+	s=arc-20240116; t=1776941197; c=relaxed/simple;
+	bh=tk9qyuLjjaIgrudm3EnnqK9s85oSdlk7t6wa3G46CMU=;
 	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=d+I6wWbT/FmY9I4Hbo0fPtcrLJEzdhwfZwigFPnEcVA90W56tvlQqcrD83qC7mmlQfzLr3BEcF12nKIM+QStD0fvIrGZZxJnY1XQA8/jebREt8PS+NKZmGHELXk4bipFlyqYOM8Ad/TFMWh1me7tmlSTQRMiVfDpJfCyYAAWiTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com; spf=none smtp.mailfrom=osandov.com; dkim=pass (2048-bit key) header.d=osandov-com.20251104.gappssmtp.com header.i=@osandov-com.20251104.gappssmtp.com header.b=xFiP5abt; arc=none smtp.client-ip=74.125.82.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=osandov.com
+	 Content-Disposition; b=F3PDm3CekBJhVfl0NNyDWtpn6mEpInSl3mgL3bBh34JKDGaDepO5et5ypJN4c7Weg0/r0ml6rX+QR9HAZv/6N4hbPX6kIee3DyhmYycBvjDhR/7hv4mNrpLbWUh0tDF8PschbYJmxNSyth4VoPKm3Zy2+syzi5jEs1aq4v/S+84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JZHJOCQC; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=osandov-com.20251104.gappssmtp.com header.i=@osandov-com.20251104.gappssmtp.com header.b="xFiP5abt"
-Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-12db2e9b3bcso163192c88.3
-        for <linux-debuggers@vger.kernel.org>; Tue, 21 Apr 2026 13:52:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=osandov-com.20251104.gappssmtp.com; s=20251104; t=1776804759; x=1777409559; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=f+4xqbzDIRLVInUa3LCIqwlzpW9z3o2Vk6qrW1wASsE=;
-        b=xFiP5abtUOD1MSmYOmXAmDYuRC+xCvcqe4LQkLtJDodn80VvnPX8mPmNrHmy8Z2fRQ
-         dmE6nEXsqHTnCH5AzjtgHQLEktpX4EpIDGdThgW99IkULWLm+X/qyBlIr4JVPmZqreOr
-         0UuZb1tyie9d+Eg8j2xnGxboDDIXMI8+b749sy+qNMP/aqRyrp5K2UrG/eCuSodlTZlB
-         ssDpsyJhoAy/dnMu7h8TsIQLB4Ax0vYSQYiUaGLY4hsAEkITvXhtUAljwSy9akXhggy1
-         nhKm8WMXb62UZ6ssD97nbvzveCeIci6RkzAvZxqxIlparu2K7BQllphSgltf7j67kLBi
-         tsyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776804759; x=1777409559;
-        h=content-disposition:mime-version:message-id:subject:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=f+4xqbzDIRLVInUa3LCIqwlzpW9z3o2Vk6qrW1wASsE=;
-        b=lNDfeL3K0sqDqG2HRB1KcxFey5SUWv0ir//V+p3AsLeoje01THciXV5azL5TWsNMfw
-         foHPUC+iuMXKbyjcSwkYv0nIzxSbNYE3BFe1rR6WBnArCwsR6Mg2tT+Mc7FhbUkJK4W0
-         XTJ0GBN12PLXDQGnqGTXlXjcG77pbUQM2Tj0yY1sFfgxu6AD3r4LfbrNEf+1M1Mq9fVx
-         ToQYsWBDP1VK6XNcVw1EqIUkHawmKV/Y5pFH2keGWHtZjCWzkiHOqWPaBmlMYrqkSWM2
-         JIZG4mwF3bmLer4YgvPQtII556hCLqMvCmVSfU+smX2tmDHMdNKIK5UNvlhfEBZVtGOC
-         eOtw==
-X-Gm-Message-State: AOJu0Yz2LVYGqsTr9INVY6MX7wdLXBiom+HlpjWcRoTTbUcoN6RAs8qP
-	Ay345WH9/yGxZR7QTNuK2+breBFJDzPKdWzBkYodO3JA4pZefW5FDTz1jlel5e7wsGGDaIsjdv2
-	WKCrC
-X-Gm-Gg: AeBDieuCqO/r7WMIMVk7BeYtpgg93ZzG9j+MXLxbvO0b1oD/k3FiUh1E3E9h+mcIz3d
-	3RzGDa4KQ5uFh4btnmxdTVe+JDqcEc+Tn3zUtpbfN7rbf+S/PD81zv+dL5Q9opgVLKvffsLhvhy
-	i5zFiK6nWo2c5b3F+Q2O+GyyLAEIAkQmxwCZtgrWTHY/A0AqVil4tG8sKo92z1ReHHnN3XX/GAR
-	nro4bokKYYLsDPB55qZoVHfaVvq0R7HRxmgoQrlSjODtgtQVU8v6VdgWcWAweS6SRRGJbp4FyPz
-	uGDcDfvE2ezLkuuKIqT1WO93AHEcU4fvfafxTKtF1iUWEsPNxD9rNrCa1WvFUY6gMfZKlt6Ou0f
-	zYm3Ga3LkirWVDGxD0XPYzVZhFg8CoYVTjKUmgAizdnfWAptA0bcZeGkyT/sLbNHx9qbI9v2Edd
-	RbgWrGpHYJNATp7y9Qx9GsqbDnZ/KD0ZrnCC5aKyqLHvl+cThR
-X-Received: by 2002:a05:7022:223:b0:12d:b6cb:bdb5 with SMTP id a92af1059eb24-12db6cbbf74mr497668c88.0.1776804758729;
-        Tue, 21 Apr 2026 13:52:38 -0700 (PDT)
-Received: from telecaster ([2620:10d:c090:400::5:7605])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12c74a2ac32sm21011681c88.15.2026.04.21.13.52.38
-        for <linux-debuggers@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Apr 2026 13:52:38 -0700 (PDT)
-Date: Tue, 21 Apr 2026 13:52:37 -0700
-From: Omar Sandoval <osandov@osandov.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JZHJOCQC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1776941193;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type;
+	bh=/BXMwVCQOL3bjPCCrgt8PK7ZTnSsaF64ktNvyufYnf8=;
+	b=JZHJOCQCs4E/LbLaeu+xa7sMPXE9uXUsgpII/H18tXu7zuzLHwFpmWvHVUzq+KgVZ0xmfl
+	wx7d0ipYiMQxs85dJI62jt104wXkhOx8E8tYT8lkB04QqUf+6ypGsJZchImd7xxB9gGmA+
+	O0uCkzxV/duVMshSps7tfPkEQWoT7NQ=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-650-eSNs-0E2OYuIlMBIsN5-Iw-1; Thu,
+ 23 Apr 2026 06:46:32 -0400
+X-MC-Unique: eSNs-0E2OYuIlMBIsN5-Iw-1
+X-Mimecast-MFC-AGG-ID: eSNs-0E2OYuIlMBIsN5-Iw_1776941191
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 699C418005A8
+	for <linux-debuggers@vger.kernel.org>; Thu, 23 Apr 2026 10:46:31 +0000 (UTC)
+Received: from wcosta-thinkpadt14gen4.rmtbr.csb (unknown [10.22.80.20])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id C48553000709;
+	Thu, 23 Apr 2026 10:46:26 +0000 (UTC)
+Date: Thu, 23 Apr 2026 07:46:25 -0300
+From: Wander Lairson Costa <wander@redhat.com>
 To: linux-debuggers@vger.kernel.org
-Subject: Linux Kernel Debugging Tools Monthly Meeting on Wednesday, April 22nd
-Message-ID: <aefjlU-59mWDaeMW@telecaster>
+Subject: [ANNOUNCE] drgn-mcp: natural-language kernel crash dump debugging
+ with Claude
+Message-ID: <aen3j309MH2ezNhB@wcosta-thinkpadt14gen4.rmtbr.csb>
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: mR4lscWBOUchtVZQ3CQTYjnuAbeyU1Dg_bCaeiLMMhs_1776941191
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-The next Linux Kernel Debugging Tools meeting is tomorrow, April 22nd at
-11:30 AM Pacific time. This meeting is a forum to discuss development of
-Linux kernel debugging tools like drgn, crash, and more.
+Hi all,
 
-Here is the agenda so far:
+I'd like to announce drgn-mcp, an MCP (Model Context Protocol) server that
+connects drgn to Claude and other AI assistants, enabling natural-language
+debugging of Linux kernel crash dumps.
 
-- Progress update on breakpoints in drgn.
-- Decision on doing a Debugging Microconference at Linux Plumbers
-  Conference.
+I wrote this over the past week, so it is still in an early stage, but it is
+already useful enough to share. Feedback and suggestions would be very
+welcome at this point.
 
-Please reply with anything else you'd like to add. As always, if you
-would like to attend, please email me offlist.
+Instead of manually writing drgn Python expressions, you describe what you
+want to investigate in plain English -- "what caused this crash?", "show me
+what locks task 1234 is holding", "are there any BPF programs attached to
+this cgroup?" -- and the AI calls the appropriate drgn tools on your behalf.
 
-Thanks!
-Omar
+The server exposes 54 structured tools covering:
+
+  - Core inspection: crash info, panic message, stack traces, threads
+  - Memory analysis: hex dumps, typed reads, address translation, slab/page
+    info, dmesg, memory search
+  - Kernel subsystems: network devices, mounts, open files, BPF programs
+    and maps, IRQs, cgroups, CPU runqueues, locks, timers
+  - Data structure traversal: list_head, hlist_head, rbtree, xarray, IDR
+  - A general-purpose eval_expression tool for anything not covered above
+
+For anything the structured tools don't cover, eval_expression gives the AI
+full access to the drgn Python API and all drgn.helpers.linux.* functions.
+
+Getting started
+===============
+
+Prerequisites: Linux, Python 3.12+, uv (https://docs.astral.sh/uv/)
+
+With Claude Code (https://claude.ai/code), add to your .mcp.json:
+
+    {
+      "mcpServers": {
+        "drgn": {
+          "command": "uvx",
+          "args": ["--from", "git+https://github.com/walac/drgn-mcp", "drgn-mcp"]
+        }
+      }
+    }
+
+Then just ask Claude to load your vmcore and start investigating:
+
+    "Load the crash dump at /var/crash/vmcore with debug symbols
+     from /usr/lib/debug/boot/vmlinux-6.12.0 and tell me what happened."
+
+It works with any MCP-compatible client, not just Claude.
+
+Links
+=====
+
+  Repository: https://github.com/walac/drgn-mcp
+  License: LGPL-2.1-or-later
+
+I'd appreciate any feedback -- bug reports, feature requests, or suggestions
+for additional tools. Issues and contributions are welcome on GitHub.
+
+Thanks,
+Wander Lairson Costa
+

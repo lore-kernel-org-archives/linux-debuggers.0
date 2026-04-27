@@ -1,124 +1,117 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9674737C900
-	for <linux-debuggers@vger.kernel.org>; Thu, 23 Apr 2026 10:46:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06D5B364E81
+	for <linux-debuggers@vger.kernel.org>; Mon, 27 Apr 2026 20:48:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776941197; cv=none; b=mYibSOk3yeJk+xiBKg8WSOUcaFaNosEDetJLzp7fJcD1x+MXfwYjJHyOzNF2BUlW7DlPvHeaZwWJlL4yDLR/IfNUyBru6f3otSz1VUnZntikiHkySBsndfvx/+ZXL2Umqh75vPP8x+tSt/BuuuVn4YwqHj/Kt74YA2uezXzPTJQ=
+	t=1777322886; cv=none; b=UzaoQKnrK3vJZXOQ70VMlPmkmglspUiK92lmFZgskaWGq7GYGb5BGDziyxKIGzyH2vG+tiyR9MSMuA7ejESXd5D4I76flrWmmzgiZDGLQEyk1DwDXb21NrwTeiYWb8JttMyJtze1ganlvaoaue6QMkKqhRFJ/bnZ3onlBF+FIFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776941197; c=relaxed/simple;
-	bh=tk9qyuLjjaIgrudm3EnnqK9s85oSdlk7t6wa3G46CMU=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=F3PDm3CekBJhVfl0NNyDWtpn6mEpInSl3mgL3bBh34JKDGaDepO5et5ypJN4c7Weg0/r0ml6rX+QR9HAZv/6N4hbPX6kIee3DyhmYycBvjDhR/7hv4mNrpLbWUh0tDF8PschbYJmxNSyth4VoPKm3Zy2+syzi5jEs1aq4v/S+84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JZHJOCQC; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1777322886; c=relaxed/simple;
+	bh=OYZquLirpAbHxIaWIo9QLY0u+7IEtAkkjn9+CQz7ebg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FXHNHerq2If0G9PgbkZ39O2CRUOV9UWmRWRGgujPqHhHdiUkN72McSqgh3Wj6egOnEnImDqAXGz+kZ/ifDjqXBOxzvrCazx+hPefMeRYjv71R88u3wGGdt/YoBE1DMX2/z3VgQcabQKF35z9p/GK9x15NgDSsNG/w3DVXRDD5rQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com; spf=none smtp.mailfrom=osandov.com; dkim=pass (2048-bit key) header.d=osandov-com.20251104.gappssmtp.com header.i=@osandov-com.20251104.gappssmtp.com header.b=HGu69O6f; arc=none smtp.client-ip=74.125.82.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=osandov.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JZHJOCQC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776941193;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type;
-	bh=/BXMwVCQOL3bjPCCrgt8PK7ZTnSsaF64ktNvyufYnf8=;
-	b=JZHJOCQCs4E/LbLaeu+xa7sMPXE9uXUsgpII/H18tXu7zuzLHwFpmWvHVUzq+KgVZ0xmfl
-	wx7d0ipYiMQxs85dJI62jt104wXkhOx8E8tYT8lkB04QqUf+6ypGsJZchImd7xxB9gGmA+
-	O0uCkzxV/duVMshSps7tfPkEQWoT7NQ=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-650-eSNs-0E2OYuIlMBIsN5-Iw-1; Thu,
- 23 Apr 2026 06:46:32 -0400
-X-MC-Unique: eSNs-0E2OYuIlMBIsN5-Iw-1
-X-Mimecast-MFC-AGG-ID: eSNs-0E2OYuIlMBIsN5-Iw_1776941191
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 699C418005A8
-	for <linux-debuggers@vger.kernel.org>; Thu, 23 Apr 2026 10:46:31 +0000 (UTC)
-Received: from wcosta-thinkpadt14gen4.rmtbr.csb (unknown [10.22.80.20])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id C48553000709;
-	Thu, 23 Apr 2026 10:46:26 +0000 (UTC)
-Date: Thu, 23 Apr 2026 07:46:25 -0300
-From: Wander Lairson Costa <wander@redhat.com>
-To: linux-debuggers@vger.kernel.org
-Subject: [ANNOUNCE] drgn-mcp: natural-language kernel crash dump debugging
- with Claude
-Message-ID: <aen3j309MH2ezNhB@wcosta-thinkpadt14gen4.rmtbr.csb>
+	dkim=pass (2048-bit key) header.d=osandov-com.20251104.gappssmtp.com header.i=@osandov-com.20251104.gappssmtp.com header.b="HGu69O6f"
+Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-12c8c3f48deso409834c88.2
+        for <linux-debuggers@vger.kernel.org>; Mon, 27 Apr 2026 13:48:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=osandov-com.20251104.gappssmtp.com; s=20251104; t=1777322884; x=1777927684; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=NrpFP9W06UpCIRfe1+NjkVUyD89PsmxrZiNRzVySX60=;
+        b=HGu69O6frr/qL6emCewLsqtHqRr97Ah+WID+fS3Nz8LAVNKr0YGU6bZOV+pGFptr97
+         Bv7g/5tneRudGeAz4NofDsmfRDFxYVmmYA7zrHHmG8qn+o0rsNzkKYE9IkI376OhR3fy
+         1+tcL0HAK0wyy6zQA1qTGggvXuWMJOuxcoWeqL2vartGhKhmivU9otOqmCmRxi36Fcui
+         LjjmgXr+Mfs+15XEc0q3fuJ6frXWT1tVdUq04Is5qJ2lXniAIlrXVYCcz7PcVPNI0Ntu
+         ZCJmGsNR0eexBynlUmlyArmyrgPd10hGwYzOpHwfDnxT6Z1X+ZbtlET4xqrG97s+2ots
+         YEqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777322884; x=1777927684;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NrpFP9W06UpCIRfe1+NjkVUyD89PsmxrZiNRzVySX60=;
+        b=f8r3mwkcgSZGZUSUJ3zBD+OlQLZome44Wsej5FxdJN7I8Nsz+aLh668QlR/M/6pxU4
+         NIxWa/hqH+AW5q5zaRPCA9DiwRkIEpQhI4XUnJaSoDLbwOA/QAn6wbciRTS/UG1II3Vx
+         LYf0/YyhYfxEhFHIh19Z/98dif1rd6oHcvY9awh1g6J+VZBYl9yG33qWjR8HVi8ZgZ9K
+         8sVsEVrnaQXDnIZIwa5qC+Xz93zPPBDkAY7iuWobw09mY9nY2X2ljCf+ER6P3fivOHCH
+         RFwX11Y/f9aZDbRBgNdwr2Zu170p21Vz/6aDvJmh/RGii2b93US7pYXp/xslDGwp/jGE
+         9FLg==
+X-Gm-Message-State: AOJu0Yx9aLONKn261w2xEpYGNg25+OzUxCWyS8tMC+fbhZ+UmLBUtVXl
+	mAjF4WwYYh1wDZcjh4rnV1tBcyaSNBz3sEVLxUyOGQFAn4gbw7gBeeyD7qGGN4HsTIU=
+X-Gm-Gg: AeBDiesxh48BJQgsoYS6TwDVH4BCtNiae7WtG3YSd3Gs7p6C+GAUBB+OkoPc+YFpEph
+	d+TIVm9wXP/yqNhz7Gfbc8p7bG7+lYlbZcqGTlt6jdfSXqNSPUM1aZkpfvKSN/1Rv0e1L51cLg3
+	Ywr2LWKeHalKE8KWYw0GUGKoGuuOpFAyIlZ2zJSulUauqAv/Goz4zEiwpE//U2EGhhERZXQb6el
+	G7lTl7iC5e97mrP8Q/WRrfMNeyXUps9yavflKRcEtDZRIq2Nb5UhJoC1l7oWGUfE8BJtdEDlcfJ
+	x8Ja8h+5LDhxR9gcTBH3n+Y2EpzKP2D/2k50qG4UiCKzxuGea0ZMlV668gv27Bz3Fk9CHL2VP9D
+	eFTN6Xq7V2F+sVXkyLRzmAGF9ByIxMczUhoIwjaNYFw++6Qz72Hx6vDb94eDC75L3+KbNZCbvyt
+	EVsXoio2Pw61eIE8xhRq3YD2ERrFdLb6Btt73MA5Q+yfklK9EVYQ==
+X-Received: by 2002:a05:7300:72c9:b0:2e5:faa9:ca76 with SMTP id 5a478bee46e88-2ed09c3094dmr115570eec.7.1777322883807;
+        Mon, 27 Apr 2026 13:48:03 -0700 (PDT)
+Received: from telecaster ([2620:10d:c090:500::3:9e14])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ed0a10650esm474976eec.22.2026.04.27.13.48.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Apr 2026 13:48:03 -0700 (PDT)
+Date: Mon, 27 Apr 2026 13:48:01 -0700
+From: Omar Sandoval <osandov@osandov.com>
+To: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	linux-riscv@lists.infradead.org
+Cc: linux-debuggers@vger.kernel.org, kernel-team@fb.com
+Subject: Re: [PATCH] riscv: fix vmemmap and vmalloc offsets in /proc/kcore
+Message-ID: <ae_LgT-xmJ8YOMHr@telecaster>
+References: <5273041dacfde780bbc917660537783c354e0598.1770323325.git.osandov@fb.com>
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: mR4lscWBOUchtVZQ3CQTYjnuAbeyU1Dg_bCaeiLMMhs_1776941191
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <5273041dacfde780bbc917660537783c354e0598.1770323325.git.osandov@fb.com>
 
-Hi all,
+On Thu, Feb 05, 2026 at 12:31:20PM -0800, Omar Sandoval wrote:
+> From: Omar Sandoval <osandov@fb.com>
+> 
+> kc_vaddr_to_offset() maps a kernel virtual address to its file offset in
+> /proc/kcore. The default definition is (address - PAGE_OFFSET). However, on
+> RISC-V, the vmemmap and vmalloc regions are below PAGE_OFFSET, so the computed
+> offsets for those regions are negative and wrap around to a large u64:
+> 
+>   # readelf -l /proc/kcore
+>   ...
+>   Program Headers:
+>     Type           Offset             VirtAddr           PhysAddr
+>                    FileSiz            MemSiz              Flags  Align
+>   ...
+>     LOAD           0xffc0000000002000 0xff20000000000000 0xffffffffffffffff
+>                    0x0040000000000000 0x0040000000000000  RWE    0x1000
+>   ...
+> 
+> When userspace applications like drgn attempt to read from that offset, it
+> overflows an loff_t and results in EINVAL.
+> 
+> Fix it by defining an alternate kc_vaddr_to_offset() that masks off the
+> high bits, which is what x86-64 does, too.
+> 
+> Fixes: 07037db5d479 ("RISC-V: Paging and MMU")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Omar Sandoval <osandov@fb.com>
+> ---
+> Based on Linus' tree as of 8fdb05de0e2db89d8f56144c60ab784812e8c3b7.
+> 
+> This method doesn't work for riscv32 since VA_BITS == BITS_PER_LONG
+> there. But, I think riscv32 can get away with the wrapped 32-bit
+> integers as long as userspace is using _FILE_OFFSET_BITS=64. I don't
+> have a riscv32 userspace environment available to test it.
 
-I'd like to announce drgn-mcp, an MCP (Model Context Protocol) server that
-connects drgn to Claude and other AI assistants, enabling natural-language
-debugging of Linux kernel crash dumps.
-
-I wrote this over the past week, so it is still in an early stage, but it is
-already useful enough to share. Feedback and suggestions would be very
-welcome at this point.
-
-Instead of manually writing drgn Python expressions, you describe what you
-want to investigate in plain English -- "what caused this crash?", "show me
-what locks task 1234 is holding", "are there any BPF programs attached to
-this cgroup?" -- and the AI calls the appropriate drgn tools on your behalf.
-
-The server exposes 54 structured tools covering:
-
-  - Core inspection: crash info, panic message, stack traces, threads
-  - Memory analysis: hex dumps, typed reads, address translation, slab/page
-    info, dmesg, memory search
-  - Kernel subsystems: network devices, mounts, open files, BPF programs
-    and maps, IRQs, cgroups, CPU runqueues, locks, timers
-  - Data structure traversal: list_head, hlist_head, rbtree, xarray, IDR
-  - A general-purpose eval_expression tool for anything not covered above
-
-For anything the structured tools don't cover, eval_expression gives the AI
-full access to the drgn Python API and all drgn.helpers.linux.* functions.
-
-Getting started
-===============
-
-Prerequisites: Linux, Python 3.12+, uv (https://docs.astral.sh/uv/)
-
-With Claude Code (https://claude.ai/code), add to your .mcp.json:
-
-    {
-      "mcpServers": {
-        "drgn": {
-          "command": "uvx",
-          "args": ["--from", "git+https://github.com/walac/drgn-mcp", "drgn-mcp"]
-        }
-      }
-    }
-
-Then just ask Claude to load your vmcore and start investigating:
-
-    "Load the crash dump at /var/crash/vmcore with debug symbols
-     from /usr/lib/debug/boot/vmlinux-6.12.0 and tell me what happened."
-
-It works with any MCP-compatible client, not just Claude.
-
-Links
-=====
-
-  Repository: https://github.com/walac/drgn-mcp
-  License: LGPL-2.1-or-later
-
-I'd appreciate any feedback -- bug reports, feature requests, or suggestions
-for additional tools. Issues and contributions are welcome on GitHub.
+Ping. I've been carrying this patch for my test builds for a few
+releases with no problems. It'd be great to get it resolved.
 
 Thanks,
-Wander Lairson Costa
-
+Omar

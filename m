@@ -1,164 +1,92 @@
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 875DE48BD42
-	for <linux-debuggers@vger.kernel.org>; Tue, 21 Jul 2026 12:06:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF5E30BF6D;
+	Tue, 21 Jul 2026 13:26:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784635569; cv=none; b=UnIHSwcyqfKZ6T/159cZjrdnwJoLzt50jdWn6QCcD43OUmDRbrXcmIZdpk535AYa3kzAfrZp8iTwXpxud4plb6wI7ZezK+pCYZ86DENp32A1rbupNSAwtdB7xrQZpNVmDkkh6t0AernsiOmCVMKrVQOnUDpApB9FGef/dx26oQ4=
+	t=1784640390; cv=none; b=ipoE0gGtEjJKuy2TvAGZLbNIVfVO2mPg43KNXEeuwJPs5dNCm9wCK27dxsb9WAQwVk8XkSnLnZC4T5fqzca6vrsxZuFwcG3/5NGzNe00rtuIkTXvECQ3AxcBbV9jYbE725Stz9/oTKXXdDMYOkGXWnxXhnJrtBzcUSl5BQzCg4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784635569; c=relaxed/simple;
-	bh=3oupU7+5mQICPbOMW24bukRFFTm81wEOBpej2miz2tE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CNRCuxGbIa4xtKK2QB2zJmbTyxgChUkxZ3A/b7bOd0zxM51jqFhr5suMVwQQ2Ly2n7rn1F9xi8Iveyc8wHk3Eow7pQr5rSB3JRrGisQENNTTVhkFrx6gFLiQlLRv1fHMEY+5mtYgE1cV+iCQO1TSrJb7+slh9BMhd1hZtjRZwAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=eZwE3YxB; arc=none smtp.client-ip=95.215.58.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1784640390; c=relaxed/simple;
+	bh=Hc9kzoQ9rFyyW8XHyUKHR1d2Dsj44oWw597yXAQp+uc=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=S6qY3atJleIeiRt1c/1j6Bspp/lblM9kVDLGTGnkrV70y8vZeSQWSOC5sjHNYs32T4w9s/Zx1YoiYRttA64c/j3yTGNu7/DKJ7XfzTjMvTvM3nkFemGh4/hx3mTbf9EKVGJmPsiWAaBffG2a/6uaeoFw83HsaC70+F7o4HVXhcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=Uj1oBLm2; arc=none smtp.client-ip=113.46.200.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="eZwE3YxB"
-Date: Tue, 21 Jul 2026 20:05:49 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784635564;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=A7dYAlxy/AmMUyH+MlvfhyBiS8Q0C6HxH/Mauukj/gQ=;
-	b=eZwE3YxBH34e9tRiCPggwYdYaOw6NhkKu6BTNStYMe942ZxlIFt9cE8RPfN+rNf2WBfllB
-	dRtZZhVUmLMxoo5O5g9KDUWfGfoIsGLousnSIDCtVH38WaSJPywwXrv5D8cF+wN4+r7uBQ
-	iKjh+SXv0L25Chs5leSM8+RdGynHSSE=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Baoquan He <baoquan.he@linux.dev>
-To: Omar Sandoval <osandov@osandov.com>
-Cc: Mike Rapoport <rppt@kernel.org>, Pnina Feder <pnina.feder@mobileye.com>,
-	Simon Horman <horms@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Dave Young <ruirui.yang@linux.dev>,
-	Jonathan Corbet <corbet@lwn.net>, Alexandre Ghiti <alex@ghiti.fr>,
-	kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-mips@vger.kernel.org, linux-riscv@lists.infradead.org,
-	linux-doc@vger.kernel.org, linux-debuggers@vger.kernel.org
-Subject: Re: [PATCH 0/4] vmcore-tasks: export per-task metadata to vmcoreinfo
-Message-ID: <al9gnbT5S0ALDieg@MiWiFi-R3L-srv>
-References: <20260622211430.4008899-1-pnina.feder@mobileye.com>
- <akybBoCAm-kJbfHL@kernel.org>
- <20260720091927.GA1736709@horms.kernel.org>
- <al4X300UObXawEIJ@kernel.org>
- <al4yeHrkDHFoo6A0@MiWiFi-R3L-srv>
- <al5cbYMD18UbKe-6@telecaster>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="Uj1oBLm2"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=9hgq2bOlQdWO8j42MpZzQv278XodO4khDw3hgg8g+EE=;
+	b=Uj1oBLm2piRS2jcNrVUUdAj64NR7QB2AifXV29XsiXtXTCt8/PmMpEq+nwr+s8iX+TO4SVXy8
+	IusYOu5A+t3ilK/5m8l2t6qY1s1aIGuzFz4Xh3ZFK7Gj4qZgTf2WIrFuLXxQw3LkIeDfDM4c4Ja
+	qOFsHfRNHFyUbXAQwQgO+MU=
+Received: from mail.maildlp.com (unknown [172.19.163.214])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4h4HwN5h1CzKmTp;
+	Tue, 21 Jul 2026 21:16:52 +0800 (CST)
+Received: from whupemo200006.china.huawei.com (unknown [7.152.185.252])
+	by mail.maildlp.com (Postfix) with ESMTPS id 668704056C;
+	Tue, 21 Jul 2026 21:26:17 +0800 (CST)
+Received: from [10.174.178.219] (10.174.178.219) by
+ whupemo200006.china.huawei.com (7.152.185.252) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 21 Jul 2026 21:26:10 +0800
+Subject: Re: [PATCH v5 00/36] Private Memory NUMA Nodes
+To: Gregory Price <gourry@gourry.net>
+CC: <linux-mm@kvack.org>, <Zhigang.Luo@amd.com>, <arun.george@samsung.com>,
+	<balbirs@nvidia.com>, <brendan.jackman@linux.dev>, <apopple@nvidia.com>,
+	<alucerop@amd.com>, <matthew.brost@intel.com>, <akpm@linux-foundation.org>,
+	<david@kernel.org>, <ljs@kernel.org>, <liam@infradead.org>,
+	<vbabka@kernel.org>, <rppt@kernel.org>, <surenb@google.com>,
+	<mhocko@suse.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
+	<gregkh@linuxfoundation.org>, <rafael@kernel.org>, <dakr@kernel.org>,
+	<djbw@kernel.org>, <vishal.l.verma@intel.com>, <dave.jiang@intel.com>,
+	<alison.schofield@intel.com>, <osandov@osandov.com>, <jannh@google.com>,
+	<pfalcato@suse.de>, <jackmanb@google.com>, <hannes@cmpxchg.org>,
+	<ziy@nvidia.com>, <pbonzini@redhat.com>, <osalvador@suse.de>,
+	<joshua.hahnjy@gmail.com>, <rakie.kim@sk.com>, <byungchul@sk.com>,
+	<ying.huang@linux.alibaba.com>, <kasong@tencent.com>, <qi.zheng@linux.dev>,
+	<shakeel.butt@linux.dev>, <baohua@kernel.org>, <axelrasmussen@google.com>,
+	<yuanchu@google.com>, <weixugc@google.com>, <yury.norov@gmail.com>,
+	<linux@rasmusvillemoes.dk>, <longman@redhat.com>, <ridong.chen@linux.dev>,
+	<tj@kernel.org>, <mkoutny@suse.com>, <sj@kernel.org>, <jgg@ziepe.ca>,
+	<jhubbard@nvidia.com>, <peterx@redhat.com>, <baolin.wang@linux.alibaba.com>,
+	<npache@redhat.com>, <ryan.roberts@arm.com>, <dev.jain@arm.com>,
+	<lance.yang@linux.dev>, <usama.arif@linux.dev>, <xu.xin16@zte.com.cn>,
+	<chengming.zhou@linux.dev>, <roman.gushchin@linux.dev>,
+	<muchun.song@linux.dev>, <linux-kernel@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <driver-core@lists.linux.dev>,
+	<nvdimm@lists.linux.dev>, <linux-cxl@vger.kernel.org>,
+	<linux-debuggers@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
+	<kvm@vger.kernel.org>, <cgroups@vger.kernel.org>, <damon@lists.linux.dev>,
+	<linux-kselftest@vger.kernel.org>, <kernel-team@meta.com>
+References: <20260720193431.3841992-1-gourry@gourry.net>
+From: Zenghui Yu <yuzenghui@huawei.com>
+Message-ID: <a9c52bb6-5e04-1d41-913a-685a7be3fad4@huawei.com>
+Date: Tue, 21 Jul 2026 21:26:09 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.1
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <al5cbYMD18UbKe-6@telecaster>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <20260720193431.3841992-1-gourry@gourry.net>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ whupemo200006.china.huawei.com (7.152.185.252)
 
-On 07/20/26 at 10:35am, Omar Sandoval wrote:
-> On Mon, Jul 20, 2026 at 10:40:43PM +0800, Baoquan He wrote:
-> > On 07/20/26 at 03:43pm, Mike Rapoport wrote:
-> > > Hi Simon,
-> > > 
-> > > On Mon, Jul 20, 2026 at 10:19:27AM +0100, Simon Horman wrote:
-> > > > On Tue, Jul 07, 2026 at 09:21:58AM +0300, Mike Rapoport wrote:
-> > > > > On Tue, Jun 23, 2026 at 12:14:26AM +0300, Pnina Feder wrote:
-> > > > > > This series extends vmcoreinfo with struct offsets and sizes needed by
-> > > > > > the vmcore-tasks userspace tool to extract per-task state from a vmcore
-> > > > > > dump without requiring kernel debug symbols (DWARF/BTF).
-> > > > > > 
-> > > > > > The vmcore-tasks tool reads /proc/vmcore (or a saved vmcore file) and
-> > > > > > reconstructs, for each task:
-> > > > > >   - task name, pid, state, flags
-> > > > > >   - VMA list (start, end, flags, backing file)
-> > > > > >   - user register state (saved on the kernel stack at kernel entry)
-> > > > > >   - user-space backtrace with VMA/filename mapping
-> > > > > >   - kernel dmesg buffer
-> > > > > > 
-> > > > > > This provides a lightweight post-mortem crash analysis capability for
-> > > > > > production environments where full debug info (DWARF/BTF) is not
-> > > > > > available.
-> > > > > > 
-> > > > > > The companion userspace tool is submitted to kexec-tools:
-> > > > > >   https://lore.kernel.org/all/20260622205550.1087163-1-pnina.feder@mobileye.com/
-> > > > > 
-> > > > > Sorry for the delay, this fell between the cracks somehow.
-> > > > > 
-> > > > > The kernel side looks fine overall, but to merge it there should be an
-> > > > > agreement from the userspace side maintainers that vmcore-tasks is
-> > > > > something they are wishing to accept.
-> > > > 
-> > > > Hi Mike, all,
-> > > > 
-> > > > Sorry for the extended delay.
-> > > > 
-> > > > I will send some minor feedback to the user-space tool patchset
-> > > > but overall, yes, this is something I would be happy to accept.
-> > > > 
-> > > > I don't want to create a chicken-and-egg type problem here.
-> > > > But it's probably worth mentioning that usually features
-> > > > hit the kernel before the corresponding code is accepted
-> > > > into kexec-tools.
-> > > 
-> > > Sorry if I wasn't clear. 
-> > > 
-> > > I didn't mean that the feature should be merged into kexec-tools before
-> > > merging the kernel bits. I just wanted to make sure there's no fundamental
-> > > issue from kexec-tools perspective.
-> > > 
-> > > > Let me know how you would like to proceed.
-> > > 
-> > > I'm going to wait for Baoquan's review and once that's done I'll pick up
-> > > the kernel bits.
-> > 
-> > Oh, sorry, I just noticed this series, but a quick look give me a hint
-> > of 'No, I don't like it.' We have had Crash utility, Drgn, now a new one
-> > comes up. I have some concerns to Pnina:
-> > 
-> > 1. Exporting maple tree internals (maple_node, maple_range_64,
-> >    maple_arange_64, maple_metadata) as vmcoreinfo ABI is problematic.
-> >    These are private implementation details, not stable structures like
-> >    task_struct. Any refactoring of the maple tree will silently break
-> >    the userspace tool. 
-> > 
-> > 2. Without DWARF/BTF, the debugging scope is inherently limited — no
-> >    kernel stack backtrace, no symbol resolution, no variable access.
-> >    That's essentially "ps + /proc/PID/maps" from a vmcore. Have you
-> >    considered enabling CONFIG_DEBUG_INFO_BTF on your platforms instead?
-> >    BTF is compact (typically < 1 MB) and would give drgn full access
-> >    without needing vmlinux debug packages. That seems like a better
-> >    return-on-investment than maintaining ~40 new vmcoreinfo exports.
-> > 
-> > 3. Beyond the technical concerns, I wonder about adoption. vmcore-tasks
-> >    targets a fairly narrow use case — platforms without DWARF/BTF, where
-> >    you still have vmcore but can't ship vmlinux. Is Mobileye currently
-> >    the only consumer? Are you guys already using it widely and fully?
-> >    If this lands but doesn't see broader uptake, the ~40 exports risk
-> >    becoming dead weight in vmcoreinfo — nobody actively uses them, but
-> >    kernel changes still need to keep them consistent, or they silently
-> >    rot and give users wrong results. 
-> > 
-> > Regards,
-> > Baoquan
-> 
-> (Adding linux-debuggers mailing list).
-> 
-> I agree with all of Baoquan's points here, with a couple of notes:
-> 
-> 1. drgn's BTF support is currently a work in progress, but it's shaping
->    up well: https://github.com/osandov/drgn/pull/625.
-> 2. makedumpfile is also gaining BTF extension support:
->    https://lore.kernel.org/all/20260617051834.95404-1-ltao@redhat.com/.
->    It's lighter-weight than drgn while still being much more general
->    than this series.
+On 2026/7/21 3:33, Gregory Price wrote:
+>   KVM: guest_memfd: bind backing memory to a NUMA node at creation
+>   KVM: selftests: add a guest_memfd FLAG_BIND_NODE test
 
-Thanks for adding the information, very helpful.
+I can't find the last patch in my inbox or on the lore. Not sure what went
+wrong.
 
+Thanks,
+Zenghui

@@ -1,142 +1,163 @@
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D42D73290C8
-	for <linux-debuggers@vger.kernel.org>; Thu, 13 Aug 2026 01:21:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786584075; cv=none; b=S91vXE32c+I8Lu/GaMRfCdcX1O2pwj0NGneqcyNUS8iPpf132vKJuump/WOjWU/YvxwFzg+bGbmM6VhX5mcL8zDwMpELTSbw9sHo9+/TC2mS/z/iDNMvCaf6dOpZAaDkWg3fhQiHaxhFg9c7brj2nlnzwBsS6mRW26KoohwrQYQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786584075; c=relaxed/simple;
-	bh=jQAWRVENXd5JGHsxo/hf6vUttuV6ujE/QtYCehIVHRI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FkZ/Til3b2tLuqTIuWF55sHJfsBZXOil1JIR6Ym3ev1+54+x7R6o6CbbaTp+awjn5CWXYHPzMWa7FwXweZMWXGdtjHAoCIr8u78GGDowQZY+zZXsN0ElVS7kMU3nCdnMb0qKEdg7j5uT66xbFQdOlmGoy4D/i9YcYux4cVtvVF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=gV8Mq8xE; arc=none smtp.client-ip=209.85.219.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3877442FDB
+	for <linux-debuggers@vger.kernel.org>; Thu, 13 Aug 2026 08:55:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.174
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786611327; cv=pass; b=n3jAwnbqRxIWgh+1UxFrwssB3fscBxJHptrVritdsAuKS7iP0YB4nJvobJMT6mNWdj5ezR/DDG1lGJcF/BkgXnc2NFvllAJ6STOzoGC9lI922MqhFU9GeiWEpie6LvGyyamRDQS9h+7ph2c157/bEnwm25suW/ek5WR19/DI9II=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786611327; c=relaxed/simple;
+	bh=Jzc8k1yrWfBTMmPd/uTV9o0ew6ZOvHlbY2BVlHKCDmQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BgFGSQQepINFJld7384NJQ76jMHPBgu/97Az13bme7w5wTReIPc80ofwrv26Hxt1+zYuA3DJSszJpIClUZfkNmK5jlSBvaqrQNrHlK0p9kwZCxNRuH2pojd2aeGoDkJMMT5Ulc23aD9R3RhXogQbbcwAoX3M7vnD2rMv4uhesps=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HbbGxqob; arc=pass smtp.client-ip=209.85.215.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="gV8Mq8xE"
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-8fcc43c48f7so2142776d6.2
-        for <linux-debuggers@vger.kernel.org>; Wed, 12 Aug 2026 18:21:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HbbGxqob"
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-ca7c1176317so430931a12.1
+        for <linux-debuggers@vger.kernel.org>; Thu, 13 Aug 2026 01:55:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786611325; cv=none;
+        d=google.com; s=arc-20260327;
+        b=jWswe5kG3Vc00aTys7/YG9+JuzbPSCbl+ePW1xAfivoaa5VDrbT9HNMv/5jbwvfQvE
+         2FONJz1zxdeR4WZ0ibzg8l/W9QE6ke+VWuwJDgOCvdbbZ0Sx4fRrU3SlZ+5HjLLQ7yiO
+         CuFLrlxvXlmnR7BAJNbgBKKWqD40+y8J2K8P0lpDsYwEZcaAUrcAxJSP6W5ResuMtkwA
+         5+b6k+GDCOob5Am4EvrOUjH3imZOMmoNgGj+e3I0eikqqb0ufTMGWAILn8ZmA6nO6NQZ
+         c2jcKd9dsXz4rN0o1ZUGgSt4B2A7y0bbJ16SYiVvAaBp5nNHPi5XY3MpOrSTLmF2CGi+
+         zH1w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=iQkBGHUJCah+5IraL6W1VGnCKmw1qeB0IxjLs3arhcU=;
+        fh=2R4A6JMmgZRQbFwZuvlXpXoMipFR15RU3ulZMSA17yA=;
+        b=Cc3hYY26gzLw7zsrBWoIeZJzfxt9Yn4b9bRmTqNy9Vn9SxVJhS+wLwyVi8YkOPH+xt
+         ekJ0/JDfrFx6I4RH6ESi8bZS9Hiyf3qd8AprEmSywiqcpapJlbohkWOs/zi1I4j92bLU
+         vD3a8NKAHGe8VDPaH/W9KrAm0QWal7BqfDUI8Y8lJ6KKu8cJymseALD32JlDkPnhh9ZD
+         Hg+aDfDutQvUOaNI+HfNgZZVa/aqT2oY2PqPc2sQObstPmyrBB7wAZj5XWMINvMg7eZw
+         ZeHXlpsY3wX1jrMmO4ol1nmAajGpoJJq5PKUTfuvkJ5ibQU/VvOnG9KzFAKq1rJJsJE/
+         JRUQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1786584071; x=1787188871; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ZGIPGO62vUWJJtnlWOV7HnIzQD6+wbjwlpycp53S1ew=;
-        b=gV8Mq8xEA4vtp2rDR+jnsK6TSSY301yKIdCVoD89t2x3h9Hgh1rrBdXjPL+CXFnKeT
-         SgVmxK9YhwfBk26NKuanp3J6BqnN7/USTpDab1KXu05gblpMHZZhHLaHX6OYZjrkSTT+
-         ndMAlJK/eFZotlpBWs/cl17UYJG9pm8sN7oSr2GxLXNHrirOvdufd5pCS61GGlFgjQET
-         UblzbhY28gXamsNJPH9B9mCtMjh0uO2f2nXQy8B2vIpvJJnTFTdLMwOELMREAc5ZnPHV
-         bljYuNumM7lTPeweZ05hCOaUTdzG6R7ZVXB7nWY2NU3i4BPv37QoHQw7aN/CUrDZSC0J
-         p/0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786584071; x=1787188871;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1786611325; x=1787216125; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ZGIPGO62vUWJJtnlWOV7HnIzQD6+wbjwlpycp53S1ew=;
-        b=NPp6/GW8FEkPNJfnS7ibPN+2O8W3zUCgYoH3tLdGYNmz/ryzQiZwRWJqaWpaR8wuH0
-         gipEV7EHEf26PSjnXtuEAqzB+tzTpDEyELgNhY3LB5sb3KBpZe4PpMAe7/WfaoDTJXf8
-         62LzPduTx5glK8WU6iwBt5PAQ8i/nYqUKB6e9RMTW91y1KaIGV/UgkuvGYv9NqILWGrT
-         h1pg6CH72F0qPZJa4DtEQWG0XQcC2b/NnWN4vAUmwXUj9xjg9Q8wprvlwFOukrZJzLCJ
-         gfrbpjL9giGwB2eoUxQOli6zbptdvkt0A9qDAKziYOL4drmOE2TLHkEyQej5ZJuzbPJ1
-         1rtQ==
-X-Forwarded-Encrypted: i=1; AHgh+RosiWcESYcUiCLJ3sg5KjHh3zkYBo8gSUIkIil0D+Uh3sbCiiSxmO59cyOxwZPxFS6pz0DdGkPZBSDjf1yXKrU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YymWdEq2QfbF1F/aF5b+qcVzEhWW2TJi0JqaRdPvjh6t9nSMA9D
-	0iQ9V7At7ikO2c1U85pbKgtmJ9EIVrrjL6lEQ8wXxVTZTjlnD6d9VDt5eky8JyHK8oc=
-X-Gm-Gg: AR+sD121CQIgrOBgayrljxb53MhZYFHiwA5FtqocDKaZlUVNCLm0B6NKgSn+Y/vbhIC
-	c6vo022ewFA0zDnUhJRMli7TQprEoaJRq9RZrrjuTY58cUo5toVVC7UQ7dKE2vjOgVZ49Ok9On3
-	YULqu521aQp563Y8yKiCanl5g/9zoWxW6H3IgMCnVxpXgnr0OC8ih7GrZBu6ZGw8PL2XhXZoEGj
-	uFtKyYfikJuFa9H4Vv3dfyy2kEKIzDG07BpH4DLqBdQTiGUniOGSqMc66BTN3ZCVFCOzzQZI+ak
-	HZPwwezzuq2K+6cNTkkYO/GaMDpMmHeaR5N9y7ONHGOLgyqxBEGykX37wUm4ztuO+xpSmb9lkZ7
-	N5yfkgoETMijrlQM8BK9/Sgtrajvd4OhxLVR+31suQp5+OHHMlEw3mjF93nwWVxDs2tNCEsltWO
-	a/3NdJC63H0FHXQRi3nR6FbvJigS395T+j2ZuZ8wwzCAxkyTU=
-X-Received: by 2002:a05:6214:500b:b0:8f0:d710:26ba with SMTP id 6a1803df08f44-90a80bb0b74mr17793966d6.31.1786584071577;
-        Wed, 12 Aug 2026 18:21:11 -0700 (PDT)
-Received: from fedora ([2601:19e:8500:d3c0::28fe])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90a8179e350sm4119856d6.6.2026.08.12.18.21.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Aug 2026 18:21:10 -0700 (PDT)
-Date: Wed, 12 Aug 2026 21:21:04 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
-Cc: linux-mm@kvack.org, Zhigang.Luo@amd.com, arun.george@samsung.com,
-	balbirs@nvidia.com, brendan.jackman@linux.dev, yuzenghui@huawei.com,
-	apopple@nvidia.com, alucerop@amd.com, matthew.brost@intel.com,
-	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
-	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, corbet@lwn.net,
-	skhan@linuxfoundation.org, gregkh@linuxfoundation.org,
-	rafael@kernel.org, dakr@kernel.org, djbw@kernel.org,
-	vishal.l.verma@intel.com, dave.jiang@intel.com,
-	alison.schofield@intel.com, osandov@osandov.com, jannh@google.com,
-	pfalcato@suse.de, jackmanb@google.com, hannes@cmpxchg.org,
-	ziy@nvidia.com, pbonzini@redhat.com, osalvador@suse.de,
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
-	ying.huang@linux.alibaba.com, kasong@tencent.com,
-	qi.zheng@linux.dev, shakeel.butt@linux.dev, baohua@kernel.org,
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
-	yury.norov@gmail.com, linux@rasmusvillemoes.dk, longman@redhat.com,
-	ridong.chen@linux.dev, tj@kernel.org, mkoutny@suse.com,
-	sj@kernel.org, jgg@ziepe.ca, jhubbard@nvidia.com, peterx@redhat.com,
-	baolin.wang@linux.alibaba.com, npache@redhat.com,
-	ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev,
-	usama.arif@linux.dev, xu.xin16@zte.com.cn, chengming.zhou@linux.dev,
-	roman.gushchin@linux.dev, muchun.song@linux.dev,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	driver-core@lists.linux.dev, nvdimm@lists.linux.dev,
-	linux-cxl@vger.kernel.org, linux-debuggers@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org,
-	cgroups@vger.kernel.org, damon@lists.linux.dev,
-	linux-kselftest@vger.kernel.org, kernel-team@meta.com,
-	"Gupta, Pankaj" <pankaj.gupta@amd.com>
-Subject: Re: [PATCH v5 00/36] Private Memory NUMA Nodes
-Message-ID: <an0cAMh_m8ZhGIm2@fedora>
-References: <20260720193431.3841992-1-gourry@gourry.net>
- <CAM9Jb+jpJ-Ui4qDHxsp2WiERiv8gmrQfKQ8Z0BmabefeQ6pg4A@mail.gmail.com>
+        bh=iQkBGHUJCah+5IraL6W1VGnCKmw1qeB0IxjLs3arhcU=;
+        b=HbbGxqobFGq6jQ6lr3AJYabpK7r73QkMm2744ocBEgZnA+6LW1VXrJFvpPuRvh7/I6
+         TkJKTnNGFbwPfPQkY7vkUNbj4DBRuQjSPrawZdDMGbvp3sfiPH5dD18PB77MjXzZA/qY
+         XPo7ahdVsKJJYMaLNASbJYMiZtJ3FafVpzNeEnE/PnWlf476KRrykV3FhC0tMDv4WnNk
+         m0y7kATTGB+afK+bUQQPp4AkzCAB81Xl36TrhqC9hE1NujciAOnmDwqF8d/3lvCK9nW1
+         K5Dw1FSSyXL13cknl9NsxPbL3l/9WzZv36eVpZthyccF8dHS7UWpyPrQ/uxlaDZPpdzk
+         1zsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786611325; x=1787216125;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=iQkBGHUJCah+5IraL6W1VGnCKmw1qeB0IxjLs3arhcU=;
+        b=EKbA6FDYjBVHdh68qKgBicaCpgfSe0JcUGM/EUbYFNNN0W/seKxYj+76vJ0OVJJvGF
+         JtGbJWc1zjaQnfPeXVCop2JMcc04dI92fHJzLtSltzgOLnHRf04uH2exVzHKtv6O3Ql9
+         1OzxPnbMEzCB40kSx60gb9ilOIniaEN+xXi9cHsg8x4Jm0i2DIOioEgZ6WdkP/KVHxCZ
+         utleoNeTI4K6VNImEdv7lVmNwOppcO0CLjDG+4KtWeOxtoI8/+1R8+abWnOU3+ychc6N
+         EsdD4lz+xzL6weaUC56CfzTc3NaOFdT1RS9DEAdAkkGb9kF/kju3UcLRkm470RKDPdAN
+         zXxA==
+X-Forwarded-Encrypted: i=1; AHgh+RrjCwGhR1G5LlwqvcsdLn5MK6AQ2qDulvGjlOPKPNyvo4NkQA87Sq38OQhC9j4o8FNAo1zn/MFAQS5ZZ3j5im8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwvIlMkVzNAj64kvHbsGkxYjcnvCl3AXBupcAuKjOqi1YBOV8m4
+	3xxSOb9ggZPUDHCxb95BKmld7iueaW3QNuc05R5Ez27G6XIU24O+A2FBlNoGA8iqH9HDgWUPTN7
+	WCR6fRc2TRrIsQERHuAfk0pq0rEbLWkg=
+X-Gm-Gg: AR+sD10WoPFg6cf0yJsxOP0MfYovs686eaQbxFXs7zSjYK9MYSerwIsF5JNkIlGHM5b
+	5Lv5nSdJ6+eWEtORtdIadpk0Q1GYhlDN3T6YZ191wL/cbFdkA9s2G+AI5vx7dStRixgui9QIas4
+	LDSe9xvYX8sKoD0VHawopNtdLG9tLiCa341nQQSzC8gU/cA6GXYE7kIoXdJcCXZzolCJs7p3q5S
+	G4HOjjmJPY5J5s+BSHWmn+lzse6PjgQIeL9o6OA1FekmyUIfnNNoby7og0sf5u5LsycNxdQCALA
+	Ubv4PO1dXAq1Q49D1tG7pBMAcPFhYbRIA4wjAGzURo1WnAE=
+X-Received: by 2002:a05:6a21:150b:b0:3bf:8604:9a3c with SMTP id
+ adf61e73a8af0-3cc553f513emr5787899637.28.1786611324791; Thu, 13 Aug 2026
+ 01:55:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAM9Jb+jpJ-Ui4qDHxsp2WiERiv8gmrQfKQ8Z0BmabefeQ6pg4A@mail.gmail.com>
+References: <20260720193431.3841992-1-gourry@gourry.net> <CAM9Jb+jpJ-Ui4qDHxsp2WiERiv8gmrQfKQ8Z0BmabefeQ6pg4A@mail.gmail.com>
+ <an0cAMh_m8ZhGIm2@fedora>
+In-Reply-To: <an0cAMh_m8ZhGIm2@fedora>
+From: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
+Date: Thu, 13 Aug 2026 10:55:13 +0200
+X-Gm-Features: AUfX_mx5aRT_GeBsew982Oll4m1v2zeTSERp4DtDb2YI-VK1slYjLWUFWPkF2ZE
+Message-ID: <CAM9Jb+jmxPdL-CdWQHYMT5G=qmjB6z2WFg+4K8Fod5n=2N6YCQ@mail.gmail.com>
+Subject: Re: [PATCH v5 00/36] Private Memory NUMA Nodes
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, Zhigang.Luo@amd.com, arun.george@samsung.com, 
+	balbirs@nvidia.com, brendan.jackman@linux.dev, yuzenghui@huawei.com, 
+	apopple@nvidia.com, alucerop@amd.com, matthew.brost@intel.com, 
+	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, corbet@lwn.net, skhan@linuxfoundation.org, 
+	gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org, 
+	djbw@kernel.org, "Gupta, Pankaj" <pankaj.gupta@amd.com>, vishal.l.verma@intel.com, 
+	dave.jiang@intel.com, alison.schofield@intel.com, osandov@osandov.com, 
+	jannh@google.com, pfalcato@suse.de, jackmanb@google.com, hannes@cmpxchg.org, 
+	ziy@nvidia.com, pbonzini@redhat.com, osalvador@suse.de, 
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, 
+	ying.huang@linux.alibaba.com, kasong@tencent.com, qi.zheng@linux.dev, 
+	shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com, 
+	linux@rasmusvillemoes.dk, longman@redhat.com, ridong.chen@linux.dev, 
+	tj@kernel.org, mkoutny@suse.com, sj@kernel.org, jgg@ziepe.ca, 
+	jhubbard@nvidia.com, peterx@redhat.com, baolin.wang@linux.alibaba.com, 
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
+	lance.yang@linux.dev, usama.arif@linux.dev, xu.xin16@zte.com.cn, 
+	chengming.zhou@linux.dev, roman.gushchin@linux.dev, muchun.song@linux.dev, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	driver-core@lists.linux.dev, nvdimm@lists.linux.dev, 
+	linux-cxl@vger.kernel.org, linux-debuggers@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, cgroups@vger.kernel.org, 
+	damon@lists.linux.dev, linux-kselftest@vger.kernel.org, kernel-team@meta.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Aug 12, 2026 at 02:01:12PM +0200, Pankaj Gupta wrote:
+> > > Bonus Configuration: HBM device memory tiering
+> > > ==============================================
+> > > echo 1 > dax0.0/private       # make the node private
+> > > echo 0 > dax0.0/adistance     # highest tier
+> > > echo 1 > dax0.0/reclaim       # reclaim active
+> > > echo 1 > dax0.0/demotion      # may demote from the node
+> > > echo 1 > dax0.0/user_numa     # mbind()
+> > > echo online_movable > dax0.0/state
+> > > echo 1 > numa/demotion_enabled
 > >
-> > Bonus Configuration: HBM device memory tiering
-> > ==============================================
-> > echo 1 > dax0.0/private       # make the node private
-> > echo 0 > dax0.0/adistance     # highest tier
-> > echo 1 > dax0.0/reclaim       # reclaim active
-> > echo 1 > dax0.0/demotion      # may demote from the node
-> > echo 1 > dax0.0/user_numa     # mbind()
-> > echo online_movable > dax0.0/state
-> > echo 1 > numa/demotion_enabled
-> 
-> I am bit confused by the HBM device example being discovered as a DAX
-> device. Is it to
-> only to showcase the use-case? Or we see HBM device is actually
-> expected to be discovered as
-> DAX device with N_MEMORY_PRIVATE?
-> 
+> > I am bit confused by the HBM device example being discovered as a DAX
+> > device. Is it to
+> > only to showcase the use-case? Or we see HBM device is actually
+> > expected to be discovered as
+> > DAX device with N_MEMORY_PRIVATE?
+> >
+>
+> "actually expected to be" -> no.  there's no requirement HBM be
+> discovered and boudn to DAX, DAX is simply a convenient intermediary
+> to memory-hotplug.  This is at best a demonstration.
+>
+> A device driver could very well just call memory-hotplug directly,
+> or its memory could be brought up as a private node via a boot
+> paremeter (which I have sculpted for v7).  The former is preferred,
+> but there's a bit of a chicken/egg scenario for bootstrapping.
 
-"actually expected to be" -> no.  there's no requirement HBM be
-discovered and boudn to DAX, DAX is simply a convenient intermediary
-to memory-hotplug.  This is at best a demonstration.
+I find this interesting as this appears to be evolving towards a vendor
+agnostic framework for hotplugging memory directly to private nodes.
 
-A device driver could very well just call memory-hotplug directly,
-or its memory could be brought up as a private node via a boot
-paremeter (which I have sculpted for v7).  The former is preferred,
-but there's a bit of a chicken/egg scenario for bootstrapping.
+How you see this working? In particular, How would the kernel know which
+memory ranges correspond to HBM or other device memory?
 
-Most of these UAPI extensions are going to be consolidated into a
-debugfs interface for testing purposes only in v7.  I've been working
-on aggressive Linux Test Project test expansion to ensure there is no
-UAPI regressions.
+Please also CC me when you post v7: pankaj.gupta@amd.com
 
-~Gregory
+Thanks,
+Pankaj
+>
+> Most of these UAPI extensions are going to be consolidated into a
+> debugfs interface for testing purposes only in v7.  I've been working
+> on aggressive Linux Test Project test expansion to ensure there is no
+> UAPI regressions.
+>
+> ~Gregory

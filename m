@@ -1,91 +1,111 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFEC42E8DEB
-	for <linux-debuggers@vger.kernel.org>; Tue, 25 Aug 2026 20:35:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAEA02192F9;
+	Fri,  4 Sep 2026 01:05:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787690120; cv=none; b=iWK8fALReSb2u1yUDv6qLeoLTQEF8IS1YnXefQIGp9rBmdxWj4w0lAFZN4DHc3u0l67xDJMAYX12xqRNHO+W936Bbfq2kAvvKOgtKwR7gGBCeNqw2ekD+exKKd8EJ5tEqvGjro2wASp7yNWDiyVjBnwvXUXQLAb+ZCZIV0uyd08=
+	t=1788483953; cv=none; b=Zyyq2nx+N4VeK8LcOEla2uEGaoFFsk87e8eUDCa9k7ol/LrI1rdL0QRk0UlBWyrMgTHJ425uzVab0b3H03cUwjfmAQV6kug3BFb4AYSdM69im8Wl/I9FtrUDNYUCyQqajXRcUPjMlzVXbOw98HesBoZx3l9Zod3nKMK4BcFUIS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787690120; c=relaxed/simple;
-	bh=5sSaGOCqXn7wcDI5c8hxZOf7mCLIeCN7LeV5PpHFLa8=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=btWgShBsxCpeTrOIwH1aty5JrOQYxtAuPoUBY15tgFS9gE8yBYA72bNzJqKv6gPon+bL381MG90LhAJiB/btLgqE9g53ZRJAIEg0IaDkzXmwn4h8ZovgeZbkGh2xpBq+PAIQfHZNVaiw8f33aK0OzIMmAnOaBFePWlMZRubb5Dk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com; spf=none smtp.mailfrom=osandov.com; dkim=pass (2048-bit key) header.d=osandov-com.20251104.gappssmtp.com header.i=@osandov-com.20251104.gappssmtp.com header.b=Xv+vf/FR; arc=none smtp.client-ip=209.85.216.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=osandov.com
+	s=arc-20240116; t=1788483953; c=relaxed/simple;
+	bh=pXJxK3+dwpX0ZuLCucXJEaT/CLa6AThnH/lmQa4I3lI=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:CC:References:
+	 In-Reply-To:Content-Type; b=K6sqXm79kIHXQrJpNr6wZhjLfmDp3COgDSGbEn5dz3ORV2RkqwoXNS02YpBebtlW79rwRQI4JM1B/b542lQ8/bltMYhzhy+gaSzv6xpGybQYLSpI+7QnnOYbfMiSf4WXw3eDZqKgIFHpWndfg4OkpOJhx5hXPgSeMnuoHDZ5pgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=c1r7eiZl; arc=none smtp.client-ip=113.46.200.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=osandov-com.20251104.gappssmtp.com header.i=@osandov-com.20251104.gappssmtp.com header.b="Xv+vf/FR"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3964707f32aso43209a91.3
-        for <linux-debuggers@vger.kernel.org>; Tue, 25 Aug 2026 13:35:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=osandov-com.20251104.gappssmtp.com; s=20251104; t=1787690118; x=1788294918; darn=vger.kernel.org;
-        h=content-disposition:content-type:mime-version:message-id:subject:to
-         :from:date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=fq93Krj1c4Rjx4UyK3oHOwnshg4MwnfVQqsaq7fOlLE=;
-        b=Xv+vf/FRBA0S8dyUnVssWU97neoZPlHgDDmgkLd6XqpB9uvINIZc4VdA0sSVdwux3c
-         eVdESAoWcgNHEBYPIy8nJ5smAVp7NxKZHrwO3B893/brBb8AjIecBR34KM0rWRhsrOq5
-         3avwLYWx/rjJdGRm26jqLK6GxrpfgG57Mzys19N9HEF6UpzfK1TbGEaK9Eb9sFw3XQrc
-         KcHCHRQ4lZvKFY5+VtHGDcYNFgq8imQTI7oyO/dCkTzWnMnAfHoPMEszMm0rDcCBI7Hy
-         6O96j5ifjWoBfmXNo8IEqxfxKFulJQP3UgaUrm9WMPRN5PXOE0D3tvNi7S/SFfGGtas/
-         vVrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787690118; x=1788294918;
-        h=content-disposition:content-type:mime-version:message-id:subject:to
-         :from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=fq93Krj1c4Rjx4UyK3oHOwnshg4MwnfVQqsaq7fOlLE=;
-        b=Qibmi9qchyBoPaUFfUu+5YDPy8Ey+GzW5F6WdmcNpxAc2Ilg4X7dTklOqEbHot1l5D
-         T8N7xcuIxh9WTduZLipW0tsgKFncizFenWxm8XdsILuRhHxAbjTaNK8+/xo9h8ust1Bj
-         y6KUZViPhUH6Awd9wOSVdE63LoH1n7uW3IP5i/Np2/iQfxOHNw8iRDGwqjSEZQZoXKJC
-         CV30q1JuYavp9tBfzBFwXv7skX/VGbcDxSrbA2UILub2bMK8Yxhk+qiJZOucyOHDbZA9
-         i70lvmWRpJokLF3uSQm6myOmztrFUz2Ne14V3tP4znlnbWOkvf/Ndu2EhVa/Zg6kkYkX
-         iw+w==
-X-Gm-Message-State: AFuF++m5G0Zr5tqb4Z8/8AKasDYcRcCWD34mBQxFh4+mS5QCylCyYKha
-	Lar0UbYb34G5yqT/zM2jTiYti+TEtblTfP242oQ691l/zzHUM3YnhIVgeqCy9rI0IS/D+mWJa5t
-	9tYwqQg4=
-X-Gm-Gg: AR+sD13+nVSmpgnwuxxGJ66TP1Wet0UJ84JuOHrcebZP3WAhkYPkIT9Q/OHhcQFP5Nd
-	r6Zp3sHGvxq4FTJIHqF6K2oCrThy/lLj25+uSzl5uujV4mSG7BS9tvCQPLsd8n/SANE0UlqEc2j
-	JkbYPhSndLgkxtaDdwXt8ksJm/SfpGeXpVQ1bzelzW60qjLs1bbNmXANsDipl1zwM5leIqeOApz
-	KvZHXPpEYzd3+C4Lg/lhjZ32iQZaOXov1drPOxdRKLUa3E4ylgBDqxbkE956iMfSz/15MBYYdR1
-	2ukbhU5f2xvdJJhIooWtiDPZzbw/Y+3i7GEON23DGhtrxTduvdUKWNgS2iZKs0rlvRDyqh0AxFw
-	PEee00Z09EKUrFRE3cv1TMukN08capd2dbrpyIpp+23TFIQ2GZGYwERTCtg8rN68oJhaICVa7Pp
-	lm2nv3bBizMqz9VsrEbtRcSrN+rmRJBAtiu8EQ0skadsD/Aez05X8KJTO/THlqgiVCtlnpAhxWW
-	XY67Bb5MDADlH9lJEHaZw0UU6z5/dudf7xBrpDKmeIquaFSC3xVJUDf
-X-Received: by 2002:a17:90b:4c4d:b0:38e:c140:2a0b with SMTP id 98e67ed59e1d1-3966d45efd1mr1534419a91.3.1787690117861;
-        Tue, 25 Aug 2026 13:35:17 -0700 (PDT)
-Received: from telecaster (c-67-185-21-237.hsd1.wa.comcast.net. [67.185.21.237])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3965d119724sm2871761a91.2.2026.08.25.13.35.17
-        for <linux-debuggers@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Aug 2026 13:35:17 -0700 (PDT)
-Date: Tue, 25 Aug 2026 13:35:16 -0700
-From: Omar Sandoval <osandov@osandov.com>
-To: linux-debuggers@vger.kernel.org
-Subject: Linux Kernel Debugging Tools Monthly Meeting on Wednesday, August
- 26th
-Message-ID: <ao38hD6eAj9Thiuj@telecaster>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="c1r7eiZl"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=R44xkW68vjRLhEKdA9HxJ22eV9oyvArt4A8C0/wQSo8=;
+	b=c1r7eiZldp5+In5FW8BEUxdtlU5u/WVo+hSCJWw91lCBymS2tcgwWI/JzJA041tHKqqz4v/Nl
+	hXo7ErQV6AgoBMx7gU1AaEoW5lxF3r8HvNXZJwWBGTpxd9MgOyQkHUYa6XLn1XNdCt00vy8B1Ug
+	A1o7hU9teks1R0J1f8bUgiU=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4hbdKQ3qwkz1prLc;
+	Fri,  4 Sep 2026 08:54:50 +0800 (CST)
+Received: from kwepemo500018.china.huawei.com (unknown [7.202.195.199])
+	by mail.maildlp.com (Postfix) with ESMTPS id 3A59E40579;
+	Fri,  4 Sep 2026 09:05:43 +0800 (CST)
+Received: from [10.174.176.101] (10.174.176.101) by
+ kwepemo500018.china.huawei.com (7.202.195.199) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Fri, 4 Sep 2026 09:05:39 +0800
+Message-ID: <0334fe7d-d949-45f7-8914-3012cb11b740@huawei.com>
+Date: Fri, 4 Sep 2026 09:05:39 +0800
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+From: Qiqi Li <liqiqi23@huawei.com>
+Subject: Re: [PATCH v5 25/36] mm/memory_hotplug: support N_MEMORY_PRIVATE node
+ hotplug
+To: Gregory Price <gourry@gourry.net>
+CC: <linux-mm@kvack.org>, <Zhigang.Luo@amd.com>, <arun.george@samsung.com>,
+	<balbirs@nvidia.com>, <brendan.jackman@linux.dev>, <yuzenghui@huawei.com>,
+	<apopple@nvidia.com>, <alucerop@amd.com>, <matthew.brost@intel.com>,
+	<akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>,
+	<liam@infradead.org>, <vbabka@kernel.org>, <rppt@kernel.org>,
+	<surenb@google.com>, <mhocko@suse.com>, <corbet@lwn.net>,
+	<skhan@linuxfoundation.org>, <gregkh@linuxfoundation.org>,
+	<rafael@kernel.org>, <dakr@kernel.org>, <djbw@kernel.org>,
+	<vishal.l.verma@intel.com>, <dave.jiang@intel.com>,
+	<alison.schofield@intel.com>, <osandov@osandov.com>, <jannh@google.com>,
+	<pfalcato@suse.de>, <jackmanb@google.com>, <hannes@cmpxchg.org>,
+	<ziy@nvidia.com>, <pbonzini@redhat.com>, <osalvador@suse.de>,
+	<joshua.hahnjy@gmail.com>, <rakie.kim@sk.com>, <byungchul@sk.com>,
+	<ying.huang@linux.alibaba.com>, <kasong@tencent.com>, <qi.zheng@linux.dev>,
+	<shakeel.butt@linux.dev>, <baohua@kernel.org>, <axelrasmussen@google.com>,
+	<yuanchu@google.com>, <weixugc@google.com>, <yury.norov@gmail.com>,
+	<linux@rasmusvillemoes.dk>, <longman@redhat.com>, <ridong.chen@linux.dev>,
+	<tj@kernel.org>, <mkoutny@suse.com>, <sj@kernel.org>, <jgg@ziepe.ca>,
+	<jhubbard@nvidia.com>, <peterx@redhat.com>, <baolin.wang@linux.alibaba.com>,
+	<npache@redhat.com>, <ryan.roberts@arm.com>, <dev.jain@arm.com>,
+	<lance.yang@linux.dev>, <usama.arif@linux.dev>, <xu.xin16@zte.com.cn>,
+	<chengming.zhou@linux.dev>, <roman.gushchin@linux.dev>,
+	<muchun.song@linux.dev>, <linux-kernel@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <driver-core@lists.linux.dev>,
+	<nvdimm@lists.linux.dev>, <linux-cxl@vger.kernel.org>,
+	<linux-debuggers@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
+	<kvm@vger.kernel.org>, <cgroups@vger.kernel.org>, <damon@lists.linux.dev>,
+	<linux-kselftest@vger.kernel.org>, <kernel-team@meta.com>
+References: <20260720193431.3841992-1-gourry@gourry.net>
+ <20260720193431.3841992-26-gourry@gourry.net>
+ <6840c720-8cb7-46bb-a652-040c130a4427@huawei.com>
+ <aoJaaYp30LnKLj1w@gourry-fedora-PF4VCD3F>
+In-Reply-To: <aoJaaYp30LnKLj1w@gourry-fedora-PF4VCD3F>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemo500018.china.huawei.com (7.202.195.199)
 
-The next Linux Kernel Debugging Tools meeting is tomorrow, Wednesday,
-August 26th at 11:30 AM Pacific time. This meeting is a forum to discuss
-development of Linux kernel debugging tools like drgn, crash, and more.
+On 8/17/2026 8:49 AM, Gregory Price wrote:
+> It would need to be reserved, and you could use numa emulation but
+> that's clunky.  I have an RFC for exactly this issue - though i haven't
+> pushed it further yet.
+> 
+> https://lore.kernel.org/all/20260610014517.253609-1-gourry@gourry.net/
 
-Here is the agenda so far:
+Hi Gregory,
 
-- In-kernel enumeration of data structures for drgn using BPF:
-  https://github.com/osandov/drgn/pull/637
-- Disassembly support for drgn: https://github.com/osandov/drgn/pull/629
+Sorry for the late reply.
 
-Please reply with anything else you'd like to add. As always, if you
-would like to attend, please email me offlist.
+I took a look at the exclusive-node RFC. The approach looks useful for
+device-backed private memory without a firmware-described NUMA node.
+Thanks for the pointer.
 
-Thanks!
-Omar
+We are currently looking into the private-node and CRAM design as a
+whole. I noticed that CRAM was not included with the v5 series, and saw
+that others were also interested in a v5 version.
+
+If you already have a CRAM branch or patches based on v5, even if they
+are still work in progress, would you mind sharing them? It would be
+very helpful for us to continue testing the overall design.
+
+Thanks,
+Qiqi

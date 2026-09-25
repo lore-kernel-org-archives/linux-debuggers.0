@@ -1,69 +1,69 @@
-Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
+Received: from mail-qk2-f43.google.com (mail-qk2-f43.google.com [74.125.230.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2913549391
-	for <linux-debuggers@vger.kernel.org>; Tue, 22 Sep 2026 22:05:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD8D1509F09
+	for <linux-debuggers@vger.kernel.org>; Fri, 25 Sep 2026 23:03:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790114712; cv=none; b=GEqK3TzGOy/FFxuLC/Z1ws+7v4hhYHKOJY2vN9wGDAylj0xPOy1rOS9JiOiOo6SLyFsVQFSi7aAyD343FUF7WJ4Ty0fAIXC+SnKeMtbnVHJX+0Qww8KgeNwa7eu6RaLAvWngfPYNXMP6m+vHY04oV8Zq/ZXk8TSyM2syWwUiANE=
+	t=1790377386; cv=none; b=Hh/NMs27zXq8SblBUtX4qGnlTfyc3Bwz37dJwFL+qUfyWbB2hfceqO2qZpSEw25GE/QuXN6EyEtDfrdHbuoI7k4hrmIoDKr9NgcB+kr1SRCzNts/IZ4DgcmUioMw0oClYKgRvKeO4o/RDUCYN2Qdp5HsF1XIZ3+jWZyB30c/bi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790114712; c=relaxed/simple;
-	bh=RRH1Vy+Zp/3SPkBGo9aHf3zXVNOp+j6j9mQwfJznZmI=;
+	s=arc-20240116; t=1790377386; c=relaxed/simple;
+	bh=jandskfkITyjC7rvkXLAEoCYbYIdJkGLy5tzhgU6M4A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N4HJ3Of63+duklwEBqk/8P7bVObJq+hHjI0YGgO9OqImnuBDLclIuxAJjmTIA2k7ZpEXTxp2eU8JJHHhaAhzcP6ye1eSKmvVC/dGP2Dn6xbHzB16MoXnWk+0CcDmZkiOWKjgM1XEO8BHta4uu+xNB4tthAOjIYgW8+rMoCGk+Pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=qyAeO4Im; arc=none smtp.client-ip=74.125.230.205
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z/CTLjLUhWvlpyUbu58zMTlbTbxE8vsxiiWIisIJMltUxiUO72uQvGeTHLW3LCCEoBc5/p9eTyIAmJFtyg/zsWet8xUxkbD+FBgn7+trInvwwmCUC8MrD1NHfCuJBzOMmoeJA2640Y/qDMpI2euxiP+Bnv9ZcajR9cGC9EtqQlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=A94lZouv; arc=none smtp.client-ip=74.125.230.235
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="qyAeO4Im"
-Received: by mail-qk2-f13.google.com with SMTP id af79cd13be357-939109f067fso38187185a.2
-        for <linux-debuggers@vger.kernel.org>; Tue, 22 Sep 2026 15:05:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="A94lZouv"
+Received: by mail-qk2-f43.google.com with SMTP id af79cd13be357-93910a0cb7cso118175885a.0
+        for <linux-debuggers@vger.kernel.org>; Fri, 25 Sep 2026 16:03:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1790114700; x=1790719500; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=anrpgiCeXWmBr1az5PEHzf4nylW2QouLqia/wBZNbT4=;
-        b=qyAeO4ImlxQWHWrY3rOI+d0jNqWFqqyELQ56tlRiHnq25pIvKuTEJrR3OrKTFcd4FP
-         IBWytxk9SOvSacV53yQXEJxrCz7JFBDHXXmbeZzXj0EB/0NOWsfpSVn6yoXESESrC7en
-         dWDirDwk2QkTXluyyhV/DpGjnVcz/j2jc1v8BpLdtDbcf5sjhv0PBXWkeMqUn2k3Taqh
-         Br/RM3e48CnC2TjK95UIB1Un9r7oOaUxLLkos8lL9ixrdl11BIKHZKIuPajT92vSGr1Q
-         qIAPWwqVvLVWxLDUlYny2dsxjQOz/CXVwD1OBKCicazpUsOUeEuMWOX7N+ZjO7LVxQvN
-         v/GA==
+        d=gourry.net; s=google; t=1790377383; x=1790982183; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=PiEVC1BfM3JbJHmz6IrQSpeOS1QFhfgMFnl3j26Htjk=;
+        b=A94lZouvKAzEKsqSL/a6UzMxCA9GzIsQbusgbX18VD/4DwKuWyDb6CLr8AdemoenTW
+         617YC8IOvzTvhVbOpq/AGAEAVnxLR1trNp2nuOZ/gQBf0n9rM6+fp0sRgPpsvGPcpU14
+         Us49emjjkXz5t8Ymv5sPiXC+LvBbNpDFTRl0f6Qt5SJepfum1T4JRhrSTH28n/2XHWkL
+         vyz8ZZaHH/XKcZ9yTKCQOZrjW/5wXNTizOddw0dBQfLNqN+LKKjdHZ11eGj3uy6l4U6a
+         i8Ca67ZUXj09625YduPLfKVCsBCTuVPUvbAoNa63euPMbiJmP4dYz6vSluHidDJcvTQL
+         5XCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790114700; x=1790719500;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=anrpgiCeXWmBr1az5PEHzf4nylW2QouLqia/wBZNbT4=;
-        b=iLm1VrMKWs3jutAXQORxkcz7QD+jOn5KYvJXVNAGT4073+fAoQnQbLGS1mlH8ZiMH/
-         yMyQAhuxM0IP/HsWjQpksNe9VXfMog7x5JA0UW7aHrOCHphxkgz73EaomYkiGH2C4WSf
-         cos15dmNDQ40t4oxDG0pJCXGBZEV8dAeBWyABWjvGFvz08ziIMFyxGD7N5RCf/xUi2kv
-         5AdcEBwYoEqrCeITbNgFCqustn9CwGs6DkLfIExZ3g8MYNohmCRyAYBNrVHCqb+TVbSN
-         D8C5BJBcVhxDKedxJBdUHPO6rYZsYX7zN/4qrg7UkfiDSnesO/uWWLcfrTaItcz/OX9L
-         JZ0g==
-X-Forwarded-Encrypted: i=1; AKwUvBxeBxnJEw9FnlY/U56snb7CAzP9Wh4g2uSkLfL1N6BRVvOhf4U4LSMrajNiowHt2sDTTq2p6xfT1hNRjUn6UEU=@vger.kernel.org
-X-Gm-Message-State: AFuF++l5whwK+JNCvSCrxLukb9pBMoJe3uyArHVqqQLWya92kZSUdbnU
-	a8UHljD7SIkvlKBiUN5xBAJl+IXaJfEBtOOlfKH8hhfUxoarc+baSuR1Hl+bg2yHgSQ=
-X-Gm-Gg: AYBFou0UOsPL/i1nnI9Rh81PApJ8atEioMxB5oppTq5PzOHAU2WYh6wg5Fzikc3hNwF
-	O7WOZDCZQpTAxNhXY81PGperwyi1HeZnEFOHfi0c4brBBITDYm922z2eX2XDv6YutJPOqG+/4jk
-	Xd/CunscZfRv/1PFU3FqOu4i0aKqcLcv+sQCTvOUJ17Z+C0gymVCjib38xXeUcQ6q7YSSGzAF9d
-	IWg3WeCeBCbhdkttVbtVkweZHhlg5rwc5SK21FVPmYCYy9yjAI27zEBYq7t+UINDMCdSff5IYsL
-	dZQWuUCBP2l761kQ1ZFvQj5oGQsuvB1drMvU/EdyuDvvRuDaEJwx/ZYxTHPCFCbkPib4wN12mhl
-	bfihwgUR+MxP1gmgc12d4ctAO2rgC//oghK9Mkm//wYAGHWuTNHoSWv5WLz1i7+GGlzEloWRGHJ
-	7fv+RP0fGW7op3UueGbt+T0Css0l/tnQwkBO4UeraVfIhvETjclPjR0PaFuhc80kIEOQi4xJ5Fx
-	GmPEeg6t3cKpvPr/SCddv5+cnYN0WvSWYBvqwuKyR9ahW7bblrlqH8=
-X-Received: by 2002:a05:620a:4890:b0:939:a1cc:f234 with SMTP id af79cd13be357-93c2509dec2mr122764985a.5.1790114700080;
-        Tue, 22 Sep 2026 15:05:00 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1790377383; x=1790982183;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=PiEVC1BfM3JbJHmz6IrQSpeOS1QFhfgMFnl3j26Htjk=;
+        b=gYe6RCdWyj13E+C475b3TPFooGEaPKOGNXsyug73hqK7Z7UtFADj/07n7AaYY7XuHq
+         JxgR5kl4eI5mWk108TmzKkwk0GNfIpw3mk4Jq0XzklVOgP5Tv83qSa8FabNZjllq/5sb
+         IVGf/Am87a6XOMw0OEOdsTDgZDVieZutsNdCOpGAgWxCoYlhzxGiffNZUXNatx3thcNz
+         AqzJos7bGSoiC7z0nRcq/xB5QUVXEMAw29bPEfCVJMEwwekQE0BrrtCUCJTkTW2Kupsp
+         q3DB5rLj50nQMk8ORErOGO5sVXoVdUGP/TiO4fFetQa+0tj4v9GMy9+Jg3t62d9/Wq9G
+         7/WQ==
+X-Forwarded-Encrypted: i=1; AKwUvBz948wIGb3ohVHDQ84Y5En3NfiRQ3Oquz7AwvxpM8AIaiQetX7TSaiSjAOnrrx64XZDtEsOCtXZaXAXZFF3CoI=@vger.kernel.org
+X-Gm-Message-State: AFuF++loZFnsgzDNrvoIODMa8PTYT3EQLVyIjWqwnh/1F+Fw9NRIKt6c
+	Ic67TCmp8UfLHWxkILbf5/9j8FjnCZ/ajsVmNSZzR3UvljiRVcZ50LqEqvNKqORHIlM=
+X-Gm-Gg: AYBFou3WjB3O02b46MmEh+I2fsxx98uQLOBLqsvPprZM7CRct6nMN4t8LvVWKWvMT86
+	HEjkDZRR//2PXWrqYLEMQHRJfOj8r6gyRnWIcMmMUkztNU1HpJi85X8CGS17Sd5hEipX1bj4qFr
+	RUAFh3vlltK0JEKu+6oGVQwEsi0wX0iJT8O7Hm2Rj3Jxhmc19ZSG71ufBFGnCGoMc26i9X0DYey
+	5tHfRRod0L72YQQ0PQE/fm9nIe66fNfZOQFAieY5wPP5dl7YHJGKdYInOWdcqsv4Oc9CMC+vQo+
+	yks13kb7D3PByJUzdRuX+uN6DS8XlFVOrSN4RjtZkBfLJAj09yaKT8Ue+jOdefAyfcQ914RhfA+
+	10DDR2WLiA0LxwASJXUeWaZX7nyMXDvwVVvvggdhKe9a4795nM4l9BVgUrkfSmcOp7g8RBa5C2A
+	4X7lgZA25YuW2VTouxouDi7mSQVCRGKgOYl+3giCmwxI2jfIAjFC2HeDVBjdyg2UMoDPW9TWOxI
+	8EQrESXOvivAuc92Mwl9kXb+hH5uAWPlisgIZ2qO8qAxBRPFMr+CJQ=
+X-Received: by 2002:a05:620a:2614:b0:93a:2bdc:cd57 with SMTP id af79cd13be357-93c43b7f72amr755724385a.2.1790377382584;
+        Fri, 25 Sep 2026 16:03:02 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c284a1cd9sm4296985a.39.2026.09.22.15.04.57
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c4493af29sm290317085a.28.2026.09.25.16.03.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 15:04:59 -0700 (PDT)
-Date: Tue, 22 Sep 2026 18:04:56 -0400
+        Fri, 25 Sep 2026 16:03:02 -0700 (PDT)
+Date: Fri, 25 Sep 2026 19:02:59 -0400
 From: Gregory Price <gourry@gourry.net>
-To: Arun George/Arun George <arun.george@samsung.com>
-Cc: linux-mm@kvack.org, Zhigang.Luo@amd.com, balbirs@nvidia.com, 
+To: linux-mm@kvack.org
+Cc: Zhigang.Luo@amd.com, arun.george@samsung.com, balbirs@nvidia.com, 
 	brendan.jackman@linux.dev, yuzenghui@huawei.com, apopple@nvidia.com, alucerop@amd.com, 
 	matthew.brost@intel.com, akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
 	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
@@ -84,218 +84,213 @@ Cc: linux-mm@kvack.org, Zhigang.Luo@amd.com, balbirs@nvidia.com,
 	driver-core@lists.linux.dev, nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, 
 	linux-debuggers@vger.kernel.org, linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, 
 	cgroups@vger.kernel.org, damon@lists.linux.dev, linux-kselftest@vger.kernel.org, 
-	kernel-team@meta.com, hokyoon.lee@samsung.com, wj28.lee@samsung.com, 
-	gost.dev@samsung.com, vikash.k5@samsung.com, d.bueso@samsung.com
+	kernel-team@meta.com
 Subject: Re: [PATCH v5 00/36] Private Memory NUMA Nodes
-Message-ID: <arL2eTRaDeR3DCQx@gourry-fedora-PF4VCD3F>
-References: <CGME20260720193443epcas5p167fa7d8490edfb4d8c0aa6a259db058f@epcas5p1.samsung.com>
- <20260720193431.3841992-1-gourry@gourry.net>
- <963815509.21784796303385.JavaMail.epsvc@epcpadp1new>
- <amJGUuBZ2857QjDB@gourry-fedora-PF4VCD3F>
- <360067785.01790071202608.JavaMail.epsvc@epcpadp1new>
+Message-ID: <arb0mV23QmRVDtB3@gourry-fedora-PF4VCD3F>
+References: <20260720193431.3841992-1-gourry@gourry.net>
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <360067785.01790071202608.JavaMail.epsvc@epcpadp1new>
+In-Reply-To: <20260720193431.3841992-1-gourry@gourry.net>
 
-On Tue, Sep 22, 2026 at 03:27:44PM +0530, Arun George/Arun George wrote:
-> Hi Gregory,
-> 
-> Thanks for sharing the working branch.
-> 
-> Some of us at Samsung are testing the series (both v4 & v5) on a 
-> compression capable CXL expander and are observing encouraging results.
->
-
-This is really cool, thank you so much for spending the cycles to test.
-
-I'm working on getting a v6 out soon.  Glad to see the progress!
-
-> Good things first! We feel that the isolation using private nodes and 
-> the capability selection using NODE_PRIVATE_CAP_* work functionally well 
-> for the compressed memory use cases.
-> 
-> On improvement points, we observed much higher 'page_faults', 
-> 'allocation_stalls' etc. which contributed to the higher tail latencies 
-> in some tests. I hope these are already part of the optimization plans. 
-> The higher latencies might have resulted from the write_protection 
-> applied to the private node, I believe.
+On Mon, Jul 20, 2026 at 03:33:54PM -0400, Gregory Price wrote:
+> This series introduces the concept of "Private Memory Nodes", which
+> are opted into two basic functionalities by default:
+>   - page allocation (mm/page_alloc.c)
+>   - OOM killing
 > 
 
-Yes, this is expected, and I think there are questions about how it
-should be optimized both in a provisioning sense and a software sense.
+All, I wanted to preface v6 with an update, I probably won't be sending
+it out on-list before LPC (i've been a bit noisey as it is, I'll give
+it a rest).
 
-For example, exposing a full memory expander as 100% compressible may
-not make sense - given that this could many a lot of memory.  I have
-some data that shows it may make more sense to split a memory expander
-into two regions to better fit the compressible region to meet the
-actual capacity the cold-tail is capable of consuming.
 
-On the software side there may be some ability to adjust this at
-runtime with hotplug instead of requiring a reboot, but I think that
-needs to be experimented with.
+But I would like to give you the highlights for those interested.
 
-> On the tools side, we used MLC and Taobench for the tests.
-> 
+The latest working branch can be found here:
+https://github.com/gourryinverse/linux/tree/scratch/gourry/managed_nodes/rfc6-nonuma
 
-Great! I also have some TaoBench and fio results i'm looking to share,
-glad to have some additional peer review using Tao.
+You will find the following:
 
-> Note that our intention for this phase of experiments was to test only 
-> the 'private node' layer based isolation, and not the cram and below 
-> layers for the compressed memory. Therefore we did not enable/utilize 
-> the compression capability in the hardware for these set of experiments 
-> (enabling compression would require the cram level ballooning/memory 
-> shrinking and cxl level interfacing driver to the compression device). 
-> That would be different set of experiments where we would be testing the 
-> cram balloon shrinkers and our alternate algorithms (upstream targeted). 
-> So cram and below layers were used only for enumeration of private node 
-> regions for these tests and not for the run-time memory shrinkers.
-> 
+- There is no depedency on exported alloc_flags (willy, i found a way),
+  but there is a need for `folio_alloc_private()` to explicitly ask
+  for the ALLOC_ZONELIST_PRIVATE.
 
-Agreed, i'm looking forward to getting past the isolation bits and get
-more focused on the compression implementation details.
+- feature bits have been converted to node_state[] bits
 
-> ======= Test Methodology ==============
-> 
-> We explored these 3 cases:
-> 
->     1) (Baseline – existing CXL infra):  DRAM 16GB + CXL 32GB. Here we 
-> used the existing CXL driver infra to enable the device. No private node 
-> is involved. And compression is disabled on device.
-> 
->     2) (private node in default write protected path): DRAM 16GB + CXL 
-> Private Node 32GB. Here private node infra is used to enable the device. 
-> And compression is disabled on device.
-> 
->     3) (private node with no write protection): DRAM 16GB + CXL Private 
-> Node 32GB. Here private node infra is used to enable the device without 
-> the write protection/fencing enabled. Compression is disabled on device. 
-> We could not complete these runs as they resulted in kernel panics. 
-> Guess the code path is not stable yet for this (We had hoped that case 1 
-> and case 3 results would be similar). We also observed some unmovable 
-> page warnings logs in 'dmesg' before crash (might be related to the 
-> panic). Adding the log snippets at the end.
-> 
+- N_MEMORY_COMMON was added to mean "common memory" - i.e. the existing
+  N_MEMORY set.  A private node is now defined as !N_MEMORY_COMMON.
 
-Very similar to my test setup, seems like good signal we are of similar
-mind on the use case.  (For readers: there was no coordination here).
+- opt-out sites no longer check for !N_MEMORY_PRIVATE, they instead
+  iterate over node_state[N_MEMORY_COMMON].  This is *much* cleaner.
 
-I personally did not test private-node without write protection,
-although it makes sense to test the throughput of a demotion-only
-node as a baseline.  Smart.
+- opt-in sites get to define bits in terms of their own service, e.g.
 
-My guess is there was probably a reclaim throughput issue, or there may
-have been a bug in the v4/v5 code.  I will look at adding some pressure
-tests to my suite that test demotion-only explicitly.
+  /* for each reclaimable node */
+  for_each_node_mask_state(..., N_MEMORY_RECLAIM) {
+     ...
+  }
 
-> ========= Results summary ===================
-> 
-> Private (CRAM) node performance is lower compared to a normal CXL memory 
-> allocation path. VM stats shows more page_faults and allocation_stalls 
-> on the private node case. Could it be the allocator waits for migration 
-> path to demote pages to private node? Or the actual hot pages in dram 
-> got demoted to private node to make space during overwrites? We will try 
-> further analysis on this.
-> 
+  Or maybe even:
 
-- allocator waits for migration?
-  
-  Yes.  And worse, once the node is full, migration will fail and you'll
-  swap directly from the top tier and reduce your reclaim behavior on
-  the lower node.  It becomes very important to push proactive reclaim
-  on a demotion-only tier to ensure there is sufficient headroom to
-  receive demotions in the future, since direct-reclaim basically never
-  targets a lower-tier on the first pass.
+  for_each_reclaimable_node()    :)
 
-  There's a big discussion about whether tiered systems need to invert
-  their reclaim behavior (reclaim from the lowest node first to find
-  progress there, then do demotion - rather than the other way around).
 
-- Hot pages in dram 
+- There are only 2 node features in the base set:
 
-  Also yes.  The comparison to make isn't only against a raw CXL node,
-  but also against Zswap or Zram or Swap.  How does the workload fair
-  on a system with 16GB RAM and 32GB Zswap/Swap?
+  N_MEMORY_RECLAIM    -  generic reclaim runs on the node
+  N_MEMORY_COMPACTION -  compaction will run on the node
 
-  This is important context.
+  You'll notice there's no userland numa control support, more on this
+  in a moment.
 
-> ========== MLC Experiments ====================
-> 
-> CMD:
->    $./mlc --loaded_latency -j0 -c0 -b1g -k1-15 -W5 -r
-> 
-> Experiment Results:
-> 
-> 1. (Baseline) DRAM 16GB + CXL 32GB
-> 
-> Inject  Latency Bandwidth
-> Delay   (ns)    MB/sec
-> ================
->   00000  686.18   40137.5
->   00002  686.69   40124.0
->   00008  709.74   40362.7
-...
-> 2. (private node in default write protected path)
->      DRAM 16GB + CXL Private Node(Uncompressed) 32GB
-> 
-> Inject  Latency Bandwidth
-> Delay   (ns)    MB/sec
-> ================
->   00000  320.09   12186.2
->   00002  543.42   22726.1
->   00008  482.11   28385.2
-...
-> Takeaway: Our MLC tests show a trade-off between the two configurations. 
-> During low inject delay, the private Node is faster. But when inject 
-> delay goes high, the baseline shows better latency. Could it be the TLB 
-> cache effects?
-> 
+  This is all you need to have functional device-private coherent
+  memory that uses the page allocator.
 
-These latency results suggest to me that the memory being tested was
-always DRAM, though the initial memory fault would have been CXL.
+  Disabling N_MEMORY_RECLAIM does not necessarily mean you're prevented
+  from using vmscan.c and the LRU - it just means we'd need to expose an
+  interface for a !N_MEMORY_RECLAIM node to explicitly ask for reclaim
+  to operate on it.
 
-i.e. even if the memory was faulted directly onto the node via
-mempolicy, the very first write to it would have caused promotion.
+  Tiering (Demotion) *to* a node is not supported.  We can probably
+  debate whether this should mean tiering *from* a node should be
+  supported or not as well.  This is easy to change.
 
-If you dropped the write protection you'd probably see it equals the
-baseline.
 
-The bandwidth numbers support this.  Higher stall, but faster latency
-means the migration was more beneficial for latency than letting the
-memory sit on CXL.
+- The working branch also includes a minimal compressed-ram service
+  that only supports anonymous memory.
 
-Neat.  I'm not sure these results are particularly useful in describing
-how a workload would react.
+  Supporting file-backed memory (and shmem) is a whole different can
+  of worms that deserves its own discussion.
 
-> --------------------------------------------------------------------
-> Case 3 dmesg log snippet:
-> 
-> [   82.525741] page: refcount:1 mapcount:0 mapping:0000000000000000 
-> index:0x0 pfn:0x5f5800
-> [   82.525753] flags: 
-> 0x17ffffc0002000(reserved|node=0|zone=2|lastcpupid=0x1fffff)
-> [   82.525762] raw: 0017ffffc0002000 ffefc85717d60008 ffefc85717d60008 
-> 0000000000000000
-> [   82.525764] raw: 0000000000000000 0000000000000000 00000001ffffffff 
-> 0000000000000000
-> [   82.525766] page dumped because: unmovable page
-> ..............
-> 
+  I will post this as a separate RFC from the base set, but it is
+  available to play with on my working branch.
 
-Was this memory hotplugged via cram.c or did you replicate the code and
-hotplug it another way?  If so, did you hotplug it as ZONE_NORMAL or
-ZONE_MOVABLE?
 
-For a compressed tier, it must always be hotplugged as ZONE_MOVABLE,
-without exception, because otherwise it can allow a GUP pin or kernel
-allocation that would eventually become permanently stuck there - and by
-definition of a compression tier must be 100% movable memory.
+- I ship a basic dax driver for the base series, `anondax` which allows
+  existing devices to online a private node with both compaction and
+  reclaim support for testing.  This enables this use case:
 
+  fd = open(/dev/my_device, ..., O_DIRECT);
+  buf = mmap(fd, ..., MAP_SHARED)
+  my_file = open(myfile, ...);
+  read(buf, myfile); /* fault directly onto device memory */
+
+  With swap (and no tiering), this gives you a private over-commitable
+  node for which aspiring drivers can use to implement their own
+  mmu_notifier callback stream to manage device page tables and such.
+
+
+- The reason mempolicy (and user numa in general) is not supported is a
+  critical relationship between the OOM killer and page allocator.
+
+  In trivial scenarios, if a consumer of a private node overshoots and
+  causes an OOM - it will be the largest consumer and be chosen as the
+  victim.
+
+  If there are many consumers - what actually happens in practice is the
+  oom killer attempts to select a victim based on *task* policy... which
+  makes every task a candidate.  This leads to, among other things,
+  either an OOM storm and/or a full blown panic because a victim cannot
+  be located (depending on the constraints).
+
+  I've concluded that as-is, this is not tractable. But also, it is not
+  actually needed if the devices provide their own chardev to provide
+  a basic wrapper around folio_alloc_private().
+
+  This unfortunately means potential users like guest_memfd are unlikely
+  to be able to use the nodes without hard-coding the allocator
+  interface, as opposed to a mempolicy.
+
+  I think it's possible instead to *maybe* add N_MEMORY_USER_MIGRATION
+  and allow for explicit movement between nodes, but not full blown
+  mempolicies.
+
+  The relationship between page_alloc, cpuset, mempolicy, and the oom
+  killer is just too tight to allow allocations without the use of
+  __GFP_THISNODE - which the private allocation interface will enforce.
+
+
+As it stands, the series has been heavily minimized in both line count
+and patch number.
+
+The base series is ~22 commits with the scary diffstat below, but many
+of the core mm/ patches are similar to the patch below - with nearly
+all of the real complexity happening in reclaim and memory hotplug.
+
+despite the branch name, I intend to drop RFC from here-on, everything
+else required for the base series is in mm-new.
+
+
+See you at LPC
 ~Gregory
+
+-------
+
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 7bdcdb57652f8..cd61566b44fa1 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -2266,7 +2266,7 @@ static int __add_folio_for_migration(struct folio *folio, int node,
+        if (is_zero_folio(folio) || is_huge_zero_folio(folio))
+                return -EFAULT;
+
+-       if (folio_is_zone_device(folio))
++       if (!folio_is_common_memory(folio))
+                return -ENOENT;
+
+        if (folio_nid(folio) == node)
+@@ -2390,7 +2390,7 @@ static int do_pages_move(struct mm_struct *mm, nodemask_t task_nodes,
+                err = -ENODEV;
+                if (node < 0 || node >= MAX_NUMNODES)
+                        goto out_flush;
+-               if (!node_state(node, N_MEMORY))
++               if (!node_state(node, N_MEMORY_COMMON))
+                        goto out_flush;
+
+                err = -EACCES;
+@@ -2475,7 +2475,7 @@ static void do_pages_stat_array(struct mm_struct *mm, unsigned long nr_pages,
+                if (folio) {
+                        if (is_zero_folio(folio) || is_huge_zero_folio(folio))
+                                err = -EFAULT;
+-                       else if (folio_is_zone_device(folio))
++                       else if (!folio_is_common_memory(folio))
+                                err = -ENOENT;
+                        else
+                                err = folio_nid(folio);
+
+
+ Documentation/ABI/stable/sysfs-devices-node |  21 +++++++++++++++++
+ Documentation/admin-guide/cgroup-v2.rst     |   7 ++++++
+ Documentation/mm/physical_memory.rst        |  15 ++++++++++++-
+ drivers/base/node.c                         |  67 +++++++++++++++++++++++++++++++++++++++++++++++++++++--
+ drivers/dax/kmem.c                          |   2 +-
+ include/linux/gfp.h                         |   6 +++++
+ include/linux/memory_hotplug.h              |   2 +-
+ include/linux/mmzone.h                      |  45 +++++++++++++++++++++++++++++++++++++
+ include/linux/node.h                        |  12 ++++++++++
+ include/linux/nodemask.h                    |  53 ++++++++++++++++++++++++++++++++++++++++++-
+ kernel/cgroup/cpuset.c                      |  39 ++++++++++++++++++++++++++------
+ kernel/sched/fair.c                         |   6 ++---
+ mm/compaction.c                             |  21 +++++++++++------
+ mm/damon/ops-common.c                       |  15 ++++++++-----
+ mm/damon/vaddr.c                            |  20 +++++++++++++----
+ mm/huge_memory.c                            |   2 +-
+ mm/internal.h                               |  22 ++++++++++++++++++
+ mm/khugepaged.c                             |   9 ++++++--
+ mm/ksm.c                                    |   8 ++++---
+ mm/madvise.c                                |   6 ++---
+ mm/memory-tiers.c                           |  25 +++++++++++----------
+ mm/memory_hotplug.c                         | 109 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-------------------------------
+ mm/mempolicy.c                              |  51 +++++++++++++++++++++++++-----------------
+ mm/migrate.c                                |   6 ++---
+ mm/mm_init.c                                |  22 +++++++++---------
+ mm/page_alloc.c                             | 115 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++---------------
+ mm/page_alloc.h                             |   5 +++++
+ mm/vmscan.c                                 |  31 +++++++++++++++-----------
+ 28 files changed, 585 insertions(+), 157 deletions(-)

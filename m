@@ -1,296 +1,210 @@
-Received: from mail-qk2-f43.google.com (mail-qk2-f43.google.com [74.125.230.235])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD8D1509F09
-	for <linux-debuggers@vger.kernel.org>; Fri, 25 Sep 2026 23:03:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B874839E6FD;
+	Wed,  7 Oct 2026 16:38:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790377386; cv=none; b=Hh/NMs27zXq8SblBUtX4qGnlTfyc3Bwz37dJwFL+qUfyWbB2hfceqO2qZpSEw25GE/QuXN6EyEtDfrdHbuoI7k4hrmIoDKr9NgcB+kr1SRCzNts/IZ4DgcmUioMw0oClYKgRvKeO4o/RDUCYN2Qdp5HsF1XIZ3+jWZyB30c/bi4=
+	t=1791391103; cv=none; b=ZVczPKHW5bsnlK+dbkjxlfTbddkijAtRrWOvqag5uu1qLPaNuGExY1vrva7QrNf+6CULEOpWPXjAXQ4IrNeiW+DqLJ5HFU0zPGUDz+LKvbEXBSTVC0qnd745//u4E7BxGEH3yqJvGg+d1AlQ7kgzNXIcuu2yI9EqaoIcQgcwVKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790377386; c=relaxed/simple;
-	bh=jandskfkITyjC7rvkXLAEoCYbYIdJkGLy5tzhgU6M4A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z/CTLjLUhWvlpyUbu58zMTlbTbxE8vsxiiWIisIJMltUxiUO72uQvGeTHLW3LCCEoBc5/p9eTyIAmJFtyg/zsWet8xUxkbD+FBgn7+trInvwwmCUC8MrD1NHfCuJBzOMmoeJA2640Y/qDMpI2euxiP+Bnv9ZcajR9cGC9EtqQlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=A94lZouv; arc=none smtp.client-ip=74.125.230.235
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+	s=arc-20240116; t=1791391103; c=relaxed/simple;
+	bh=rt+DI0Zaj7t1gLzFkXpDITiac40k4MGIO8meOBYmFCU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FkP7yUos9Fhl6rmiMQMHaAu9wUfnZqHJuKYFkZUbOE2liiYghr9Wki0SIwx0jqQCJFUMwdjivS8uOzCMQGm7q4ct/XmJKkZftYRB4hkqPNMY3Kn4rMmsJu2PEEz0LjY1iqBBgUfDrEiLkCTT2xUNL1U5GUcLUyvm/e0ji6o3DGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=UkFfAXte; arc=none smtp.client-ip=80.241.56.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="A94lZouv"
-Received: by mail-qk2-f43.google.com with SMTP id af79cd13be357-93910a0cb7cso118175885a.0
-        for <linux-debuggers@vger.kernel.org>; Fri, 25 Sep 2026 16:03:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1790377383; x=1790982183; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=PiEVC1BfM3JbJHmz6IrQSpeOS1QFhfgMFnl3j26Htjk=;
-        b=A94lZouvKAzEKsqSL/a6UzMxCA9GzIsQbusgbX18VD/4DwKuWyDb6CLr8AdemoenTW
-         617YC8IOvzTvhVbOpq/AGAEAVnxLR1trNp2nuOZ/gQBf0n9rM6+fp0sRgPpsvGPcpU14
-         Us49emjjkXz5t8Ymv5sPiXC+LvBbNpDFTRl0f6Qt5SJepfum1T4JRhrSTH28n/2XHWkL
-         vyz8ZZaHH/XKcZ9yTKCQOZrjW/5wXNTizOddw0dBQfLNqN+LKKjdHZ11eGj3uy6l4U6a
-         i8Ca67ZUXj09625YduPLfKVCsBCTuVPUvbAoNa63euPMbiJmP4dYz6vSluHidDJcvTQL
-         5XCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790377383; x=1790982183;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=PiEVC1BfM3JbJHmz6IrQSpeOS1QFhfgMFnl3j26Htjk=;
-        b=gYe6RCdWyj13E+C475b3TPFooGEaPKOGNXsyug73hqK7Z7UtFADj/07n7AaYY7XuHq
-         JxgR5kl4eI5mWk108TmzKkwk0GNfIpw3mk4Jq0XzklVOgP5Tv83qSa8FabNZjllq/5sb
-         IVGf/Am87a6XOMw0OEOdsTDgZDVieZutsNdCOpGAgWxCoYlhzxGiffNZUXNatx3thcNz
-         AqzJos7bGSoiC7z0nRcq/xB5QUVXEMAw29bPEfCVJMEwwekQE0BrrtCUCJTkTW2Kupsp
-         q3DB5rLj50nQMk8ORErOGO5sVXoVdUGP/TiO4fFetQa+0tj4v9GMy9+Jg3t62d9/Wq9G
-         7/WQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz948wIGb3ohVHDQ84Y5En3NfiRQ3Oquz7AwvxpM8AIaiQetX7TSaiSjAOnrrx64XZDtEsOCtXZaXAXZFF3CoI=@vger.kernel.org
-X-Gm-Message-State: AFuF++loZFnsgzDNrvoIODMa8PTYT3EQLVyIjWqwnh/1F+Fw9NRIKt6c
-	Ic67TCmp8UfLHWxkILbf5/9j8FjnCZ/ajsVmNSZzR3UvljiRVcZ50LqEqvNKqORHIlM=
-X-Gm-Gg: AYBFou3WjB3O02b46MmEh+I2fsxx98uQLOBLqsvPprZM7CRct6nMN4t8LvVWKWvMT86
-	HEjkDZRR//2PXWrqYLEMQHRJfOj8r6gyRnWIcMmMUkztNU1HpJi85X8CGS17Sd5hEipX1bj4qFr
-	RUAFh3vlltK0JEKu+6oGVQwEsi0wX0iJT8O7Hm2Rj3Jxhmc19ZSG71ufBFGnCGoMc26i9X0DYey
-	5tHfRRod0L72YQQ0PQE/fm9nIe66fNfZOQFAieY5wPP5dl7YHJGKdYInOWdcqsv4Oc9CMC+vQo+
-	yks13kb7D3PByJUzdRuX+uN6DS8XlFVOrSN4RjtZkBfLJAj09yaKT8Ue+jOdefAyfcQ914RhfA+
-	10DDR2WLiA0LxwASJXUeWaZX7nyMXDvwVVvvggdhKe9a4795nM4l9BVgUrkfSmcOp7g8RBa5C2A
-	4X7lgZA25YuW2VTouxouDi7mSQVCRGKgOYl+3giCmwxI2jfIAjFC2HeDVBjdyg2UMoDPW9TWOxI
-	8EQrESXOvivAuc92Mwl9kXb+hH5uAWPlisgIZ2qO8qAxBRPFMr+CJQ=
-X-Received: by 2002:a05:620a:2614:b0:93a:2bdc:cd57 with SMTP id af79cd13be357-93c43b7f72amr755724385a.2.1790377382584;
-        Fri, 25 Sep 2026 16:03:02 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c4493af29sm290317085a.28.2026.09.25.16.03.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Sep 2026 16:03:02 -0700 (PDT)
-Date: Fri, 25 Sep 2026 19:02:59 -0400
-From: Gregory Price <gourry@gourry.net>
-To: linux-mm@kvack.org
-Cc: Zhigang.Luo@amd.com, arun.george@samsung.com, balbirs@nvidia.com, 
-	brendan.jackman@linux.dev, yuzenghui@huawei.com, apopple@nvidia.com, alucerop@amd.com, 
-	matthew.brost@intel.com, akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
-	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, corbet@lwn.net, skhan@linuxfoundation.org, 
-	gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org, djbw@kernel.org, 
-	vishal.l.verma@intel.com, dave.jiang@intel.com, alison.schofield@intel.com, 
-	osandov@osandov.com, jannh@google.com, pfalcato@suse.de, jackmanb@google.com, 
-	hannes@cmpxchg.org, ziy@nvidia.com, pbonzini@redhat.com, osalvador@suse.de, 
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
-	kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev, baohua@kernel.org, 
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com, 
-	linux@rasmusvillemoes.dk, longman@redhat.com, ridong.chen@linux.dev, tj@kernel.org, 
-	mkoutny@suse.com, sj@kernel.org, jgg@ziepe.ca, jhubbard@nvidia.com, 
-	peterx@redhat.com, baolin.wang@linux.alibaba.com, npache@redhat.com, 
-	ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev, usama.arif@linux.dev, 
-	xu.xin16@zte.com.cn, chengming.zhou@linux.dev, roman.gushchin@linux.dev, 
-	muchun.song@linux.dev, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	driver-core@lists.linux.dev, nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, 
-	linux-debuggers@vger.kernel.org, linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, 
-	cgroups@vger.kernel.org, damon@lists.linux.dev, linux-kselftest@vger.kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v5 00/36] Private Memory NUMA Nodes
-Message-ID: <arb0mV23QmRVDtB3@gourry-fedora-PF4VCD3F>
-References: <20260720193431.3841992-1-gourry@gourry.net>
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="UkFfAXte"
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4j0Jhn135gzKnYC;
+	Wed, 07 Oct 2026 18:38:17 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1791391097;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=2Ezflyex2QCq4IDhV46iLXvD5SXyLtu7Un9mXAhjKQE=;
+	b=UkFfAXtexXMe4siEWkyoHJ7MLt9nnrmneb00G00NlXzSKyG2mdf+UNnktckKGk2nPnUkki
+	ueDkpfo5Yq1KIJJq7XvES43wbpRTJOFu57yqBFD4LUn3Uofvxo/kEj3P07j9/axs+NKdwv
+	CxUfTARcVHCHVOMSj7gnaFOEWz+UOxUlgM0ZTBjbV59KzB1vG1UVFJkvjVf8FIte5lgjYd
+	jRVVoTd2irs6lA9k09ObJEmN8vp9J5joXIGZmHwK8MG3tuzF2dzXF0tnpXF37HRDV2SWZ2
+	KqH91ITWRUWJvrK0lSp9YBxYVeHbhsx5vUzZzElveAvuHNYEMjjg/0dVg7AsDQ==
+From: Manuel Ebner <manuelebnerli@mailbox.org>
+To: Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	linux-kbuild@vger.kernel.org,
+	oe-kbuild-all@lists.linux.dev,
+	linux-debuggers@vger.kernel.org,
+	tools@linux.kernel.org,
+	workflows@vger.kernel.org (open list:DOCUMENTATION PROCESS),
+	linux-doc@vger.kernel.org (open list:DOCUMENTATION),
+	linux-kernel@vger.kernel.org (open list)
+Cc: Manuel Ebner <manuelebnerli@mailbox.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Nicolas Schier <n.schier@fritz.com>
+Subject: [PATCH RFC] changes.rst: introduce 'Required for'-column
+Date: Wed,  7 Oct 2026 18:37:37 +0200
+Message-ID: <20261007163736.3942745-2-manuelebnerli@mailbox.org>
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260720193431.3841992-1-gourry@gourry.net>
+Content-Transfer-Encoding: 8bit
+X-MBO-RS-ID: dddea4e6f5fbbada107
+X-MBO-RS-META: rx4z7z4tgdgubcmsyy11wmkig53ae4fe
 
-On Mon, Jul 20, 2026 at 03:33:54PM -0400, Gregory Price wrote:
-> This series introduces the concept of "Private Memory Nodes", which
-> are opted into two basic functionalities by default:
->   - page allocation (mm/page_alloc.c)
->   - OOM killing
-> 
+The optional tag isn't obvious nor defined. Therefore remove the tag and
+add column 'Required for' to make it easier to define the need for the tools.
 
-All, I wanted to preface v6 with an update, I probably won't be sending
-it out on-list before LPC (i've been a bit noisey as it is, I'll give
-it a rest).
+CC: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+CC: Nicolas Schier <n.schier@fritz.com>
+---
+If anybody has info to add to or refine the new column I would appreciate it a lot.
+Please forward this to list or people which can contribute to this patch.
 
+There's also the option to remove the 'Command to check the version'-column
+and refer to scripts/ver_linux - and with this also removing the duplicated
+information-issue.
 
-But I would like to give you the highlights for those interested.
+[v3]
+ Rearange column space of the table in order to add column instead of replacing column
+ add some requirements to the table
 
-The latest working branch can be found here:
-https://github.com/gourryinverse/linux/tree/scratch/gourry/managed_nodes/rfc6-nonuma
+[v2]
+ Ditch footnotes in favor of a column
+ Replace 'Check Version Command'-column with optional-column
+ https://lore.kernel.org/all/20260831152523.638881-1-manuelebnerli@mailbox.org/
 
-You will find the following:
+[v1]
+ https://lore.kernel.org/all/20260812122426.1636227-2-manuelebnerli@mailbox.org/
+---
+ Documentation/process/changes.rst | 97 ++++++++++++++++---------------
+ 1 file changed, 51 insertions(+), 46 deletions(-)
 
-- There is no depedency on exported alloc_flags (willy, i found a way),
-  but there is a need for `folio_alloc_private()` to explicitly ask
-  for the ALLOC_ZONELIST_PRIVATE.
+diff --git a/Documentation/process/changes.rst b/Documentation/process/changes.rst
+index 28f2ca633..dafe0530f 100644
+--- a/Documentation/process/changes.rst
++++ b/Documentation/process/changes.rst
+@@ -1,13 +1,14 @@
+ .. _changes:
+ 
+-Minimal requirements to compile the Kernel
+-++++++++++++++++++++++++++++++++++++++++++
++Minimal requirements to interact with the Kernel
++++++++++++++++++++++++++++++++++++++++++++++++++
+ 
+ Intro
+ =====
+ 
+-This document is designed to provide a list of the minimum levels of
+-software necessary to run the current kernel version.
++This document is designed to provide a list of the minimum versions of
++software necessary to change code, compile, install and boot the current
++kernel version.
+ 
+ This document is originally based on my "Changes" file for 2.0.x kernels
+ and therefore owes credit to the same people as that file (Jared Mauch,
+@@ -27,48 +28,52 @@ running a Linux kernel.  Also, not all tools are necessary on all
+ systems; obviously, if you don't have any PC Card hardware, for example,
+ you probably do not need to concern yourself with pcmciautils.
+ 
+-====================== ===============  ========================================
+-        Program        Minimal version       Command to check the version
+-====================== ===============  ========================================
+-bash                   4.2              bash --version
+-bc                     1.06.95          bc --version
+-bindgen (optional)     0.71.1           bindgen --version
+-binutils               2.30             ld -v
+-bison                  2.0              bison --version
+-btrfs-progs            0.18             btrfs --version
+-Clang/LLVM (optional)  17.0.1           clang --version
+-e2fsprogs              1.41.4           e2fsck -V
+-flex                   2.5.35           flex --version
+-gdb                    7.2              gdb --version
+-GNU awk (optional)     5.1.0            gawk --version
+-GNU C                  8.1              gcc --version
+-GNU make               4.0              make --version
+-GNU tar                1.28             tar --version
+-GRUB                   0.93             grub --version || grub-install --version
+-gtags (optional)       6.6.5            gtags --version
+-iptables               1.4.2            iptables -V
+-jfsutils               1.1.3            fsck.jfs -V
+-kmod                   13               kmod -V
+-mcelog                 0.6              mcelog --version
+-mkimage (optional)     2017.01          mkimage --version
+-nfs-utils              1.0.5            showmount --version
+-openssl & libcrypto    1.0.0            openssl version
+-pahole                 1.26             pahole --version
+-pcmciautils            004              pccardctl -V
+-pigz (optional)        2.4              pigz --version
+-PPP                    2.4.0            pppd --version
+-procps                 3.2.0            ps --version
+-Python                 3.9.x            python3 --version
+-quota-tools            3.09             quota -V
+-Rust (optional)        1.85.0           rustc --version
+-Sphinx\ [#f1]_         3.4.3            sphinx-build --version
+-squashfs-tools         4.0              mksquashfs -version
+-udev                   081              udevadm --version
+-util-linux             2.10o            mount --version
+-xfsprogs               2.6.0            xfs_db -V
+-====================== ===============  ========================================
+-
+-.. [#f1] Sphinx is needed only to build the Kernel documentation
++==============  ========  =======================  ========================================
++    Program     Minimal      Command to check                  Required for
++                version         the version
++==============  ========  =======================  ========================================
++bash            4.2       bash --version           general requirement
++bc              1.06.95   bc --version             Kbuild (
++bindgen         0.71.1    bindgen --version        CONFIG_RUST=y
++binutils        2.30      ld -v
++bison           2.0       bison --version          Kbuild (.config)
++btrfs-progs     0.18      btrfs --version
++Clang/LLVM      17.0.1    clang --version          alternative to GNU C (gcc)
++e2fsprogs       1.41.4    e2fsck -V                ext4
++flex            2.5.35    flex --version           Kbuild (.config)
++gdb             7.2       gdb --version            Debugging
++GNU awk         5.1.0     gawk --version           objtool, CONFIG_SYSTEM_BLACKLIST_HASH_LIST=y
++GNU C           8.1       gcc --version            alternative to Clang/LLVM (clang)
++GNU make        4.0       make --version
++GNU tar         1.28      tar --version
++GRUB            0.93      grub --version ||
++                          grub-install --version
++gtags           6.6.5     gtags --version          to generate tag files through ``make gtags``
++iptables        1.4.2     iptables -V
++jfsutils        1.1.3     fsck.jfs -V
++kmod            13        kmod -V
++mcelog          0.6       mcelog --version
++mkimage         2017.01   mkimage --version        Flat Image Tree (FIT) or ARCH=arc, arm or powerpc
++nfs-utils       1.0.5     showmount --version
++openssl         1.0.0     openssl version
++pahole          1.26      pahole --version
++pcmciautils     004       pccardctl -V
++pigz            2.4       pigz --version           Compile and boot with KPGZIP=y
++PPP             2.4.0     pppd --version
++procps          3.2.0     ps --version
++Python          3.9.x     python3 --version
++quota-tools     3.09      quota -V
++Rust            1.85.0    rustc --version          CONFIG_RUST=y
++Sphinx          3.4.3     sphinx-build --version   build kernel documentation
++squashfs-tools  4.0       mksquashfs -version
++udev            081       udevadm --version
++util-linux      2.10o     mount --version
++xfsprogs        2.6.0     xfs_db -V
++==============  ========  =======================  ========================================
++    Program     Minimal      Command to check                  Required for
++                version      check the version
++==============  ========  =======================  ========================================
++
+ 
+ Kernel compilation
+ ******************
+-- 
+2.55.0
 
-- feature bits have been converted to node_state[] bits
-
-- N_MEMORY_COMMON was added to mean "common memory" - i.e. the existing
-  N_MEMORY set.  A private node is now defined as !N_MEMORY_COMMON.
-
-- opt-out sites no longer check for !N_MEMORY_PRIVATE, they instead
-  iterate over node_state[N_MEMORY_COMMON].  This is *much* cleaner.
-
-- opt-in sites get to define bits in terms of their own service, e.g.
-
-  /* for each reclaimable node */
-  for_each_node_mask_state(..., N_MEMORY_RECLAIM) {
-     ...
-  }
-
-  Or maybe even:
-
-  for_each_reclaimable_node()    :)
-
-
-- There are only 2 node features in the base set:
-
-  N_MEMORY_RECLAIM    -  generic reclaim runs on the node
-  N_MEMORY_COMPACTION -  compaction will run on the node
-
-  You'll notice there's no userland numa control support, more on this
-  in a moment.
-
-  This is all you need to have functional device-private coherent
-  memory that uses the page allocator.
-
-  Disabling N_MEMORY_RECLAIM does not necessarily mean you're prevented
-  from using vmscan.c and the LRU - it just means we'd need to expose an
-  interface for a !N_MEMORY_RECLAIM node to explicitly ask for reclaim
-  to operate on it.
-
-  Tiering (Demotion) *to* a node is not supported.  We can probably
-  debate whether this should mean tiering *from* a node should be
-  supported or not as well.  This is easy to change.
-
-
-- The working branch also includes a minimal compressed-ram service
-  that only supports anonymous memory.
-
-  Supporting file-backed memory (and shmem) is a whole different can
-  of worms that deserves its own discussion.
-
-  I will post this as a separate RFC from the base set, but it is
-  available to play with on my working branch.
-
-
-- I ship a basic dax driver for the base series, `anondax` which allows
-  existing devices to online a private node with both compaction and
-  reclaim support for testing.  This enables this use case:
-
-  fd = open(/dev/my_device, ..., O_DIRECT);
-  buf = mmap(fd, ..., MAP_SHARED)
-  my_file = open(myfile, ...);
-  read(buf, myfile); /* fault directly onto device memory */
-
-  With swap (and no tiering), this gives you a private over-commitable
-  node for which aspiring drivers can use to implement their own
-  mmu_notifier callback stream to manage device page tables and such.
-
-
-- The reason mempolicy (and user numa in general) is not supported is a
-  critical relationship between the OOM killer and page allocator.
-
-  In trivial scenarios, if a consumer of a private node overshoots and
-  causes an OOM - it will be the largest consumer and be chosen as the
-  victim.
-
-  If there are many consumers - what actually happens in practice is the
-  oom killer attempts to select a victim based on *task* policy... which
-  makes every task a candidate.  This leads to, among other things,
-  either an OOM storm and/or a full blown panic because a victim cannot
-  be located (depending on the constraints).
-
-  I've concluded that as-is, this is not tractable. But also, it is not
-  actually needed if the devices provide their own chardev to provide
-  a basic wrapper around folio_alloc_private().
-
-  This unfortunately means potential users like guest_memfd are unlikely
-  to be able to use the nodes without hard-coding the allocator
-  interface, as opposed to a mempolicy.
-
-  I think it's possible instead to *maybe* add N_MEMORY_USER_MIGRATION
-  and allow for explicit movement between nodes, but not full blown
-  mempolicies.
-
-  The relationship between page_alloc, cpuset, mempolicy, and the oom
-  killer is just too tight to allow allocations without the use of
-  __GFP_THISNODE - which the private allocation interface will enforce.
-
-
-As it stands, the series has been heavily minimized in both line count
-and patch number.
-
-The base series is ~22 commits with the scary diffstat below, but many
-of the core mm/ patches are similar to the patch below - with nearly
-all of the real complexity happening in reclaim and memory hotplug.
-
-despite the branch name, I intend to drop RFC from here-on, everything
-else required for the base series is in mm-new.
-
-
-See you at LPC
-~Gregory
-
--------
-
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 7bdcdb57652f8..cd61566b44fa1 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -2266,7 +2266,7 @@ static int __add_folio_for_migration(struct folio *folio, int node,
-        if (is_zero_folio(folio) || is_huge_zero_folio(folio))
-                return -EFAULT;
-
--       if (folio_is_zone_device(folio))
-+       if (!folio_is_common_memory(folio))
-                return -ENOENT;
-
-        if (folio_nid(folio) == node)
-@@ -2390,7 +2390,7 @@ static int do_pages_move(struct mm_struct *mm, nodemask_t task_nodes,
-                err = -ENODEV;
-                if (node < 0 || node >= MAX_NUMNODES)
-                        goto out_flush;
--               if (!node_state(node, N_MEMORY))
-+               if (!node_state(node, N_MEMORY_COMMON))
-                        goto out_flush;
-
-                err = -EACCES;
-@@ -2475,7 +2475,7 @@ static void do_pages_stat_array(struct mm_struct *mm, unsigned long nr_pages,
-                if (folio) {
-                        if (is_zero_folio(folio) || is_huge_zero_folio(folio))
-                                err = -EFAULT;
--                       else if (folio_is_zone_device(folio))
-+                       else if (!folio_is_common_memory(folio))
-                                err = -ENOENT;
-                        else
-                                err = folio_nid(folio);
-
-
- Documentation/ABI/stable/sysfs-devices-node |  21 +++++++++++++++++
- Documentation/admin-guide/cgroup-v2.rst     |   7 ++++++
- Documentation/mm/physical_memory.rst        |  15 ++++++++++++-
- drivers/base/node.c                         |  67 +++++++++++++++++++++++++++++++++++++++++++++++++++++--
- drivers/dax/kmem.c                          |   2 +-
- include/linux/gfp.h                         |   6 +++++
- include/linux/memory_hotplug.h              |   2 +-
- include/linux/mmzone.h                      |  45 +++++++++++++++++++++++++++++++++++++
- include/linux/node.h                        |  12 ++++++++++
- include/linux/nodemask.h                    |  53 ++++++++++++++++++++++++++++++++++++++++++-
- kernel/cgroup/cpuset.c                      |  39 ++++++++++++++++++++++++++------
- kernel/sched/fair.c                         |   6 ++---
- mm/compaction.c                             |  21 +++++++++++------
- mm/damon/ops-common.c                       |  15 ++++++++-----
- mm/damon/vaddr.c                            |  20 +++++++++++++----
- mm/huge_memory.c                            |   2 +-
- mm/internal.h                               |  22 ++++++++++++++++++
- mm/khugepaged.c                             |   9 ++++++--
- mm/ksm.c                                    |   8 ++++---
- mm/madvise.c                                |   6 ++---
- mm/memory-tiers.c                           |  25 +++++++++++----------
- mm/memory_hotplug.c                         | 109 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-------------------------------
- mm/mempolicy.c                              |  51 +++++++++++++++++++++++++-----------------
- mm/migrate.c                                |   6 ++---
- mm/mm_init.c                                |  22 +++++++++---------
- mm/page_alloc.c                             | 115 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++---------------
- mm/page_alloc.h                             |   5 +++++
- mm/vmscan.c                                 |  31 +++++++++++++++-----------
- 28 files changed, 585 insertions(+), 157 deletions(-)

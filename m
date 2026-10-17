@@ -1,54 +1,37 @@
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+Received: from outgoing2021.csail.mit.edu (outgoing2021.csail.mit.edu [128.30.2.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B874839E6FD;
-	Wed,  7 Oct 2026 16:38:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E0582E62B7;
+	Sat, 17 Oct 2026 03:47:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.30.2.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791391103; cv=none; b=ZVczPKHW5bsnlK+dbkjxlfTbddkijAtRrWOvqag5uu1qLPaNuGExY1vrva7QrNf+6CULEOpWPXjAXQ4IrNeiW+DqLJ5HFU0zPGUDz+LKvbEXBSTVC0qnd745//u4E7BxGEH3yqJvGg+d1AlQ7kgzNXIcuu2yI9EqaoIcQgcwVKw=
+	t=1792208868; cv=none; b=hKLiVbN26BF5l6eCplN9EZ/vlEkYz2+u+qx6cMU0Btp0dqPT8zDLWIfRoPW+Muju1imfPTZQlbFkEMJQOoc+MSCyCJ8wWcNA0cN6wQ9V3DbCAWZwSHYPaFw8CfBvdP4gQvEfoF2Ly54o5wr4WgOCaRuVkzBt38Odv/7AoZTdkZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791391103; c=relaxed/simple;
-	bh=rt+DI0Zaj7t1gLzFkXpDITiac40k4MGIO8meOBYmFCU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FkP7yUos9Fhl6rmiMQMHaAu9wUfnZqHJuKYFkZUbOE2liiYghr9Wki0SIwx0jqQCJFUMwdjivS8uOzCMQGm7q4ct/XmJKkZftYRB4hkqPNMY3Kn4rMmsJu2PEEz0LjY1iqBBgUfDrEiLkCTT2xUNL1U5GUcLUyvm/e0ji6o3DGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=UkFfAXte; arc=none smtp.client-ip=80.241.56.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="UkFfAXte"
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4j0Jhn135gzKnYC;
-	Wed, 07 Oct 2026 18:38:17 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1791391097;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=2Ezflyex2QCq4IDhV46iLXvD5SXyLtu7Un9mXAhjKQE=;
-	b=UkFfAXtexXMe4siEWkyoHJ7MLt9nnrmneb00G00NlXzSKyG2mdf+UNnktckKGk2nPnUkki
-	ueDkpfo5Yq1KIJJq7XvES43wbpRTJOFu57yqBFD4LUn3Uofvxo/kEj3P07j9/axs+NKdwv
-	CxUfTARcVHCHVOMSj7gnaFOEWz+UOxUlgM0ZTBjbV59KzB1vG1UVFJkvjVf8FIte5lgjYd
-	jRVVoTd2irs6lA9k09ObJEmN8vp9J5joXIGZmHwK8MG3tuzF2dzXF0tnpXF37HRDV2SWZ2
-	KqH91ITWRUWJvrK0lSp9YBxYVeHbhsx5vUzZzElveAvuHNYEMjjg/0dVg7AsDQ==
-From: Manuel Ebner <manuelebnerli@mailbox.org>
-To: Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	linux-kbuild@vger.kernel.org,
-	oe-kbuild-all@lists.linux.dev,
+	s=arc-20240116; t=1792208868; c=relaxed/simple;
+	bh=jS2WQmeVsBQvwfgeYGMlFoJ2QBJJO8EwOJG0aPMBSIs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=swDL2f3CfBLbmXaJzu6W/U0+dFiZRp+sbm2+65hdFOOtzuBg9MGeBI+QkYDI3mT/1AZd3LOJ2sSCWVWBDTUHtza6qvtT1ePyM0zVf3UZ7WOA/eSi4MhDjnB3B+9rVw/nZ3O/klV4X4GMTZgk/BKYJ2QF074pjaiPPcaWYLxBMt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=csail.mit.edu; spf=pass smtp.mailfrom=csail.mit.edu; arc=none smtp.client-ip=128.30.2.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=csail.mit.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csail.mit.edu
+Received: from escalante.csail.mit.edu ([128.52.128.198])
+	by outgoing2021.csail.mit.edu with esmtp (Exim 4.95)
+	(envelope-from <nickolai@csail.mit.edu>)
+	id 1xHvOV-000755-CI;
+	Fri, 16 Oct 2026 23:47:39 -0400
+From: Nickolai Zeldovich <nickolai@csail.mit.edu>
+To: Omar Sandoval <osandov@osandov.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
+	Baoquan He <baoquan.he@linux.dev>,
 	linux-debuggers@vger.kernel.org,
-	tools@linux.kernel.org,
-	workflows@vger.kernel.org (open list:DOCUMENTATION PROCESS),
-	linux-doc@vger.kernel.org (open list:DOCUMENTATION),
-	linux-kernel@vger.kernel.org (open list)
-Cc: Manuel Ebner <manuelebnerli@mailbox.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Nicolas Schier <n.schier@fritz.com>
-Subject: [PATCH RFC] changes.rst: introduce 'Required for'-column
-Date: Wed,  7 Oct 2026 18:37:37 +0200
-Message-ID: <20261007163736.3942745-2-manuelebnerli@mailbox.org>
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Nickolai Zeldovich <nickolai@csail.mit.edu>
+Subject: [PATCH v1] proc/kcore: advance the vmalloc retry by the last copy, not the total
+Date: Fri, 16 Oct 2026 23:47:39 -0400
+Message-ID: <20261017034739.793431-1-nickolai@csail.mit.edu>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
@@ -56,155 +39,180 @@ List-Subscribe: <mailto:linux-debuggers+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MBO-RS-ID: dddea4e6f5fbbada107
-X-MBO-RS-META: rx4z7z4tgdgubcmsyy11wmkig53ae4fe
 
-The optional tag isn't obvious nor defined. Therefore remove the tag and
-add column 'Required for' to make it easier to define the need for the tools.
+A readv() or preadv() of /proc/kcore fails with EFAULT, although every
+byte of the destination is writable, when the page of a later iovec is
+not present at the moment the copy of a KCORE_VMALLOC chunk is retried:
+swapped out, migrated by compaction or NUMA balancing, write-protected
+by KSM, or unmapped by MADV_DONTNEED from another thread. Only root can
+read /proc/kcore, and the read must use more than one iovec. On an
+x86_64 defconfig kernel (v7.3-rc7) a preadv() of one vmalloc page into
+two 2 KiB iovecs on separate pages, with a second thread repeatedly
+unmapping the second page, failed 77701 of 200000 calls with EFAULT;
+with the fix all 200000 succeed. Affected since v6.4.
 
-CC: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-CC: Nicolas Schier <n.schier@fritz.com>
+read_kcore_iter() copies a KCORE_VMALLOC chunk with vread_iter(), which
+writes to the user buffer with page faults disabled and stops at the
+first iovec whose page is absent, after the earlier iovecs were
+written; the loop then faults the rest of the buffer in and calls
+vread_iter() again for what is left. It keeps the running total in
+`read` and advances the source address and the remaining length by that
+total:
+
+	read += vread_iter(iter, src, left);
+	if (read == tsz)
+		break;
+	src += read;
+	left -= read;
+
+In the reproducer the first call copies the 2048 bytes of the first
+iovec and stops at the second: read is 2048, and src and left move by
+2048, which is right. The page that fault_in_iov_iter_writeable() then
+faults in is unmapped again before the second call, which copies 0
+bytes: read is still 2048, but src moves by another 2048 to the end of
+the chunk and left drops to 0. The third call has nothing to copy, src
+moves by 2048 once more, left wraps around, and
+fault_in_iov_iter_writeable() fails on that length, so the read returns
+-EFAULT. When both short copies are non-zero (three or more iovecs) the
+extra call also copies bytes from the wrong offset of the page into the
+buffer before the failure. A single iovec is not affected: its nofault
+copy is all or nothing, so a short copy is always empty and the advance
+by the total is still the advance by the last copy.
+
+Keep the return value of each vread_iter() call and advance src and
+left by that; `read` stays the running total compared with tsz.
+
+Found while formally verifying vread_iter() against the kernel binary.
+
+Fixes: 4c91c07c93bb ("mm: vmalloc: convert vread() to vread_iter()")
+Assisted-by: LLM
+Signed-off-by: Nickolai Zeldovich <nickolai@csail.mit.edu>
 ---
-If anybody has info to add to or refine the new column I would appreciate it a lot.
-Please forward this to list or people which can contribute to this patch.
 
-There's also the option to remove the 'Command to check the version'-column
-and refer to scripts/ver_linux - and with this also removing the duplicated
-information-issue.
+Notes:
+    With a single iovec the destination of each vread_iter() call is one
+    copy_to_user_nofault() per source page, which copies all or nothing, so a
+    plain read()/pread() can only see a zero-length short copy and never hits
+    the second-short case; readv()/preadv() with several iovecs does, since
+    the nofault copy stops at the first iovec whose page is absent after the
+    earlier ones were written. The EFAULT is the same for any reason the
+    destination page is absent at the retry (swap, migration by compaction or
+    NUMA balancing, KSM write protection).
+    
+    The loop cannot return a full count with wrong data: once left wraps,
+    fault_in_iov_iter_writeable() fails before any further copy, and read ==
+    tsz is only reached when every short copy but the last was empty, in which
+    case advancing by the total is advancing by the last copy. With three or
+    more iovecs and two non-empty short copies the extra call copies bytes
+    from the wrong offset of the same page into the buffer, but the read still
+    fails with EFAULT.
+    
+    Reproducer (x86_64 defconfig, root, QEMU -smp 2; the second thread keeps
+    the second iovec's page unmapped):
+    
+      gcc -O2 -pthread -static -o kcore_readv_retry_short kcore_readv_retry_short.c
+      ./kcore_readv_retry_short
+      before: ok 122299 EFAULT 77701      (exit 1)
+      after:  ok 200000 EFAULT 0          (exit 0)
+    
+      /* preadv() of one vmalloc page from /proc/kcore into two iovecs while a
+       * thread keeps unmapping the second iovec's page; root, CONFIG_PROC_KCORE */
+      #define _GNU_SOURCE
+      #include <elf.h>
+      #include <errno.h>
+      #include <fcntl.h>
+      #include <pthread.h>
+      #include <stdio.h>
+      #include <stdlib.h>
+      #include <string.h>
+      #include <sys/mman.h>
+      #include <sys/uio.h>
+      #include <unistd.h>
+    
+      #define PG 4096UL
+      static volatile int stop;
+      static char *zap_page;
+    
+      static void *zapper(void *arg)
+      {
+      	while (!stop)
+      		madvise(zap_page, PG, MADV_DONTNEED);
+      	return NULL;
+      }
+    
+      int main(void)
+      {
+      	int fd = open("/proc/kcore", O_RDONLY), i, best = -1;
+      	long efault = 0, ok = 0;
+      	Elf64_Ehdr eh;
+      	Elf64_Phdr *ph;
+      	off_t off;
+      	unsigned long a;
+      	char *buf = mmap(NULL, 2 * PG, PROT_READ | PROT_WRITE,
+      			 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+      	char *ref = malloc(PG);
+      	struct iovec iov[2] = { { buf, PG / 2 }, { buf + PG, PG / 2 } };
+      	pthread_t th;
+    
+      	if (pread(fd, &eh, sizeof(eh), 0) != sizeof(eh))
+      		return 2;
+      	ph = calloc(eh.e_phnum, sizeof(*ph));
+      	if (pread(fd, ph, eh.e_phnum * sizeof(*ph), eh.e_phoff) < 0)
+      		return 2;
+      	for (i = 0; i < eh.e_phnum; i++)	/* vmalloc = largest non-RAM segment */
+      		if (ph[i].p_type == PT_LOAD && ph[i].p_paddr == (Elf64_Addr)-1 &&
+      		    (best < 0 || ph[i].p_memsz > ph[best].p_memsz))
+      			best = i;
+      	for (a = 0; ; a += PG) {		/* first page with live content */
+      		if (pread(fd, ref, PG, ph[best].p_offset + a) != (ssize_t)PG)
+      			continue;
+      		for (i = 0; i < PG && !ref[i]; i++)
+      			;
+      		if (i < PG)
+      			break;
+      	}
+      	off = ph[best].p_offset + a;
+      	zap_page = buf + PG;
+      	pthread_create(&th, NULL, zapper, NULL);
+      	for (i = 0; i < 200000; i++) {
+      		if (preadv(fd, iov, 2, off) == (ssize_t)PG)
+      			ok++;
+      		else if (errno == EFAULT)
+      			efault++;
+      	}
+      	stop = 1;
+      	pthread_join(th, NULL);
+      	printf("ok %ld EFAULT %ld\n", ok, efault);
+      	return efault != 0;
+      }
 
-[v3]
- Rearange column space of the table in order to add column instead of replacing column
- add some requirements to the table
+ fs/proc/kcore.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-[v2]
- Ditch footnotes in favor of a column
- Replace 'Check Version Command'-column with optional-column
- https://lore.kernel.org/all/20260831152523.638881-1-manuelebnerli@mailbox.org/
-
-[v1]
- https://lore.kernel.org/all/20260812122426.1636227-2-manuelebnerli@mailbox.org/
----
- Documentation/process/changes.rst | 97 ++++++++++++++++---------------
- 1 file changed, 51 insertions(+), 46 deletions(-)
-
-diff --git a/Documentation/process/changes.rst b/Documentation/process/changes.rst
-index 28f2ca633..dafe0530f 100644
---- a/Documentation/process/changes.rst
-+++ b/Documentation/process/changes.rst
-@@ -1,13 +1,14 @@
- .. _changes:
- 
--Minimal requirements to compile the Kernel
--++++++++++++++++++++++++++++++++++++++++++
-+Minimal requirements to interact with the Kernel
-+++++++++++++++++++++++++++++++++++++++++++++++++
- 
- Intro
- =====
- 
--This document is designed to provide a list of the minimum levels of
--software necessary to run the current kernel version.
-+This document is designed to provide a list of the minimum versions of
-+software necessary to change code, compile, install and boot the current
-+kernel version.
- 
- This document is originally based on my "Changes" file for 2.0.x kernels
- and therefore owes credit to the same people as that file (Jared Mauch,
-@@ -27,48 +28,52 @@ running a Linux kernel.  Also, not all tools are necessary on all
- systems; obviously, if you don't have any PC Card hardware, for example,
- you probably do not need to concern yourself with pcmciautils.
- 
--====================== ===============  ========================================
--        Program        Minimal version       Command to check the version
--====================== ===============  ========================================
--bash                   4.2              bash --version
--bc                     1.06.95          bc --version
--bindgen (optional)     0.71.1           bindgen --version
--binutils               2.30             ld -v
--bison                  2.0              bison --version
--btrfs-progs            0.18             btrfs --version
--Clang/LLVM (optional)  17.0.1           clang --version
--e2fsprogs              1.41.4           e2fsck -V
--flex                   2.5.35           flex --version
--gdb                    7.2              gdb --version
--GNU awk (optional)     5.1.0            gawk --version
--GNU C                  8.1              gcc --version
--GNU make               4.0              make --version
--GNU tar                1.28             tar --version
--GRUB                   0.93             grub --version || grub-install --version
--gtags (optional)       6.6.5            gtags --version
--iptables               1.4.2            iptables -V
--jfsutils               1.1.3            fsck.jfs -V
--kmod                   13               kmod -V
--mcelog                 0.6              mcelog --version
--mkimage (optional)     2017.01          mkimage --version
--nfs-utils              1.0.5            showmount --version
--openssl & libcrypto    1.0.0            openssl version
--pahole                 1.26             pahole --version
--pcmciautils            004              pccardctl -V
--pigz (optional)        2.4              pigz --version
--PPP                    2.4.0            pppd --version
--procps                 3.2.0            ps --version
--Python                 3.9.x            python3 --version
--quota-tools            3.09             quota -V
--Rust (optional)        1.85.0           rustc --version
--Sphinx\ [#f1]_         3.4.3            sphinx-build --version
--squashfs-tools         4.0              mksquashfs -version
--udev                   081              udevadm --version
--util-linux             2.10o            mount --version
--xfsprogs               2.6.0            xfs_db -V
--====================== ===============  ========================================
--
--.. [#f1] Sphinx is needed only to build the Kernel documentation
-+==============  ========  =======================  ========================================
-+    Program     Minimal      Command to check                  Required for
-+                version         the version
-+==============  ========  =======================  ========================================
-+bash            4.2       bash --version           general requirement
-+bc              1.06.95   bc --version             Kbuild (
-+bindgen         0.71.1    bindgen --version        CONFIG_RUST=y
-+binutils        2.30      ld -v
-+bison           2.0       bison --version          Kbuild (.config)
-+btrfs-progs     0.18      btrfs --version
-+Clang/LLVM      17.0.1    clang --version          alternative to GNU C (gcc)
-+e2fsprogs       1.41.4    e2fsck -V                ext4
-+flex            2.5.35    flex --version           Kbuild (.config)
-+gdb             7.2       gdb --version            Debugging
-+GNU awk         5.1.0     gawk --version           objtool, CONFIG_SYSTEM_BLACKLIST_HASH_LIST=y
-+GNU C           8.1       gcc --version            alternative to Clang/LLVM (clang)
-+GNU make        4.0       make --version
-+GNU tar         1.28      tar --version
-+GRUB            0.93      grub --version ||
-+                          grub-install --version
-+gtags           6.6.5     gtags --version          to generate tag files through ``make gtags``
-+iptables        1.4.2     iptables -V
-+jfsutils        1.1.3     fsck.jfs -V
-+kmod            13        kmod -V
-+mcelog          0.6       mcelog --version
-+mkimage         2017.01   mkimage --version        Flat Image Tree (FIT) or ARCH=arc, arm or powerpc
-+nfs-utils       1.0.5     showmount --version
-+openssl         1.0.0     openssl version
-+pahole          1.26      pahole --version
-+pcmciautils     004       pccardctl -V
-+pigz            2.4       pigz --version           Compile and boot with KPGZIP=y
-+PPP             2.4.0     pppd --version
-+procps          3.2.0     ps --version
-+Python          3.9.x     python3 --version
-+quota-tools     3.09      quota -V
-+Rust            1.85.0    rustc --version          CONFIG_RUST=y
-+Sphinx          3.4.3     sphinx-build --version   build kernel documentation
-+squashfs-tools  4.0       mksquashfs -version
-+udev            081       udevadm --version
-+util-linux      2.10o     mount --version
-+xfsprogs        2.6.0     xfs_db -V
-+==============  ========  =======================  ========================================
-+    Program     Minimal      Command to check                  Required for
-+                version      check the version
-+==============  ========  =======================  ========================================
+diff --git a/fs/proc/kcore.c b/fs/proc/kcore.c
+index 390547b992ac..3264c99bd68a 100644
+--- a/fs/proc/kcore.c
++++ b/fs/proc/kcore.c
+@@ -531,12 +531,14 @@ static ssize_t read_kcore_iter(struct kiocb *iocb, struct iov_iter *iter)
+ 			 * again until we are done.
+ 			 */
+ 			while (true) {
+-				read += vread_iter(iter, src, left);
++				size_t n = vread_iter(iter, src, left);
 +
++				read += n;
+ 				if (read == tsz)
+ 					break;
  
- Kernel compilation
- ******************
+-				src += read;
+-				left -= read;
++				src += n;
++				left -= n;
+ 
+ 				if (fault_in_iov_iter_writeable(iter, left)) {
+ 					ret = -EFAULT;
+
+base-commit: 70dd4ee72eb2d5793c62e71c14e3aba78e5a4e56
 -- 
-2.55.0
+2.53.0
 

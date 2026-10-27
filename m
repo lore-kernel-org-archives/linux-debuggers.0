@@ -1,54 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.49
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792691670;
-	b=0aDXbULeaPNCZ5gOWBdOFyyo3wZVZ9a8jKUIXwPSuYK89dD32RX1kT7eQfZB8C5SM8ds
-	 gyHlTXhK1EUMDEs88s8qkRYcCthuJ+8kvpa1Vu43jOdrR5Lq8EzKDWUJXVdt+UnIhqq0S
-	 ARDUIz6jIb83/Z7gbjse68aeoEY1l59fe7+8gH03IrAJ3ZmmXdqP3sbN4XBEgky1ADtMP
-	 yIn09xYxWpeiMV6awVh6rJ5r4I0ZoLQgE+W9wtFjZEfuA4c4bYDCG4O9KSMs7VXExOoyU
-	 6q4oCCPNvF/Y9qf7E8e9I3hTg5Y5D8HbcqWlBGfzxl5oMDkxOcdiNO9aNO4/HBUuS8g==
+	t=1793074880;
+	b=hxuaEd92RfHBhbF8Wr+xZ+mBQhhn4PtEntLsDouBjM7qvw34CDc1FUUz35r6FdBM3OGR
+	 etaVsFKDaDudpGz1AvsQZRdhC0d+Kdk2FdptTsTllKE5oxP5662J8Z64bOsV4B7FfkLZk
+	 TuRWZnjuVcXJQVZstKBjajEzTTSq6lFwWAG8lsTKWCdzlQajFBMAanqQdkgwXrxPQuMIS
+	 vgKeyqe84+hxQvTd3rK3wSbxBsjyAD+5ABxJvXJcPLRm17U23mM9pJbliLEKpTeRP7rxM
+	 XpIp6UNc1VrYu7mt3nezMdY6PbgnR/xoHaGLohWH3Phma614OCKX1hYh/EX19jWlHXw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792691670;
-	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=fbQibgxe69xuj6Tt/lcZHC3t8YlgVovN8bS/Jv4bVys=;
-	b=vqgAis3ApMNs0oTuEs6CSc+I67dfraon0K2s2wQTN6ZVIvRCLK/MCau6sMr6Kjh2rj2o
-	 pAkBbsbtgYT69moWgqyx0GXEiNe0zCQbCYJaFKOWCRXTqN3+7YnvXpoeGD/OdrtbfyOnM
-	 Kocy1IBhKVm5oeSX8l2V1NIJCcVkz0o/N3laaRZCr377OLuVR6Wr1O6/socifOOA1p1Vj
-	 GlGqJnkYJAjrpUO02l6YRnEHTWjd5TFNBnLim6QyeqFVm6A4Va5BC92tuMil1I9jDQzE7
-	 1dadWuW+nUduElnX/OZ6nkJJZj8mDbK+p3rAZWnZFickhdWM/apwuGu9P3tD2j6XfZA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793074880;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:User-Agent;
+	bh=IbKbkm2FCu1dJjWm0bA0zRZkrHajWkzVG1UGfJQ9bvA=;
+	b=WWZo3/wIlWDgzH8JuHdUzWxtpHM68iulVAE1dSLddNRRmSyGkYUVavH1tOpPA7DQJimD
+	 Ehm5R42XnAZdmPdXDdkAY0bFB4gD3dKh2t+BIUxJLa4rb6sSy9ApIn0Qvx2afnGgwniF8
+	 InMtaNhaZhk6TCcj0JhGttnHfm2JmOT3K4ZIFNcOJvohe90A6Np8sO+fho4jeggHRb5za
+	 OykTOirKMlt63uCTReItaZHN/k1ZWvbO5MzUW2CO6QfINlhsXJRZMNwXpeXn+Wqd7TfPa
+	 cXjzkOLEh/AQq56BaqlVYwhtJlzXGXdhJqpbymbcddmBFYizTNMBscOAs+Oszkt2mfA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=infradead.org;
-	spf=pass smtp.mailfrom=infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=zIcaFNGy;
-	arc=none smtp.remote-ip=198.137.202.133
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=chrisdown.name;
+	spf=pass smtp.mailfrom=chrisdown.name;
+	dkim=pass header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b="U+webZk/";
+	arc=none smtp.remote-ip=209.85.216.49
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC35E606A31A;
-	Thu, 22 Oct 2026 17:54:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BC35E606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67769606A31D
+	for <linux-debuggers@vger.kernel.org>; Tue, 27 Oct 2026 04:21:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 67769606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=chrisdown.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chrisdown.name
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=zIcaFNGy
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=fbQibgxe69xuj6Tt/lcZHC3t8YlgVovN8bS/Jv4bVys=; b=zIcaFNGyaMsCr9M0ia4+IPE/tX
-	At2HmdCrlpXOBQ2UyTUdnLUz5SvfLafFw10+N3to7x62m9+QhA7bAWAh/pFkG8hhgIpnxmIBiFfEH
-	xY90xURt7SvBjfa0W9XxmVqXd8+ys34f0CHpn1ZkAyoAFSw91p34YhxVSmfBpGB1fLCki/vGDw80f
-	DYRQhK0UzSSruakLqJVzk7iMCwxplhko4XmI4z35ZLwx0l0U/Ld/yCQgvuyncDj7l6CRdKhHzaItL
-	r0R2dC76Cbw1stEFGeuo5NVLmphxr8JI/sEPLRxvzlHK9d5qSlUloJ180gBjX1DlpCn8q4F+ovQHq
-	tAB8lFug==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xJwzh-0000000Ef54-0yRY;
-	Thu, 22 Oct 2026 17:54:25 +0000
-Message-ID: <3ea9c3c7-a5b8-4474-b2c6-c500cea29487@infradead.org>
-Date: Thu, 22 Oct 2026 10:54:17 -0700
+	dkim=pass (1024-bit key, unprotected) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=U+webZk/
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3aded3c6103so1203354a91.0
+        for <linux-debuggers@vger.kernel.org>; Mon, 26 Oct 2026 21:21:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chrisdown.name; s=google; t=1793074879; x=1793679679; darn=vger.kernel.org;
+        h=user-agent:content-disposition:content-type:mime-version:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=IbKbkm2FCu1dJjWm0bA0zRZkrHajWkzVG1UGfJQ9bvA=;
+        b=U+webZk/UC0AmEh8JfGeN0MsgqZ5s35ckHlqcQZGpqM5matT9IESNMyqgLlqhn8+LU
+         62r6mR2RVpK4FKHh/WYKLLfw4IkyeBL78s9aMyPY/LBrc/ElrYJXV4FSqAoO8HPIUfve
+         57DIfcFTgwcH9ibOsaVbpBayQsR7iIg7tLxZE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793074879; x=1793679679;
+        h=user-agent:content-disposition:content-type:mime-version:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=IbKbkm2FCu1dJjWm0bA0zRZkrHajWkzVG1UGfJQ9bvA=;
+        b=Y+yfO86cHcSjVvxrxCyGZrbmFGfpPp7KwbGUaELuDtU/KGl1Rqv+EXtEiDh/DmnI5K
+         07KUhMSnlCVuO44PoQ+wekjzL1UXag43kcLddJnnwuCU1xTu3HdtoQC/H604iLC+h7aa
+         ge9yyVigstqgGjeXr6fBatMiKpWytzcflRiP+cGLxCRo83DauaxX7TrNQdn40iE/0tyN
+         T2PS1gPsxfBOhKLe48RXytBxelyrlc89moP5FCIBpdUshYhqlmBIW7UIS2RLKSKQ4UmS
+         racKusuIMkG4JZiAp+b5rY4DRp8sJrw672TA+Sw2dMUMaK9IlSAwZqJqu8VgC09Uyv59
+         4uBw==
+X-Forwarded-Encrypted: i=1; AKwUvBxFcnThW5daQXajSQDKG/aw60emCmjxve41CbpIRoP/yV0TMlr7SHZDMod98mKmMzC+GGvmguMqjUZb2jAv08U=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIQS1eCme5nGbH6UYNg0UcGeYpsKgVOWJkVEoZssvZV3pT8bEsN
+	0fjfI+242DKy48fpQYI9VuQCUFq/n4niccnqYgBVNvK4gsWpUItKnmCPCjQO7cueyKJwgnOTJ+/
+	ML+EyoOqaoXm+zyk=
+X-Gm-Gg: AYBFou3lJU7TGU6IG8tws2yMqiPFYJ9U3e6iaEGDrCjsVpk/yzliEjN7P+RXlvvfF10
+	jyuPAJdaBMe3CRsSIwTlDeTJiEUvvIOCqFyYCI4fdHDNdhRlVEOGyWEZrdiqz/dKlOkdL8uhf0x
+	DDe9XPBm9YGXByMsj7Hpb5YaISMXXYNp8KfIF55Re6hcO8IvZ7YDYJEuvxDPtpP3uPt8KFXRukP
+	4Qyz8zriXZR3JMR5X+6HfLb8J0FnhHvENy+W9a6ss7y0muw9DLqSGlwuDo0yaPYcPSc2qvwQ9wT
+	dBsSHfXJn6SmLtJkvdMzLBSDYN0IXrT4spZiAMjLJNlgFbU+F6xi9VHM0PQGqQeVWvoPznwFIyy
+	FxyoHtS7oMQcXb4PZ5MFWkdm0K2TL7HdapIt4ii835ratyy99kdX2WapXir9cIHNZX22c6hpFif
+	sWLCjbeB0lxzULpCTkjvx/3xeuEyvsjbrIv13U/+WW9VLTEft9HlPYZNzJ84gTihOw4poA1R60G
+	yy4PrcbXK9klhLy4+Mj7uWGLJ834RfMx1NmEx0pvicgM6WA85d6lLK7zdoKfK3w+HYFY6nRYNs+
+	SMpJXSe3BwnKriYrgYCfXPtnR+/IEUkJPr8wxpnoHwdeGH4Q4gsAqHImlxk0Zc6iR+zpwcJYIgR
+	n+FZV55vI1BjzhHyGMZpu7lN+S5CpvGwIRJSUqNBKqgEZ
+X-Received: by 2002:a17:90b:2d86:b0:3ac:17c:6e89 with SMTP id 98e67ed59e1d1-3adeae6d79amr6903972a91.19.1793074878569;
+        Mon, 26 Oct 2026 21:21:18 -0700 (PDT)
+Received: from localhost ([116.86.153.182])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae40427bf1sm1790327a91.6.2026.10.26.21.21.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Oct 2026 21:21:17 -0700 (PDT)
+Date: Tue, 27 Oct 2026 12:21:14 +0800
+From: Chris Down <chris@chrisdown.name>
+To: Omar Sandoval <osandov@osandov.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	linux-debuggers@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: [PATCH] proc/kcore: Allow disabling /proc/kcore at boot
+Message-ID: <auAmuqZyUodq3iqk@chrisdown.name>
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Post: <mailto:linux-debuggers@vger.kernel.org>
@@ -58,156 +98,81 @@ List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-debuggers+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC] changes.rst: introduce 'Required for'-column
-To: Manuel Ebner <manuelebnerli@mailbox.org>, Jonathan Corbet
- <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- linux-kbuild@vger.kernel.org, oe-kbuild-all@lists.linux.dev,
- linux-debuggers@vger.kernel.org, tools@linux.kernel.org,
- "open list:DOCUMENTATION PROCESS" <workflows@vger.kernel.org>,
- "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
- open list <linux-kernel@vger.kernel.org>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- Nicolas Schier <n.schier@fritz.com>
-References: <20261007163736.3942745-2-manuelebnerli@mailbox.org>
- <d57ce591-2399-4bd4-ae70-8fdabf63ae82@infradead.org>
- <6cfc3d91f725146c6d8c6c21b869b1d21a08044e.camel@mailbox.org>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <6cfc3d91f725146c6d8c6c21b869b1d21a08044e.camel@mailbox.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/2.3.3 (9073d26d) (2026-06-12)
 
+/proc/kcore lets any process with CAP_SYS_RAWIO read all of kernel
+memory. That's a pretty large read primitive for anyone who obtains
+CAP_SYS_RAWIO (and it also gives away the KASLR layout).
 
+For this reason on some hosts we want to turn /proc/kcore off. However,
+on a kernel built with CONFIG_PROC_KCORE=y the only ways to block it
+today are lockdown=confidentiality (which also disables many other
+things we perhaps don't want to disable), or LSM. That's annoying,
+because on the majority of hosts we do want it on for things like
+drgn/crash, so today we build two separate kernels.
 
-On 10/22/26 2:36 AM, Manuel Ebner wrote:
-> Hi Randy, 
-> 
-> On Wed, 2026-10-21 at 22:41 -0700, Randy Dunlap wrote:
->> Hi,
->>
->> On 10/7/26 9:37 AM, Manuel Ebner wrote:
->>> The optional tag isn't obvious nor defined. Therefore remove the tag and
->>> add column 'Required for' to make it easier to define the need for the tools.
->>>
->>> CC: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
->>> CC: Nicolas Schier <n.schier@fritz.com>
->>> ---
->>> If anybody has info to add to or refine the new column I would appreciate it a lot.
->>> Please forward this to list or people which can contribute to this patch.
->>>
->>> There's also the option to remove the 'Command to check the version'-column
->>> and refer to scripts/ver_linux - and with this also removing the duplicated
->>> information-issue.
->>>
->>> [v3]
->>>  Rearange column space of the table in order to add column instead of replacing column
->>>  add some requirements to the table
->>>
->>> [v2]
->>>  Ditch footnotes in favor of a column
->>>  Replace 'Check Version Command'-column with optional-column
->>>  https://lore.kernel.org/all/20260831152523.638881-1-manuelebnerli@mailbox.org/
->>>
->>> [v1]
->>>  https://lore.kernel.org/all/20260812122426.1636227-2-manuelebnerli@mailbox.org/
->>> ---
->>>  Documentation/process/changes.rst | 97 ++++++++++++++++---------------
->>>  1 file changed, 51 insertions(+), 46 deletions(-)
->>>
->>> diff --git a/Documentation/process/changes.rst b/Documentation/process/changes.rst
->>> index 28f2ca633..dafe0530f 100644
->>> --- a/Documentation/process/changes.rst
->>> +++ b/Documentation/process/changes.rst
->>>
->>>  
->>>  ...
->>>
->>>  
->>> +==============  ========  =======================  ========================================
->>> +    Program     Minimal      Command to check                  Required for
->>> +                version         the version
->>> +==============  ========  =======================  ========================================
->>> +bash            4.2       bash --version           general requirement
->>> +bc              1.06.95   bc --version             Kbuild (
->>
->> Something missing after the '('?
-> 
-> There's something missing because I didn't know what to put there. I know bc is calculating
-> something during the build, but now how to put it.
+Let's add a "kcore=" boot parameter so that this can be disabled at
+boot.
 
-Some concise summary of:
+Signed-off-by: Chris Down <chris@chrisdown.name>
+---
+ Documentation/admin-guide/kernel-parameters.txt |  6 ++++++
+ fs/proc/kcore.c                                 | 12 ++++++++++++
+ 2 files changed, 18 insertions(+)
 
-bc is used to generate kernel time constants (depending on CONFIG_HZ) for all
-architectures.
-bc is used to build a static OID registry for fast lookups.
-bc is used in package building.
-bc is used in lots of testing:
-* BPF
-* ftrace
-* math
-* perf
-* CPU
-* networking
-* kernel stack
-* memory hotplug
-* zram
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index e75344f4e0cd..d8acce2878ab 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -2915,6 +2915,12 @@ Kernel parameters
+ 			parameter KASAN will print report only for the first
+ 			invalid access.
+ 
++	kcore=		[KNL,EARLY]
++			Enable or disable /proc/kcore on kernels built with
++			CONFIG_PROC_KCORE=y.
++			Format: <bool>
++			Default: on
++
+ 	keep_bootcon	[KNL,EARLY]
+ 			Do not unregister boot console at start. This is only
+ 			useful for debugging when something happens in the window
+diff --git a/fs/proc/kcore.c b/fs/proc/kcore.c
+index 390547b992ac..6a29a3e0ed92 100644
+--- a/fs/proc/kcore.c
++++ b/fs/proc/kcore.c
+@@ -69,6 +69,7 @@ static size_t kcore_notes_len;
+ static size_t kcore_data_offset;
+ DEFINE_STATIC_PERCPU_RWSEM(kclist_lock);
+ static int kcore_need_update = 1;
++static bool kcore_enabled __initdata = true;
+ 
+ /*
+  * Returns > 0 for RAM pages, 0 for non-RAM pages, < 0 on error
+@@ -720,8 +721,19 @@ static void __init add_modules_range(void)
+ }
+ #endif
+ 
++static int __init parse_kcore(char *str)
++{
++	return kstrtobool(str, &kcore_enabled);
++}
++early_param("kcore", parse_kcore);
++
+ static int __init proc_kcore_init(void)
+ {
++	if (!kcore_enabled) {
++		pr_info("/proc/kcore disabled on command line\n");
++		return 0;
++	}
++
+ 	proc_root_kcore = proc_create("kcore", S_IRUSR, NULL, &kcore_proc_ops);
+ 	if (!proc_root_kcore) {
+ 		pr_err("couldn't create /proc/kcore\n");
 
-
->>> +bindgen         0.71.1    bindgen --version        CONFIG_RUST=y
->>> +binutils        2.30      ld -v
->>> +bison           2.0       bison --version          Kbuild (.config)
->>> +btrfs-progs     0.18      btrfs --version
->>> +Clang/LLVM      17.0.1    clang --version          alternative to GNU C (gcc)
->>> +e2fsprogs       1.41.4    e2fsck -V                ext4
->>> +flex            2.5.35    flex --version           Kbuild (.config)
->>> +gdb             7.2       gdb --version            Debugging
->>> +GNU awk         5.1.0     gawk --version           objtool, CONFIG_SYSTEM_BLACKLIST_HASH_LIST=y
->>> +GNU C           8.1       gcc --version            alternative to Clang/LLVM (clang)
->>> +GNU make        4.0       make --version
->>> +GNU tar         1.28      tar --version
->>> +GRUB            0.93      grub --version ||
->>> +                          grub-install --version
->>> +gtags           6.6.5     gtags --version          to generate tag files through ``make gtags``
->>> +iptables        1.4.2     iptables -V
->>> +jfsutils        1.1.3     fsck.jfs -V
->>> +kmod            13        kmod -V
->>> +mcelog          0.6       mcelog --version
->>> +mkimage         2017.01   mkimage --version        Flat Image Tree (FIT) or ARCH=arc, arm or powerpc
->>> +nfs-utils       1.0.5     showmount --version
->>> +openssl         1.0.0     openssl version
->>> +pahole          1.26      pahole --version
->>> +pcmciautils     004       pccardctl -V
->>> +pigz            2.4       pigz --version           Compile and boot with KPGZIP=y
->>> +PPP             2.4.0     pppd --version
->>> +procps          3.2.0     ps --version
->>> +Python          3.9.x     python3 --version
->>> +quota-tools     3.09      quota -V
->>> +Rust            1.85.0    rustc --version          CONFIG_RUST=y
->>> +Sphinx          3.4.3     sphinx-build --version   build kernel documentation
->>> +squashfs-tools  4.0       mksquashfs -version
->>> +udev            081       udevadm --version
->>> +util-linux      2.10o     mount --version
->>> +xfsprogs        2.6.0     xfs_db -V
->>> +==============  ========  =======================  ========================================
->>> +    Program     Minimal      Command to check                  Required for
->>> +                version      check the version
->>> +==============  ========  =======================  ========================================
->>
->> On my build of 'make htmldocs', the table ending confuses docutils.
->> Did you build this with 'make htmldocs'?
->>
->> Documentation/process/changes.rst:73: WARNING: Blank line required after table. [docutils]
->> Documentation/process/changes.rst:75: WARNING: Block quote ends without a blank line; unexpected unindent. [docutils]
->> Documentation/process/changes.rst:419: ERROR: Malformed table.
->> Bottom border or header rule does not match top border.
->>
->> ==============  ========  =======================  ========================================
-> 
-> I'll remove the bottom 'head-row'.
-
-Ack. Thanks.
-
+base-commit: 01146870c415f6ff70a469fb7ceb962a3f2c8c52
 -- 
-~Randy
+2.54.0
 

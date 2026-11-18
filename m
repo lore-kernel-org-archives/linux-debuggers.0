@@ -1,97 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794910843;
-	b=m/p+XemRu4AbuO7zMFruXqRKoj0wVj0+MAqb/CnLrJZeJpg6giXq4H0f5gguFRjAn+/S
-	 a3LrtJkiLMNvUfslAQEEzInb7XsHD3v8tyfDo7UjF6q3WJAGdyEFHSGmCcl40Mlfk5qYC
-	 bHPus+aMf/FoXB5RHJLtD6SRoCpxjFHtSTLnUq1a8tbsnOfIsIZjFegiuG47PqvcC1sbT
-	 ssMcrJb1ySu/5R83ZWxlnvEZFfqDFjUC/017aI9dorwrOl/brCDDIVwF4fcKvEPTw2WE3
-	 5hsAG7w5ngQ9F+suZhUqJK532sBGo51owCdBN+zBSJM+/CzPv2cVAMpA7y/6gSJtYqw==
+	t=1794996816;
+	b=ExiBkH3fUoTH5untpxDLeEUrRelueF1HtzAAq6EgRpPSu5fpSvuBdLCuQMrcja1J/f3Q
+	 X7ckrncck6RYagXUY11Vf1rwZiuZX45TAESZKqV8vm9ToSBEY4n9/DsDMuencR0qkxkFf
+	 6O/DJg0jm42vumpcHa4bq/9l+5p0KU1LBVGzXNsO1hU5latOTmOBwu8A69PiwfTEEowLE
+	 Y3nWjZXChXmPglTMvC0TTtaa29B8Q9gGY3HAM1EMgh7r/rQu6RoAzUiIqMy70z1bWfaHq
+	 xpyGtSlivGBbydRrYequR5g2zw3IMOF+M4pf2DLnu5pLeAa5TOiMjg75Tcpb9MFCNvQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794910843;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:Message-ID:From:Subject:To:Cc:MIME-Version:Content-Type:
-	 Content-Disposition:User-Agent;
-	bh=wUKnxB9Hkf5UlddOBau8h4TCwsj7ZxWVW5uuyUNe2fU=;
-	b=BmJ6yXXqSeMm+aL2QwJJTh7OMCB8Fb8j8Y2t1LnKXe8j9JMJmy/g8W7eELI8zMnSat4v
-	 /NPubJBb2oXtsL82xA3Rkxzd2wG16+F5InCBCq40M2zSs57RSKyesqfXaSsycOwqBi8Db
-	 O4Br5Bnd+WOqH/AM0QYkCJ4fnZ2JA7iwlN81YlKarLxwO4KBeFfVr0szsjdnCneYH4/a4
-	 VvfxwMr/FKALRe1Nr8Rgset8i+usQrJkHNVCfgBBkouA6ra/A/5Zrm2UP9HQaSSuVbNRP
-	 czOpfgHuFt9lOYiGvVmUHp6ilpp0oXGrOZyOwGN7BFi1jOthjp/WiRx6Sj3A+juNGxQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794996816;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-TM-AS-GCONF:X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
+	 X-Authority-Analysis:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=C/4PfCzvD/ktb55WsjcO5Qq4YUlKt4F70+506gstecI=;
+	b=PYoHIjtR5oEvykOCeKNe9aeXHMZnp9st4MF0j46o/YCZtt2AVNqCBsaRlQYNlGy0DJl+
+	 azB6tMZ020j5Hu+ksmC1b0JfkGZoJP59LyxDnsmSEbwsBlnVUTSAHvJNCyiRF+FgqFJbE
+	 twABlWpSedlsZfnFu5aEodAmcjyyetDZzILSSULZL+obnQ1wk7HIwseeovSYq1nC6eFCJ
+	 SHlvQctYVyvaM8vsqS2wKOKjz7+MaQdtxnbXIf4f45D14u+bhTx+m8RqC0CdRihjw43/e
+	 8DCOM/JDKoSrIqOTWGh+uG6TbHus8xlIbF8gl6rTaBvA5nYrRV24bDmBHg5X/MP7d7g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=chrisdown.name;
-	spf=pass smtp.mailfrom=chrisdown.name;
-	dkim=pass header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=E7RLDg11;
-	arc=none smtp.remote-ip=209.85.216.52
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VzMlTItv;
+	arc=none smtp.remote-ip=148.163.158.5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059FB606A32A
-	for <linux-debuggers@vger.kernel.org>; Tue, 17 Nov 2026 10:20:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 059FB606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=chrisdown.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chrisdown.name
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585A9606A338;
+	Wed, 18 Nov 2026 10:13:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 585A9606A338
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=E7RLDg11
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3b37951a397so2227933a91.0
-        for <linux-debuggers@vger.kernel.org>; Tue, 17 Nov 2026 02:20:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chrisdown.name; s=google; t=1794910842; x=1795515642; darn=vger.kernel.org;
-        h=user-agent:content-disposition:content-type:mime-version:cc:to
-         :subject:from:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=wUKnxB9Hkf5UlddOBau8h4TCwsj7ZxWVW5uuyUNe2fU=;
-        b=E7RLDg11WOEqbE8nOBbR9Wi21WCPxa6PZYpNS33bFEgcNRLlGLk8GZJ+wMBUE8RniO
-         YuDug5jx+4b4Sd6W1bevIMgmHpvzco0R8u3w/EF89vuX/C8uQK7pbooAuV7TKqc5ncp7
-         e7D3mQFs3aygUuhaHL/JYlQASpdLPnu6wCzh0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794910842; x=1795515642;
-        h=user-agent:content-disposition:content-type:mime-version:cc:to
-         :subject:from:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=wUKnxB9Hkf5UlddOBau8h4TCwsj7ZxWVW5uuyUNe2fU=;
-        b=IIru8PT4Ra1ISH8osM6ByOks0pz55XjuH7JvECmR+8XJoBHfnCjpoTLqtyDJAM9YOb
-         XqjnOktgFEk4S8DHrncxK3pvo5cUcNM6tLYyT/kC1/ds+jZL7VOz5P6jitsAu6ywDZut
-         Rf7PIMqwJQCgB/RhD/64OvgrjlZgc7YnGwvkL6Ct/haATDQy6Ezco+5IOmRLFijfV1pH
-         QfSvqJmVxyoo0vyw2uMrohhWF7p+POnWGkTL4bfk5nj570ZyyvHboOUAJxQyPc5GJiiX
-         5wsKMyFq2ln8ArRPk2ATAA7ffONZMyNNLSkv3BT9436aFaxxwWyd8VLOTjN4TNrQ185h
-         SU8Q==
-X-Forwarded-Encrypted: i=1; AL+hErF79zKwg6EUakl5B5Wppc3GM5ldlSyAWur+NI87b9qJtI750kliUg+hiX3bCMCZejN350gS8x3LbD9ExC7C8Qg=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8dYgNmcq7LRXQr/7GrhRy4wwV5kNJxA7u7j9PlGuMmPQ48lplP
-	G+rD8VCkxmm+I0metJBFYG1wfadjkuxrEmnxknjV80uwEiYX8xpijqYvhld4+um7Ydnbra65dkU
-	YLT3B3YA=
-X-Gm-Gg: AZFdTZeZnpMVIX+Llv6Gf9qMqj7lplt4w0rMcwrUEQlV92ut+2DNPnmELYqr+E7TMRn
-	bIWdpTQG34DlIaQVftLFC68/ZBoeJ5M0v/ImNfLWs7ZAysz/icpwDV0AqiAzboUbl5ToGWZ+21P
-	npSMoxTgK7JqyNW7C74QCl3iLw5bay7nx1+0LstyTPDUc8ucTJFNQKNsOYXm/yfa1pSBYmXpyYF
-	dbN5PF+Iq6QH3LBULSgIAlPiInOQ+Ud8Xc34DFpTfG3mAQY8lNiglBjE4eEK3x9MPavoBaHaNFp
-	aVBV91QJtjJhA1tEaiLLvNqvN8mD7NBSQ27QUoYncyRPXo6sCYmz7tXR53Z3wos2sMKC2MQ2qM9
-	KSvij7NI2wbHO9frNXBkv9DOueNUT2Jpeew/ufRmxn3eNg7t1fIU9PzS70EJYcSW8aU+w9qy0ij
-	AwjlPAc6PSPx30eka8kR7zpteNojUz/EfkzZyeM/AXEqs8smQNUUQwxqtVoT/5PnZ2OmnOM2gVK
-	i2C6xrl+Od4LPsPn2M2zLs1G2GjE69f6jM50l3HsUZMwAya+XlNlFDJUz6F7VqqGY8pfN8QDzmV
-	Hk/ZfzY74LL6m01btUfYpFAuprkaNp/YB3FRk5PRTfzbDjJ3HqBnz83PWbiiv7CRfBOTLTljN5X
-	jkxKdKvhu+xGSssw6biRs6EKfhGE7a/CPgTC3pk9GEXd4PU5qNV6A9+Hs1mzA38NWAShusVTRK2
-	BAvdMslP+kVTFe6o6aoa54cbIvsN+vnyXOHcqpohQla3hxttXqtQEgqiQ4UuThWPmX
-X-Received: by 2002:a17:90b:5112:b0:3a8:10e2:ad08 with SMTP id 98e67ed59e1d1-3b1b0cf4395mr13922231a91.48.1794910842256;
-        Tue, 17 Nov 2026 02:20:42 -0800 (PST)
-Received: from [172.20.0.2] ([172.56.235.113])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b3a7657585sm1927180a91.2.2026.11.17.02.20.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Nov 2026 02:20:41 -0800 (PST)
-Date: Tue, 17 Nov 2026 02:20:38 -0800
-Message-ID: <7c10f2e01b6f19229c83e81d887a87f5d1151841.1794904698.git.chris@chrisdown.name>
-From: Chris Down <chris@chrisdown.name>
-Subject: [PATCH v3] proc/kcore: allow disabling /proc/kcore at boot
-To: Omar Sandoval <osandov@osandov.com>,
-    Andrew Morton <akpm@linux-foundation.org>
-Cc: Jonathan Corbet <corbet@lwn.net>,
-    Shuah Khan <skhan@linuxfoundation.org>,
-    Randy Dunlap <rdunlap@infradead.org>,
-    linux-debuggers@vger.kernel.org,
-    linux-fsdevel@vger.kernel.org,
-    linux-doc@vger.kernel.org,
-    linux-kernel@vger.kernel.org,
-    kernel-team@meta.com
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VzMlTItv
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AI9uObJ775952;
+	Wed, 18 Nov 2026 10:13:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=C/4PfCzvD/ktb55WsjcO5Qq4YUlKt4
+	F70+506gstecI=; b=VzMlTItvEZDdJdIKnjKrOoL+rPB9z1k1SZNOJQLoFvNrN9
+	YiDRFngNmnB0bxyB6kfcfrbk9jfU5S3Hyu1/72z4nDg0Ab7nJMTn2wcu932UWIam
+	7LicjuL4YiqmajZxbPePrFEsv7jCCuROkZSnPVuOYNw6fbrHj93Eqpxzseo0fCme
+	bIaiqJ0ITd9BhJIgr73q1KprjMUl2xhBAJxHiTjJGHCVzz2xy/Mu8DBceEkoe39e
+	xpwwh0eC3uLttB8K90diByOWV9oUAFj3GSBXGVhjhRgNIEJxORZ5jwRxgmFn0WFJ
+	ljdYQcP6XKWvfWdP6mGb6ea9PNxJOf4V7jGdurTg==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j105wsv5e-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 18 Nov 2026 10:13:33 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AI9oWHn2938469;
+	Wed, 18 Nov 2026 10:13:32 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4j02jufrup-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Nov 2026 10:13:32 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AIADQvh35782928
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 18 Nov 2026 10:13:26 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 984222005A;
+	Wed, 18 Nov 2026 10:13:25 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 40B9C20063;
+	Wed, 18 Nov 2026 10:13:25 +0000 (GMT)
+Received: from osiris (unknown [9.68.31.201])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 18 Nov 2026 10:13:25 +0000 (GMT)
+Date: Wed, 18 Nov 2026 11:13:23 +0100
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Stephen Brennan <stephen.s.brennan@oracle.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Andrew Donnellan <andrew+kernel@donnellan.id.au>,
+        linux-s390@vger.kernel.org, linux-debuggers@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] s390: add CFI directives for call_on_stack
+Message-ID: <20261118101323.14542B45-hca@linux.ibm.com>
+References: <20261030231714.1319773-1-stephen.s.brennan@oracle.com>
+ <87qzgkpsby.fsf@oracle.com>
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Post: <mailto:linux-debuggers@vger.kernel.org>
@@ -103,95 +100,74 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/2.4.3 (cc9e3943) (2026-10-09)
+In-Reply-To: <87qzgkpsby.fsf@oracle.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: GA23wieAIJscNyKWE6387hABDrpOWVLZ
+X-Proofpoint-GUID: GA23wieAIJscNyKWE6387hABDrpOWVLZ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE4MDAzOSBTYWx0ZWRfX3xU3VRPKfUxJ
+ u/LQLYYizHiftU+jYUWkaOW6o3z4eqBXMpb7seg+Wjvu95CrvqT4bWQcygf6zqDAe4iMX3LHEX0
+ c1e+TWfTElsWLuVsX08UfW8hWD59h9QmLCUq+Bro8mw9fL1n3tbv5Dm01vwGSWbzfX+suX7xL/7
+ YMoC+O3NbJfskz9mP67am75tVyHuOBtDP5AycXHz25UVZa9fnRKqH8iwbmzZc6IcMdNp8jSMkL4
+ QyjCt4Qz5H3ZeXZHnJt4fUUo7Kk09OBupv2QASdCw7O5Z0DRT97kJTpJWiuduRFZ7Dr5Rx83GL/
+ TKwcpYyGv6s4Awz0Vs+0Roww7CryrR/3/7cUFbaPJmluyFxz6P8bHTq9sdGywkqvt52VcanhO16
+ a/2lmiHZT7IHbAoh/vukE/82gOFTrpVvcIjPfA/SzsOGkMiDXB8eFomJ3u6e++2AomYAWXYyEXD
+ IgCK3wfO4YSxTk64nPg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE4MDAzOSBTYWx0ZWRfX3ZZcQuCviIzn
+ +Hkwx8w1w+S5qgMWU9kzJqbpBj6ibOnNzIYxLKnk0WiN3wc3PilA46oWXaKo1ZkJUpiOSa2OSEV
+ zjsTBdtkxKIcal0xnSTVBBPnfQn8oVs=
+X-Authority-Analysis: v=2.4 cv=K+m3jCWI c=1 sm=1 tr=0 ts=6afd7a4d cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=17FYL03jAAAA:20
+ a=yPCof4ZbAAAA:8 a=NHV7Ha0uC3VOG44dLV0A:9 a=CjuIK1q_8ugA:10
+ a=bA3UWDv6hWIuX7UZL3qL:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-18_02,2026-11-16_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 bulkscore=0 clxscore=1011 adultscore=0 spamscore=0
+ priorityscore=1501 impostorscore=0 phishscore=0 lowpriorityscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
+ definitions=main-2611180039
 
-/proc/kcore lets any process with CAP_SYS_RAWIO read all of kernel
-memory. That's a pretty large read primitive for anyone who obtains
-CAP_SYS_RAWIO (and it also gives away the KASLR layout).
+Hi Stephen,
 
-For this reason on some hosts we want to turn /proc/kcore off. In terms
-of what it can read, /proc/kcore isn't any more concerning than other
-ways to read kernel memory, like BPF with CAP_BPF and CAP_PERFMON. The
-distinction is that a process with CAP_SYS_RAWIO doesn't necessarily
-have CAP_BPF and CAP_PERFMON, because CAP_SYS_RAWIO may be needed for
-hardware access without necessarily wanting to grant general RAM access.
-CONFIG_STRICT_DEVMEM already makes that possible for /dev/mem, but
-/proc/kcore gives the same capability to do general purpose RAM reading
-anyway.
+On Mon, Nov 16, 2026 at 10:02:57AM -0800, Stephen Brennan wrote:
+> Stephen Brennan <stephen.s.brennan@oracle.com> writes:
+> > When debugging s390 on drgn, we experience two issues. First, when a
+> > panic is triggered on CPU 0, drgn is unable to unwind past a stack
+> > switching event[1,2]. Second, drgn is unable to unwind through an
+> > interrupt exception frame.
+> >
+> > It turns out that the reason for both is the generated call_on_stack()
+> > assembly. It modifies %r15 (the stack pointer) without any CFI
+> > directives describing this change. Thus, the compiler-generated CFI is
+> > wrong, and drgn tries to unwind using rules based on the wrong SP value.
+> >
+> > To resolve this, use %r10 (a callee-saved register) to store the CFA in
+> > a temporary register. Then, emit a CFI directive describing the change.
+> > So long as DWARF CFI is used to unwind all leaf functions, the value of
+> > %r10 should be recoverable, and unwinders will be able to use it to
+> > determine the CFA and continue to the new stack.
+> >
+> > I've tested this only in a QEMU VM using drgn's vmtest framework.
+> > With the patch, drgn is able to unwind through two stack changes: the
+> > change to the IRQ stack, and the change to the CPU0 nodat_stack during a
+> > panic on CPU 0.
+> >
+> > [1]: https://github.com/osandov/drgn/blob/97b613c23bd4d100a61b3b06fb1b5097fcef9f61/vmtest/enter_kdump.py#L69-L74
+> > [2]: https://github.com/osandov/drgn/blob/97b613c23bd4d100a61b3b06fb1b5097fcef9f61/tests/linux_kernel/vmcore/test_vmcore.py#L19-L25
+> >
+> > Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
+> 
+> Hello,
+> 
+> Following up on this patch. Is there any additional verification I can
+> work on to help facilitate review?
 
-However, on a kernel built with CONFIG_PROC_KCORE=y the only ways to
-block it today are lockdown=confidentiality (which also disables many
-other things we perhaps don't want to disable, like kprobes and
-bpf_probe_read_kernel()), or an LSM. That's annoying, because on the
-majority of hosts we do want it on for things like drgn/crash, so today
-we build two separate kernels.
+Sorry for the late reply and thanks for providing the fix!
 
-Let's add a "kcore=" boot parameter so that this can be disabled at
-boot, which lets us preserve those choices while using the same kernel
-image.
-
-Signed-off-by: Chris Down <chris@chrisdown.name>
----
-v2 at https://lore.kernel.org/r/a8474f0e2d0ef5ea9d53aa6649c7e9c9ea6f15c2.1794800574.git.chris@chrisdown.name
-
-v3: Make kcore_enabled __ro_after_init (Kees)
-v2: Give more justification in changelog (Omar)
-
- Documentation/admin-guide/kernel-parameters.txt |  6 ++++++
- fs/proc/kcore.c                                 | 12 ++++++++++++
- 2 files changed, 18 insertions(+)
-
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 176648941aec..205228294fc2 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -2902,6 +2902,12 @@ Kernel parameters
- 			parameter KASAN will print report only for the first
- 			invalid access.
- 
-+	kcore=		[KNL,EARLY]
-+			Enable or disable /proc/kcore on kernels built with
-+			CONFIG_PROC_KCORE=y.
-+			Format: <bool>
-+			Default: on
-+
- 	keep_bootcon	[KNL,EARLY]
- 			Do not unregister boot console at start. This is only
- 			useful for debugging when something happens in the window
-diff --git a/fs/proc/kcore.c b/fs/proc/kcore.c
-index 3264c99bd68a..786c1209e224 100644
---- a/fs/proc/kcore.c
-+++ b/fs/proc/kcore.c
-@@ -69,6 +69,7 @@ static size_t kcore_notes_len;
- static size_t kcore_data_offset;
- DEFINE_STATIC_PERCPU_RWSEM(kclist_lock);
- static int kcore_need_update = 1;
-+static bool kcore_enabled __ro_after_init = true;
- 
- /*
-  * Returns > 0 for RAM pages, 0 for non-RAM pages, < 0 on error
-@@ -722,8 +723,19 @@ static void __init add_modules_range(void)
- }
- #endif
- 
-+static int __init parse_kcore(char *str)
-+{
-+	return kstrtobool(str, &kcore_enabled);
-+}
-+early_param("kcore", parse_kcore);
-+
- static int __init proc_kcore_init(void)
- {
-+	if (!kcore_enabled) {
-+		pr_info("/proc/kcore disabled on command line\n");
-+		return 0;
-+	}
-+
- 	proc_root_kcore = proc_create("kcore", S_IRUSR, NULL, &kcore_proc_ops);
- 	if (!proc_root_kcore) {
- 		pr_err("couldn't create /proc/kcore\n");
-
-base-commit: 666539eecdf4db623f5e3c3e55cf9f2dfad24aa4
--- 
-2.56.1
-
+Please be a bit more patient, your patch was not forgotten, and
+nothing needs to be done on your side. Might take another couple
+of days before I get to it.

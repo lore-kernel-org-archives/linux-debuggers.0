@@ -1,13 +1,13 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795381621;
-	b=Ygf7fsz7qy3Fkp/8BXQ+7r4DvLyBMhWl+8duKkancOCk3Ut0HCO6qV9nNzVDZOv4X2UC
-	 rjcf0rysMnt2yqWB6cgo/lHMvtm1c1Kv2/bm+9aQXe6/e4z6o44W3OASPa1fsDaCD8+v2
-	 xXHCYh3QqxEKr8CCCrUIiQDszcqzbFTpEwuW2eFLXM+EXGUnlg/U0dHKkIYtSLf5Oih4q
-	 5Li/l7/PbKeWDjLRPqu3TxdKPusxMXMmbSRdqy9YrdtAdiBIeu5E6WxkllrKBcFYeay76
-	 bC5c656zaAvsAIWZ/QkguClEILuFpsSH2EhbKtF2U/APOqIMdAKw2UdEdI7Kpve/D9w==
+	t=1795381623;
+	b=GGsimlUJE8TPG/9yE3aEMlSfyjLJ2r9yfIpn7MjtuFXP5HyQ3J447wL2A30hUXLO2T5J
+	 lsiEM2nFxkjXlQ+DodkPbD/7av6PWSUP1/8O1hkq+hiVvs9ND35E7OLLE5Fk5jlk8CaL+
+	 mCYqLM04x1+Df/Tc9nMKARpko2h5nPxTl9TEElf7l+RuT0H/MObfGU4kJtKbzFKRwFV0u
+	 6AMvmaBvMDj3/I0Jcsk/1lj6TNb2/0q6j0aSx/OrW7XrsR8CKC4pGSZY+IuJPNAtOk17K
+	 kVqcz5S38CIaMeq9nu9qT9K7Tg3/YIkPfljSoWlwiSn/kdyssgBxod0g/G6nrUXSq/A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795381621;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795381623;
 	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
 	 Received:Received:Received:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
@@ -15,72 +15,72 @@ ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	 X-Proofpoint-ORIG-GUID:X-Authority-Analysis:X-Proofpoint-GUID:
 	 X-Proofpoint-Spam-Info:X-Proofpoint-Virus-Version:
 	 X-Proofpoint-Spam-Details;
-	bh=AWSCdKMiTxnFdt6qynxMon0yHgRe4HTGIt0dVhiBkvM=;
-	b=Wz9gxpd/b/C8P6GDj1Dk7X+tB3SaJPwqu+4TXu/iX5rGPq1j4dAC10GBxwu7ffeZ//wd
-	 wgrpsk916pOt7PGJ9m3zvtEljeOuhBQ+CLdVH4DAZNtPMACbbg7nj7lvCRo+twNHhIl5o
-	 +K3xh7huj6zIMgk6FojZA5aNeJvlHMX3b28q+mZvjfNYwBdNGZOIFyT1cwuEhA4cd+1Sv
-	 2PP7eMvFrelJacqpey2axb+jBHpKE+gfOFcoug+FzmzNkBTIWhLwch5TM81YBuIPvXdpD
-	 LoUWtZLt6v0DayCbPsH2AqlNjT1hnrDIIWgLKIKzhutN1LzJn903jyAatXOZjLdxh3A==
+	bh=2RpQsvbIpx0Y7Itl5ix7lK9bRuHvyJ7PjOMxzyujlfw=;
+	b=z2A9115DxRawGxtvEBgni6EszLlHsLM1jdMdh0Bggn2Vq34yxWXQgYft9USeeCDqe7x8
+	 WFutYZQlw9JkpwyDV1rYXkZ1XsUVT9fV3rnMAMQyFn3QpRTsn42RqY4Zl+OdseFrUzlIh
+	 Udcd6uJO6RGt81drgse6Cmc6ciQE0AteGyYmCj3Mz5w5R+294+QYXgxuDF6+tTCD3Pa9Y
+	 FrNLN6OI2phptXV0Ua5nXicg6mrT8Y2PF2L65o/UGw2tsCHTtgUquylzfdG2oQ/bPKsgy
+	 EE0r+i0SAFBoZK3tMVVQsebZOCf6OcW5oDCJELxBFijZQlMY9gYg9lZjBaFlmBBztCQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.ibm.com;
 	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RYTQCH2p;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=b9XwSUOG;
 	arc=none smtp.remote-ip=148.163.156.1
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6F0606A31A;
-	Sun, 22 Nov 2026 21:07:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EA6F0606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81422606A31A;
+	Sun, 22 Nov 2026 21:07:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 81422606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RYTQCH2p
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=b9XwSUOG
 Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AMKYS3E1705378;
-	Sun, 22 Nov 2026 21:06:42 GMT
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AMKZMW01707543;
+	Sun, 22 Nov 2026 21:06:44 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=AWSCdKMiTxnFdt6qy
-	nxMon0yHgRe4HTGIt0dVhiBkvM=; b=RYTQCH2p7fJH/fLCs14hdiRVLAkjWhK+V
-	WT3R/i6wKdMlXs/DkgYm3zPLj2rt7nWZOqjDkinsiNOrn8s2+9fCQWVw5sAHNS34
-	Q/+TkoQ/h5xMOw2Pg1M+IGLjBj9X9JVYTIv9ET1PKmASyN0npFa92roUg3RyhTWA
-	GWLADPCXvfXIw4fs0NWniuBDmuDh8Xa1tRJ81mqrHdhVqmH3iXaPF1c7NituS82f
-	YSvzPBETOTAfLvrOEitLwYMF4DC43H3uvjqPnvE1PQN7suSU3oTgRmf96eQe970U
-	5T8C8do4gD3hTEmKoFvP3loW3FSxwJ5Yqf0sLWL02/gL1eIhCguPA==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j34fa0c9x-1
+	:mime-version:references:subject:to; s=pp1; bh=2RpQsvbIpx0Y7Itl5
+	ix7lK9bRuHvyJ7PjOMxzyujlfw=; b=b9XwSUOGcEvf0NGEmb8EuBJo50IfFsts7
+	2sTyuAXC+GNaTaY56v31Y8jQmzhl9k5n3/O7OMvd0B/0suBv61bEJy8Z0TfHUIEn
+	WHX/xkdyrPzcKodAt6Jls7pVDYTFtqTKAXnystmaPySxLf4KMSgs1ldGWayvifaw
+	LYpUesn5BggNyFJNvX8XtkeU00LpNDOWkWtPtatGqQpA+bIRm0cx5Jhg9E6Y9P6l
+	LuxcueGE8XbDwuQgBE0hQNc4vac5SdBR9gBD/p05cAIYS575L62bMnHz1qBsF8qA
+	BYtJimaqmWbgdn9fpDQL+b4mN/LcTosmJuBRHuBjCBn+ll2XvdqUQ==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j34fa0ca2-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Sun, 22 Nov 2026 21:06:41 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AMKK2p93890151;
-	Sun, 22 Nov 2026 21:06:41 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4j3qufkwtf-1
+	Sun, 22 Nov 2026 21:06:44 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AMKJQ2k1924345;
+	Sun, 22 Nov 2026 21:06:43 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4j3q4h41gb-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 22 Nov 2026 21:06:41 +0000 (GMT)
+	Sun, 22 Nov 2026 21:06:43 +0000 (GMT)
 Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
-	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AML6eqR30409298
+	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AML6gfD32506540
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 22 Nov 2026 21:06:40 GMT
+	Sun, 22 Nov 2026 21:06:42 GMT
 Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AFD6458052;
-	Sun, 22 Nov 2026 21:06:40 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id B13275805A;
+	Sun, 22 Nov 2026 21:06:42 +0000 (GMT)
 Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6AE3A58056;
-	Sun, 22 Nov 2026 21:06:39 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 7744958052;
+	Sun, 22 Nov 2026 21:06:41 +0000 (GMT)
 Received: from thinkpad-p1.fritz.box (unknown [9.111.52.78])
 	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Sun, 22 Nov 2026 21:06:39 +0000 (GMT)
+	Sun, 22 Nov 2026 21:06:40 +0000 (GMT)
 From: Maxim Khmelevskii <max@linux.ibm.com>
 To: Arnaldo Carvalho de Melo <acme@kernel.org>
 Cc: dwarves@vger.kernel.org, linux-debuggers@vger.kernel.org,
         Alan Maguire <alan.maguire@oracle.com>,
         Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH dwarves v1 1/2] dwarf_loader: Support in-memory return values for s390
-Date: Sun, 22 Nov 2026 22:06:19 +0100
-Message-ID: <20261122210636.2896891-5-max@linux.ibm.com>
+Subject: [PATCH dwarves v1 2/2] tests: Add test for in-memory return values
+Date: Sun, 22 Nov 2026 22:06:20 +0100
+Message-ID: <20261122210636.2896891-6-max@linux.ibm.com>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261122210636.2896891-4-max@linux.ibm.com>
 References: <20261122210636.2896891-4-max@linux.ibm.com>
@@ -95,204 +95,162 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTIyMDA4NCBTYWx0ZWRfX+txkYzbOicKE
- /FBZCc5X8K376vRj1yEoPjCL7sLNmxSMmSAbGnkzzhsE+S6TVd5bKd1Dz1GPcC0lC9tOcVXN6VQ
- xtRfQTk4sY+l7t16WKpw/pKy52O5Y8WqCbIXVQzjNAM1OP5kSkNE3TGIuUICdGWt16mGbzhlSRk
- 7oTcs8+h3mHkbvXQxhRTGzs2yxQP3TDoSoPDTz2XnhKfJBuMbyT3ScSTrf4SJOtzPLeU5NCpw77
- aKZFiwgYlP4YnwobyZAyds5CJfJTH5f+rNxMfB2cykWQHhz2VA7clBDcv8bHXATj6bJj49aiPTu
- 1lkw8G4zAJRCJUTDksxRDvt1y4BTY0FiA9VCFS7H8lpOg0krsqijjKQelA10CEG0ytEuA4bfi/H
- zzewDbYEqR/WTck3t1ToBH5eLsBkEK8fV7RKC9KCUFveO1Woyq9UtVnn/lwnKLSUEblTjbmMNy6
- RufdS3sscFrtHin7CEg==
-X-Proofpoint-ORIG-GUID: xwHs46zJeeTeY2Iw69jGb3NfLkFV409F
-X-Authority-Analysis: v=2.4 cv=U6QHnuru c=1 sm=1 tr=0 ts=6b035961 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTIyMDA4NCBTYWx0ZWRfX306GKEyFv4ZJ
+ UhPHHMTLxnba/FKzcZQRRC/luq6ns8fgFPenIlXQEmbj5+66MpbxOA6jFVst6SNbxGhvaNIDhCh
+ L8deHg7qSgSZUxklN4Ivyi3F90S5tcFxtZFcgfqBsxpKiSVK1AQWsd57LgDJipf/G2YbkXH0qFp
+ nGfekdS0LjkEaYYcbvKneWgL7QS6h1abtvKVmrnF2ha9j87CxOFuXSz6lvAwmccgVltJeTq1qq9
+ gqQFF2ii5MaVwsb03MNn7a2i31AjyxXq7EWJZ7PhnpqF1YaFhDjh62FfDMgJspQdcoYxySvfE/n
+ VxuHNZwZm68MKjBSk7RaGbqtEajuzUNgqmnEiJhAi2rCqaqI5OmTRTqfWSAfbI7+jL68mEzjfk4
+ mWM50KeEwyslpgtYbrMZtLsMOCsXHlVxmqOWZE2e9otcEEMcpYqFWALvNCdJpPCalrGh5GkdWmU
+ R2QDht+U5LNzX1buKDQ==
+X-Proofpoint-ORIG-GUID: aeheD-8b89M3QtNiFHGog4_yIiJ5Zz96
+X-Authority-Analysis: v=2.4 cv=U6QHnuru c=1 sm=1 tr=0 ts=6b035964 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
  a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=I1klMSMIwWXoFng0-R0A:9
- a=O8hF6Hzn-FEA:10
-X-Proofpoint-GUID: xwHs46zJeeTeY2Iw69jGb3NfLkFV409F
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTIyMDA4NCBTYWx0ZWRfX4nYZYZJRxkKL
- xVyLyRZbQuEoyIWdOvqjT2lNS22po2z44W+oLZ/cqiw8fDMU4zIytlwtb0aKisQvTDwWPldj7C6
- LZWDeQkgt2qgAYxid86gSQWoanUMm20=
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=KGnV6wvy8-slfzG-XVcA:9
+X-Proofpoint-GUID: aeheD-8b89M3QtNiFHGog4_yIiJ5Zz96
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTIyMDA4NCBTYWx0ZWRfX8WHItU1M+OkR
+ 0IGXiKuqbu6rvvO9ySYI07UINTDL1+TBIZimVmDkndWTUhfdhv30mAn9qEOmLYUyk94xIqwVM6s
+ 2k6PTPuNo+LvkVRrRAQpjX3PM66nZmg=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
  definitions=2026-11-22_05,2026-11-22_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501 lowpriorityscore=0 spamscore=0 impostorscore=0
- clxscore=1015 bulkscore=0 suspectscore=0 adultscore=0 phishscore=0
+ clxscore=1011 bulkscore=0 suspectscore=0 adultscore=0 phishscore=0
  malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
  definitions=main-2611220084
 
-The s390 ABI returns any aggregate and scalars larger than 8 bytes, such
-as __int128, in a return value buffer allocated by the caller.
-This buffer's address is treated like a "hidden argument" and passed
-by the caller in %r2. The function's first parameter is passed in %r3.
-
-Without this change pahole skips such functions and with "--verbose"
-prints a message like this:
-
-<function> : skipping BTF encoding of function due to unexpected register usage for parameter
-
-Set the first parameter register index (reg_idx) to the proper value.
-Move function's return type resolution before parameters
-are analyzed, because the analysis depends on the return type.
-
-Although param_loc_supported is not set for s390, calculate
-the reg_idx in function__match_clang_parameter_locations in case
-the flag is enabled in the future.
-
-The change affects only s390.
+Check that functions returning a value passed in memory have the
+same signature in BTF and DWARF.
 
 Signed-off-by: Maxim Khmelevskii <max@linux.ibm.com>
 Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com> 
 ---
- dwarf_loader.c | 84 +++++++++++++++++++++++++++++++++++++++-----------
- dwarves.h      |  1 +
- 2 files changed, 67 insertions(+), 18 deletions(-)
+ tests/ret_in_memory.sh | 113 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 113 insertions(+)
+ create mode 100755 tests/ret_in_memory.sh
 
-diff --git a/dwarf_loader.c b/dwarf_loader.c
-index 01049e9..e6cc4e3 100644
---- a/dwarf_loader.c
-+++ b/dwarf_loader.c
-@@ -4044,6 +4044,51 @@ static bool parameter__apply_true_sig_member(struct parameter *parm, struct cu *
- 	return true;
- }
- 
-+static bool tag__is_aggregate(const struct tag *type)
+diff --git a/tests/ret_in_memory.sh b/tests/ret_in_memory.sh
+new file mode 100755
+index 0000000..a5faa98
+--- /dev/null
++++ b/tests/ret_in_memory.sh
+@@ -0,0 +1,113 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0-only
++
++source "$(dirname "$0")/test_lib.sh"
++
++outdir=$(make_tmpdir)
++
++# Comment this out to save test data.
++trap cleanup EXIT
++
++title_log "BTF encoding: functions returning values passed in memory"
++
++supported_arches=(
++	x86_64
++	aarch64
++	s390x
++)
++
++CC=${CC:-gcc}
++if ! command -v "${CC%% *}" > /dev/null 2>&1; then
++	info_log "skip: $CC not available"
++	test_skip
++fi
++
++arch=$(uname -m)
++if [[ " ${supported_arches[*]} " != *" $arch "* ]]; then
++	info_log "skip: test does not support $arch"
++	test_skip
++fi
++
++run_cmd()
 +{
-+	switch (type->tag) {
-+	case DW_TAG_structure_type:
-+	case DW_TAG_class_type:
-+	case DW_TAG_union_type:
-+	case DW_TAG_array_type:
-+		return true;
-+	default:
-+		return false;
-+	}
++	verbose_log "$1" >&2
++	eval "$1"
 +}
 +
-+static bool s390x__ret_in_memory(const struct tag *type, const struct cu *cu)
-+{
-+	if (tag__is_aggregate(type))
-+		return true;
++src="${outdir}/ret_in_memory"
++obj="${src}.o"
++btf="${src}.btf"
 +
-+	return tag__size(type, cu) > 8;
++cat > ${src}.c << EOF2
++typedef long long i64;
++struct s128 { i64 a, b; };
++
++__attribute__((noinline)) __int128 ret_i128(i64 x, i64 y)
++{
++	return (__int128)x * y;
 +}
 +
-+static bool ftype__ret_in_memory(const struct ftype *ftype, const struct cu *cu)
++__attribute__((noinline)) struct s128 ret_s128(i64 x, i64 y)
 +{
-+	switch (cu->e_machine) {
-+	case EM_S390: {
-+		struct tag *type;
-+
-+		if (ftype->tag.type == 0)
-+			return false;
-+
-+		type = tag__strip_typedefs_and_modifiers(&ftype->tag, cu);
-+		if (type == NULL)
-+			return false;
-+		return s390x__ret_in_memory(type, cu);
-+	} break;
-+	default:
-+		return false;
-+	}
++	struct s128 r = { x * y, x - y };
++	return r;
 +}
 +
-+static int ftype__first_param_reg_idx(const struct ftype *ftype, const struct cu *cu)
++/* Check if DWARF abstract function works correctly */
++static struct s128 ret_origin(i64 x, i64 y)
 +{
-+	return ftype__ret_in_memory(ftype, cu) ? 1 : 0;
++	struct s128 r = { x, y };
++	return r;
 +}
++struct s128 (*fp)(i64, i64) = ret_origin;
 +
- static bool parameter__reg_in_expected_window(const struct parameter *parm, int reg_idx,
- 					      int slots, const struct cu *cu)
- {
-@@ -4060,8 +4105,8 @@ static bool parameter__reg_in_expected_window(const struct parameter *parm, int
- 
- static void function__match_clang_parameter_locations(struct ftype *ftype, struct cu *cu)
- {
-+	int reg_idx = ftype__first_param_reg_idx(ftype, cu);
- 	struct parameter *pos;
--	int reg_idx = 0;
- 
- 	ftype__for_each_parameter(ftype, pos) {
- 		int slots = parameter__abi_slots(pos, cu);
-@@ -4089,7 +4134,7 @@ static void function__analyze_parameter_locations(struct function *fn, struct cu
- 	bool true_sig_enabled = cu->param_loc_supported && conf->true_signature &&
- 				ftype->signature_changed;
- 	bool check_locations = !cu->producer_clang || ftype->signature_changed;
--	int reg_idx = 0;
-+	int reg_idx = ftype__first_param_reg_idx(ftype, cu);
- 
- 	if (!check_locations) {
- 		/* Producer is clang and the signature was not changed: match
-@@ -4448,6 +4493,24 @@ static int cu__resolve_func_ret_types_optimized(struct cu *cu, struct conf_load
- 			continue;
- 
- 		fn = tag__function(tag);
++__int128 gi;
++struct s128 gs;
++i64 xx, yy;
 +
-+		/* Set the function return type, it affects the register index associated
-+		 * with the first parameter of the function. If the return value is passed
-+		 * in memory the index is shifted.
-+		 */
-+		if (tag->type == 0 && fn->abstract_origin) {
-+			struct dwarf_tag *dtag = tag__dwarf(tag);
-+			struct dwarf_tag *dfunc;
++void entry(void)
++{
++	gi = ret_i128(xx, yy);
++	gs = ret_s128(xx, yy);
++	gs = ret_origin(xx, yy);
++}
++EOF2
 +
-+			dfunc = dwarf_cu__find_tag_by_ref(cu->priv, dtag, abstract_origin);
-+			if (dfunc == NULL) {
-+				tag__print_abstract_origin_not_found(tag);
-+				return -1;
-+			}
++if ! $CC -g -O2 -c -o $obj ${src}.c; then
++	error_log "$CC: could not compile ${src}.c"
++	test_fail
++fi
 +
-+			tag->type = dtag__tag(dfunc)->type;
-+		}
++info_log "Generate $(basename $btf)"
++if ! run_cmd "pahole -J --btf_encode_detached=$btf $obj"; then
++	error_log "could not encode BTF for $obj"
++	test_fail
++fi
 +
- 		/* Abstract inline subprograms describe source signatures; their
- 		 * concrete locations belong to DW_TAG_inlined_subroutine children.
- 		 */
-@@ -4475,22 +4538,6 @@ static int cu__resolve_func_ret_types_optimized(struct cu *cu, struct conf_load
- 					fn->proto.unexpected_reg = 1;
- 			}
- 		}
--
--		if (tag == NULL || tag->type != 0)
--			continue;
--
--		if (!fn->abstract_origin)
--			continue;
--
--		struct dwarf_tag *dtag = tag__dwarf(tag);
--		struct dwarf_tag *dfunc;
--		dfunc = dwarf_cu__find_tag_by_ref(cu->priv, dtag, abstract_origin);
--		if (dfunc == NULL) {
--			tag__print_abstract_origin_not_found(tag);
--			return -1;
--		}
--
--		tag->type = dtag__tag(dfunc)->type;
- 	}
- 	return 0;
- }
-@@ -4805,6 +4852,7 @@ static int cu__set_common(struct cu *cu, struct conf_load *conf,
- 	cu->agg_use_two_regs = arch__agg_use_two_regs(&ehdr);
- 	cu->arg_align_two_regs = arch__arg_align_two_regs(&ehdr);
- 	cu->param_loc_supported = arch__param_loc_supported(&ehdr);
-+	cu->e_machine = ehdr.e_machine;
- 	arch__set_register_params(&ehdr, cu);
- 	return 0;
- }
-diff --git a/dwarves.h b/dwarves.h
-index 07d85e6..c7b254d 100644
---- a/dwarves.h
-+++ b/dwarves.h
-@@ -333,6 +333,7 @@ struct cu {
- 	uint8_t		 arg_align_two_regs:1;	/* An over-aligned arg starts on an even register */
- 	uint8_t		 param_loc_supported:1;	/* Parameter location analysis is validated for this arch */
- 	uint8_t		 nr_register_params;
-+	uint16_t	 e_machine;
- 	int		 register_params[ARCH_MAX_REGISTER_PARAMS];
- 	int		 functions_saved;
- 	uint16_t	 language;
++expected_functions=(
++	ret_i128
++	ret_s128
++	ret_origin
++)
++
++info_log "Check that each function in DWARF has a match in BTF"
++for fn in "${expected_functions[@]}"; do
++	# DWARF lists ret_origin() twice: the abstract and the concrete instance,
++	# because of that sort is needed.
++	dwarf_sig=$(run_cmd "pfunct -P $obj | grep ' ${fn}(' | sort -u")
++	btf_sig=$(run_cmd "pfunct -P --format_path=btf $btf | grep ' ${fn}('")
++	if [[ -z "$dwarf_sig" ]]; then
++		error_log "${fn}() missing from DWARF"
++		test_fail
++	fi
++	if [[ -z "$btf_sig" ]]; then
++		error_log "${fn}() missing from BTF"
++		test_fail
++	fi
++	if [[ "$btf_sig" != "$dwarf_sig" ]]; then
++		error_log "${fn}() BTF signature '$btf_sig' differs from DWARF '$dwarf_sig'"
++		test_fail
++	fi
++done
++
++test_pass
 -- 
 2.56.0
 

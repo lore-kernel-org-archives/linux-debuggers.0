@@ -1,87 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.224.43
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795381624;
-	b=rEEyLQ2a811TwFOpTtsKk8nW87oMsZ44wjbLFQ9JE1VLk6b2UNb1beYsgWDcX235+vP5
-	 SYDZ6IvnsaZivrI1ZrkVsS+f19mifPMLvJrh/CqPUO6aFK6Rw7oGibgl+QX/SmVXcDSkp
-	 f7MRovP85rqFBW29IBFJj1ZIutOCZqZl7HTyljggrUVa0yzLkb7M8uUskrGfobMwY5wTU
-	 CeRMqJll/yFncTzbpKfoK4e2v3xjqWV8hExQmch1rpHLHkEHeZHNlgoxz55S6fAbYG2hI
-	 2qRf9oH9ifhPsWgkVMGoG91bx2MswoftfdD00vzSo3RlGcV28BK7kfr3vQHV9+IFqCQ==
+	t=1795414286;
+	b=ggyCYiknrXEbU2lFJH//AZXmO92ndzXmBNpsx4n4S3p4aDmNcvBXjOOxyp1er14R5Kk/
+	 +4A10AK679RT/4A66ZWIxzYCct/j8XghgvZtRFhcZ+b72IoG+Koy30H4mjX0Owkc6gIF6
+	 EiXwiUUGTnTnIDOMi6pFdNeZxKkCWE7e3AT0G2iVhrTEiYGnYaCb74/KSUZm5SRUpX+vY
+	 i5us1ro1Z0+k2oY3bkT1VCa3Y5GVdFKcvW563J9sFWa/WB5AvsZbcQBhxacvxfaQ1C2Sk
+	 fSPtNexLJvPmreXNyioI1Rm4a5x+E3r83Uo53pg2r8a8i6FeY8A+muBNpjTYaaFOoAQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795381624;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-TM-AS-GCONF:X-Authority-Analysis:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-GUID:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=cDNSMIAGGrIyWYfZGmuyvN/hS0mdCJmGKMSgafgjFrI=;
-	b=fjaf7x8WcNTwMvjUt+cT3Z29+xycJ6hWRQCnycMuLC1G5+qP4V0XsQ6RDp4gIcNM2+/p
-	 oVhmHToTS4MwGiA4ntEN8A+Nszmq94JwIA6yZ8Qso4AHz0b9XvAkk4FDwaxNZrkArGG+n
-	 VhHlfpVAD7JkjFgEcThMz5sI9GEGQwRAWg7vKvLh/RKcmZbe3pvJsHLUtkKFhOPLo8TCi
-	 6cq3WOtWXMHKXm3qfbq8y8szeivMg/rN4E2nFH1CmZdl7+u8x+59POh2Y47GOah5qkUpP
-	 Vaumt1Ct89vQU7ofYw4ze7SNom5cmClfZBB+liDH/dHP3B5eNhl8MEO21ei/fZCtoHg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795414286;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:In-Reply-To:References:MIME-Version:
+	 Content-Type:Content-Disposition:Message-ID:User-Agent;
+	bh=GwvMLEpH06q7oweFh5LKZ8RQkrZMsU7+3f+WbZdQx1g=;
+	b=p/egfhpRdsVxBw6ZYnFLuUVhQ0q3VJdEJ2Yqv2xJdTyMkEA2H6clKetPoqKh2X2v5oht
+	 3bPwqIglugoWrsrspYW287HTFFHCHJ3fpyiEF753sk6Jf1/UsnasY5M6G6GgdYU2y4mgU
+	 fLlKYToEm4bK5OSy1p1PwhiF93X5E9Z5z2hXSrZN4bMqHQV9ITN4O1bLLoW5TBoI/Hmkp
+	 gdVy3MlHrO5R/qQSEvvkYRbGQJOmlk0E/WWAoVFbX9EI46IckX3KwnTRFupZlAiWx9lH6
+	 aKzbCJe6Jfazbo+L9zRMsU1F0VfgGJn42IMzsjMWGHJZbEAPkhx/aWZnxEQdjQQWpaA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mGKex5XL;
-	arc=none smtp.remote-ip=148.163.158.5
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=chrisdown.name;
+	spf=pass smtp.mailfrom=chrisdown.name;
+	dkim=pass header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=AuJUjnTC;
+	arc=none smtp.remote-ip=74.125.224.43
+Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9ABB606A31D;
-	Sun, 22 Nov 2026 21:07:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D9ABB606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76E7E606A321
+	for <linux-debuggers@vger.kernel.org>; Mon, 23 Nov 2026 06:11:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 76E7E606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=chrisdown.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chrisdown.name
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mGKex5XL
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AMKZ3YK1515474;
-	Sun, 22 Nov 2026 21:06:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=cDNSMIAGGrIyWYfZGmuyvN/hS0mdCJmGKMSgafgjF
-	rI=; b=mGKex5XLkkeaauZqeBAHiyGMWRDAWe4lWcdB7recPJ27WgxgMlgU6GWvG
-	GUPJOCEbTFZBVU1CudTEqrILpKKfi7RW4JDBW32PcZUK08vbJf5UB+YkfvxusYqB
-	zp0WQZOuJ/8KjZcfSF1LRVrYvyOqSaK3tgs1P7Snp4vvsJXW3tvjL44sqpxv/c0R
-	cG0yfUNbcjyi3G0KrQbSzKeHhbptiO7YS0XB9K0PmRayAH8CMcfav5rxYLkZDM4i
-	2ixg6m12skvNJ/rng/34YH5jbYgHbHLmGfZaL4LXHiW+uMK9VxoHyAXCfdpWNdO0
-	Sg5NlZgIOa/6mGhWH9qvZr74XWTJg==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j34gv043a-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Sun, 22 Nov 2026 21:06:40 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AMKJJlV1924101;
-	Sun, 22 Nov 2026 21:06:39 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4j3q4h41g6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 22 Nov 2026 21:06:39 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
-	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AML6dIr22348456
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 22 Nov 2026 21:06:39 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0A48258062;
-	Sun, 22 Nov 2026 21:06:39 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 140B25805A;
-	Sun, 22 Nov 2026 21:06:37 +0000 (GMT)
-Received: from thinkpad-p1.fritz.box (unknown [9.111.52.78])
-	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Sun, 22 Nov 2026 21:06:36 +0000 (GMT)
-From: Maxim Khmelevskii <max@linux.ibm.com>
-To: Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc: dwarves@vger.kernel.org, linux-debuggers@vger.kernel.org,
-        Alan Maguire <alan.maguire@oracle.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH dwarves v1 0/2] Support in-memory return values for s390
-Date: Sun, 22 Nov 2026 22:06:18 +0100
-Message-ID: <20261122210636.2896891-4-max@linux.ibm.com>
-X-Mailer: git-send-email 2.56.0
+	dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=AuJUjnTC
+Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-67da564d9f2so3821803d50.1
+        for <linux-debuggers@vger.kernel.org>; Sun, 22 Nov 2026 22:11:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chrisdown.name; s=google; t=1795414285; x=1796019085; darn=vger.kernel.org;
+        h=user-agent:message-id:content-disposition:content-type:mime-version
+         :references:in-reply-to:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=GwvMLEpH06q7oweFh5LKZ8RQkrZMsU7+3f+WbZdQx1g=;
+        b=AuJUjnTCDQjW0sRwRqkQGsiRz50XnJQVN/9h3eRtAnqxV0IaqTgeMpJuWE3mreXHZ0
+         u2Dw7h3nBX3Ar9XXtj4bp43M36cLvvdQYcjsAAxJFTaMuMtU3M4puk/LB+8kTFQZupyX
+         eyIfE+2JhjPpcsCBYSMq4yMW+VCdu3YJiCIcc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795414285; x=1796019085;
+        h=user-agent:message-id:content-disposition:content-type:mime-version
+         :references:in-reply-to:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GwvMLEpH06q7oweFh5LKZ8RQkrZMsU7+3f+WbZdQx1g=;
+        b=mmheIsFYgHbisNDpnyWZhvzoNA3sX+GRgz5D7WSJ9wIxBD+EHQQc/vtOM1AD2ZzDZZ
+         tX96Zs8IAC9IuHi653JnGvVoYlwgdLNdKU8BxyB89P0qGqGonwQVsgaC4+YEckbKCeNs
+         TrVSsFs6dLcvL2ldVMsK+a0Cr8ndC8t6C1PkHrVGlq48AlyJNb/FWV6rHySHMbC7OIcN
+         jmPDEWDujEg2QhhNFKPaC0UPD580psvZFoBx3f1/HyceNoQfToRN8kV4sDH08c53/x30
+         c3Lnsnqk27DxVLi3O2KJ6H7CAynmB7JmoIgiP5qXT3eKPr8P4W6GPoYyHmBE31G9CRKi
+         lBEg==
+X-Forwarded-Encrypted: i=1; AL+hErH5bX/sHQlP7zVRI8ZxQbCFaJkYPFnyeLTAMvRr7HbbCWYDh6Bmg3iiTejUbQBWEDjG8Fk9KUuPZU/9umqOizE=@vger.kernel.org
+X-Gm-Message-State: APuU4Z96CrF9mS5zFxapwd+FQmyS64pcIUwrsvVhpOj1ppdZJdW54pOU
+	A/KWN9EYYGqnOXcRiQrtlqLpfZuh8C8qxXSpBmospJJnbzg+3ZkHUSXZND6uXfbE3KQ=
+X-Gm-Gg: AZFdTZfrZgxM4ejrXVh2nM3ak3pi8wuOdoAgQ8GYh5TNFob5HttE8cGYC74wFVa/roq
+	9Uccqr33JGkBE+NB9FOYuvi0D7fGcO6yWBOQXz6fmhuUKeobKBf1R3z8JGV4rpO3+YY2HdcezEL
+	xLHgq0AeFDrf0ZpIwk1pdjL+nF2RMtGXoeySqTxStiPJ3kNULLfalR4Xqm5wzughpJa5hhiNVY5
+	eFYj9nZ4ptZHC8NQv2ET2evaQTDmCj9icIXD+NByKlnspMjpXAbfemw/yYwI24pdHIDMpathy1r
+	b3xoS3BDcQZgd8WlnihqFfWD1VIYOKyMUUQ1IjImBaiwILe3KrbkPHOw8G0ByUILkcuEmCzVG5e
+	Fzgbgvok3Cw7X9A9GCkB8KV81WD+TaJnI0ta63QlDdFGhG8xzRN/muD8/WZj9GF++IPq37yPtxx
+	Ni/YZREhUVv5waHjFiQYnSsVhwyjxaOceI1XDANpqj9BebSktwMp9Ymg97suUL0fGSy7ux1B2ws
+	vV0/6FJu3sgrXfpgqhoISPHO+ccUqZiXSBuFPMzIIKTjREj4BiJrOeMjG5DoGsuaTdj/r/onE1P
+	H4BhfWjK8VoBSTqioGDIJ1QW/AvlRspavcdOGt+QZCkSkaK0NKLIQbBbrSxsrVoPJ5K9tqV8QuS
+	B3YSx5rhfAiwqyOIeAsRBrb/XT85g6lKrxFPJEf1NjIXz3zs1l4QFIoRW7tjbyVzgDIG+NUwCWO
+	TBUPYq1dSBC5Djk5iRHspL94jHBOPMJz2snywUMD5QNloTv4C3vmjZls7Z9BbGZZDKoG2jYErKt
+	OrqA9zQ6IvOCcq+oXBfKta1qCJYxgKomXlcofJ+IU3D
+X-Received: by 2002:a05:690e:4012:b0:67d:c046:4f71 with SMTP id 956f58d0204a3-67df43d2bb2mr4679580d50.23.1795414285477;
+        Sun, 22 Nov 2026 22:11:25 -0800 (PST)
+Received: from [172.20.0.3] (static-host-74-205-137-217.epbinternet.com. [74.205.137.217])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b5202bc515sm43136087b3.19.2026.11.22.22.11.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 22 Nov 2026 22:11:24 -0800 (PST)
+Date: Sun, 22 Nov 2026 22:11:21 -0800
+From: Chris Down <chris@chrisdown.name>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Omar Sandoval <osandov@osandov.com>,
+	Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
+	linux-debuggers@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v3] proc/kcore: allow disabling /proc/kcore at boot
+In-Reply-To: <20261118-masken-disput-miesmacher-27d6baaae6a8@brauner>
+References: <7c10f2e01b6f19229c83e81d887a87f5d1151841.1794904698.git.chris@chrisdown.name>
+	<20261118-masken-disput-miesmacher-27d6baaae6a8@brauner>
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Post: <mailto:linux-debuggers@vger.kernel.org>
@@ -91,67 +100,48 @@ List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-debuggers+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=CYCdd7rl c=1 sm=1 tr=0 ts=6b035960 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=Y2IxJ9c9Rs8Kov3niI8_:22 a=Ld0tnAMJVGhTLNDUD6kA:9
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTIyMDA4NCBTYWx0ZWRfX2w7wR9jmQHeX
- LqUh6hID4HkUSmkccgb/U+xoG+kWz/sr8A4Ax+ACwcRQ7PTTFyXemQ3owM4LyoonPOg3H6Rw/xw
- F+lRprUxM2xzE7w+uKHIgDLPFFhun88=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTIyMDA4NCBTYWx0ZWRfX4uUJS1DAWR9y
- S+2JF38affWKLv+vIAPS1O/wZNXZemR9ki0WkYHz76WojhRBID2uJQN+i/+de5LchP4AfKPnF5L
- uuTgInOl9YIcPWym874osNE1mSwDhH1+Wjbe2LRrPaiIuVSbtmkM72aD6PDZNYSkf/cGffOCl/T
- QXJcEVu5+fLkYNGWKmG6x5QwKk8qqzOyMKMuelHqzt3oUydXoxqk56WgArpYPKi64Z9XOH3XjMz
- HZu3ZmCO12w5/4xfWpY98LDC1IxXWEhdBi1PgT76J08orI+uVlUJ8xL28b27mDLOTVqpOU0rnMU
- jyFor9IBqBr8lJa5LiAbSF1lufePAfvDZOk1+uNacK6UG65QAwOTHxE4B9Q6NQ128LuI0uoXGgb
- sIx0UnhMGwf8rNK7rxTCf32sXxSyyQcVJdq4HnntFgdIGcJI5QfiMgS/8dUUWDtQ3n5ib7I8Uvp
- 5ThqhPhQNC9jCwBZBCA==
-X-Proofpoint-ORIG-GUID: _C7eP2tGnYjF92f9QUGR1W7l39fEqARd
-X-Proofpoint-GUID: _C7eP2tGnYjF92f9QUGR1W7l39fEqARd
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-22_05,2026-11-22_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0 priorityscore=1501 lowpriorityscore=0
- clxscore=1011 spamscore=0 bulkscore=0 impostorscore=0 adultscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
- definitions=main-2611220084
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Message-ID: <awPZCeNqLKVpnbKj@chrisdown.name>
+User-Agent: Mutt/2.4.3 (cc9e3943) (2026-10-09)
 
-The s390 ABI returns any aggregate and scalars larger than 8 bytes, such
-as __int128, in a return value buffer allocated by the caller.
-This buffer's address is treated like a "hidden argument" and passed
-by the caller in %r2. The function's first parameter is passed in %r3.
+Hi Christian,
 
-Without this change pahole skips such functions and with "--verbose"
-prints a message like this:
+Thanks for picking this up!
 
-<function> : skipping BTF encoding of function due to unexpected register usage for parameter
+Christian Brauner writes:
+>Iow, it would be nicer if someone took the time and came up with some
+>boot setting that is a list of memory protection settings instead of
+>spraying ever more kernel command line switches that nobody can
+>reasonably remember or use.
 
-Set the first parameter register index (reg_idx) to the proper value.
-Move function's return type resolution before parameters
-are analyzed, because the analysis depends on the return type.
+Hmm, I agree that would be nicer, but I don't see a good way to do it. How
+would you suggest going about it?
 
-Although param_loc_supported is not set for s390, calculate
-the reg_idx in function__match_clang_parameter_locations in case
-the flag is enabled in the future.
+In my mind, the model one would have for a list like that is mitigations=,
+but it didn't replace the specific switches, right? For example, retbleed=
+and mds= have nevertheless stayed. In that case, the list sets their
+defaults, but more specific switches win out over it.
 
-Add test for in-memory return values.
+These are the problems I see with a list like that:
 
-The change affects only s390.
+1. I don't know where the list would live. A list of memory protection
+    settings in procfs would cover two switches today (that is, kcore= and
+    proc_mem.force_override=). Anything wider crosses into mm and security
+    (I have similar switches out for slab hardening and mseal, for example),
+    and it isn't clear to me who would own that or decide what goes on it.
 
-Maxim Khmelevskii (2):
-  dwarf_loader: Support in-memory return values for s390
-  tests: Add test for in-memory return values
+2. Lockdown already has a list of what gives access to kernel memory,
+    with entries for /proc/kcore, /dev/mem, kprobes and so on (although
+    not for FOLL_FORCE), but lockdown= only takes the two levels.
+    Selecting individual entries was proposed last year, and the lockdown
+    maintainers turned it down because most entries can be bypassed when
+    they are used on their own [1]. So a wider list would have to be a
+    second one next to lockdown's.
 
- dwarf_loader.c         |  84 +++++++++++++++++++++++-------
- dwarves.h              |   1 +
- tests/ret_in_memory.sh | 113 +++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 180 insertions(+), 18 deletions(-)
- create mode 100755 tests/ret_in_memory.sh
+Did you have something specific in mind in terms of a design and what it
+would encompass?
 
--- 
-2.56.0
+Chris
 
+[1] https://lore.kernel.org/r/2vldrnqs6fbljqqp6vbwmkushx6dxcpephgb6svmu5i64lijpy@lg37aflddv3b

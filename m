@@ -1,96 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.224.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795414286;
-	b=ggyCYiknrXEbU2lFJH//AZXmO92ndzXmBNpsx4n4S3p4aDmNcvBXjOOxyp1er14R5Kk/
-	 +4A10AK679RT/4A66ZWIxzYCct/j8XghgvZtRFhcZ+b72IoG+Koy30H4mjX0Owkc6gIF6
-	 EiXwiUUGTnTnIDOMi6pFdNeZxKkCWE7e3AT0G2iVhrTEiYGnYaCb74/KSUZm5SRUpX+vY
-	 i5us1ro1Z0+k2oY3bkT1VCa3Y5GVdFKcvW563J9sFWa/WB5AvsZbcQBhxacvxfaQ1C2Sk
-	 fSPtNexLJvPmreXNyioI1Rm4a5x+E3r83Uo53pg2r8a8i6FeY8A+muBNpjTYaaFOoAQ==
+	t=1795518127;
+	b=mBX46aQQjMRpoqTpRM96idUQWnmdR3B1mV11BAwqR2RsNGb88P+zDrxOWWikUe2af2Jw
+	 FlAOECIFGNeQ6iFyuKHSUtaRipXuxDdybVQoMM3RLiijSXMrPLilc9TOxvXWCiEnp8iav
+	 rBJrAtJrgUHrNPFKhTilkNNq7bmtg6G/x5GlvZ5jeQOlXrXyjcOe5gxhCtJhLlCDt9GBS
+	 0Jgewz9tjNK/kY7q0DdbIiO6H8Ln7Cp32AAfQnBFSrGg6NiGuRxpU/wwOq1QvTd0bcq07
+	 5AOojUtMY+80T3G1cD+4RmcEJMku7mPf0QYJIS/pHXIv4sE8aQNcMRnzFiZGft9SpCQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795414286;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type:Content-Disposition:Message-ID:User-Agent;
-	bh=GwvMLEpH06q7oweFh5LKZ8RQkrZMsU7+3f+WbZdQx1g=;
-	b=p/egfhpRdsVxBw6ZYnFLuUVhQ0q3VJdEJ2Yqv2xJdTyMkEA2H6clKetPoqKh2X2v5oht
-	 3bPwqIglugoWrsrspYW287HTFFHCHJ3fpyiEF753sk6Jf1/UsnasY5M6G6GgdYU2y4mgU
-	 fLlKYToEm4bK5OSy1p1PwhiF93X5E9Z5z2hXSrZN4bMqHQV9ITN4O1bLLoW5TBoI/Hmkp
-	 gdVy3MlHrO5R/qQSEvvkYRbGQJOmlk0E/WWAoVFbX9EI46IckX3KwnTRFupZlAiWx9lH6
-	 aKzbCJe6Jfazbo+L9zRMsU1F0VfgGJn42IMzsjMWGHJZbEAPkhx/aWZnxEQdjQQWpaA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795518127;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-TM-AS-GCONF:X-Proofpoint-Spam-Info:X-Proofpoint-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
+	 X-Authority-Analysis:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=3ftNlEVqvZWGVx20k+ZMzr1PN5Nc7kI54sOOrnbpJQw=;
+	b=yJE26hRSsmvQ5b30b4PnReTaWXGaVoHDWZNwEd7AcBGepSrI2yeDZ0/eUw58xZS7mNMy
+	 SeCQb7AnBQOF7EdEuA6lbyo01E6Uh+XsLUC90phpqPimrNTAoL6n9DLPbbI/LcRMmfKIy
+	 YR0VAvTLYGch6lB9xR6UpfCifGsy57yKZIO6AwzjNSKMX6d4iQJz1s4cOsPdudjsuwgbB
+	 ZRw8xNJapon5oRvZWS1KqKPff8iRoPa0b7SZ2UDrlqNW4VQJZcEogJyBj8uoE9Xb/MHPA
+	 3jpK8uhgUV+f4ZwKK8Q1Hcb15kIguV63xsULlOhX0/GF2zhg7tNCXVMaD+B4IJo4FaQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=chrisdown.name;
-	spf=pass smtp.mailfrom=chrisdown.name;
-	dkim=pass header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=AuJUjnTC;
-	arc=none smtp.remote-ip=74.125.224.43
-Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=W1crwuEw;
+	arc=none smtp.remote-ip=148.163.158.5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76E7E606A321
-	for <linux-debuggers@vger.kernel.org>; Mon, 23 Nov 2026 06:11:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 76E7E606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=chrisdown.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chrisdown.name
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41AC3606A31E;
+	Tue, 24 Nov 2026 11:02:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 41AC3606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=AuJUjnTC
-Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-67da564d9f2so3821803d50.1
-        for <linux-debuggers@vger.kernel.org>; Sun, 22 Nov 2026 22:11:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chrisdown.name; s=google; t=1795414285; x=1796019085; darn=vger.kernel.org;
-        h=user-agent:message-id:content-disposition:content-type:mime-version
-         :references:in-reply-to:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=GwvMLEpH06q7oweFh5LKZ8RQkrZMsU7+3f+WbZdQx1g=;
-        b=AuJUjnTCDQjW0sRwRqkQGsiRz50XnJQVN/9h3eRtAnqxV0IaqTgeMpJuWE3mreXHZ0
-         u2Dw7h3nBX3Ar9XXtj4bp43M36cLvvdQYcjsAAxJFTaMuMtU3M4puk/LB+8kTFQZupyX
-         eyIfE+2JhjPpcsCBYSMq4yMW+VCdu3YJiCIcc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795414285; x=1796019085;
-        h=user-agent:message-id:content-disposition:content-type:mime-version
-         :references:in-reply-to:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=GwvMLEpH06q7oweFh5LKZ8RQkrZMsU7+3f+WbZdQx1g=;
-        b=mmheIsFYgHbisNDpnyWZhvzoNA3sX+GRgz5D7WSJ9wIxBD+EHQQc/vtOM1AD2ZzDZZ
-         tX96Zs8IAC9IuHi653JnGvVoYlwgdLNdKU8BxyB89P0qGqGonwQVsgaC4+YEckbKCeNs
-         TrVSsFs6dLcvL2ldVMsK+a0Cr8ndC8t6C1PkHrVGlq48AlyJNb/FWV6rHySHMbC7OIcN
-         jmPDEWDujEg2QhhNFKPaC0UPD580psvZFoBx3f1/HyceNoQfToRN8kV4sDH08c53/x30
-         c3Lnsnqk27DxVLi3O2KJ6H7CAynmB7JmoIgiP5qXT3eKPr8P4W6GPoYyHmBE31G9CRKi
-         lBEg==
-X-Forwarded-Encrypted: i=1; AL+hErH5bX/sHQlP7zVRI8ZxQbCFaJkYPFnyeLTAMvRr7HbbCWYDh6Bmg3iiTejUbQBWEDjG8Fk9KUuPZU/9umqOizE=@vger.kernel.org
-X-Gm-Message-State: APuU4Z96CrF9mS5zFxapwd+FQmyS64pcIUwrsvVhpOj1ppdZJdW54pOU
-	A/KWN9EYYGqnOXcRiQrtlqLpfZuh8C8qxXSpBmospJJnbzg+3ZkHUSXZND6uXfbE3KQ=
-X-Gm-Gg: AZFdTZfrZgxM4ejrXVh2nM3ak3pi8wuOdoAgQ8GYh5TNFob5HttE8cGYC74wFVa/roq
-	9Uccqr33JGkBE+NB9FOYuvi0D7fGcO6yWBOQXz6fmhuUKeobKBf1R3z8JGV4rpO3+YY2HdcezEL
-	xLHgq0AeFDrf0ZpIwk1pdjL+nF2RMtGXoeySqTxStiPJ3kNULLfalR4Xqm5wzughpJa5hhiNVY5
-	eFYj9nZ4ptZHC8NQv2ET2evaQTDmCj9icIXD+NByKlnspMjpXAbfemw/yYwI24pdHIDMpathy1r
-	b3xoS3BDcQZgd8WlnihqFfWD1VIYOKyMUUQ1IjImBaiwILe3KrbkPHOw8G0ByUILkcuEmCzVG5e
-	Fzgbgvok3Cw7X9A9GCkB8KV81WD+TaJnI0ta63QlDdFGhG8xzRN/muD8/WZj9GF++IPq37yPtxx
-	Ni/YZREhUVv5waHjFiQYnSsVhwyjxaOceI1XDANpqj9BebSktwMp9Ymg97suUL0fGSy7ux1B2ws
-	vV0/6FJu3sgrXfpgqhoISPHO+ccUqZiXSBuFPMzIIKTjREj4BiJrOeMjG5DoGsuaTdj/r/onE1P
-	H4BhfWjK8VoBSTqioGDIJ1QW/AvlRspavcdOGt+QZCkSkaK0NKLIQbBbrSxsrVoPJ5K9tqV8QuS
-	B3YSx5rhfAiwqyOIeAsRBrb/XT85g6lKrxFPJEf1NjIXz3zs1l4QFIoRW7tjbyVzgDIG+NUwCWO
-	TBUPYq1dSBC5Djk5iRHspL94jHBOPMJz2snywUMD5QNloTv4C3vmjZls7Z9BbGZZDKoG2jYErKt
-	OrqA9zQ6IvOCcq+oXBfKta1qCJYxgKomXlcofJ+IU3D
-X-Received: by 2002:a05:690e:4012:b0:67d:c046:4f71 with SMTP id 956f58d0204a3-67df43d2bb2mr4679580d50.23.1795414285477;
-        Sun, 22 Nov 2026 22:11:25 -0800 (PST)
-Received: from [172.20.0.3] (static-host-74-205-137-217.epbinternet.com. [74.205.137.217])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b5202bc515sm43136087b3.19.2026.11.22.22.11.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Nov 2026 22:11:24 -0800 (PST)
-Date: Sun, 22 Nov 2026 22:11:21 -0800
-From: Chris Down <chris@chrisdown.name>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Omar Sandoval <osandov@osandov.com>,
-	Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
-	linux-debuggers@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v3] proc/kcore: allow disabling /proc/kcore at boot
-In-Reply-To: <20261118-masken-disput-miesmacher-27d6baaae6a8@brauner>
-References: <7c10f2e01b6f19229c83e81d887a87f5d1151841.1794904698.git.chris@chrisdown.name>
-	<20261118-masken-disput-miesmacher-27d6baaae6a8@brauner>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=W1crwuEw
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AO34haC001811;
+	Tue, 24 Nov 2026 11:02:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=3ftNlEVqvZWGVx20k+ZMzr1PN5Nc7k
+	I54sOOrnbpJQw=; b=W1crwuEwyJOICbIHwyUi1zY5Ia/gBXD4sm8f0ERp/CQMcX
+	PWpIA9eZSN2N8dB2/VV94VoeWRO/xjIVoFH71BHwrukMmCy4dBL9tVmNIPl9frqe
+	kdsni8SgZOfNpdXreIJo1DfdN618qZxWJxaR11VxwDV8kAMokWjTS52SO6MGCTyb
+	m2t/UxhelFfrSv7rSBo8bzBB+oeSGdBbrf2yDUDUjewboSjd/XZVhORia0EfwbSe
+	svTrcC/E+KRokkYN2j1cB0uSzH56WpXGc74KrnbHgv/2CjQqkoLcqZ+rbLdBEiqL
+	j0p1C2hlh1xEJTFGsYmxg9tw6+TvSxhFkWhN1M9g==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j34p4et3r-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 24 Nov 2026 11:02:01 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AO90O73021873;
+	Tue, 24 Nov 2026 11:02:01 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4j3pmk2a71-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 24 Nov 2026 11:02:01 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AOB1vEX47972686
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 24 Nov 2026 11:01:57 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 20DF52004F;
+	Tue, 24 Nov 2026 11:01:57 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AB93520040;
+	Tue, 24 Nov 2026 11:01:56 +0000 (GMT)
+Received: from osiris (unknown [9.111.55.141])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 24 Nov 2026 11:01:56 +0000 (GMT)
+Date: Tue, 24 Nov 2026 12:01:55 +0100
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Stephen Brennan <stephen.s.brennan@oracle.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Andrew Donnellan <andrew+kernel@donnellan.id.au>,
+        linux-s390@vger.kernel.org, linux-debuggers@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] s390: add CFI directives for call_on_stack
+Message-ID: <20261124110155.32552B6a-hca@linux.ibm.com>
+References: <20261030231714.1319773-1-stephen.s.brennan@oracle.com>
 X-Mailing-List: linux-debuggers@vger.kernel.org
 List-Id: <linux-debuggers.vger.kernel.org>
 List-Post: <mailto:linux-debuggers@vger.kernel.org>
@@ -100,48 +97,114 @@ List-Unsubscribe: <mailto:linux-debuggers+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-debuggers+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Message-ID: <awPZCeNqLKVpnbKj@chrisdown.name>
-User-Agent: Mutt/2.4.3 (cc9e3943) (2026-10-09)
+In-Reply-To: <20261030231714.1319773-1-stephen.s.brennan@oracle.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTI0MDA0MSBTYWx0ZWRfX8VEIlEH8RAr+
+ rm+X20F6w4STTqiIhbyYWRTpiOZKaD2xdxgjQYIR3Fhh1npXF0XPsdx/bSzrnACvvIOZbuuwHUa
+ Xcf0GwON4iwOq1Gb5sWp1DPNVb1ZnWY=
+X-Proofpoint-GUID: 2IEv-Udvn0Zklz1cQlPhRZc1S8ynq5y4
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTI0MDA0MSBTYWx0ZWRfX7Eg2MbSpaQY+
+ Rsl57X4FYn+ePaTAqvUQJydC7Xp5a0Pk/SsWONTpE9KwnoWGIardnGmfP1umlZasB+PWz+mdhk7
+ olrjvVntydoV2T1X1fWSsnRND0tMRjz4q529Lba28s+q3QTaDv25QO+6h1oSCVMGFKRWMxDL7fp
+ VsVvpB9feIOdw/7n77M1OWEZFwemSarnT3PpLGV7ARHbDFM8w9K4DhfIHjDOMRjxLzb/CgsJsJJ
+ gsETER73eyZe0RoN+myJxo+TmJ7pXRQyqoyBodVOM0JhYKuTEwNUAVD9tSYKWXi7LOUvTTE7QbB
+ 0kQC7DqFkEQsYdrR8pDPFCh4PjFW8Vj11Q5gzMS5I51rOKgLQZqt0O3U/tTaeAcC797hfeLV8TE
+ ImUl0ieHEVveGZN3vObghag3+hkDF45ZodItdZSpTxgBjU1ctuhu2nfnYC91VGcb8/BBWgVcPSY
+ z2y9yCKyb1x2UNE8g3A==
+X-Proofpoint-ORIG-GUID: 2IEv-Udvn0Zklz1cQlPhRZc1S8ynq5y4
+X-Authority-Analysis: v=2.4 cv=QabzLcbv c=1 sm=1 tr=0 ts=6b056ea9 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=17FYL03jAAAA:20
+ a=yPCof4ZbAAAA:8 a=4y6ffcx9BbnVZogFFskA:9 a=CjuIK1q_8ugA:10
+ a=bA3UWDv6hWIuX7UZL3qL:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-24_01,2026-11-23_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 phishscore=0 lowpriorityscore=0 suspectscore=0 adultscore=0
+ bulkscore=0 priorityscore=1501 clxscore=1015 malwarescore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611240041
 
-Hi Christian,
+Hi Stephen,
 
-Thanks for picking this up!
+again, sorry for taking way too long to look into this!
 
-Christian Brauner writes:
->Iow, it would be nicer if someone took the time and came up with some
->boot setting that is a list of memory protection settings instead of
->spraying ever more kernel command line switches that nobody can
->reasonably remember or use.
+On Fri, Oct 30, 2026 at 04:17:10PM -0700, Stephen Brennan wrote:
+> When debugging s390 on drgn, we experience two issues. First, when a
+> panic is triggered on CPU 0, drgn is unable to unwind past a stack
+> switching event[1,2]. Second, drgn is unable to unwind through an
+> interrupt exception frame.
+> 
+> It turns out that the reason for both is the generated call_on_stack()
+> assembly. It modifies %r15 (the stack pointer) without any CFI
+> directives describing this change. Thus, the compiler-generated CFI is
+> wrong, and drgn tries to unwind using rules based on the wrong SP value.
+> 
+> To resolve this, use %r10 (a callee-saved register) to store the CFA in
+> a temporary register. Then, emit a CFI directive describing the change.
+> So long as DWARF CFI is used to unwind all leaf functions, the value of
+> %r10 should be recoverable, and unwinders will be able to use it to
+> determine the CFA and continue to the new stack.
+> 
+> I've tested this only in a QEMU VM using drgn's vmtest framework.
+> With the patch, drgn is able to unwind through two stack changes: the
+> change to the IRQ stack, and the change to the CPU0 nodat_stack during a
+> panic on CPU 0.
+> 
+> [1]: https://github.com/osandov/drgn/blob/97b613c23bd4d100a61b3b06fb1b5097fcef9f61/vmtest/enter_kdump.py#L69-L74
+> [2]: https://github.com/osandov/drgn/blob/97b613c23bd4d100a61b3b06fb1b5097fcef9f61/tests/linux_kernel/vmcore/test_vmcore.py#L19-L25
+> 
+> Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
+> ---
+>  arch/s390/include/asm/stacktrace.h | 18 +++++++++++++++++-
+>  1 file changed, 17 insertions(+), 1 deletion(-)
 
-Hmm, I agree that would be nicer, but I don't see a good way to do it. How
-would you suggest going about it?
+...
 
-In my mind, the model one would have for a list like that is mitigations=,
-but it didn't replace the specific switches, right? For example, retbleed=
-and mds= have nevertheless stayed. In that case, the list sets their
-defaults, but more specific switches win out over it.
+> +	register unsigned long cfa asm("10") =				\
+> +		frame + STACK_FRAME_OVERHEAD;				\
 
-These are the problems I see with a list like that:
+...
 
-1. I don't know where the list would live. A list of memory protection
-    settings in procfs would cover two switches today (that is, kcore= and
-    proc_mem.force_override=). Anything wider crosses into mm and security
-    (I have similar switches out for slab hardening and mseal, for example),
-    and it isn't clear to me who would own that or decide what goes on it.
+> @@ -196,15 +208,19 @@ static __always_inline unsigned long get_stack_pointer(struct task_struct *task,
+>  									\
+>  	CALL_TYPECHECK_##nr(__VA_ARGS__);				\
+>  	asm volatile(							\
+> +		CALL_ON_STACK_CFI(".cfi_remember_state\n")		\
+>  		"	lgr	%[_prev],15\n"				\
+> +		CALL_ON_STACK_CFI(".cfi_def_cfa %[_cfa],0\n")	\
+>  		"	lg	15,%[_stack]\n"				\
+>  		"	stg	%[_frame],%[_bc](15)\n"			\
+>  		"	brasl	14,%[_fn]\n"				\
+> -		"	lgr	15,%[_prev]"				\
+> +		"	lgr	15,%[_prev]\n"				\
+> +		CALL_ON_STACK_CFI(".cfi_restore_state\n")		\
+>  		: [_prev] "=&d" (prev), CALL_FMT_##nr			\
+>  		: [_stack] "R" (__stack),				\
+>  		  [_bc] "i" (offsetof(struct stack_frame, back_chain)),	\
+>  		  [_frame] "d" (frame),					\
+> +		  [_cfa] "d" (cfa),					\
+>  		  [_fn] "X" (__fn) : CALL_CLOBBER_##nr);		\
 
-2. Lockdown already has a list of what gives access to kernel memory,
-    with entries for /proc/kcore, /dev/mem, kprobes and so on (although
-    not for FOLL_FORCE), but lockdown= only takes the two levels.
-    Selecting individual entries was proposed last year, and the lockdown
-    maintainers turned it down because most entries can be bypassed when
-    they are used on their own [1]. So a wider list would have to be a
-    second one next to lockdown's.
+The patch is fine, however this should also work without explicitly specifying
+to use register 10. Any other free register should work as well, since the
+inline assembly is sort of emulating a function call to a different stack -
+and therefore all non-callee saved registers are already clobbered, either
+early clobbered, or explicitly clobbered.
 
-Did you have something specific in mind in terms of a design and what it
-would encompass?
+The compiler can only chose between r6 to r13; all of them are callee-saved.
 
-Chris
+Or in other words: I'd prefer this
 
-[1] https://lore.kernel.org/r/2vldrnqs6fbljqqp6vbwmkushx6dxcpephgb6svmu5i64lijpy@lg37aflddv3b
+> +	register unsigned long cfa asm("10") =				\
+> +		frame + STACK_FRAME_OVERHEAD;				\
+
+to be changed to
+
+> +	unsigned long cfa = frame + STACK_FRAME_OVERHEAD;		\
+
+..unless I am missing something, but "_prev" also relies on this already.
